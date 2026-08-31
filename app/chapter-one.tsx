@@ -20,14 +20,12 @@ export function NotesPanel({ checked, onCheck, onClose }: { checked: string[]; o
     <header><div className="window-controls"><button onClick={onClose} aria-label="关闭记事本"><X /></button></div><strong>记事本</strong><FileText /></header>
     <div className="notes-body">
       <p className="notes-date">8月21日 19:26 · 修改于8月24日</p>
-      <h1>雾汀，慢慢玩。</h1>
-      <p>都订在<strong>泊岸旅行</strong>了，账号没退。<br />剩下这些，照着日期来就好。</p>
+      <h1>雾汀旅游之旅</h1>
+      <p>都在<strong>泊岸旅行</strong>预定的</p>
       <div className="notes-checklist">{ORDERS.map((order) => <label className={checked.includes(order.id) ? "is-checked" : ""} key={order.id}>
         <Checkbox checked={checked.includes(order.id)} onCheckedChange={() => onCheck(order.id)} aria-label={`记事本勾选${order.title}`} />
         <span><strong>{order.title}</strong><small>{order.date}</small></span>
       </label>)}</div>
-      <p className="notes-afterthought">灯塔那张电子票在下载里，别到门口才找。<br />盐场记得穿不怕脏的鞋。</p>
-      <div className="notes-footer"><span>私人记事本 · 勾选仅作标记</span><span>{checked.length} / 5</span></div>
     </div>
   </section>;
 }

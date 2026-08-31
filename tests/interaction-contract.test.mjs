@@ -83,3 +83,15 @@ test("photo preview exposes navigation, zoom controls, and file details", async 
   assert.match(html, /is-cropped/);
   assert.match(html, /width:100%/);
 });
+
+test("the itinerary note uses only the requested copy and retains five checkboxes", async () => {
+  const { NotesPanel } = await vite.ssrLoadModule("/app/chapter-one.tsx");
+  const html = renderToStaticMarkup(React.createElement(NotesPanel, {
+    checked: ["south"], onCheck() {}, onClose() {},
+  }));
+  assert.match(html, /<h1>雾汀旅游之旅<\/h1>/);
+  assert.match(html, /都在<strong>泊岸旅行<\/strong>预定的/);
+  assert.doesNotMatch(html, /账号没退|剩下这些|照着日期|灯塔那张电子票在下载里|别到门口|盐场记得|不怕脏|私人记事本|勾选仅作标记|雾汀，慢慢玩/);
+  assert.equal((html.match(/aria-label="记事本勾选/g) ?? []).length, 5);
+  assert.equal((html.match(/class="is-checked"/g) ?? []).length, 1);
+});
