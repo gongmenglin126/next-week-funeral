@@ -1,0 +1,292 @@
+/* First chapter: an ordinary travel website inside an ordinary desktop. */
+.ota { --ota-blue: #176ee2; --primary: #176ee2; --ring: #80aef0; min-height: 100%; color: #243249; background: #f5f7fb; font-size: 13px; }
+.ota button, .notes-window button, .ride-page button { cursor: pointer; }
+.ota button:disabled { cursor: default; }
+.ota [data-slot="button"][data-variant="outline"] { background: white; border-color: #d9e2ee; }
+.ota-header { display: flex; align-items: center; gap: 52px; min-height: 82px; padding: 14px max(28px, calc((100% - 1200px)/2)); background: white; border-bottom: 1px solid #e8edf4; }
+.ota-brand { display: flex; align-items: center; gap: 10px; padding: 0; flex-shrink: 0; text-align: left; color: #1462cc; }
+.ota-brand > span { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px 12px 12px 3px; color: white; background: #1a71e3; }
+.ota-brand strong { font-size: 21px; line-height: 1.2; letter-spacing: .04em; }
+.ota-brand small { display: block; margin-top: 4px; font-size: 8px; letter-spacing: .2em; }
+.ota-header nav { display: flex; align-self: stretch; gap: 28px; }
+.ota-header nav button { position: relative; font-size: 13px; color: #718197; white-space: nowrap; }
+.ota-header nav button[aria-current] { color: #176ee2; font-weight: 600; }
+.ota-header nav button[aria-current]::after { content: ""; position: absolute; left: 20%; right: 20%; bottom: -14px; height: 3px; background: #176ee2; }
+.ota-profile { margin-left: auto; position: relative; flex-shrink: 0; }
+.ota-profile > button { display: flex; align-items: center; gap: 8px; }
+.ota-profile > button > span { display: grid; width: 30px; height: 30px; place-items: center; background: #eaf0ff; color: #5f79b5; border-radius: 50%; font-size: 12px; }
+.ota-profile strong { font-size: 11px; font-weight: 500; }
+.ota-profile-card { position: absolute; z-index: 10; top: 44px; right: 0; width: 220px; padding: 20px; border: 1px solid #e3eaf4; background: white; border-radius: 12px; box-shadow: 0 12px 35px #29496c20; }
+.ota-profile-card p, .ota-profile-card small { color: #7e8da1; line-height: 2; font-size: 11px; }
+.ota-orders, .ota-detail { max-width: 1260px; margin: auto; padding: 38px 30px 46px; }
+.eyebrow { font-size: 9px; letter-spacing: .16em; font-weight: 600; color: #8899ae; }
+.ota-orders-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+.ota h1 { margin: 5px 0 10px; font-size: clamp(25px, 2.3vw, 34px); font-weight: 650; letter-spacing: -.03em; }
+.ota-orders-heading p:not(.eyebrow), .ota-detail-heading p:not(.eyebrow) { margin: 0; font-size: 12px; color: #8b98aa; }
+.ota-trip-summary { display: flex; align-items: center; gap: 12px; color: #497096; }
+.ota-trip-summary > svg { width: 19px; stroke-width: 1.5; }
+.ota-trip-summary strong { display: block; font-size: 12px; font-weight: 500; }
+.ota-trip-summary small { display: block; margin-top: 5px; color: #96a5b6; font-size: 10px; }
+.ota-workspace { display: grid; grid-template-columns: 172px minmax(0,1fr); gap: 28px; }
+.ota-sidebar > p { margin: 16px 14px; font-size: 10px; color: #9ba7b7; }
+.ota-sidebar > button { display: flex; width: 100%; justify-content: space-between; margin: 4px 0; padding: 12px 15px; border-radius: 7px; color: #718198; text-align: left; font-size: 12px; }
+.ota-sidebar > button[aria-pressed="true"] { color: #176ee2; background: #e6effe; font-weight: 600; }
+.ota-sidebar > button span { color: #9bacbf; font-weight: 400; }
+.ota-help-card { margin: 46px 9px 0; padding: 18px 14px; border: 1px solid #e1e8f3; border-radius: 10px; color: #7f93ad; background: #f0f4fb; }
+.ota-help-card > svg { margin-bottom: 12px; width: 22px; stroke-width: 1.4; }
+.ota-help-card strong { font-size: 12px; color: #586e8a; }
+.ota-help-card p { margin: 8px 0 15px; font-size: 11px; line-height: 1.9; }
+.ota-help-card button { display: flex; align-items: center; gap: 8px; color: #327bd6; font-size: 11px; }
+.ota-help-card button svg { width: 13px; }
+.ota-list-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 18px; border-bottom: 1px solid #e0e7f0; }
+.ota-status-tabs { display: flex; gap: 24px; align-self: stretch; }
+.ota-status-tabs button { padding: 14px 0; color: #8190a4; border-bottom: 2px solid transparent; white-space: nowrap; font-size: 12px; }
+.ota-status-tabs button[aria-pressed="true"] { color: #176ee2; border-color: #176ee2; font-weight: 600; }
+.ota-status-tabs span { margin-left: 6px; font-size: 10px; opacity: .7; }
+.ota-order-search { display: flex; width: 170px; align-items: center; gap: 6px; color: #9daabe; }
+.ota-order-search > svg { width: 14px; flex-shrink: 0; }
+.ota-order-search input { padding-left: 4px; font-size: 11px; border: 0; box-shadow: none; background: transparent; }
+.ota-order-card { margin-bottom: 16px; border: 1px solid #e2e8f0; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px #243b5502; }
+.ota-order-card > header { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 42px; padding: 10px 22px; border-bottom: 1px solid #eff2f7; background: #fcfdff; font-size: 10px; color: #91a0b3; }
+.ota-order-card header i { display: inline-block; vertical-align: middle; width: 1px; height: 9px; margin: 0 12px; background: #dce4ef; }
+.ota-state { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; color: #378464; white-space: nowrap; }
+.ota-state::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+.ota-state.cancelled { color: #98a3b2; }
+.ota-order-main { display: grid; grid-template-columns: 114px minmax(0,1fr) 108px; gap: 20px; padding: 22px; }
+.ota-order-photo { height: 102px; border-radius: 7px; overflow: hidden; background: #eef2f6; }
+.ota-order-photo img { width: 100%; height: 100%; object-fit: cover; }
+.ota-order-photo.hotel-crop img { width: 140%; max-width: none; transform: translateX(-25%); object-position: 75%; }
+.ota-order-copy > span { display: flex; align-items: center; gap: 4px; margin-bottom: 7px; color: #a0adbc; font-size: 9px; }
+.ota-order-copy > span svg { width: 12px; height: 12px; }
+.ota-order-copy button { text-align: left; }
+.ota-order-copy button:hover { color: #176ee2; }
+.ota-order-copy h2 { margin: 0 0 7px; font-size: 16px; font-weight: 600; }
+.ota-order-copy p { margin: 0 0 11px; color: #8795a7; font-size: 10px; line-height: 1.7; }
+.ota-order-copy > small { color: #5f738e; font-size: 10px; }
+.ota-order-price { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; }
+.ota-order-price > strong { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ota-order-price > strong small { font-size: 12px; margin-right: 3px; }
+.ota-order-price > span { color: #a2adbc; font-size: 9px; margin-bottom: 17px; }
+.ota-order-price [data-slot="button"] { font-size: 10px; height: 29px; }
+.ota-list-end { margin: 30px 0 0; text-align: center; font-size: 10px; color: #a1adbc; }
+.ota-empty { display: grid; justify-items: center; align-content: center; gap: 16px; min-height: 240px; color: #93a1b3; }
+.ota-footer { display: flex; align-items: center; gap: 10px; padding: 25px max(28px, calc((100% - 1200px)/2)); color: #9aabc0; border-top: 1px solid #e5ebf3; font-size: 11px; }
+.ota-footer > svg { width: 22px; }
+.ota-footer > small { margin-left: 8px; font-size: 10px; }
+.ota-footer > span:last-child { margin-left: auto; font-size: 9px; color: #a7b2c1; }
+.ota-detail > button { padding-left: 0; font-size: 11px; color: #7b8fa9; }
+.ota-detail-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 25px 0; }
+.ota-detail-layout { display: grid; grid-template-columns: minmax(0,1fr) 285px; gap: 24px; align-items: start; }
+.ota-paper, .ota-refund { padding: 28px; background: white; border: 1px solid #e3e9f2; border-radius: 10px; }
+.ota-paper h2, .ota-refund h2 { margin: 0 0 20px; font-size: 14px; font-weight: 600; }
+.ota-fields { margin: 0 0 30px; font-size: 12px; }
+.ota-fields > div { display: grid; grid-template-columns: 95px minmax(0,1fr); gap: 12px; margin: 16px 0; line-height: 1.8; }
+.ota-fields dt { color: #95a2b4; }
+.ota-fields dd { margin: 0; overflow-wrap: anywhere; color: #556780; }
+.ota-change { border-top: 1px solid #edf1f7; padding-top: 20px; color: #8999ad; font-size: 11px; }
+.ota-change summary, .refund-policy summary { cursor: pointer; color: #6386b1; font-size: 11px; }
+.ota-change p { margin: 20px 0 10px; }
+.ota-change > div { display: flex; gap: 16px; align-items: center; padding: 12px; background: #f5f7fa; }
+.ota-change svg { width: 14px; }
+.ota-change small { display: block; margin-top: 10px; font-size: 10px; }
+.ota-file { display: flex; align-items: center; gap: 12px; padding: 16px; background: #f5f8fd; border-radius: 7px; }
+.ota-file > svg { width: 25px; color: #7098c7; }
+.ota-file strong { font-size: 11px; font-weight: 500; }
+.ota-file p { margin: 4px 0 0; font-size: 9px; color: #8da0b6; }
+.ota-file button { margin-left: auto; font-size: 10px; }
+.ota-refund > p:not(.eyebrow), .ota-refund > small { font-size: 11px; line-height: 1.9; color: #91a0b5; }
+.ota-refund > h2 { margin-top: 12px; margin-bottom: 10px; }
+.ota-refund > small { display: block; margin-top: 14px; text-align: center; font-size: 9px; }
+.refund-rule, .refund-policy { margin: 22px 0; padding: 15px; border-radius: 6px; background: #f5f8fd; }
+.refund-policy p { margin: 12px 0 0; font-size: 11px; line-height: 1.9; color: #7c8fa9; }
+.refund-agree { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #7c8da5; cursor: pointer; }
+.ticket-input { display: grid; gap: 9px; font-size: 11px; color: #7b8da5; }
+.ticket-input input { background: white; letter-spacing: .3em; font-size: 18px; height: 42px; }
+.ticket-input small { font-size: 9px; color: #9cabbf; }
+.refund-amount { display: flex; align-items: baseline; justify-content: space-between; border-top: 1px solid #eaf0f7; padding-top: 20px; margin: 22px 0; }
+.refund-amount > span { font-size: 11px; color: #8a9bb0; }
+.refund-amount strong { font-size: 25px; font-weight: 500; color: #243951; }
+.ota-cancel { width: 100%; font-size: 12px; background: #176ee2; color: white; }
+.ota-cancel:hover { background: #125fc7; }
+.refund-error { color: #bc5151!important; font-size: 11px; line-height: 1.8; margin: 12px 0; }
+.partial-refund { background: #edf6ff; padding: 10px; color: #357cbb!important; }
+.refund-success { text-align: center; padding: 8px 0; }
+.refund-success > svg { width: 34px; height: 34px; margin: 0 auto 16px; color: #4aa283; stroke-width: 1.5; }
+.refund-success h2 { margin-bottom: 26px; }
+.refund-success > strong { font-size: 30px; font-weight: 500; }
+.refund-success p { margin: 8px 0; color: #8a9bb0; font-size: 11px; line-height: 2; }
+.refund-success small { display: block; color: #a2afbf; font-size: 10px; margin: 22px 0; }
+.refund-success button { font-size: 11px; }
+.passenger-tickets > label { display: flex; align-items: center; gap: 14px; padding: 18px 12px; margin-top: 8px; border: 1px solid #e4eaf3; border-radius: 7px; cursor: pointer; }
+.passenger-tickets label > span { display: grid; gap: 5px; font-size: 12px; }
+.passenger-tickets label small { color: #92a0b3; font-size: 10px; }
+.passenger-tickets label > b { font-size: 10px; font-weight: 400; margin-left: auto; color: #537ca7; }
+.passenger-tickets .refunded { background: #f7f9fc; opacity: .65; cursor: default; }
+.salt-ticket { margin-top: 20px; padding: 24px; border: 1px dashed #abc4bd; background: #f7fbfa; border-radius: 8px; }
+.salt-ticket h2 { margin: 12px 0; }
+.salt-ticket > strong { font-weight: 500; font-size: 13px; color: #47776b; }
+.salt-ticket > p:not(.eyebrow) { font-size: 10px; line-height: 2; color: #7d9790; margin-top: 10px; }
+.salt-ticket dl { margin-bottom: 0; }
+.ota-home { max-width: 1260px; margin: auto; padding: 30px; }
+.ota-hero { height: 330px; position: relative; overflow: hidden; border-radius: 12px; background: #356d88; }
+.ota-hero > img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.8); }
+.ota-hero > div { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: start; justify-content: center; padding: 50px; background: linear-gradient(90deg,#15364b90,transparent); color: white; }
+.ota-hero h1 { font-weight: 400; font-size: clamp(32px,5vw,56px); margin: 12px 0 26px; }
+.ota-hero p { font-size: 13px; letter-spacing: .2em; }
+.ota-home > section { padding: 30px 0; }
+.ota-home section > small { color: #8a9aaf; }
+.ota-home section h2 { font-size: 24px; margin-top: 7px; }
+.ota-home section p { color: #8a9aaf; font-size: 12px; margin: 8px 0 18px; }
+.ota-home-order { display: flex; gap: 15px; align-items: center; padding: 24px; width: 100%; border: 1px solid #e2e9f4; background: white; border-radius: 8px; }
+.ota-home-order > svg { width: 22px; color: #6a9fd4; }
+.ota-home-order > span { display: flex; align-items: center; gap: 6px; margin-left: auto; color: #5185bf; font-size: 12px; }
+.ota-home-order span svg { width: 14px; }
+.ota-help { max-width: 780px; margin: auto; padding: 50px 30px 90px; }
+.ota-help > svg { width: 32px; height: 32px; color: #719dd0; margin-bottom: 20px; }
+.ota-help h1 { margin-bottom: 35px; }
+.ota-help details { padding: 22px 0; border-top: 1px solid #dce5f0; }
+.ota-help summary { cursor: pointer; font-size: 13px; }
+.ota-help details p { margin: 16px 0 0; color: #7e8fa8; font-size: 12px; line-height: 2; }
+.notes-window { z-index: 30; width: min(570px, 88vw); height: min(720px, calc(100dvh - 135px)); top: 55px; left: 42%; background: #fffcf4; }
+.notes-window > header { background: #f2ecdc; }
+.notes-body { overflow: auto; height: calc(100% - 42px); padding: 30px 40px; color: #665c43; }
+.notes-date { font-size: 10px; color: #b2a78b; }
+.notes-body h1 { margin: 14px 0 18px; font-size: 25px; color: #50482f; font-weight: 550; }
+.notes-body > p:not(.notes-date) { font-size: 12px; line-height: 2.1; }
+.notes-body > p strong { font-weight: 550; }
+.notes-checklist { margin: 22px 0 26px; }
+.notes-checklist > label { display: flex; align-items: center; gap: 15px; padding: 12px 0; border-bottom: 1px solid #ebe4d2; cursor: pointer; }
+.notes-checklist strong { display: block; font-size: 13px; font-weight: 400; }
+.notes-checklist small { display: block; margin-top: 4px; font-size: 10px; color: #b1a68c; }
+.notes-checklist .is-checked > span { text-decoration: line-through; color: #b9b099; }
+.notes-checklist [data-slot="checkbox"] { border-radius: 50%; --primary: #a3905f; border-color: #cbbb99; }
+.notes-afterthought { color: #9d9175; }
+.notes-footer { display: flex; justify-content: space-between; margin-top: 24px; padding-top: 15px; border-top: 1px solid #ebe4d2; color: #b5aa90; font-size: 9px; }
+.desktop-app.notes-app { background: linear-gradient(160deg,#ffebaa,#d6b775); color: #725b24; }
+.desktop-menubar .notification-toggle { display: flex; align-items: center; position: relative; padding: 4px; border-radius: 5px; cursor: pointer; }
+.notification-toggle:hover { background: #ffffff30; }
+.notification-toggle > i { position: absolute; top: 1px; right: 2px; width: 5px; height: 5px; border-radius: 50%; background: #d3b45f; }
+.chapter-notification { position: absolute; z-index: 70; top: 42px; right: 28px; width: min(360px, calc(100vw - 32px)); padding: 20px; border: 1px solid #ffffff85; border-radius: 15px; background: #f2f5f4f5; box-shadow: 0 12px 50px #132a4250; backdrop-filter: blur(24px); animation: notification-in .24s ease-out; }
+@keyframes notification-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.chapter-notification > header { display: flex; align-items: center; gap: 9px; color: #687a80; font-size: 11px; }
+.chapter-notification header > svg { width: 16px; }
+.chapter-notification header > button { margin-left: auto; cursor: pointer; padding: 5px; }
+.chapter-notification header button svg { width: 14px; height: 14px; }
+.chapter-notification > p { margin: 14px 0 8px; font-size: 13px; line-height: 1.9; color: #34484d; }
+.chapter-notification > small { display: block; font-size: 11px; color: #8b9ca1; }
+.chapter-notification > button { margin-top: 18px; width: 100%; background: #e0e8e8; color: #36555b; font-size: 11px; }
+.desktop-panel:not(.notes-window) { z-index: 28; }
+.desktop-dock { z-index: 40; }
+.browser-window[hidden] { display: none; }
+.browser-tabs { height: 40px!important; flex-shrink: 0; width: 100%; justify-content: start!important; gap: 3px; border-radius: 0!important; padding: 5px 8px 0!important; background: #d8dee1!important; overflow-x: auto; }
+.browser-tabs [data-slot="tabs-trigger"] { flex: 0 1 185px; min-width: 105px; height: 35px; justify-content: flex-start; border-radius: 8px 8px 0 0; font-size: 11px; }
+.browser-tabs [data-state="active"] { background: #f6f8f9!important; color: #2b4350; }
+.browser-toolbar { display: flex; height: 48px; flex-shrink: 0; align-items: center; gap: 7px; padding: 0 12px; background: #f6f8f9; border-bottom: 1px solid #d9e0e3; }
+.browser-address { display: flex; min-width: 0; flex: 1; align-items: center; gap: 7px; height: 34px; padding-left: 10px; border: 1px solid #dbe1e4; border-radius: 8px; background: #edf1f3; }
+.browser-address > svg { width: 12px; flex-shrink: 0; color: #7b8a91; }
+.browser-address input { height: 30px; font-size: 12px; padding-left: 0; border: 0; background: transparent; box-shadow: none; }
+.browser-viewport { flex: 1; min-height: 0; overflow: auto; background: #f8fafb; }
+.browser-search-content { min-height: 100%; padding: clamp(25px,5vw,60px) clamp(20px,7vw,100px); background: #fbfcfc; }
+.search-welcome { display: grid; min-height: 200px; align-content: center; justify-items: center; gap: 14px; color: #8a9aa3; font-size: 12px; }
+.search-welcome svg { width: 30px; height: 30px; stroke-width: 1.3; }
+.travel-eticket { width: min(620px,100%); margin: 0 auto 30px; padding: 36px 40px; background: white; border-radius: 9px; box-shadow: 0 8px 32px #29485b12; color: #29425a; }
+.eticket-brand { display: flex; align-items: center; gap: 10px; color: #2874bf; font-size: 12px; border-bottom: 1px solid #e3eaf1; padding-bottom: 24px; margin-bottom: 35px; }
+.eticket-brand > svg { width: 26px; }
+.travel-eticket h1 { margin: 12px 0; font-size: 25px; font-weight: 500; }
+.travel-eticket > p:not(.eyebrow) { font-size: 12px; color: #8c9aab; }
+.ticket-route { display: flex; justify-content: space-between; align-items: center; margin: 30px 0; padding: 20px 0; border-bottom: 1px dashed #d4dfe9; border-top: 1px dashed #d4dfe9; }
+.ticket-route small { display: block; font-size: 10px; color: #9dabbc; margin-bottom: 9px; }
+.ticket-route strong { font-size: 15px; font-weight: 500; }
+.ticket-route > svg { width: 18px; color: #9bb0c4; }
+.travel-eticket dl > div { display: flex; justify-content: space-between; gap: 12px; margin: 15px 0; font-size: 11px; }
+.travel-eticket dt { color: #99a8b9; }
+.ticket-code { text-align: center; margin-top: 32px; padding: 24px; border-radius: 7px; background: #f0f6fb; }
+.ticket-code small { font-size: 11px; color: #8199b2; }
+.ticket-code strong { display: block; margin: 10px 0; letter-spacing: .25em; padding-left: .25em; font-size: 44px; font-weight: 500; }
+.ticket-code p { font-size: 10px; color: #96aabd; }
+.travel-eticket footer { color: #a2adbb; font-size: 9px; text-align: center; margin-top: 24px; }
+.ride-page { min-height: 100%; background: #f3f5f3; color: #364b48; }
+.ride-page > header { display: flex; align-items: center; gap: 12px; padding: 24px 8%; background: white; border-bottom: 1px solid #e2e8e3; }
+.ride-mark { display: grid; width: 30px; height: 30px; place-items: center; background: #637e73; color: white; border-radius: 7px; font-family: serif; }
+.ride-page header strong { font-size: 17px; font-weight: 500; }
+.ride-page header small { margin-left: auto; font-size: 10px; color: #9aa9a1; }
+.ride-page > main { max-width: 690px; padding: 38px 40px 45px; margin: 35px auto; border: 1px solid #dee6df; border-radius: 9px; background: white; }
+.ride-page h1 { margin: 10px 0 6px; font-size: 29px; font-weight: 500; }
+.ride-number { font-size: 10px; color: #a0ada4; }
+.ride-date { display: flex; align-items: baseline; gap: 14px; margin: 30px 0; padding-bottom: 25px; border-bottom: 1px solid #e9eee9; }
+.ride-date strong { font-size: 23px; font-weight: 500; }
+.ride-date span { font-size: 12px; color: #9aaaa0; }
+.ride-date b { margin-left: auto; font-size: 29px; font-weight: 400; }
+.ride-route { display: grid; gap: 24px; margin-bottom: 30px; }
+.ride-route > div { display: flex; align-items: center; gap: 14px; }
+.ride-route i { width: 7px; height: 7px; border: 1px solid #729585; border-radius: 50%; }
+.ride-route small { display: block; color: #98a99d; font-size: 10px; margin-bottom: 5px; }
+.ride-route strong { font-size: 15px; font-weight: 500; }
+.ride-note { padding: 18px; background: #f5f7f4; color: #91a091; font-size: 11px; line-height: 2; border-radius: 6px; }
+.ride-actions { display: flex; gap: 10px; margin-top: 24px; }
+.ride-actions button { font-size: 12px; }
+.ride-response { margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5ebe4; color: #7e8f7e; font-size: 11px; line-height: 2; }
+.ride-response strong { color: #5d715d; font-weight: 500; }
+.ride-response small { font-size: 10px; }
+.ride-page > footer { padding: 0 0 30px; text-align: center; font-size: 10px; color: #aab5a8; }
+@media (max-width: 1000px) {
+  .ota-header { gap: 30px; padding-inline: 24px; }
+  .ota-workspace { grid-template-columns: 130px minmax(0,1fr); gap: 18px; }
+  .ota-order-main { gap: 14px; grid-template-columns: 84px minmax(0,1fr) 94px; padding: 18px; }
+  .ota-order-photo { height: 94px; }
+  .ota-detail-layout { grid-template-columns: minmax(0,1fr) 255px; gap: 18px; }
+  .ota-paper, .ota-refund { padding: 22px; }
+}
+@media (max-width: 760px) {
+  .browser-window { bottom: 72px; }
+  .browser-toolbar { gap: 1px; padding: 0 6px; }
+  .browser-toolbar .browser-nav, .browser-toolbar .bookmark-control { display: none; }
+  .browser-address > svg { display: none; }
+  .browser-toolbar > [data-slot="button"] { width: 30px; }
+  .browser-tabs [data-slot="tabs-trigger"] { flex: 0 0 auto; min-width: 90px; }
+  .ota-header { min-height: 70px; gap: 20px; padding: 12px 18px; flex-wrap: wrap; }
+  .ota-brand strong { font-size: 18px; }
+  .ota-brand > span { width: 32px; height: 32px; }
+  .ota-profile strong { display: none; }
+  .ota-header nav { order: 3; width: 100%; gap: 28px; padding-bottom: 3px; }
+  .ota-header nav button { font-size: 11px; }
+  .ota-header nav button[aria-current]::after { bottom: -15px; }
+  .ota-orders, .ota-detail { padding: 24px 16px; }
+  .ota-orders-heading { margin-bottom: 22px; }
+  .ota-trip-summary { display: none; }
+  .ota-workspace { grid-template-columns: 1fr; gap: 12px; }
+  .ota-sidebar { display: flex; gap: 8px; overflow: auto; }
+  .ota-sidebar > p, .ota-help-card { display: none; }
+  .ota-sidebar > button { margin: 0; padding: 8px 12px; font-size: 11px; white-space: nowrap; justify-content: center; gap: 8px; }
+  .ota-list-toolbar { gap: 8px; }
+  .ota-status-tabs { gap: 16px; }
+  .ota-status-tabs button { font-size: 11px; }
+  .ota-order-search { width: 105px; }
+  .ota-order-search > svg { display: none; }
+  .ota-order-card > header { padding: 10px 13px; gap: 8px; font-size: 8px; }
+  .ota-order-card header i { margin: 0 6px; }
+  .ota-order-main { grid-template-columns: 70px minmax(0,1fr); gap: 12px; padding: 16px 13px; }
+  .ota-order-photo { height: 82px; }
+  .ota-order-copy h2 { font-size: 14px; }
+  .ota-order-price { grid-column: 1/-1; flex-direction: row; align-items: center; gap: 8px; border-top: 1px solid #eef2f6; padding-top: 12px; }
+  .ota-order-price > strong { font-size: 18px; }
+  .ota-order-price > span { margin: 0; }
+  .ota-order-price > button { margin-left: auto; }
+  .ota-state { font-size: 9px; }
+  .ota-footer { flex-wrap: wrap; padding: 20px 18px; }
+  .ota-footer > span:last-child { display: none; }
+  .ota-detail-layout { grid-template-columns: 1fr; }
+  .ota-file { flex-wrap: wrap; }
+  .ota-fields > div { grid-template-columns: 75px minmax(0,1fr); font-size: 11px; }
+  .ota-home { padding: 18px; }
+  .ota-hero { height: 280px; }
+  .ota-hero > div { padding: 30px; }
+  .notes-window { left: 50%; top: 42px; width: calc(100vw - 20px); height: calc(100dvh - 125px); }
+  .notes-body { padding: 24px; }
+  .chapter-notification { right: 16px; }
+  .travel-eticket { padding: 24px; }
+  .travel-eticket h1 { font-size: 21px; }
+  .ticket-route strong { font-size: 12px; }
+  .ride-page > main { margin: 20px 14px; padding: 26px 22px; }
+}
+@media (prefers-reduced-motion: reduce) { .chapter-notification { animation: none; } }
