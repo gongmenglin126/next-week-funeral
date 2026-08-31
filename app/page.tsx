@@ -350,7 +350,7 @@ export default function Home() {
   function closeNotification() { dispatch({ type: "dismiss-notification" }); setNotificationCentre(false); }
 
   if (!enteredComputer) return (
-    <main className="intro-screen">
+    <main key="intro" className="intro-screen">
       <div className="intro-noise" aria-hidden="true" />
       <header className="intro-masthead"><span>雾汀 · 8月26日</span><span>事故后的第二天</span></header>
       <section className="intro-copy" aria-labelledby="game-title">
@@ -369,7 +369,7 @@ export default function Home() {
   );
 
   return (
-    <main className="computer-desktop" aria-label="她的电脑桌面">
+    <main key="desktop" className="computer-desktop" aria-label="她的电脑桌面">
       <div className="desktop-wallpaper" aria-hidden="true" />
       <header className="desktop-menubar">
         <div><span className="desktop-mark">雾</span><strong>{desktopPanel === "notes" ? "记事本" : browserOpen && !desktopPanel ? "雾行浏览器" : "访达"}</strong></div>

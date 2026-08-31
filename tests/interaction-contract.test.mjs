@@ -12,6 +12,16 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const vite = await createServer({ appType: "custom", configFile: false, root, resolve: { alias: { "@": root } }, server: { middlewareMode: true } });
 after(() => vite.close());
 
+test("entering the desktop cannot reuse the intro button as a focused photo icon", async () => {
+  const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  const css = await readFile(path.join(root, "app/globals.css"), "utf8");
+  assert.match(source, /<main key="intro" className="intro-screen"/);
+  assert.match(source, /<main key="desktop" className="computer-desktop"/);
+  assert.doesNotMatch(css, /\.desktop-icons button:focus\s+\.desktop-app/);
+  assert.match(css, /\.desktop-icons button:focus-visible \.desktop-app\s*\{[^}]*outline:/);
+  assert.doesNotMatch(css, /\.desktop-icons button:hover \.desktop-app\s*\{[^}]*outline:/);
+});
+
 test("every exposed game button has an action or submits a handled form", async () => {
   const failures = [];
   let buttons = 0;

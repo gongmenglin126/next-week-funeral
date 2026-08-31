@@ -260,8 +260,9 @@ body {
   text-shadow: 0 1px 3px rgba(0,0,0,.7);
 }
 
-.desktop-icons button:focus .desktop-app,
-.desktop-icons button:hover .desktop-app { outline: 2px solid rgba(255,255,255,.55); outline-offset: 3px; }
+.desktop-icons button:hover .desktop-app { filter: brightness(1.08); }
+.desktop-icons button:focus-visible { outline: none; }
+.desktop-icons button:focus-visible .desktop-app { outline: 2px solid rgba(255,255,255,.8); outline-offset: 3px; }
 .desktop-icons strong { font-size: 11px; font-weight: 500; }
 
 .desktop-app {
