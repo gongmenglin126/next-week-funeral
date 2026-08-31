@@ -479,6 +479,44 @@ body {
 .crop-preview { width: min(900px, 86vw); aspect-ratio: 4/3; margin: 0 auto; overflow: hidden; }
 .crop-preview img { width: 128%; max-width: none; max-height: none; transform: translateX(-22%); box-shadow: none; }
 
+/* Every navigation item in the evidence window has an actual destination. */
+.evidence-window { width: min(1120px, 92vw); height: min(760px, 82vh); }
+.evidence-window button { cursor: pointer; }
+.evidence-window button:disabled, .evidence-viewer button:disabled { cursor: default; opacity: .4; }
+.evidence-window .panel-nav { border: 0; text-align: left; background: transparent; }
+.evidence-window .panel-nav.active { background: #d2dde0; }
+.evidence-window .panel-nav:hover { background: #dce5e8; }
+.evidence-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.evidence-tools > div { display: flex; align-items: center; gap: 3px; }
+.evidence-tools span { min-width: 42px; text-align: center; font-size: 12px; }
+.evidence-canvas { overflow: auto; max-height: 47vh; min-height: 190px; padding: 12px; background: #dbe2e5; border-radius: 8px; }
+.evidence-image { flex-shrink: 0; overflow: hidden; margin: 0 auto; }
+.evidence-image img { display: block; width: 100%; max-width: none; }
+.evidence-image.is-cropped img, .evidence-thumbnail.is-cropped img { width: 128%; max-width: none; transform: translateX(-22%); }
+.evidence-thumbnail { width: 100%; aspect-ratio: 4/3; border-radius: 6px; overflow: hidden; background: #dfe5e7; }
+.evidence-thumbnail img { display: block; width: 100%; height: 100%; object-fit: cover; box-shadow: none; border-radius: 0; }
+.evidence-metadata { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 18px 0; font-size: 12px; }
+.evidence-metadata dt { color: #7b898f; font-size: 10px; margin-bottom: 4px; }
+.evidence-metadata dd { margin: 0; color: #354c56; }
+.deleted-photo-row { display: flex; width: 100%; align-items: center; gap: 15px; padding: 20px 0; border: 0; border-block: 1px solid #d6dfe2; background: transparent; text-align: left; }
+.deleted-photo-row span { flex: 1; }
+.deleted-photo-row strong, .deleted-photo-row small { display: block; }
+.deleted-photo-row strong { font-size: 13px; }
+.deleted-photo-row small { margin-top: 8px; font-size: 11px; color: #718289; }
+.restore-photo { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin-top: 20px; }
+.restore-photo small, .evidence-empty { color: #718289; font-size: 12px; line-height: 1.8; }
+.desktop-notification { cursor: pointer; text-align: left; }
+.document-preview > .evidence-viewer { padding: 22px; }
+button:focus-visible { outline: 2px solid #2a73ac; outline-offset: 3px; }
+@media (max-width: 700px) {
+  .evidence-window .desktop-panel-body { grid-template-columns: 1fr; }
+  .evidence-window .desktop-panel-body > aside { display: flex; gap: 5px; padding: 8px; overflow-x: auto; border-bottom: 1px solid #d9e0e2; }
+  .evidence-window .desktop-panel-body > aside > span { display: none; }
+  .evidence-window .panel-nav { white-space: nowrap; justify-content: center; }
+  .evidence-window .desktop-panel-body { grid-template-rows: auto minmax(0, 1fr); }
+  .evidence-window .desktop-panel-content { padding: 16px; }
+}
+
 .search-result { display: block; width: 100%; padding: 24px 0; cursor: pointer; border: 0; border-top: 1px solid #e2e7e9; background: transparent; color: inherit; text-align: left; }
 .search-result:hover h3 { text-decoration: underline; text-underline-offset: 3px; }
 .search-document { max-width: 760px; padding: 34px 0 80px; }

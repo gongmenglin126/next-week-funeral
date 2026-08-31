@@ -8,23 +8,18 @@ import {
   BatteryFull,
   Bell,
   Bookmark,
-  Clock3,
   Download,
   FileSearch,
   FolderClosed,
   Globe2,
   History,
-  Image,
+  Image as ImageIcon,
   LaptopMinimal,
   LockKeyhole,
   Menu,
-  Minus,
   MoveRight,
-  MoreHorizontal,
   NotebookPen,
   Plane,
-  Plus,
-  RotateCw,
   Search,
   Trash2,
   Wifi,
@@ -36,6 +31,8 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { allOrdersCancelled, chapterReducer, initialChapterState } from "@/lib/chapter-one";
 import { LighthouseTicket, NotesPanel, SecretRide, TravelPlatform } from "./chapter-one";
+import { DesktopPanel, PhotoViewer, type DesktopPanelKind } from "./desktop-evidence";
+import { DELETED_PHOTO } from "@/lib/photo-library";
 
 const resultSets = [
   {
@@ -93,7 +90,7 @@ function SearchResults({ query, unlocked, openTravel, openForum }: { query: stri
           <p>{result.eyebrow}</p>
           <h1>{result.title}</h1>
           <code>{result.url}</code>
-          <div><p>{result.text}</p><p>此页面的公开版本仅保留部分内容。页面编号与发布日期仍可用于查找早期存档。</p></div>
+          <div><p>{result.text}</p></div>
         </article>
       );
     }
@@ -123,13 +120,13 @@ function SearchResults({ query, unlocked, openTravel, openForum }: { query: stri
   return (
     <div className="mt-8 max-w-[860px]">
       <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">
-        {matched.label}
+        {matched.results.length} 条结果
       </p>
       {matched.results.map((result) => (
         <button className="search-result" key={result.url} onClick={() => setSelectedUrl(result.url)}>
           <div className="flex items-center gap-2 text-[10px] text-[#7f8f96]">
             <span>{result.eyebrow}</span>
-            {result.locked ? <LockKeyhole className="size-3" aria-label="网页无法直接打开" /> : null}
+            {result.locked ? <LockKeyhole className="size-3" aria-label="仅有存档内容" /> : null}
           </div>
           <h3 className="my-2 font-serif text-xl font-medium text-[#28516a]">{result.title}</h3>
           <p className="mb-2 max-w-[720px] text-xs leading-7 text-[#5e6d74]">{result.text}</p>
@@ -140,8 +137,7 @@ function SearchResults({ query, unlocked, openTravel, openForum }: { query: stri
   );
 }
 
-function ForumPage({ unlocked }: { unlocked: boolean }) {
-  const [thread, setThread] = useState<string | null>(null);
+function ForumPage({ unlocked, thread, setThread }: { unlocked: boolean; thread: string | null; setThread: (thread: string | null) => void }) {
   const threads: Record<string, { tag: string; author: string; date: string; body: string[]; replies: string[] }> = {
     "沿海公路夜间施工，临时公交调整汇总": {
       tag: "置顶", author: "雾汀交通志愿组", date: "8月25日", body: ["沿海公路南段本周22:00至次日06:00施工，公交临时绕行北站路。", "步行去海堤的游客请使用旧城东侧步道，不要穿过施工路口。"], replies: ["白天公交已经恢复，夜间还是看站牌通知。"],
@@ -201,31 +197,25 @@ function ForumPage({ unlocked }: { unlocked: boolean }) {
           <p>当前账号</p>
           <strong>潮汐失眠</strong>
           <span>注册于 2025-11-07</span>
-          <hr />
-          <div className="forum-stat">我的回复 <b>12</b></div>
-          <div className="forum-stat">我的收藏 <b>3</b></div>
-          <div className="forum-stat">草稿箱 <b>1</b></div>
         </aside>
       </div>
     </div>
   );
 }
 
-function HistoryPage({ navigate, unlocked }: { navigate: (action: string) => void; unlocked: boolean }) {
+function HistoryPage({ navigate, unlocked }: { navigate: (action: string, query: string) => void; unlocked: boolean }) {
   const groups = [
     {
       date: "昨天 · 8月25日",
       items: [
-        ["04:53", "北站附近有通宵药店吗？最好能送到老城", "wuting-talk.example/thread/60318", "forum"],
-        ["04:47", "雾汀地图｜老城与沿海区域", "map.example/wuting/old-town", "map"],
+        ["04:53", "北站附近有通宵药店吗？最好能送到老城", "wuting-talk.example/thread/60318", "forum", "北站附近有通宵药店吗？最好能送到老城"],
       ],
     },
     {
       date: "8月24日",
       items: [
-        ["23:14", "泊岸旅行｜我的订单", "boan.example/account/orders", "trip"],
-        ["22:46", "潮汐失眠的个人主页", "wuting-talk.example/u/tidal-insomnia", "forum"],
-        ["16:20", "第七期生命关怀活动回顾", "changzhou-care.example/archive/session-07", "activity"],
+        ["23:14", "泊岸旅行｜我的订单", "boan.example/account/orders", "trip", ""],
+        ["16:20", "有人参加过安时那边的周末活动吗", "wuting-talk.example/thread/60307", "forum", "有人参加过安时那边的周末活动吗"],
       ],
     },
   ];
@@ -235,9 +225,9 @@ function HistoryPage({ navigate, unlocked }: { navigate: (action: string) => voi
       {groups.map((group) => (
         <section key={group.date}>
           <h3>{group.date}</h3>
-          {group.items.filter((item) => unlocked || item[3] !== "activity").map(([time, title, url, action]) => (
-            <button key={time + title} onClick={() => navigate(action)}>
-              <time>{time}</time><Globe2 /><span><strong>{title}</strong><small>{url}</small></span><MoreHorizontal />
+          {group.items.filter((item) => unlocked || !item[1].includes("安时")).map(([time, title, url, action, pageQuery]) => (
+            <button key={time + title} onClick={() => navigate(action, pageQuery)}>
+              <time>{time}</time><Globe2 /><span><strong>{title}</strong><small>{url}</small></span><ArrowUpRight aria-hidden="true" />
             </button>
           ))}
         </section>
@@ -246,7 +236,7 @@ function HistoryPage({ navigate, unlocked }: { navigate: (action: string) => voi
   );
 }
 
-function DownloadsPage({ unlocked, preview, setPreview }: { unlocked: boolean; preview: string | null; setPreview: (name: string | null) => void }) {
+function DownloadsPage({ unlocked, restoredPhoto, preview, setPreview }: { unlocked: boolean; restoredPhoto: boolean; preview: string | null; setPreview: (name: string | null) => void }) {
   if (preview) {
     return (
       <div className="document-preview">
@@ -259,10 +249,10 @@ function DownloadsPage({ unlocked, preview, setPreview }: { unlocked: boolean; p
             <hr />
             <h2>陪同人员说明</h2>
             <p>夜间环节需由登记陪同人留场。具体地点与到达方式将在活动开始前单独发送。</p>
-            <p className="pdf-foot">第 1 页 / 共 6 页</p>
+            <p className="pdf-foot">缓存节选 · 仅保存此页</p>
           </article>
         ) : (
-          <div className="photo-preview crop-preview"><img src="/game/inn-corridor-original.webp" alt="被裁剪过的民宿走廊照片" /></div>
+          <PhotoViewer photo={DELETED_PHOTO} onClose={() => setPreview(null)} />
         )}
       </div>
     );
@@ -275,127 +265,15 @@ function DownloadsPage({ unlocked, preview, setPreview }: { unlocked: boolean; p
         {[
           ["8月18日", "灯塔接驳电子票.pdf", "186 KB · 下载完成"],
           ["8月24日", "session07_notice_old.pdf", "428 KB · 来源页面已无法访问"],
-          ["8月24日", "IMG_4821_crop.jpg", "1.8 MB · 已移动到回收站"],
+          ["8月24日", "IMG_4821_crop.jpg", restoredPhoto ? "已恢复到旅行照片" : "已移动到回收站 · 下载预览副本"],
           ["8月21日", "雾汀行程_共同版.pdf", "246 KB · 下载完成"],
         ].filter(([, title]) => unlocked || !title.includes("session07")).map(([time, title, meta]) => (
           <button key={title} onClick={() => setPreview(title)}>
-            <time>{time}</time><FileSearch /><span><strong>{title}</strong><small>{meta}</small></span><MoreHorizontal />
+            <time>{time}</time><FileSearch /><span><strong>{title}</strong><small>{meta}</small></span><ArrowUpRight aria-hidden="true" />
           </button>
         ))}
       </section>
     </div>
-  );
-}
-
-type DesktopPanelKind = "files" | "photos" | "trash";
-
-function DesktopPanel({ kind, onClose, onDownloads }: { kind: DesktopPanelKind; onClose: () => void; onDownloads: (name?: string) => void }) {
-  const [selected, setSelected] = useState<string | null>(null);
-  const content = {
-    files: {
-      title: "雾汀旅行",
-      subtitle: "3 个项目",
-      rows: [
-        ["文件夹", "订单与票据", "8月24日"],
-        ["PDF", "雾汀行程_共同版.pdf", "8月21日 19:26"],
-        ["PDF", "灯塔接驳电子票.pdf", "8月18日 23:47"],
-      ],
-    },
-    photos: {
-      title: "旅行照片",
-      subtitle: "按拍摄时间排列",
-      rows: [
-        ["照片", "IMG_4819.jpg", "8月24日 17:42"],
-        ["照片", "IMG_4820.jpg", "8月24日 17:43"],
-        ["缺失", "IMG_4821.jpg", "未找到原图"],
-      ],
-    },
-    trash: {
-      title: "回收站",
-      subtitle: "最近删除的文件",
-      rows: [
-        ["图片", "IMG_4821_crop.jpg", "8月25日 04:38 删除"],
-        ["PDF", "session07_notice_old.pdf", "8月24日 16:31 删除"],
-        ["文本文档", "给你.txt", "8月24日 23:02 删除 · 0 KB"],
-      ],
-    },
-  }[kind];
-
-  const photos = [
-    ["IMG_4818.jpg", "/game/seaside-dinner.webp", "8月22日 · 盐场预约附件"],
-    ["IMG_4819.jpg", "/game/seaside-dinner.webp", "8月24日 17:42 · 栖潮餐厅"],
-    ["IMG_4820.jpg", "/game/wuting-sea-wallpaper.webp", "8月24日 17:43 · 雾汀老城"],
-    ["IMG_4821.jpg", "", "原始文件未找到"],
-  ];
-
-  if (kind === "photos") {
-    const current = photos.find(([name]) => name === selected);
-    return (
-      <section className="desktop-panel photo-window" aria-label="旅行照片">
-        <header><div className="window-controls"><button onClick={onClose} aria-label="关闭窗口"><X /></button><button onClick={onClose} aria-label="最小化"><Minus /></button></div><strong>旅行照片</strong><span /></header>
-        <div className="photo-app-layout">
-          <aside><strong>图库</strong><div className="photo-nav active"><Image />所有照片</div><div className="photo-nav"><Clock3 />最近项目</div><div className="photo-nav"><Trash2 />最近删除</div></aside>
-          <section className="photo-main">
-            <header><div><h2>雾汀旅行</h2><p>4 个项目</p></div>{current ? <button onClick={() => setSelected(null)}>关闭预览</button> : null}</header>
-            {current ? (
-              <div className="photo-viewer">
-                {current[1] ? <img src={current[1]} alt={current[0]} /> : <div className="missing-photo"><FileSearch /><span>找不到原始文件</span></div>}
-                <footer><strong>{current[0]}</strong><span>{current[2]}</span></footer>
-              </div>
-            ) : (
-              <div className="photo-grid">
-                {photos.map(([name, src, meta]) => (
-                  <button key={name} onClick={() => setSelected(name)}>
-                    {src ? <img src={src} alt="雾汀旅行照片缩略图" /> : <span className="missing-thumb"><FileSearch /></span>}
-                    <strong>{name}</strong><small>{meta}</small>
-                  </button>
-                ))}
-              </div>
-            )}
-          </section>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section className="desktop-panel" aria-label={content.title}>
-      <header>
-        <div className="window-controls">
-          <button onClick={onClose} aria-label="关闭窗口"><X /></button>
-          <button onClick={onClose} aria-label="最小化"><Minus /></button>
-        </div>
-        <strong>{content.title}</strong>
-        <MoreHorizontal />
-      </header>
-      <div className="desktop-panel-body">
-        <aside>
-          <span>个人收藏</span>
-          <div className="panel-nav active"><Clock3 />最近使用</div>
-          <div className="panel-nav"><Download />下载</div>
-          <div className="panel-nav"><FolderClosed />文稿</div>
-          <span>位置</span>
-          <div className="panel-nav"><LaptopMinimal />这台电脑</div>
-        </aside>
-        <section className="desktop-panel-content">
-          <div><h2>{content.title}</h2><p>{content.subtitle}</p></div>
-          <div className="file-table">
-            {content.rows.map(([type, name, meta]) => (
-              <button key={name} onClick={() => { setSelected(name); if (kind === "files") onDownloads(name.endsWith(".pdf") ? name : undefined); }} className={selected === name ? "selected" : ""}>
-                <span className={type === "缺失" ? "missing-file" : ""}><FileSearch /></span>
-                <strong>{name}</strong><small>{type}</small><time>{meta}</time>
-              </button>
-            ))}
-          </div>
-          {selected ? (
-            <aside className="file-inspector">
-              <FileSearch /><div><strong>{selected}</strong><p>{selected.includes("4821") ? "已删除的裁剪图片。原始文件不在此文件夹。" : selected.endsWith(".pdf") ? "PDF 文稿 · 可以在浏览器下载记录中打开。" : "最后修改时间已记录。"}</p></div>
-            </aside>
-          ) : null}
-          {selected === "IMG_4821_crop.jpg" ? <div className="trash-photo crop-preview"><img src="/game/inn-corridor-original.webp" alt="被裁剪过的民宿走廊照片" /></div> : null}
-        </section>
-      </div>
-    </section>
   );
 }
 
@@ -415,16 +293,26 @@ export default function Home() {
   const [bookmarkOpen, setBookmarkOpen] = useState(false);
   const [browserMenuOpen, setBrowserMenuOpen] = useState(false);
   const [notificationCentre, setNotificationCentre] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const [restoredPhoto, setRestoredPhoto] = useState(false);
   const route = routes[routeIndex];
   const activeTab = route.tab;
   const query = route.query;
   const unlocked = allOrdersCancelled(chapter);
   const urls: Record<string, string> = { trip: "boan.example/account/orders", forum: "wuting-talk.example/latest", history: "browser://history", downloads: "browser://downloads", ride: "anshi.example/booking/WT-0831-2140" };
   const labels: Record<string, string> = { trip: "泊岸旅行", forum: "雾汀同城", history: "历史记录", downloads: "下载内容", search: "雾搜", ride: "安时接送" };
-  const visibleTabs = ["search", ...(travelDiscovered ? ["trip"] : []), ...(["forum", "history", "downloads"].includes(activeTab) ? [activeTab] : []), ...(unlocked ? ["ride"] : [])];
+  const visibleTabs = ["search", ...(travelDiscovered ? ["trip"] : []), ...(["forum", "history", "downloads"].filter((tab) => routes.some((item) => item.tab === tab))), ...(unlocked ? ["ride"] : [])];
   // The ride tab is only exposed after its notification has actually been opened.
   const displayedTabs = visibleTabs.filter((tab) => tab !== "ride" || routes.some((item) => item.tab === "ride"));
+
+  function browserAddress(tab: string, pageQuery: string) {
+    const forumPaths: Record<string, string> = {
+      "北站附近有通宵药店吗？最好能送到老城": "60318",
+      "有人参加过安时那边的周末活动吗": "60307",
+      "沿海公路夜间施工，临时公交调整汇总": "60320",
+      "老城民宿到旧灯塔，早上五点能叫到车吗": "60285",
+    };
+    return tab === "forum" && forumPaths[pageQuery] ? `wuting-talk.example/thread/${forumPaths[pageQuery]}` : urls[tab] ?? pageQuery;
+  }
 
   function navigate(tab: string, nextQuery = "") {
     if (tab === "ride" && !unlocked) return;
@@ -432,7 +320,7 @@ export default function Home() {
     if (tab === "downloads") setDownloadPreview(nextQuery || null);
     setRoutes((oldRoutes) => [...oldRoutes.slice(0, routeIndex + 1), { tab, query: nextQuery }]);
     setRouteIndex(routeIndex + 1);
-    setAddress(urls[tab] ?? nextQuery);
+    setAddress(browserAddress(tab, nextQuery));
     setBrowserOpen(true); setDesktopPanel(null);
     setBookmarkOpen(false); setBrowserMenuOpen(false);
   }
@@ -440,7 +328,9 @@ export default function Home() {
     const nextIndex = routeIndex + delta;
     if (nextIndex < 0 || nextIndex >= routes.length) return;
     setRouteIndex(nextIndex);
-    setAddress(urls[routes[nextIndex].tab] ?? routes[nextIndex].query);
+    setAddress(browserAddress(routes[nextIndex].tab, routes[nextIndex].query));
+    if (routes[nextIndex].tab === "downloads") setDownloadPreview(routes[nextIndex].query || null);
+    setBookmarkOpen(false); setBrowserMenuOpen(false);
   }
   function runSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -449,6 +339,9 @@ export default function Home() {
     if (/^(https?:\/\/)?boan\.example/.test(value)) { navigate("trip"); return; }
     if (value === "browser://downloads") { navigate("downloads"); return; }
     if (value === "browser://history") { navigate("history"); return; }
+    if (/^(https?:\/\/)?wuting-talk\.example/.test(value)) {
+      navigate("forum", value.includes("60318") ? "北站附近有通宵药店吗？最好能送到老城" : value.includes("60320") ? "沿海公路夜间施工，临时公交调整汇总" : value.includes("60285") ? "老城民宿到旧灯塔，早上五点能叫到车吗" : value.includes("60307") && unlocked ? "有人参加过安时那边的周末活动吗" : ""); return;
+    }
     if (/^(https?:\/\/)?anshi\.example/.test(value) && unlocked) { navigate("ride"); return; }
     navigate("search", value);
   }
@@ -479,37 +372,35 @@ export default function Home() {
     <main className="computer-desktop" aria-label="她的电脑桌面">
       <div className="desktop-wallpaper" aria-hidden="true" />
       <header className="desktop-menubar">
-        <div><span className="desktop-mark">雾</span><strong>{desktopPanel === "notes" ? "记事本" : browserOpen && !desktopPanel ? "雾行浏览器" : "访达"}</strong><span>文件</span><span>显示</span></div>
+        <div><span className="desktop-mark">雾</span><strong>{desktopPanel === "notes" ? "记事本" : browserOpen && !desktopPanel ? "雾行浏览器" : "访达"}</strong></div>
         <div><Wifi /><BatteryFull /><button className="notification-toggle" onClick={() => setNotificationCentre(!notificationCentre)} aria-label="通知中心" aria-expanded={notificationCentre}><Bell />{unlocked && <i />}</button><span>8月26日 周三 11:08</span></div>
       </header>
       <section className="desktop-icons" aria-label="桌面应用">
         <button onClick={openBrowser}><span className="desktop-app browser-app"><Globe2 /></span><strong>雾行浏览器</strong></button>
         <button onClick={() => setDesktopPanel("notes")}><span className="desktop-app notes-app"><NotebookPen /></span><strong>记事本</strong></button>
         <button onClick={() => setDesktopPanel("files")}><span className="desktop-app"><FolderClosed /></span><strong>雾汀旅行</strong></button>
-        <button onClick={() => setDesktopPanel("photos")}><span className="desktop-app photo-app"><Image /></span><strong>旅行照片</strong></button>
+        <button onClick={() => setDesktopPanel("photos")}><span className="desktop-app photo-app"><ImageIcon /></span><strong>旅行照片</strong></button>
         <button onClick={() => setDesktopPanel("trash")}><span className="desktop-app trash-app"><Trash2 /></span><strong>回收站</strong></button>
       </section>
-      <div className="desktop-notification"><span className="notification-icon"><NotebookPen /></span><div><strong>记事本</strong><p>雾汀，慢慢玩。</p></div><time>8月24日</time></div>
+      <button className="desktop-notification" onClick={() => setDesktopPanel("notes")} aria-label="打开记事本中的雾汀行程"><span className="notification-icon"><NotebookPen /></span><div><strong>记事本</strong><p>雾汀，慢慢玩。</p></div><time>8月24日</time></button>
       <nav className="desktop-dock" aria-label="常用应用">
         <button onClick={openBrowser} aria-label="打开雾行浏览器"><Globe2 /></button>
         <button onClick={() => setDesktopPanel("notes")} aria-label="打开记事本"><NotebookPen /></button>
         <button onClick={() => setDesktopPanel("files")} aria-label="打开文件"><FolderClosed /></button>
-        <button onClick={() => setDesktopPanel("photos")} aria-label="打开照片"><Image /></button>
+        <button onClick={() => setDesktopPanel("photos")} aria-label="打开照片"><ImageIcon /></button>
         <i /><button onClick={() => setDesktopPanel("trash")} aria-label="打开回收站"><Trash2 /></button>
       </nav>
 
       <section className="browser-window" aria-label="雾行浏览器" hidden={!browserOpen}>
-        <div className="browser-titlebar"><div className="window-controls"><button onClick={() => setBrowserOpen(false)} aria-label="关闭浏览器"><X /></button><button onClick={() => setBrowserOpen(false)} aria-label="最小化浏览器"><Minus /></button></div><p>雾行浏览器</p><span /></div>
-        <Tabs value={activeTab} onValueChange={(value) => navigate(value, value === "search" ? query : "")} className="h-[calc(100%-34px)] gap-0!">
+        <div className="browser-titlebar"><div className="window-controls"><button onClick={() => setBrowserOpen(false)} aria-label="关闭浏览器"><X /></button></div><p>雾行浏览器</p><span /></div>
+        <Tabs value={activeTab} onValueChange={(value) => navigate(value, [...routes].reverse().find((item) => item.tab === value)?.query ?? "")} className="h-[calc(100%-34px)] gap-0!">
           <TabsList className="browser-tabs">
             {displayedTabs.map((tab) => <TabsTrigger value={tab} key={tab}>{tab === "trip" ? <Plane /> : tab === "search" ? <Search /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}{labels[tab]}</TabsTrigger>)}
-            <Button variant="ghost" size="icon-xs" aria-label="新建搜索标签页" onClick={() => navigate("search")}><Plus /></Button>
           </TabsList>
           <form className="browser-toolbar" onSubmit={runSearch}>
             <div className="browser-nav">
               <button type="button" disabled={routeIndex === 0} onClick={() => moveHistory(-1)} aria-label="返回"><ArrowLeft /></button>
               <button type="button" disabled={routeIndex === routes.length - 1} onClick={() => moveHistory(1)} aria-label="前进"><ArrowRight /></button>
-              <button type="button" onClick={() => { setRefreshing(true); setTimeout(() => setRefreshing(false), 400); }} aria-label="刷新"><RotateCw className={refreshing ? "refreshing" : ""} /></button>
             </div>
             <div className="browser-address"><LockKeyhole /><Input aria-label="地址栏和搜索框" placeholder="搜索网页或输入网址" value={address} onChange={(event) => setAddress(event.target.value)} onFocus={(event) => event.currentTarget.select()} spellCheck={false} /></div>
             <Button type="submit" variant="ghost" size="icon-sm" aria-label="搜索"><Search /></Button>
@@ -526,12 +417,9 @@ export default function Home() {
           </form>
           <div className="browser-viewport">
             <TabsContent forceMount value="trip" className="min-h-full data-[state=inactive]:hidden"><TravelPlatform state={chapter} onCancel={dispatch} onDownloads={() => navigate("downloads")} /></TabsContent>
-            <TabsContent forceMount value="forum" className="min-h-full bg-[#f4f1e9] data-[state=inactive]:hidden"><ForumPage unlocked={unlocked} /></TabsContent>
-            <TabsContent forceMount value="history" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><HistoryPage unlocked={unlocked} navigate={(action) => {
-              if (action === "forum" || action === "trip") { navigate(action); return; }
-              navigate("search", action === "activity" ? "第七期 生命关怀" : "雾汀 老城地图");
-            }} /></TabsContent>
-            <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage unlocked={unlocked} preview={downloadPreview} setPreview={setDownloadPreview} /></TabsContent>
+            <TabsContent forceMount value="forum" className="min-h-full bg-[#f4f1e9] data-[state=inactive]:hidden"><ForumPage unlocked={unlocked} thread={activeTab === "forum" ? query || null : null} setThread={(title) => navigate("forum", title ?? "")} /></TabsContent>
+            <TabsContent forceMount value="history" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><HistoryPage unlocked={unlocked} navigate={navigate} /></TabsContent>
+            <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage unlocked={unlocked} restoredPhoto={restoredPhoto} preview={downloadPreview} setPreview={(name) => navigate("downloads", name ?? "")} /></TabsContent>
             <TabsContent forceMount value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><p className="m-0 font-serif text-2xl text-[#6c828c]">雾搜</p><h2 className="my-3 font-serif text-[28px] font-medium">{query ? "“" + query + "”" : "找一找，想去的地方。"}</h2></header>
               <SearchResults key={query} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} />
@@ -541,7 +429,7 @@ export default function Home() {
         </Tabs>
       </section>
 
-      {desktopPanel === "notes" ? <NotesPanel checked={checked} onCheck={(id) => setChecked((oldChecked) => oldChecked.includes(id) ? oldChecked.filter((value) => value !== id) : [...oldChecked, id])} onClose={() => setDesktopPanel(null)} /> : desktopPanel ? <DesktopPanel key={desktopPanel} kind={desktopPanel} onClose={() => setDesktopPanel(null)} onDownloads={(name) => navigate("downloads", name)} /> : null}
+      {desktopPanel === "notes" ? <NotesPanel checked={checked} onCheck={(id) => setChecked((oldChecked) => oldChecked.includes(id) ? oldChecked.filter((value) => value !== id) : [...oldChecked, id])} onClose={() => setDesktopPanel(null)} /> : desktopPanel ? <DesktopPanel key={desktopPanel} kind={desktopPanel} restoredPhoto={restoredPhoto} onRestorePhoto={() => setRestoredPhoto(true)} onClose={() => setDesktopPanel(null)} onDownloads={(name) => navigate("downloads", name)} onPanelChange={setDesktopPanel} /> : null}
 
       {(chapter.notification === "visible" || notificationCentre) && <aside className="chapter-notification" role="status" aria-live="polite" aria-label={unlocked ? "安时接送通知" : "通知中心"}>
         <header><Bell /><strong>{unlocked ? "安时接送 · 行程提醒" : "通知中心"}</strong><button aria-label="收起通知" onClick={closeNotification}><X /></button></header>

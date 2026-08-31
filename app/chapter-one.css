@@ -55,6 +55,8 @@
 .ota-order-main { display: grid; grid-template-columns: 114px minmax(0,1fr) 108px; gap: 20px; padding: 22px; }
 .ota-order-photo { height: 102px; border-radius: 7px; overflow: hidden; background: #eef2f6; }
 .ota-order-photo img { width: 100%; height: 100%; object-fit: cover; }
+.ota-order-photo.order-icon { display: grid; place-items: center; color: #7894ac; background: #edf2f6; }
+.ota-order-photo.order-icon svg { width: 34px; height: 34px; stroke-width: 1.3; }
 .ota-order-photo.hotel-crop img { width: 140%; max-width: none; transform: translateX(-25%); object-position: 75%; }
 .ota-order-copy > span { display: flex; align-items: center; gap: 4px; margin-bottom: 7px; color: #a0adbc; font-size: 9px; }
 .ota-order-copy > span svg { width: 12px; height: 12px; }

@@ -1,0 +1,75 @@
+import assert from "node:assert/strict";
+import test, { after } from "node:test";
+import { readFile, access } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+import ts from "typescript";
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { createServer } from "vite";
+
+const root = fileURLToPath(new URL("..", import.meta.url));
+const vite = await createServer({ appType: "custom", configFile: false, root, resolve: { alias: { "@": root } }, server: { middlewareMode: true } });
+after(() => vite.close());
+
+test("every exposed game button has an action or submits a handled form", async () => {
+  const failures = [];
+  let buttons = 0;
+  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx"]) {
+    const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+    function visit(node) {
+      if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
+        if (["button", "Button"].includes(node.tagName.getText(source))) {
+          buttons++;
+          const attrs = node.attributes.properties;
+          const click = attrs.find((a) => a.name?.getText(source) === "onClick");
+          const type = attrs.find((a) => a.name?.getText(source) === "type");
+          let form = node.parent;
+          while (form && !(ts.isJsxElement(form) && form.openingElement.tagName.getText(source) === "form")) form = form.parent;
+          const submits = type?.initializer?.text === "submit" && form?.openingElement.attributes.properties.some((a) => a.name?.getText(source) === "onSubmit");
+          if (!click?.initializer && !submits) failures.push(`${name}:${source.getLineAndCharacterOfPosition(node.pos).line + 1}`);
+        }
+      }
+      ts.forEachChild(node, visit);
+    }
+    visit(source);
+  }
+  assert.ok(buttons > 50, "audit must include all three game surfaces");
+  assert.deepEqual(failures, [], "buttons without a connected action");
+});
+
+test("photo assets exist, are unique, and restored images remain cropped", async () => {
+  const { visiblePhotos, DELETED_PHOTO } = await vite.ssrLoadModule("/lib/photo-library.ts");
+  const initial = visiblePhotos(false);
+  const restored = visiblePhotos(true);
+  assert.equal(new Set(initial.map((photo) => photo.src)).size, initial.length);
+  assert.equal(new Set(restored.map((photo) => photo.id)).size, restored.length);
+  assert.equal(restored.length, initial.length + 1);
+  assert.equal(restored.at(-1).id, DELETED_PHOTO.id);
+  assert.equal(restored.at(-1).cropped, true, "restoring a crop must not reveal a supposed original");
+  for (const photo of restored) await access(path.join(root, "public", photo.src));
+});
+
+test("restoring the deleted image empties the trash and exposes that file in the album", async () => {
+  const { DesktopPanel } = await vite.ssrLoadModule("/app/desktop-evidence.tsx");
+  const render = (kind, restoredPhoto) => renderToStaticMarkup(React.createElement(DesktopPanel, {
+    kind, restoredPhoto, onRestorePhoto() {}, onClose() {}, onDownloads() {}, onPanelChange() {},
+  }));
+  assert.match(render("trash", false), /恢复到旅行照片/);
+  assert.match(render("trash", false), /IMG_4821_crop.jpg/);
+  assert.doesNotMatch(render("photos", false), /IMG_4821_crop.jpg/);
+  assert.match(render("photos", true), /IMG_4821_crop.jpg/);
+  assert.match(render("trash", true), /回收站为空/);
+  for (const kind of ["photos", "trash", "files"]) {
+    assert.doesNotMatch(render(kind, false), /给你\.txt|IMG_4818|未找到原图|session07_notice_old/);
+  }
+});
+
+test("photo preview exposes navigation, zoom controls, and file details", async () => {
+  const { PhotoViewer } = await vite.ssrLoadModule("/app/desktop-evidence.tsx");
+  const { DELETED_PHOTO } = await vite.ssrLoadModule("/lib/photo-library.ts");
+  const html = renderToStaticMarkup(React.createElement(PhotoViewer, { photo: DELETED_PHOTO, onClose() {}, onPrevious() {}, onNext() {} }));
+  for (const label of ["返回列表", "上一张照片", "下一张照片", "缩小照片", "放大照片", "拍摄时间", "裁剪副本"]) assert.ok(html.includes(label), label);
+  assert.match(html, /is-cropped/);
+  assert.match(html, /width:100%/);
+});
