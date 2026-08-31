@@ -281,28 +281,11 @@ body {
 .photo-app { background: rgba(151, 93, 89, .92); }
 .trash-app { background: rgba(103, 119, 124, .92); }
 
-.desktop-notification {
-  position: absolute;
-  z-index: 4;
-  top: 46px;
-  right: 126px;
-  display: grid;
-  width: 340px;
-  grid-template-columns: 38px 1fr auto;
-  align-items: center;
-  gap: 11px;
-  padding: 12px 14px;
-  border: 1px solid rgba(255,255,255,.3);
-  border-radius: 13px;
-  background: rgba(237,242,243,.78);
-  box-shadow: 0 16px 45px rgba(0,0,0,.18);
-  backdrop-filter: blur(24px) saturate(1.15);
-}
-.notification-icon { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 9px; background: #d4b764; color: white; }
-.notification-icon svg { width: 18px; }
-.desktop-notification strong { display: block; font-size: 11px; }
-.desktop-notification p { margin: 3px 0 0; color: #5e6a6f; font-size: 10px; }
-.desktop-notification time { align-self: start; color: #849095; font-size: 9px; }
+
+
+
+
+
 
 .desktop-dock {
   position: absolute;
@@ -505,7 +488,7 @@ body {
 .deleted-photo-row small { margin-top: 8px; font-size: 11px; color: #718289; }
 .restore-photo { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin-top: 20px; }
 .restore-photo small, .evidence-empty { color: #718289; font-size: 12px; line-height: 1.8; }
-.desktop-notification { cursor: pointer; text-align: left; }
+
 .document-preview > .evidence-viewer { padding: 22px; }
 button:focus-visible { outline: 2px solid #2a73ac; outline-offset: 3px; }
 @media (max-width: 700px) {
@@ -588,7 +571,7 @@ button:focus-visible { outline: 2px solid #2a73ac; outline-offset: 3px; }
   .intro-story { margin-top: 30px; font-size: 13px; line-height: 1.85; }
   .intro-footer span:first-child { display: none; }
   .intro-footer { justify-content: flex-end; }
-  .desktop-notification { top: 42px; right: 104px; width: min(310px, calc(100vw - 120px)); }
+
   .desktop-icons { top: 48px; right: 10px; }
   .browser-window { top: 30px; right: 0; bottom: 0; left: 0; border: 0; border-radius: 0; }
   .browser-titlebar { grid-template-columns: 80px 1fr 20px; }

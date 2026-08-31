@@ -382,7 +382,6 @@ export default function Home() {
         <button onClick={() => setDesktopPanel("photos")}><span className="desktop-app photo-app"><ImageIcon /></span><strong>旅行照片</strong></button>
         <button onClick={() => setDesktopPanel("trash")}><span className="desktop-app trash-app"><Trash2 /></span><strong>回收站</strong></button>
       </section>
-      <button className="desktop-notification" onClick={() => setDesktopPanel("notes")} aria-label="打开记事本中的雾汀行程"><span className="notification-icon"><NotebookPen /></span><div><strong>记事本</strong><p>雾汀，慢慢玩。</p></div><time>8月24日</time></button>
       <nav className="desktop-dock" aria-label="常用应用">
         <button onClick={openBrowser} aria-label="打开雾行浏览器"><Globe2 /></button>
         <button onClick={() => setDesktopPanel("notes")} aria-label="打开记事本"><NotebookPen /></button>
