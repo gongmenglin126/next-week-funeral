@@ -33,6 +33,7 @@ import { allOrdersCancelled, chapterReducer, initialChapterState } from "@/lib/c
 import { LighthouseTicket, NotesPanel, SecretRide, TravelPlatform } from "./chapter-one";
 import { DesktopPanel, PhotoViewer, type DesktopPanelKind } from "./desktop-evidence";
 import { DELETED_PHOTO } from "@/lib/photo-library";
+import { SearchBox } from "./search-box";
 
 const resultSets = [
   {
@@ -96,14 +97,7 @@ function SearchResults({ query, unlocked, openTravel, openForum }: { query: stri
     }
   }
 
-  if (!query) {
-    return (
-      <div className="grid min-h-[330px] place-content-center justify-items-center gap-3 text-center text-[#87959b]">
-        <Search className="size-8 stroke-[1.3]" aria-hidden="true" />
-        <p className="m-0 text-[13px] text-[#5c6d74]">在上方地址栏输入网站名称或关键词。</p>
-      </div>
-    );
-  }
+  if (!query) return null;
 
   if (!matched) {
     return (
@@ -237,14 +231,15 @@ function HistoryPage({ navigate, unlocked }: { navigate: (action: string, query:
 }
 
 function DownloadsPage({ unlocked, restoredPhoto, preview, setPreview }: { unlocked: boolean; restoredPhoto: boolean; preview: string | null; setPreview: (name: string | null) => void }) {
-  if (preview) {
+  const available = preview === "灯塔接驳电子票.pdf" || preview === "IMG_4821_crop.jpg" || (unlocked && preview === "session07_notice_old.pdf");
+  if (preview && available) {
     return (
       <div className="document-preview">
         <header><button onClick={() => setPreview(null)}><ArrowLeft />返回下载内容</button><span>{preview}</span></header>
-        {preview === "灯塔接驳电子票.pdf" ? <LighthouseTicket /> : preview === "雾汀行程_共同版.pdf" ? <article className="pdf-sheet"><p className="pdf-mark">WUTING / OUR TRIP</p><h1>雾汀旅行</h1><p>8月21日一起确定的旅行计划</p><hr /><h2>预订清单 · 泊岸旅行</h2><p>8月26日—28日　南岸民宿</p><p>8月27日 05:10　灯塔接驳</p><p>8月28日—30日　山线民宿</p><p>8月26日 16:00　旧盐场手作体验</p><p>8月31日 16:20　回程高铁</p><hr /><p>想去的地方不一定都去。天气不好就睡个懒觉。</p></article> : preview.endsWith(".pdf") ? (
+        {preview === "灯塔接驳电子票.pdf" ? <LighthouseTicket /> : preview === "session07_notice_old.pdf" ? (
           <article className="pdf-sheet">
             <p className="pdf-mark">SESSION 07 / ARCHIVED COPY</p>
-            <h1>{preview.includes("session07") ? "第七期参与须知" : "雾汀共同旅行计划"}</h1>
+            <h1>第七期参与须知</h1>
             <p>本文件由浏览器于8月24日 16:22 下载。来源网页当前无法访问。</p>
             <hr />
             <h2>陪同人员说明</h2>
@@ -266,7 +261,6 @@ function DownloadsPage({ unlocked, restoredPhoto, preview, setPreview }: { unloc
           ["8月18日", "灯塔接驳电子票.pdf", "186 KB · 下载完成"],
           ["8月24日", "session07_notice_old.pdf", "428 KB · 来源页面已无法访问"],
           ["8月24日", "IMG_4821_crop.jpg", restoredPhoto ? "已恢复到旅行照片" : "已移动到回收站 · 下载预览副本"],
-          ["8月21日", "雾汀行程_共同版.pdf", "246 KB · 下载完成"],
         ].filter(([, title]) => unlocked || !title.includes("session07")).map(([time, title, meta]) => (
           <button key={title} onClick={() => setPreview(title)}>
             <time>{time}</time><FileSearch /><span><strong>{title}</strong><small>{meta}</small></span><ArrowUpRight aria-hidden="true" />
@@ -420,7 +414,8 @@ export default function Home() {
             <TabsContent forceMount value="history" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><HistoryPage unlocked={unlocked} navigate={navigate} /></TabsContent>
             <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage unlocked={unlocked} restoredPhoto={restoredPhoto} preview={downloadPreview} setPreview={(name) => navigate("downloads", name ?? "")} /></TabsContent>
             <TabsContent forceMount value="search" className="browser-search-content data-[state=inactive]:hidden">
-              <header><p className="m-0 font-serif text-2xl text-[#6c828c]">雾搜</p><h2 className="my-3 font-serif text-[28px] font-medium">{query ? "“" + query + "”" : "找一找，想去的地方。"}</h2></header>
+              <header><h1 className="search-page-title">雾搜</h1></header>
+              <SearchBox key={query} query={query} onSearch={(value) => navigate("search", value)} />
               <SearchResults key={query} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} />
             </TabsContent>
             {unlocked && <TabsContent forceMount value="ride" className="min-h-full data-[state=inactive]:hidden"><SecretRide /></TabsContent>}

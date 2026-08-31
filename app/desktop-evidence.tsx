@@ -58,7 +58,6 @@ export function DesktopPanel({ kind, restoredPhoto, onRestorePhoto, onClose, onD
         {kind === "files" ? <div className="file-table">
           {[
             ["订单与票据", "文件夹", "8月24日"],
-            ["雾汀行程_共同版.pdf", "PDF", "8月21日 19:26"],
             ["灯塔接驳电子票.pdf", "PDF", "8月18日 23:47"],
           ].map(([name, type, date]) => <button key={name} onClick={() => onDownloads(type === "PDF" ? name : undefined)}><FileSearch /><strong>{name}</strong><small>{type}</small><time>{date}</time></button>)}
         </div> : kind === "trash" ? restoredPhoto ? <p className="evidence-empty" role="status">回收站为空。已恢复的裁剪副本保存在旅行照片中。</p> : <>

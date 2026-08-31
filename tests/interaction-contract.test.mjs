@@ -25,7 +25,7 @@ test("entering the desktop cannot reuse the intro button as a focused photo icon
 test("every exposed game button has an action or submits a handled form", async () => {
   const failures = [];
   let buttons = 0;
-  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx"]) {
+  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -94,4 +94,32 @@ test("the itinerary note uses only the requested copy and retains five checkboxe
   assert.doesNotMatch(html, /账号没退|剩下这些|照着日期|灯塔那张电子票在下载里|别到门口|盐场记得|不怕脏|私人记事本|勾选仅作标记|雾汀，慢慢玩/);
   assert.equal((html.match(/aria-label="记事本勾选/g) ?? []).length, 5);
   assert.equal((html.match(/class="is-checked"/g) ?? []).length, 1);
+});
+
+test("the shared itinerary PDF is absent from downloads and the file folder", async () => {
+  const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  assert.doesNotMatch(source, /雾汀行程_共同版\.pdf|雾汀共同旅行计划|WUTING \/ OUR TRIP/);
+  const { DesktopPanel } = await vite.ssrLoadModule("/app/desktop-evidence.tsx");
+  const html = renderToStaticMarkup(React.createElement(DesktopPanel, {
+    kind: "files", restoredPhoto: false, onRestorePhoto() {}, onClose() {}, onDownloads() {}, onPanelChange() {},
+  }));
+  assert.doesNotMatch(html, /共同版|共同旅行/);
+  assert.match(html, /灯塔接驳电子票\.pdf/);
+});
+
+test("the search page has a labelled input and a submit button that rejects blank text", async () => {
+  const { SearchBox } = await vite.ssrLoadModule("/app/search-box.tsx");
+  const render = (query) => renderToStaticMarkup(React.createElement(SearchBox, { query, onSearch() {} }));
+  for (const query of ["", "   "]) {
+    const html = render(query);
+    assert.match(html, /<form[^>]*role="search"/);
+    assert.match(html, /aria-label="搜索网站或关键词"/);
+    assert.match(html, /<button[^>]*type="submit"[^>]*\sdisabled(?:=|[\s>])/);
+  }
+  const populated = render("泊岸旅行");
+  assert.match(populated, /value="泊岸旅行"/);
+  assert.doesNotMatch(populated, /<button[^>]*\sdisabled(?:=|[\s>])/);
+  const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  assert.match(source, /<SearchBox key=\{query\} query=\{query\} onSearch=\{\(value\) => navigate\("search", value\)\}/);
+  assert.doesNotMatch(source, /在上方地址栏输入网站名称或关键词/);
 });

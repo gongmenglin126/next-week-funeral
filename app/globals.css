@@ -439,6 +439,19 @@ body {
 .browser-popover svg { width: 14px; }
 .menu-popover { width: 170px; }
 
+.search-page-title { margin: 12px 0 28px; color: #52717f; font-family: "Noto Serif SC", serif; font-size: clamp(32px, 5vw, 46px); font-weight: 500; }
+.search-page-form { display: flex; width: min(100%, 720px); align-items: center; gap: 12px; padding: 7px 8px 7px 18px; border: 1px solid #b9cbd3; border-radius: 12px; background: white; box-shadow: 0 4px 16px rgba(42,66,78,.06); }
+.search-page-form:focus-within { border-color: #507f96; box-shadow: 0 0 0 3px rgba(80,127,150,.12); }
+.search-page-form > svg { width: 20px; height: 20px; flex-shrink: 0; color: #7b949f; }
+.search-page-form [data-slot="input"] { min-width: 0; flex: 1; height: 40px; padding: 0; border: 0; border-radius: 0; box-shadow: none; outline: none; font-size: 15px; }
+.search-page-form [data-slot="button"] { height: 40px; padding: 0 20px; background: #345e72; color: white; }
+.search-page-form [data-slot="button"]:hover:not(:disabled) { background: #284d60; }
+@media (max-width: 480px) {
+  .search-page-form { gap: 8px; padding-left: 12px; }
+  .search-page-form [data-slot="input"] { font-size: 13px; }
+  .search-page-form [data-slot="button"] { padding: 0 12px; }
+}
+
 .trip-page { background: #f3efe5; color: #27343a; }
 .trip-page::before { display: block; width: 52px; height: 3px; margin-bottom: 26px; content: ""; background: #d85e38; }
 .trip-page > header h1 { font-family: "Noto Sans SC", system-ui, sans-serif; font-weight: 650; letter-spacing: -.055em; }
