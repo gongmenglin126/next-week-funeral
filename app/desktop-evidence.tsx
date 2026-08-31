@@ -11,6 +11,8 @@ export function PhotoViewer({ photo, onClose, onPrevious, onNext }: {
   photo: TravelPhoto; onClose: () => void; onPrevious?: () => void; onNext?: () => void;
 }) {
   const [zoom, setZoom] = useState(100);
+  // The crop widens the source image by 1.28 inside its clipped frame.
+  const frameRatio = photo.width / photo.height / (photo.cropped ? 1.28 : 1);
   return <section className="evidence-viewer" aria-label={`照片预览：${photo.id}`}>
     <div className="evidence-tools">
       <Button variant="ghost" size="sm" onClick={onClose}><ArrowLeft />返回列表</Button>
@@ -18,14 +20,14 @@ export function PhotoViewer({ photo, onClose, onPrevious, onNext }: {
         {onPrevious && <Button variant="ghost" size="icon-sm" onClick={onPrevious} aria-label="上一张照片"><ArrowLeft /></Button>}
         {onNext && <Button variant="ghost" size="icon-sm" onClick={onNext} aria-label="下一张照片"><ArrowRight /></Button>}
         <Button variant="ghost" size="icon-sm" disabled={zoom <= 50} onClick={() => setZoom((value) => Math.max(50, value - 25))} aria-label="缩小照片"><ZoomOut /></Button>
-        <span aria-live="polite">{zoom}%</span>
+        <span aria-live="polite">{zoom === 100 ? "适合窗口" : `${zoom}%`}</span>
         <Button variant="ghost" size="icon-sm" disabled={zoom >= 200} onClick={() => setZoom((value) => Math.min(200, value + 25))} aria-label="放大照片"><ZoomIn /></Button>
         {zoom !== 100 && <Button variant="ghost" size="sm" onClick={() => setZoom(100)}>适合窗口</Button>}
       </div>
     </div>
     <div className="evidence-canvas" tabIndex={0} aria-label="照片查看区域，可滚动查看放大后的照片">
-      <div className={`evidence-image ${photo.cropped ? "is-cropped" : ""}`} style={{ width: `${zoom}%` }}>
-        <img src={photo.src} alt={photo.alt} />
+      <div className={`evidence-image ${photo.cropped ? "is-cropped" : ""}`} style={{ width: `min(${zoom}%, calc((min(47vh, 440px) - 24px) * ${frameRatio * zoom / 100}))` }}>
+        <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} />
       </div>
     </div>
     <dl className="evidence-metadata"><div><dt>文件名</dt><dd>{photo.id}</dd></div><div><dt>拍摄时间</dt><dd>{photo.time}</dd></div><div><dt>地点</dt><dd>{photo.location}</dd></div>{photo.cropped && <div><dt>版本</dt><dd>裁剪副本</dd></div>}</dl>

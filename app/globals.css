@@ -442,7 +442,6 @@ body {
 .search-page-title { margin: 12px 0 28px; color: #52717f; font-family: "Noto Serif SC", serif; font-size: clamp(32px, 5vw, 46px); font-weight: 500; }
 .search-page-form { display: flex; width: min(100%, 720px); align-items: center; gap: 12px; padding: 7px 8px 7px 18px; border: 1px solid #b9cbd3; border-radius: 12px; background: white; box-shadow: 0 4px 16px rgba(42,66,78,.06); }
 .search-page-form:focus-within { border-color: #507f96; box-shadow: 0 0 0 3px rgba(80,127,150,.12); }
-.search-page-form > svg { width: 20px; height: 20px; flex-shrink: 0; color: #7b949f; }
 .search-page-form [data-slot="input"] { min-width: 0; flex: 1; height: 40px; padding: 0; border: 0; border-radius: 0; box-shadow: none; outline: none; font-size: 15px; }
 .search-page-form [data-slot="button"] { height: 40px; padding: 0 20px; background: #345e72; color: white; }
 .search-page-form [data-slot="button"]:hover:not(:disabled) { background: #284d60; }
@@ -486,9 +485,9 @@ body {
 .evidence-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
 .evidence-tools > div { display: flex; align-items: center; gap: 3px; }
 .evidence-tools span { min-width: 42px; text-align: center; font-size: 12px; }
-.evidence-canvas { overflow: auto; max-height: 47vh; min-height: 190px; padding: 12px; background: #dbe2e5; border-radius: 8px; }
+.evidence-canvas { overflow: auto; height: min(47vh, 440px); padding: 12px; background: #dbe2e5; border-radius: 8px; }
 .evidence-image { flex-shrink: 0; overflow: hidden; margin: 0 auto; }
-.evidence-image img { display: block; width: 100%; max-width: none; }
+.evidence-image img { display: block; width: 100%; height: auto; max-width: none; }
 .evidence-image.is-cropped img, .evidence-thumbnail.is-cropped img { width: 128%; max-width: none; transform: translateX(-22%); }
 .evidence-thumbnail { width: 100%; aspect-ratio: 4/3; border-radius: 6px; overflow: hidden; background: #dfe5e7; }
 .evidence-thumbnail img { display: block; width: 100%; height: 100%; object-fit: cover; box-shadow: none; border-radius: 0; }

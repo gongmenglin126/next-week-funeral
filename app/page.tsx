@@ -20,7 +20,6 @@ import {
   MoveRight,
   NotebookPen,
   Plane,
-  Search,
   Trash2,
   Wifi,
   X,
@@ -31,8 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { allOrdersCancelled, chapterReducer, initialChapterState } from "@/lib/chapter-one";
 import { LighthouseTicket, NotesPanel, SecretRide, TravelPlatform } from "./chapter-one";
-import { DesktopPanel, PhotoViewer, type DesktopPanelKind } from "./desktop-evidence";
-import { DELETED_PHOTO } from "@/lib/photo-library";
+import { DesktopPanel, type DesktopPanelKind } from "./desktop-evidence";
 import { SearchBox } from "./search-box";
 
 const resultSets = [
@@ -230,13 +228,13 @@ function HistoryPage({ navigate, unlocked }: { navigate: (action: string, query:
   );
 }
 
-function DownloadsPage({ unlocked, restoredPhoto, preview, setPreview }: { unlocked: boolean; restoredPhoto: boolean; preview: string | null; setPreview: (name: string | null) => void }) {
-  const available = preview === "灯塔接驳电子票.pdf" || preview === "IMG_4821_crop.jpg" || (unlocked && preview === "session07_notice_old.pdf");
+function DownloadsPage({ unlocked, preview, setPreview }: { unlocked: boolean; preview: string | null; setPreview: (name: string | null) => void }) {
+  const available = preview === "灯塔接驳电子票.pdf" || (unlocked && preview === "session07_notice_old.pdf");
   if (preview && available) {
     return (
       <div className="document-preview">
         <header><button onClick={() => setPreview(null)}><ArrowLeft />返回下载内容</button><span>{preview}</span></header>
-        {preview === "灯塔接驳电子票.pdf" ? <LighthouseTicket /> : preview === "session07_notice_old.pdf" ? (
+        {preview === "灯塔接驳电子票.pdf" ? <LighthouseTicket /> : (
           <article className="pdf-sheet">
             <p className="pdf-mark">SESSION 07 / ARCHIVED COPY</p>
             <h1>第七期参与须知</h1>
@@ -246,8 +244,6 @@ function DownloadsPage({ unlocked, restoredPhoto, preview, setPreview }: { unloc
             <p>夜间环节需由登记陪同人留场。具体地点与到达方式将在活动开始前单独发送。</p>
             <p className="pdf-foot">缓存节选 · 仅保存此页</p>
           </article>
-        ) : (
-          <PhotoViewer photo={DELETED_PHOTO} onClose={() => setPreview(null)} />
         )}
       </div>
     );
@@ -260,7 +256,6 @@ function DownloadsPage({ unlocked, restoredPhoto, preview, setPreview }: { unloc
         {[
           ["8月18日", "灯塔接驳电子票.pdf", "186 KB · 下载完成"],
           ["8月24日", "session07_notice_old.pdf", "428 KB · 来源页面已无法访问"],
-          ["8月24日", "IMG_4821_crop.jpg", restoredPhoto ? "已恢复到旅行照片" : "已移动到回收站 · 下载预览副本"],
         ].filter(([, title]) => unlocked || !title.includes("session07")).map(([time, title, meta]) => (
           <button key={title} onClick={() => setPreview(title)}>
             <time>{time}</time><FileSearch /><span><strong>{title}</strong><small>{meta}</small></span><ArrowUpRight aria-hidden="true" />
@@ -388,7 +383,7 @@ export default function Home() {
         <div className="browser-titlebar"><div className="window-controls"><button onClick={() => setBrowserOpen(false)} aria-label="关闭浏览器"><X /></button></div><p>雾行浏览器</p><span /></div>
         <Tabs value={activeTab} onValueChange={(value) => navigate(value, [...routes].reverse().find((item) => item.tab === value)?.query ?? "")} className="h-[calc(100%-34px)] gap-0!">
           <TabsList className="browser-tabs">
-            {displayedTabs.map((tab) => <TabsTrigger value={tab} key={tab}>{tab === "trip" ? <Plane /> : tab === "search" ? <Search /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}{labels[tab]}</TabsTrigger>)}
+            {displayedTabs.map((tab) => <TabsTrigger value={tab} key={tab}>{tab === "trip" ? <Plane /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}{labels[tab]}</TabsTrigger>)}
           </TabsList>
           <form className="browser-toolbar" onSubmit={runSearch}>
             <div className="browser-nav">
@@ -396,7 +391,6 @@ export default function Home() {
               <button type="button" disabled={routeIndex === routes.length - 1} onClick={() => moveHistory(1)} aria-label="前进"><ArrowRight /></button>
             </div>
             <div className="browser-address"><LockKeyhole /><Input aria-label="地址栏和搜索框" placeholder="搜索网页或输入网址" value={address} onChange={(event) => setAddress(event.target.value)} onFocus={(event) => event.currentTarget.select()} spellCheck={false} /></div>
-            <Button type="submit" variant="ghost" size="icon-sm" aria-label="搜索"><Search /></Button>
             <div className="browser-action-wrap bookmark-control">
               <Button type="button" variant="ghost" size="icon-sm" aria-label="书签" onClick={() => { setBookmarkOpen(!bookmarkOpen); setBrowserMenuOpen(false); }}><Bookmark /></Button>
               {bookmarkOpen && <div className="browser-popover"><strong>书签</strong><button type="button" onClick={() => navigate("forum")}>雾汀同城</button>{travelDiscovered && <button type="button" onClick={() => navigate("trip")}>泊岸旅行 · 我的订单</button>}</div>}
@@ -412,8 +406,8 @@ export default function Home() {
             <TabsContent forceMount value="trip" className="min-h-full data-[state=inactive]:hidden"><TravelPlatform state={chapter} onCancel={dispatch} onDownloads={() => navigate("downloads")} /></TabsContent>
             <TabsContent forceMount value="forum" className="min-h-full bg-[#f4f1e9] data-[state=inactive]:hidden"><ForumPage unlocked={unlocked} thread={activeTab === "forum" ? query || null : null} setThread={(title) => navigate("forum", title ?? "")} /></TabsContent>
             <TabsContent forceMount value="history" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><HistoryPage unlocked={unlocked} navigate={navigate} /></TabsContent>
-            <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage unlocked={unlocked} restoredPhoto={restoredPhoto} preview={downloadPreview} setPreview={(name) => navigate("downloads", name ?? "")} /></TabsContent>
-            <TabsContent forceMount value="search" className="browser-search-content data-[state=inactive]:hidden">
+            <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage unlocked={unlocked} preview={downloadPreview} setPreview={(name) => navigate("downloads", name ?? "")} /></TabsContent>
+            <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={query} query={query} onSearch={(value) => navigate("search", value)} />
               <SearchResults key={query} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} />

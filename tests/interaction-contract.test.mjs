@@ -81,7 +81,27 @@ test("photo preview exposes navigation, zoom controls, and file details", async 
   const html = renderToStaticMarkup(React.createElement(PhotoViewer, { photo: DELETED_PHOTO, onClose() {}, onPrevious() {}, onNext() {} }));
   for (const label of ["返回列表", "上一张照片", "下一张照片", "缩小照片", "放大照片", "拍摄时间", "裁剪副本"]) assert.ok(html.includes(label), label);
   assert.match(html, /is-cropped/);
-  assert.match(html, /width:100%/);
+  assert.match(html, /width:min\(100%, calc\(\(min\(47vh, 440px\) - 24px\)/);
+  assert.match(html, /适合窗口/);
+});
+
+test("deleted photos cannot be opened through downloads and every photo fits both viewport bounds", async () => {
+  const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  assert.doesNotMatch(source, /IMG_4821_crop|DELETED_PHOTO|PhotoViewer|下载预览副本/);
+  const { visiblePhotos } = await vite.ssrLoadModule("/lib/photo-library.ts");
+  const { PhotoViewer } = await vite.ssrLoadModule("/app/desktop-evidence.tsx");
+  for (const photo of visiblePhotos(true)) {
+    const ratio = photo.width / photo.height / (photo.cropped ? 1.28 : 1);
+    const html = renderToStaticMarkup(React.createElement(PhotoViewer, { photo, onClose() {} }));
+    const renderedRatio = Number(html.match(/\* ([\d.]+)\)\)/)?.[1]);
+    assert.ok(Math.abs(renderedRatio - ratio) < 1e-12);
+    for (const [width, height] of [[280, 600], [680, 768], [1000, 1080]]) {
+      const availableHeight = Math.min(height * 0.47, 440) - 24;
+      const imageWidth = Math.min(width - 24, availableHeight * ratio);
+      assert.ok(imageWidth <= width - 24);
+      assert.ok(imageWidth / ratio <= availableHeight + 0.001);
+    }
+  }
 });
 
 test("the itinerary note uses only the requested copy and retains five checkboxes", async () => {
@@ -117,9 +137,16 @@ test("the search page has a labelled input and a submit button that rejects blan
     assert.match(html, /<button[^>]*type="submit"[^>]*\sdisabled(?:=|[\s>])/);
   }
   const populated = render("泊岸旅行");
+  assert.equal((populated.match(/<form\b/g) ?? []).length, 1);
+  assert.equal((populated.match(/<input\b/g) ?? []).length, 1);
+  assert.equal((populated.match(/<button\b/g) ?? []).length, 1);
+  assert.doesNotMatch(populated, /<svg\b/);
   assert.match(populated, /value="泊岸旅行"/);
   assert.doesNotMatch(populated, /<button[^>]*\sdisabled(?:=|[\s>])/);
   const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
   assert.match(source, /<SearchBox key=\{query\} query=\{query\} onSearch=\{\(value\) => navigate\("search", value\)\}/);
   assert.doesNotMatch(source, /在上方地址栏输入网站名称或关键词/);
+  assert.equal((source.match(/<SearchBox\b/g) ?? []).length, 1);
+  assert.doesNotMatch(source, /aria-label="搜索"|<Search\s/);
+  assert.match(source, /<TabsContent value="search"/);
 });
