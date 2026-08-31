@@ -25,7 +25,7 @@ test("entering the desktop cannot reuse the intro button as a focused photo icon
 test("every exposed game button has an action or submits a handled form", async () => {
   const failures = [];
   let buttons = 0;
-  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx"]) {
+  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -134,7 +134,7 @@ test("the shared itinerary PDF is absent from downloads and the file folder", as
 
 test("sibling components never share a reconciliation key when navigating materials", async () => {
   const failures = [];
-  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx"]) {
+  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxElement(node) || ts.isJsxFragment(node)) {
@@ -178,4 +178,52 @@ test("the search page has a labelled input and a submit button that rejects blan
   assert.equal((source.match(/<SearchBox\b/g) ?? []).length, 1);
   assert.doesNotMatch(source, /aria-label="搜索"|<Search\s/);
   assert.match(source, /<TabsContent value="search"/);
+});
+
+test("the lighthouse ticket and dated forum reply expose the timeline without explaining it", async () => {
+  const { LighthouseTicket } = await vite.ssrLoadModule("/app/chapter-one.tsx");
+  const { ForumPage, LIGHTHOUSE_THREAD, FORUM_THREADS } = await vite.ssrLoadModule("/app/forum-page.tsx");
+  const ticket = renderToStaticMarkup(React.createElement(LighthouseTicket));
+  assert.match(ticket, /<dt>购票时间<\/dt><dd>8月18日 23:47<\/dd>/);
+  assert.match(ticket, /<dt>预订人<\/dt><dd>周惜<\/dd>/);
+  assert.match(ticket, /<dt>乘客<\/dt><dd>林知还、周惜<\/dd>/);
+  assert.match(ticket, /7642/);
+  const reply = FORUM_THREADS[LIGHTHOUSE_THREAD].replies.find((item) => item.author === "潮汐失眠");
+  assert.equal(reply.date, "8月22日 21:14");
+  assert.match(reply.text, /刚说服朋友陪我去了，两个人第一次来/);
+  for (const unlocked of [false, true]) {
+    const html = renderToStaticMarkup(React.createElement(ForumPage, { unlocked, thread: LIGHTHOUSE_THREAD, setThread() {} }));
+    assert.match(html, /<span>潮汐失眠<\/span><time>8月22日 21:14<\/time>/);
+    assert.ok(html.includes(reply.text));
+    assert.doesNotMatch(html + ticket, /<mark\b|data-clue|提前购买|日期矛盾|你还没答应|这说明/);
+  }
+});
+
+test("the discussion opens from its forum row, returns to the list, and has an independent history entry", async () => {
+  const { ForumPage, LIGHTHOUSE_THREAD } = await vite.ssrLoadModule("/app/forum-page.tsx");
+  let selected = null;
+  function elements(node) {
+    if (!React.isValidElement(node)) return [];
+    return [node, ...React.Children.toArray(node.props.children).flatMap(elements)];
+  }
+  const props = { unlocked: false, thread: null, setThread(value) { selected = value; } };
+  const list = ForumPage(props);
+  const row = elements(list).find((element) => element.type === "button" && elements(element).some((child) => child.type === "h3" && child.props.children === LIGHTHOUSE_THREAD));
+  assert.ok(row, "travel discussion must be accessible before cancellations");
+  row.props.onClick();
+  assert.equal(selected, LIGHTHOUSE_THREAD);
+  const detail = ForumPage({ ...props, thread: selected });
+  elements(detail).find((element) => element.props.className === "forum-back").props.onClick();
+  assert.equal(selected, null);
+  const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  assert.match(source, /\["21:23", LIGHTHOUSE_THREAD, "wuting-talk\.example\/thread\/60285", "forum", LIGHTHOUSE_THREAD\]/);
+  assert.match(source, /value\.includes\("60285"\) \? "老城民宿到旧灯塔，早上五点能叫到车吗"/);
+  assert.doesNotMatch(renderToStaticMarkup(list), /有人参加过安时/);
+});
+
+test("the discarded first-guest change is removed without changing mountain cancellation requirements", async () => {
+  const source = await readFile(path.join(root, "app/chapter-one.tsx"), "utf8");
+  assert.doesNotMatch(source, /第一入住人|信息修改记录|ota-change/);
+  assert.match(source, /查看退款规则/);
+  assert.match(source, /我已阅读退款规则/);
 });

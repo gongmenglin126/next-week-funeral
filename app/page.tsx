@@ -32,6 +32,7 @@ import { allOrdersCancelled, chapterReducer, initialChapterState } from "@/lib/c
 import { LighthouseTicket, NotesPanel, SecretRide, TravelPlatform } from "./chapter-one";
 import { DesktopPanel, type DesktopPanelKind } from "./desktop-evidence";
 import { SearchBox } from "./search-box";
+import { ForumPage, LIGHTHOUSE_THREAD } from "./forum-page";
 
 const resultSets = [
   {
@@ -129,71 +130,6 @@ function SearchResults({ query, unlocked, openTravel, openForum }: { query: stri
   );
 }
 
-function ForumPage({ unlocked, thread, setThread }: { unlocked: boolean; thread: string | null; setThread: (thread: string | null) => void }) {
-  const threads: Record<string, { tag: string; author: string; date: string; body: string[]; replies: string[] }> = {
-    "沿海公路夜间施工，临时公交调整汇总": {
-      tag: "置顶", author: "雾汀交通志愿组", date: "8月25日", body: ["沿海公路南段本周22:00至次日06:00施工，公交临时绕行北站路。", "步行去海堤的游客请使用旧城东侧步道，不要穿过施工路口。"], replies: ["白天公交已经恢复，夜间还是看站牌通知。"],
-    },
-    "老城民宿到旧灯塔，早上五点能叫到车吗": {
-      tag: "旅行", author: "山雀", date: "8月22日", body: ["想去看日出，住在老城民宿，怕一早叫不到车。", "有人坐过游客中心的灯塔接驳吗？"], replies: ["坐过，五点十分发车，提前十分钟到就行。", "我在泊岸旅行订的，下载好电子票，验票要看尾号。"],
-    },
-    "北站附近有通宵药店吗？最好能送到老城": {
-      tag: "求助", author: "玻璃海", date: "8月25日 04:51", body: ["朋友半夜不太舒服，老城这边跑了两家都关门了。", "想问北站附近有没有通宵药店，最好能送到民宿。"], replies: ["北站东口有一家，但送老城至少四十分钟。", "沿海路那边没有药店，别往南走。"],
-    },
-    "有人参加过安时那边的周末活动吗": {
-      tag: "闲聊", author: "灰鲸", date: "8月23日", body: ["朋友收到过邀请，公开页面只写了生命教育。", "想问问有没有人去过，具体都做什么？"], replies: ["参加过普通场，写信、聊天，没什么特别的。", "你说的是第七期吗？那一期后来删页了。"],
-    },
-  };
-
-  if (thread && threads[thread]) {
-    const data = threads[thread];
-    return (
-      <div className="forum-page">
-        <header className="forum-header"><div><strong>雾汀同城</strong><span>生活 · 出行 · 互助</span></div><div className="forum-user"><span className="forum-avatar">潮</span><span>潮汐失眠</span></div></header>
-        <article className="forum-thread">
-          <button className="forum-back" onClick={() => setThread(null)}><ArrowLeft />返回雾汀生活</button>
-          <span className="thread-tag">{data.tag}</span>
-          <h1>{thread}</h1>
-          <p className="thread-meta">{data.author} · 发布于 {data.date}</p>
-          <div className="thread-body">{data.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
-          <h2>回复</h2>
-          {data.replies.map((reply, index) => <div className="thread-reply" key={reply}><span>{index + 1}F</span><p>{reply}</p></div>)}
-        </article>
-      </div>
-    );
-  }
-
-  return (
-    <div className="forum-page">
-      <header className="forum-header">
-        <div><strong>雾汀同城</strong><span>生活 · 出行 · 互助</span></div>
-        <div className="forum-user"><span className="forum-avatar">潮</span><span>潮汐失眠</span></div>
-      </header>
-      <div className="forum-layout">
-        <section>
-          <p className="forum-board-title">雾汀生活 / 最新讨论</p>
-          {[
-            ["置顶", "沿海公路夜间施工，临时公交调整汇总", "雾汀交通志愿组", "8-25"],
-            ["求助", "北站附近有通宵药店吗？最好能送到老城", "玻璃海", "8-25"],
-            ["闲聊", "有人参加过安时那边的周末活动吗", "灰鲸", "8-23"],
-            ["旅行", "老城民宿到旧灯塔，早上五点能叫到车吗", "山雀", "8-22"],
-          ].filter(([, title]) => unlocked || !title.includes("安时")).map(([tag, title, author, date]) => (
-            <button className="forum-row" key={title} onClick={() => threads[title] && setThread(title)} disabled={!threads[title]}>
-              <span>{tag}</span>
-              <div><h3>{title}</h3><p>{author} · 最后回复 {date}</p></div>
-              <small>{date}</small>
-            </button>
-          ))}
-        </section>
-        <aside className="forum-sidebar">
-          <p>当前账号</p>
-          <strong>潮汐失眠</strong>
-          <span>注册于 2025-11-07</span>
-        </aside>
-      </div>
-    </div>
-  );
-}
 
 function HistoryPage({ navigate, unlocked }: { navigate: (action: string, query: string) => void; unlocked: boolean }) {
   const groups = [
@@ -209,6 +145,10 @@ function HistoryPage({ navigate, unlocked }: { navigate: (action: string, query:
         ["23:14", "泊岸旅行｜我的订单", "boan.example/account/orders", "trip", ""],
         ["16:20", "有人参加过安时那边的周末活动吗", "wuting-talk.example/thread/60307", "forum", "有人参加过安时那边的周末活动吗"],
       ],
+    },
+    {
+      date: "8月22日",
+      items: [["21:23", LIGHTHOUSE_THREAD, "wuting-talk.example/thread/60285", "forum", LIGHTHOUSE_THREAD]],
     },
   ];
   return (

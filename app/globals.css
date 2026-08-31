@@ -559,6 +559,8 @@ button:focus-visible { outline: 2px solid #2a73ac; outline-offset: 3px; }
 .thread-reply { display: grid; grid-template-columns: 42px 1fr; gap: 12px; padding: 18px 4px; border-top: 1px solid #ddd4c7; }
 .thread-reply span { color: #9a8e7e; font-size: 9px; }
 .thread-reply p { margin: 0; font-size: 12px; line-height: 1.8; }
+.thread-reply .thread-reply-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 6px; color: #8f877d; font-size: 11px; }
+.thread-reply-meta span { color: #6d655b; font-size: inherit; }
 
 .browser-record-page { max-width: 920px; min-height: 100%; margin: 0 auto; padding: clamp(30px, 6vw, 72px); }
 .browser-record-page > header { display: flex; align-items: center; gap: 18px; margin-bottom: 42px; }

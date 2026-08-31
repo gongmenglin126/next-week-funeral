@@ -36,7 +36,7 @@ export function LighthouseTicket() {
     <p className="eyebrow">SOUTH COAST SHUTTLE</p><h1>去灯塔，看一场日出。</h1>
     <p>南岸灯塔接驳 · 成人票 × 2</p>
     <div className="ticket-route"><div><small>出发</small><strong>老城游客中心</strong></div><ChevronRight /><div><small>到达</small><strong>南岸灯塔</strong></div></div>
-    <dl><div><dt>乘车日期</dt><dd>8月27日 05:10</dd></div><div><dt>票号</dt><dd>LT-0827-310{TICKET_SUFFIX}</dd></div><div><dt>购票时间</dt><dd>8月18日 23:47</dd></div></dl>
+    <dl><div><dt>乘车日期</dt><dd>8月27日 05:10</dd></div><div><dt>票号</dt><dd>LT-0827-310{TICKET_SUFFIX}</dd></div><div><dt>购票时间</dt><dd>8月18日 23:47</dd></div><div><dt>预订人</dt><dd>周惜</dd></div><div><dt>乘客</dt><dd>林知还、周惜</dd></div></dl>
     <div className="ticket-code"><small>核验尾号</small><strong>{TICKET_SUFFIX}</strong><p>乘车及申请退票时使用，请勿公开转发。</p></div>
     <footer>请提前10分钟到达。票据已保存到本机，离线可用。</footer>
   </article>;
@@ -83,7 +83,6 @@ export function TravelPlatform({ state, onCancel, onDownloads }: { state: Chapte
       <div className="ota-detail-layout"><section className="ota-paper">
         <h2>预订信息</h2><dl className="ota-fields"><div><dt>使用日期</dt><dd>{order.date}</dd></div><div><dt>订单编号</dt><dd>{order.number}</dd></div><div><dt>下单时间</dt><dd>{order.booked}</dd></div><div><dt>订单金额</dt><dd>¥{order.price.toLocaleString()}</dd></div><div><dt>联系人</dt><dd>周** · 138 **** 0726</dd></div></dl>
         {order.category === "酒店" && <><h2>入住信息</h2><dl className="ota-fields"><div><dt>入住人</dt><dd>周**、林**</dd></div><div><dt>房型</dt><dd>{order.detail.split(" · ")[0]}</dd></div><div><dt>特殊要求</dt><dd>尽量安排安静的房间，谢谢。</dd></div></dl></>}
-        {order.id === "mountain" && <details className="ota-change"><summary>信息修改记录 · 1条</summary><p>8月24日 22:18 · 第一入住人</p><div><span>周**</span><ChevronRight /><strong>林**</strong></div><small>操作账号：潮汐失眠 · 房型与入住日期未变更</small></details>}
         {order.id === "lighthouse" && <div className="ota-file"><FileText /><div><strong>灯塔接驳电子票.pdf</strong><p>运营方电子票 · 已保存到本机</p></div><Button variant="outline" size="sm" onClick={onDownloads}><Download />打开下载</Button></div>}
         {order.id === "salt" && <><Button variant="outline" onClick={() => setTicketOpened((open) => !open)}><Ticket />{ticketOpened ? "收起电子票" : "打开电子票"}</Button>{ticketOpened && <div className="salt-ticket"><p className="eyebrow">OLD SALT WORKS / ADMISSION</p><h2>旧盐场手作体验</h2><strong>8月26日 · 16:00场</strong><p>成人 × 2 · 入场凭证 YC-0826-5116</p><dl className="ota-fields"><div><dt>预约状态</dt><dd>{state.cancelled.salt ? "已取消 · 票据失效" : "待使用"}</dd></div></dl><p>退款入口位于本票下方的“取消预约”。请在开场前2小时办理。</p></div>}</>}
         {order.id === "return" && <div className="passenger-tickets"><h2>乘车人车票</h2>{[["zhou", "周**", "06车08A"], ["lin", "林**", "06车08B"]].map(([id, name, seat]) => <label key={id} className={state.refundedPassengers.includes(id) ? "refunded" : ""}><Checkbox checked={passengers.includes(id)} disabled={state.refundedPassengers.includes(id)} onCheckedChange={(checked) => setPassengers((old) => checked ? [...old, id] : old.filter((value) => value !== id))} aria-label={`选择${name}的回程票`} /><span><strong>{name}</strong><small>{seat} · 二等座 · ¥218</small></span><b>{state.refundedPassengers.includes(id) ? "已退票" : "已出票"}</b></label>)}</div>}
