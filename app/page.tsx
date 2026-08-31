@@ -409,8 +409,8 @@ export default function Home() {
             <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage unlocked={unlocked} preview={downloadPreview} setPreview={(name) => navigate("downloads", name ?? "")} /></TabsContent>
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
-              <SearchBox key={query} query={query} onSearch={(value) => navigate("search", value)} />
-              <SearchResults key={query} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} />
+              <SearchBox key={`search-box:${query}`} query={query} onSearch={(value) => navigate("search", value)} />
+              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} />
             </TabsContent>
             {unlocked && <TabsContent forceMount value="ride" className="min-h-full data-[state=inactive]:hidden"><SecretRide /></TabsContent>}
           </div>

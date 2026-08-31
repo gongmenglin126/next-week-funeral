@@ -124,7 +124,35 @@ test("the shared itinerary PDF is absent from downloads and the file folder", as
     kind: "files", restoredPhoto: false, onRestorePhoto() {}, onClose() {}, onDownloads() {}, onPanelChange() {},
   }));
   assert.doesNotMatch(html, /共同版|共同旅行/);
+  assert.doesNotMatch(html, /订单与票据/);
   assert.match(html, /灯塔接驳电子票\.pdf/);
+  const fileTable = html.match(/<div class="file-table">([\s\S]*?)<\/div>/)?.[1] ?? "";
+  assert.equal((fileTable.match(/<button\b/g) ?? []).length, 1);
+  const panelSource = await readFile(path.join(root, "app/desktop-evidence.tsx"), "utf8");
+  assert.match(panelSource, /onClick=\{\(\) => onDownloads\("灯塔接驳电子票\.pdf"\)\}/);
+});
+
+test("sibling components never share a reconciliation key when navigating materials", async () => {
+  const failures = [];
+  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx"]) {
+    const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+    function visit(node) {
+      if (ts.isJsxElement(node) || ts.isJsxFragment(node)) {
+        const keys = new Set();
+        for (const child of node.children) {
+          const opening = ts.isJsxElement(child) ? child.openingElement : ts.isJsxSelfClosingElement(child) ? child : null;
+          const key = opening?.attributes.properties.find((attr) => ts.isJsxAttribute(attr) && attr.name.getText(source) === "key");
+          if (!key?.initializer) continue;
+          const value = key.initializer.getText(source);
+          if (keys.has(value)) failures.push(`${name}:${source.getLineAndCharacterOfPosition(child.pos).line + 1}: duplicate sibling key ${value}`);
+          keys.add(value);
+        }
+      }
+      ts.forEachChild(node, visit);
+    }
+    visit(source);
+  }
+  assert.deepEqual(failures, [], "duplicate keys can leave old search forms behind after query changes");
 });
 
 test("the search page has a labelled input and a submit button that rejects blank text", async () => {
@@ -144,7 +172,8 @@ test("the search page has a labelled input and a submit button that rejects blan
   assert.match(populated, /value="泊岸旅行"/);
   assert.doesNotMatch(populated, /<button[^>]*\sdisabled(?:=|[\s>])/);
   const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
-  assert.match(source, /<SearchBox key=\{query\} query=\{query\} onSearch=\{\(value\) => navigate\("search", value\)\}/);
+  assert.match(source, /<SearchBox key=\{`search-box:\$\{query\}`\} query=\{query\} onSearch=\{\(value\) => navigate\("search", value\)\}/);
+  assert.match(source, /<SearchResults key=\{`search-results:\$\{query\}`\}/);
   assert.doesNotMatch(source, /在上方地址栏输入网站名称或关键词/);
   assert.equal((source.match(/<SearchBox\b/g) ?? []).length, 1);
   assert.doesNotMatch(source, /aria-label="搜索"|<Search\s/);

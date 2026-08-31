@@ -58,10 +58,7 @@ export function DesktopPanel({ kind, restoredPhoto, onRestorePhoto, onClose, onD
       <section className="desktop-panel-content">
         <div><h2>{title}</h2><p>{kind === "photos" ? `${photos.length} 张照片 · 按拍摄时间排列` : kind === "trash" ? `${restoredPhoto ? 0 : 1} 个项目` : "订单和本机票据"}</p></div>
         {kind === "files" ? <div className="file-table">
-          {[
-            ["订单与票据", "文件夹", "8月24日"],
-            ["灯塔接驳电子票.pdf", "PDF", "8月18日 23:47"],
-          ].map(([name, type, date]) => <button key={name} onClick={() => onDownloads(type === "PDF" ? name : undefined)}><FileSearch /><strong>{name}</strong><small>{type}</small><time>{date}</time></button>)}
+          <button onClick={() => onDownloads("灯塔接驳电子票.pdf")}><FileSearch /><strong>灯塔接驳电子票.pdf</strong><small>PDF</small><time>8月18日 23:47</time></button>
         </div> : kind === "trash" ? restoredPhoto ? <p className="evidence-empty" role="status">回收站为空。已恢复的裁剪副本保存在旅行照片中。</p> : <>
           {current ? <PhotoViewer key={current.id} photo={current} onClose={() => setSelected(null)} /> : <button className="deleted-photo-row" onClick={() => setSelected(DELETED_PHOTO.id)}><FileSearch /><span><strong>{DELETED_PHOTO.id}</strong><small>8月25日 04:38 删除 · 原位置：旅行照片</small></span><ArrowRight /></button>}
           <div className="restore-photo"><Button variant="outline" onClick={() => { onRestorePhoto(); setSelected(null); }}>恢复到旅行照片</Button><small>恢复的是这份裁剪副本。</small></div>
