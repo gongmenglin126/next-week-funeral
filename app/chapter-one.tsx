@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { BOOKING_IDS, TICKET_SUFFIX, type BookingId, type CancelAction, type ChapterState } from "@/lib/chapter-one";
+import { useNoteDrag } from "./use-note-drag";
+import type { WindowPoint } from "@/lib/window-position";
 
 const ORDERS = [
   { id: "south", title: "南岸民宿", category: "酒店", detail: "海景双床房 · 2晚 · 2位入住人", date: "8月26日 — 8月28日", price: 1286, number: "BA2608210928", booked: "8月21日 20:16", image: "./game/inn-corridor-original.webp", icon: BedDouble },
@@ -15,9 +17,10 @@ const ORDERS = [
   { id: "return", title: "雾汀南 → 临川东", category: "交通", detail: "G8276 · 二等座 · 2位乘车人", date: "8月31日 16:20 — 18:06", price: 436, number: "BA2608218369", booked: "8月21日 20:28", image: "./game/wuting-sea-wallpaper.webp", icon: TrainFront },
 ] as const;
 
-export function NotesPanel({ checked, onCheck, onClose }: { checked: string[]; onCheck: (id: BookingId) => void; onClose: () => void }) {
-  return <section className="desktop-panel notes-window" aria-label="记事本：雾汀行程">
-    <header><div className="window-controls"><button onClick={onClose} aria-label="关闭记事本"><X /></button></div><strong>记事本</strong><FileText /></header>
+export function NotesPanel({ checked, onCheck, onClose, position, onPositionChange }: { checked: string[]; onCheck: (id: BookingId) => void; onClose: () => void; position?: WindowPoint | null; onPositionChange?: (point: WindowPoint) => void }) {
+  const noteDrag = useNoteDrag(position, onPositionChange);
+  return <section ref={noteDrag.panel} style={noteDrag.style} className="desktop-panel notes-window" aria-label="记事本：雾汀行程">
+    <header {...noteDrag.titlebar}><div className="window-controls"><button onClick={onClose} aria-label="关闭记事本"><X /></button></div><strong>记事本</strong><FileText /></header>
     <div className="notes-body">
       <p className="notes-date">8月21日 19:26 · 修改于8月24日</p>
       <h1>雾汀旅游之旅</h1>
@@ -109,8 +112,8 @@ export function TravelPlatform({ state, onCancel, onDownloads }: { state: Chapte
   </div>;
 }
 
-export function SecretRide() {
+export function SecretRide({ onOpenActivity }: { onOpenActivity: () => void }) {
   const [cancelAttempted, setCancelAttempted] = useState(false);
   const [contact, setContact] = useState(false);
-  return <div className="ride-page"><header><span className="ride-mark">安</span><strong>安时接送</strong><small>预约出行服务</small></header><main><p className="eyebrow">预约订单 · 待出行</p><h1>夜间接送</h1><p className="ride-number">WT-0831-2140</p><div className="ride-date"><strong>8月31日</strong><span>周一</span><b>21:40</b></div><div className="ride-route"><div><i /><span><small>上车地点</small><strong>雾汀北站 · 北广场</strong></span></div><div><i /><span><small>下车地点</small><strong>由预订机构统一安排</strong></span></div></div><dl className="ota-fields"><div><dt>乘车人数</dt><dd>2人</dd></div><div><dt>联系人</dt><dd>周** · 138 **** 0726</dd></div><div><dt>费用状态</dt><dd>机构结算 · 无需现场支付</dd></div><div><dt>预订来源</dt><dd>安时活动服务</dd></div></dl><p className="ride-note">乘车人信息由预订机构提交。具体下车地点将在出发前由工作人员通知。</p><div className="ride-actions"><Button onClick={() => setCancelAttempted(true)}>申请取消</Button><Button variant="outline" onClick={() => setContact(!contact)}>联系预订方</Button></div>{cancelAttempted && <div className="ride-response" role="status"><strong>暂不支持乘车人自行取消</strong><p>本订单为机构预约。请联系预订方办理；取消其他平台的订单不会撤销本次预约。</p></div>}{contact && <div className="ride-response"><strong>安时活动服务</strong><p>联系渠道：原活动登记页面 → 预约咨询</p><small>接送系统仅负责车辆安排，无法代办活动变更。</small></div>}</main><footer>安时接送 · 订单服务</footer></div>;
+  return <div className="ride-page"><header><span className="ride-mark">安</span><strong>安时接送</strong><small>预约出行服务</small></header><main><p className="eyebrow">预约订单 · 待出行</p><h1>夜间接送</h1><p className="ride-number">WT-0831-2140</p><div className="ride-date"><strong>8月31日</strong><span>周一</span><b>21:40</b></div><div className="ride-route"><div><i /><span><small>上车地点</small><strong>雾汀北站 · 北广场</strong></span></div><div><i /><span><small>下车地点</small><strong>由预订机构统一安排</strong></span></div></div><dl className="ota-fields"><div><dt>乘车人数</dt><dd>2人</dd></div><div><dt>联系人</dt><dd>周** · 138 **** 0726</dd></div><div><dt>费用状态</dt><dd>机构结算 · 无需现场支付</dd></div><div><dt>预订来源</dt><dd><button className="ride-source-link" onClick={onOpenActivity}>安时活动服务 <ArrowUpRight aria-hidden="true" /></button></dd></div></dl><p className="ride-note">乘车人信息由预订机构提交。具体下车地点将在出发前由工作人员通知。</p><div className="ride-actions"><Button onClick={() => setCancelAttempted(true)}>申请取消</Button><Button variant="outline" onClick={() => setContact(!contact)}>联系预订方</Button></div>{cancelAttempted && <div className="ride-response" role="status"><strong>暂不支持乘车人自行取消</strong><p>本订单为机构预约。请联系预订方办理；取消其他平台的订单不会撤销本次预约。</p></div>}{contact && <div className="ride-response"><strong>安时活动服务</strong><p>请在活动页面查看预约咨询与参与说明。</p><Button variant="outline" onClick={onOpenActivity}>打开活动页面</Button><small>接送系统仅负责车辆安排，无法代办活动变更。</small></div>}</main><footer>安时接送 · 订单服务</footer></div>;
 }

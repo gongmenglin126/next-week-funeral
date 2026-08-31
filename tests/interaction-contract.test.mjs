@@ -25,7 +25,7 @@ test("entering the desktop cannot reuse the intro button as a focused photo icon
 test("every exposed game button has an action or submits a handled form", async () => {
   const failures = [];
   let buttons = 0;
-  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx"]) {
+  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -134,7 +134,7 @@ test("the shared itinerary PDF is absent from downloads and the file folder", as
 
 test("sibling components never share a reconciliation key when navigating materials", async () => {
   const failures = [];
-  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx"]) {
+  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxElement(node) || ts.isJsxFragment(node)) {
@@ -172,7 +172,7 @@ test("the search page has a labelled input and a submit button that rejects blan
   assert.match(populated, /value="泊岸旅行"/);
   assert.doesNotMatch(populated, /<button[^>]*\sdisabled(?:=|[\s>])/);
   const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
-  assert.match(source, /<SearchBox key=\{`search-box:\$\{query\}`\} query=\{query\} onSearch=\{\(value\) => navigate\("search", value\)\}/);
+  assert.match(source, /<SearchBox key=\{`search-box:\$\{query\}`\} query=\{query\} onSearch=\{submitBrowserInput\}/);
   assert.match(source, /<SearchResults key=\{`search-results:\$\{query\}`\}/);
   assert.doesNotMatch(source, /在上方地址栏输入网站名称或关键词/);
   assert.equal((source.match(/<SearchBox\b/g) ?? []).length, 1);
@@ -217,7 +217,8 @@ test("the discussion opens from its forum row, returns to the list, and has an i
   assert.equal(selected, null);
   const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
   assert.match(source, /\["21:23", LIGHTHOUSE_THREAD, "wuting-talk\.example\/thread\/60285", "forum", LIGHTHOUSE_THREAD\]/);
-  assert.match(source, /value\.includes\("60285"\) \? "老城民宿到旧灯塔，早上五点能叫到车吗"/);
+  const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
+  assert.deepEqual(resolveBrowserInput("wuting-talk.example/thread/60285", false), { tab: "forum", query: LIGHTHOUSE_THREAD });
   assert.doesNotMatch(renderToStaticMarkup(list), /有人参加过安时/);
 });
 
@@ -226,4 +227,69 @@ test("the discarded first-guest change is removed without changing mountain canc
   assert.doesNotMatch(source, /第一入住人|信息修改记录|ota-change/);
   assert.match(source, /查看退款规则/);
   assert.match(source, /我已阅读退款规则/);
+});
+
+test("note position is bounded and retained independently of whether the window is open", async () => {
+  const { clampNotePosition } = await vite.ssrLoadModule("/lib/window-position.ts");
+  const panel = { width: 400, height: 480 };
+  const desktop = { width: 1440, height: 900 };
+  assert.deepEqual(clampNotePosition({ x: -99, y: -99 }, panel, desktop), { x: 8, y: 34 });
+  assert.deepEqual(clampNotePosition({ x: 2000, y: 2000 }, panel, desktop), { x: 1032, y: 356 });
+  assert.deepEqual(clampNotePosition({ x: 200, y: 100 }, panel, desktop), { x: 200, y: 100 });
+  assert.deepEqual(clampNotePosition({ x: 999, y: 999 }, panel, { width: 320, height: 400 }), { x: 8, y: 34 });
+  const { NotesPanel } = await vite.ssrLoadModule("/app/chapter-one.tsx");
+  const html = renderToStaticMarkup(React.createElement(NotesPanel, { position: { x: 200, y: 100 }, checked: ["south"], onPositionChange() {}, onCheck() {}, onClose() {} }));
+  assert.match(html, /left:200px;top:100px;transform:none/);
+  assert.match(html, /aria-label="记事本标题栏，可拖动或按方向键移动"/);
+  assert.equal((html.match(/class="is-checked"/g) ?? []).length, 1);
+  const home = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  assert.match(home, /<NotesPanel position=\{notePosition\} onPositionChange=\{setNotePosition\}/);
+  const hook = await readFile(path.join(root, "app/use-note-drag.ts"), "utf8");
+  for (const action of ["setPointerCapture", "releasePointerCapture", "onPointerCancel", "onLostPointerCapture", "onKeyDown"]) assert.ok(hook.includes(action));
+  assert.match(hook, /closest\("button"\)/);
+  assert.match(hook, /window\.removeEventListener\("resize", fit\)/);
+});
+
+test("activity aliases resolve while invalid addresses cannot bypass the ride gate", async () => {
+  const { isActivitySearch, resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
+  for (const input of ["安时活动服务", " 安时 活动 服务 ", "安时活动服务官网", "安时接送", "ANSHI"]) assert.equal(isActivitySearch(input), true, input);
+  assert.equal(isActivitySearch("安时间活动服务"), false);
+  assert.equal(resolveBrowserInput("  ", false), null);
+  assert.deepEqual(resolveBrowserInput("安时活动服务", false), { tab: "search", query: "安时活动服务" });
+  for (const input of ["anshi.example/activities", "https://anshi.example/activities/"]) assert.deepEqual(resolveBrowserInput(input, false), { tab: "activity", query: "" });
+  for (const input of ["anshi.example/typo", "https://boan.example/wrong", "https://bogus.example/", "https://anshi.example.evil/activities", "https://fake@anshi.example/activities"]) assert.equal(resolveBrowserInput(input, true).tab, "not-found", input);
+  assert.equal(resolveBrowserInput("anshi.example/booking/WT-0831-2140", false).tab, "not-found");
+  assert.equal(resolveBrowserInput("anshi.example/booking/WT-0831-2140", true).tab, "ride");
+  assert.equal(resolveBrowserInput("wuting-talk.example/thread/60307", false).tab, "not-found");
+  assert.equal(resolveBrowserInput("wuting-talk.example/thread/60307", true).tab, "forum");
+});
+
+test("activity search has one result and wrong text or URLs show explicit recoverable feedback", async () => {
+  const { SearchResults, BrowserNotFound } = await vite.ssrLoadModule("/app/search-results.tsx");
+  const render = (query) => renderToStaticMarkup(React.createElement(SearchResults, { query, unlocked: true, openTravel() {}, openForum() {}, openActivity() {} }));
+  const html = render("安时活动服务");
+  assert.match(html, /安时活动服务 · 雾汀生命关怀/);
+  assert.equal((html.match(/<button\b/g) ?? []).length, 1);
+  assert.doesNotMatch(html, /<form\b|<input\b/);
+  assert.match(render("安时间活动服务"), /未找到与“安时间活动服务”相关的网页/);
+  assert.doesNotMatch(render("安时间活动服务"), /推荐关键词|试试搜索/);
+  const missing = renderToStaticMarkup(React.createElement(BrowserNotFound, { address: "wrong.example", onSearch() {} }));
+  assert.match(missing, /无法打开此页面/);
+  assert.match(missing, /返回雾搜/);
+  assert.match(missing, /wrong.example/);
+});
+
+test("the activity homepage is reachable from the ride and keeps ride access gated", async () => {
+  const { ActivityPage } = await vite.ssrLoadModule("/app/activity-page.tsx");
+  const publicPage = renderToStaticMarkup(React.createElement(ActivityPage));
+  assert.match(publicPage, /第七期 · 海边同行/);
+  assert.equal((publicPage.match(/<details>/g) ?? []).length, 3);
+  assert.doesNotMatch(publicPage, /查看我的接送订单|替死|借命|邪教/);
+  assert.match(renderToStaticMarkup(React.createElement(ActivityPage, { onOpenRide() {} })), /查看我的接送订单/);
+  const { SecretRide } = await vite.ssrLoadModule("/app/chapter-one.tsx");
+  const ride = renderToStaticMarkup(React.createElement(SecretRide, { onOpenActivity() {} }));
+  assert.match(ride, /<button class="ride-source-link"/);
+  const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  assert.match(source, /openActivity=\{\(\) => navigate\("activity"\)\}/);
+  assert.match(source, /<SecretRide onOpenActivity=\{\(\) => navigate\("activity"\)\}/);
 });

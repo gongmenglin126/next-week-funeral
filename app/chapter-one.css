@@ -145,7 +145,11 @@
 .ota-help summary { cursor: pointer; font-size: 13px; }
 .ota-help details p { margin: 16px 0 0; color: #7e8fa8; font-size: 12px; line-height: 2; }
 .notes-window { z-index: 30; width: min(570px, 88vw); height: min(720px, calc(100dvh - 135px)); top: 55px; left: 42%; background: #fffcf4; }
-.notes-window > header { background: #f2ecdc; }
+.notes-window > header { background: #f2ecdc; cursor: grab; touch-action: none; user-select: none; }
+.notes-window > header[data-dragging="true"] { cursor: grabbing; }
+.notes-window > header:focus-visible { outline: 2px solid #8b7651; outline-offset: -3px; }
+.ride-source-link { display: inline-flex; align-items: center; gap: 5px; padding: 0; border: 0; background: none; color: #427968; text-decoration: underline; text-underline-offset: 3px; }
+.ride-source-link svg { width: 14px; height: 14px; }
 .notes-body { overflow: auto; height: calc(100% - 42px); padding: 30px 40px; color: #665c43; }
 .notes-date { font-size: 10px; color: #b2a78b; }
 .notes-body h1 { margin: 14px 0 18px; font-size: 25px; color: #50482f; font-weight: 550; }
