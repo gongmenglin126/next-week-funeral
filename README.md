@@ -8,7 +8,7 @@
 - 源码仓库：https://github.com/gongmenglin126/next-week-funeral
 - 现有试玩：https://next-week-funeral.gonglin556.chatgpt.site （访问权限由站点分享设置决定）
 - 正式人物名：主角 **林知还**，朋友 **周惜**；订单页面目前保留“林** / 周**”脱敏显示。
-- 源码和试玩继续同步维护；GitHub Pages 尚未启用。
+- GitHub Pages 发布目录：`gh-pages` 分支根目录；源码仍在 `main`。是否已上线以仓库 Settings → Pages 显示的部署状态为准。
 - [最新决定与交接状态](docs/04-current-decisions-and-handoff.md) 优先于初版蓝图中的冲突内容。
 
 玩家与大学好友已经开始了一场约定多年的旅行。两人因不同的冲突处理方式产生争执：她把玩家暂时的沉默理解成厌恶和抛弃，玩家却在冷静后回来，明确告诉她“我是在生气，不是不要你”。第二天，她借口外出买药，却在途中意外去世。她的电脑留在民宿，玩家从处理剩余订单开始，逐渐发现一个以“生前告别体验”为公开外壳的秘密宗教。好友曾因死亡恐惧，准备让玩家成为自己的“守夜人”；但真正的好结局藏在系统记录之外——那次谈话动摇了她对两人关系的全部误读，她决定终止仪式，只是没能活着完成线上取消。
@@ -53,7 +53,22 @@ npm run dev
 npm run build
 ```
 
-现有构建脚本使用 Bash 和 GNU timeout，推荐 Linux / WSL；其他环境可运行 `npx vinext build`。当前构建输出是 Vinext/Worker 应用，不是直接交给 GitHub Pages 的静态目录。迁移到 Pages 需另外增加并验证静态构建流程。
+现有 Sites 构建脚本使用 Bash 和 GNU timeout，推荐 Linux / WSL；其他环境可运行 `npx vinext build`。该构建输出是 Vinext/Worker 应用，不要直接上传到 GitHub Pages。
+
+### GitHub Pages 静态版
+
+```bash
+npm ci
+npm run build:pages
+```
+
+独立的 `vite.pages.config.ts` 复用同一套游戏组件，输出 `pages-dist/`，不需要 Worker、数据库或服务器。构建会检查 HTML、脚本、样式与三张游戏图片在 `/next-week-funeral/` 下的引用，并生成 `.nojekyll`。原来的 Sites 构建保持不变。
+
+将 `pages-dist/` 的内容提交到 `gh-pages` 根目录。首次在 [Pages 设置](https://github.com/gongmenglin126/next-week-funeral/settings/pages) 选择 **Deploy from a branch → gh-pages → / (root) → Save**。待 GitHub 的 Pages 部署成功后，游戏地址为 `https://gongmenglin126.github.io/next-week-funeral/`。准备好分支不等于站点已启用。
+
+后续更新需重新构建并更新 `gh-pages`；仅修改 `main` 不会自动更新试玩。本项目暂未配置自动发布工作流。
+
+这里只发布运行文件，不把 docs、源组件文件或 source map 放进站点目录。不过公开仓库仍能查看源码，浏览器也能检查收到的 JavaScript；静态发布不提供隐藏谜底的安全保证。
 
 只运行第一章状态机测试（不重复构建）：
 
