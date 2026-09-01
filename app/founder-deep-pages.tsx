@@ -46,7 +46,7 @@ export function GuWeizhenInterviewPage() {
 
     <main className="mx-auto max-w-[980px] px-7 py-10 md:px-12 md:py-14">
       <figure>
-        <img src="https://cdn.pixabay.com/photo/2026/07/30/15/00/15-00-32-87_1280.jpg" alt="顾惟真书房一角，木质书架与书桌" />
+        <img src="./game/gu-weizhen-study-2022.jpg" alt="顾惟真书房一角，木质书架与书桌，书架上摆着一尊无面小像" />
         <figcaption>顾惟真书房一角，2022年。</figcaption>
       </figure>
 
