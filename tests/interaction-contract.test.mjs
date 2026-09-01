@@ -91,7 +91,7 @@ test("deleted photos cannot be opened through downloads and every photo fits bot
   const { visiblePhotos } = await vite.ssrLoadModule("/lib/photo-library.ts");
   const { PhotoViewer } = await vite.ssrLoadModule("/app/desktop-evidence.tsx");
   for (const photo of visiblePhotos(true)) {
-    const ratio = photo.width / photo.height / (photo.cropped ? 1.18 : 1);
+    const ratio = photo.width / photo.height / (photo.cropped ? 1.28 : 1);
     const html = renderToStaticMarkup(React.createElement(PhotoViewer, { photo, onClose() {} }));
     const renderedRatio = Number(html.match(/\* ([\d.]+)\)\)/)?.[1]);
     assert.ok(Math.abs(renderedRatio - ratio) < 1e-12);
@@ -336,4 +336,20 @@ test("the optional fraud trail requires the acrostic and then the witness's real
   assert.match(obituary, /8月17日 03:26/);
   assert.match(obituary, /8月18日 10:42/);
   assert.doesNotMatch(witness + profile + obituary, /这说明|账号已被组织接管|骗局已揭穿/);
+});
+
+test("the crop hides session seven while the full corridor is last in the mountain inn gallery", async () => {
+  const { MOUNTAIN_INN_GALLERY } = await vite.ssrLoadModule("/app/chapter-one.tsx");
+  assert.equal(MOUNTAIN_INN_GALLERY.length, 3);
+  assert.deepEqual(MOUNTAIN_INN_GALLERY.slice(0, 2).map((photo) => photo.src), ["./game/mountain-inn-exterior.webp", "./game/mountain-inn-twin-room.webp"]);
+  assert.equal(MOUNTAIN_INN_GALLERY.at(-1).src, "./game/inn-corridor-original.webp");
+  assert.match(MOUNTAIN_INN_GALLERY.at(-1).alt, /第七期/);
+  for (const photo of MOUNTAIN_INN_GALLERY) await access(path.join(root, "public", photo.src));
+  const chapter = await readFile(path.join(root, "app/chapter-one.tsx"), "utf8");
+  assert.match(chapter, /order\.id === "mountain" && <section className="inn-gallery"/);
+  assert.match(chapter, /setHotelPhotoIndex\(0\)/);
+  assert.match(chapter, /item\.category === "酒店" \? <img src=\{item\.image\}/);
+  assert.doesNotMatch(chapter, /hotel-crop|南岸民宿走廊/);
+  const css = await readFile(path.join(root, "app/globals.css"), "utf8");
+  assert.match(css, /\.evidence-image\.is-cropped img, \.evidence-thumbnail\.is-cropped img \{ width: 128%; max-width: none; transform: translateX\(-22%\); \}/);
 });

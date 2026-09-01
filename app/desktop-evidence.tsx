@@ -11,8 +11,8 @@ export function PhotoViewer({ photo, onClose, onPrevious, onNext }: {
   photo: TravelPhoto; onClose: () => void; onPrevious?: () => void; onNext?: () => void;
 }) {
   const [zoom, setZoom] = useState(100);
-  // The crop keeps the left-side activity sign while trimming the right edge.
-  const frameRatio = photo.width / photo.height / (photo.cropped ? 1.18 : 1);
+  // The deleted copy removes the left-side activity sign.
+  const frameRatio = photo.width / photo.height / (photo.cropped ? 1.28 : 1);
   return <section className="evidence-viewer" aria-label={`照片预览：${photo.id}`}>
     <div className="evidence-tools">
       <Button variant="ghost" size="sm" onClick={onClose}><ArrowLeft />返回列表</Button>

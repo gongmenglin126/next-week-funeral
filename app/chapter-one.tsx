@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, ArrowUpRight, BedDouble, BusFront, CheckCircle2, ChevronRight, Download, FileText, LifeBuoy, MapPin, Search, Ticket, TrainFront, Waves, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BedDouble, BusFront, CheckCircle2, ChevronLeft, ChevronRight, Download, FileText, LifeBuoy, MapPin, Search, Ticket, TrainFront, Waves, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -10,11 +10,17 @@ import { useNoteDrag } from "./use-note-drag";
 import type { WindowPoint } from "@/lib/window-position";
 
 const ORDERS = [
-  { id: "south", title: "南岸民宿", category: "酒店", detail: "海景双床房 · 2晚 · 2位入住人", date: "8月26日 — 8月28日", price: 1286, number: "BA2608210928", booked: "8月21日 20:16", image: "./game/inn-corridor-original.webp", icon: BedDouble },
+  { id: "south", title: "南岸民宿", category: "酒店", detail: "海景双床房 · 2晚 · 2位入住人", date: "8月26日 — 8月28日", price: 1286, number: "BA2608210928", booked: "8月21日 20:16", image: "./game/mountain-inn-twin-room.webp", icon: BedDouble },
   { id: "lighthouse", title: "南岸灯塔接驳", category: "交通", detail: "老城游客中心 → 南岸灯塔 · 2张成人票", date: "8月27日 05:10", price: 96, number: "BA2608181351", booked: "8月18日 23:47", image: "./game/wuting-sea-wallpaper.webp", icon: BusFront },
-  { id: "mountain", title: "山线民宿", category: "酒店", detail: "庭院双床房 · 2晚 · 2位入住人", date: "8月28日 — 8月30日", price: 768, number: "BA2608223085", booked: "8月22日 09:32", image: "./game/inn-corridor-original.webp", icon: BedDouble },
+  { id: "mountain", title: "山线民宿", category: "酒店", detail: "庭院双床房 · 2晚 · 2位入住人", date: "8月28日 — 8月30日", price: 768, number: "BA2608223085", booked: "8月22日 09:32", image: "./game/mountain-inn-exterior.webp", icon: BedDouble },
   { id: "salt", title: "旧盐场手作体验", category: "门票", detail: "海盐手作 · 双人预约 · 含材料", date: "8月26日 16:00", price: 160, number: "BA2608225116", booked: "8月22日 10:05", image: "./game/seaside-dinner.webp", icon: Ticket },
   { id: "return", title: "雾汀南 → 临川东", category: "交通", detail: "G8276 · 二等座 · 2位乘车人", date: "8月31日 16:20 — 18:06", price: 436, number: "BA2608218369", booked: "8月21日 20:28", image: "./game/wuting-sea-wallpaper.webp", icon: TrainFront },
+] as const;
+
+export const MOUNTAIN_INN_GALLERY = [
+  { src: "./game/mountain-inn-exterior.webp", alt: "雨天的山线民宿外观", label: "民宿外观" },
+  { src: "./game/mountain-inn-twin-room.webp", alt: "山线民宿双床客房", label: "庭院双床房" },
+  { src: "./game/inn-corridor-original.webp", alt: "山线民宿走廊，左侧立着第七期活动指示牌", label: "二层公共走廊" },
 ] as const;
 
 export function NotesPanel({ checked, onCheck, onClose, position, onPositionChange }: { checked: string[]; onCheck: (id: BookingId) => void; onClose: () => void; position?: WindowPoint | null; onPositionChange?: (point: WindowPoint) => void }) {
@@ -58,11 +64,12 @@ export function TravelPlatform({ state, onCancel, onDownloads }: { state: Chapte
   const [passengers, setPassengers] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [profile, setProfile] = useState(false);
+  const [hotelPhotoIndex, setHotelPhotoIndex] = useState(0);
   const order = ORDERS.find((item) => item.id === selectedId);
   const completed = BOOKING_IDS.filter((id) => state.cancelled[id]).length;
   const filtered = ORDERS.filter((item) => (category === "全部" || item.category === category) && (status === "all" || (status === "cancelled" ? state.cancelled[item.id] : !state.cancelled[item.id])) && `${item.title}${item.number}`.includes(filter.trim()));
 
-  function openOrder(id: BookingId) { setSelectedId(id); setPage("orders"); setError(""); }
+  function openOrder(id: BookingId) { setSelectedId(id); setPage("orders"); setError(""); setHotelPhotoIndex(0); }
   function cancel() {
     if (!order) return;
     if (order.id === "lighthouse" && code.trim() !== TICKET_SUFFIX) { setError("核验尾号不符，请查看下载的灯塔接驳电子票。不是本平台订单号的尾号。"); return; }
@@ -84,6 +91,10 @@ export function TravelPlatform({ state, onCancel, onDownloads }: { state: Chapte
       <Button variant="ghost" size="sm" onClick={() => setSelectedId(null)}><ArrowLeft />全部订单</Button>
       <div className="ota-detail-heading"><div><p className="eyebrow">订单详情 / {order.category}</p><h1>{order.title}</h1><p>{order.detail}</p></div><span className={`ota-state ${state.cancelled[order.id] ? "cancelled" : ""}`}>{state.cancelled[order.id] ? "已取消" : order.id === "return" && state.refundedPassengers.length ? "部分已退" : "预订成功"}</span></div>
       <div className="ota-detail-layout"><section className="ota-paper">
+        {order.id === "mountain" && <section className="inn-gallery" aria-label="山线民宿宣传图片">
+          <div className="inn-gallery-stage"><img src={MOUNTAIN_INN_GALLERY[hotelPhotoIndex].src} alt={MOUNTAIN_INN_GALLERY[hotelPhotoIndex].alt} /><span>{MOUNTAIN_INN_GALLERY[hotelPhotoIndex].label}</span></div>
+          <div className="inn-gallery-controls"><button disabled={hotelPhotoIndex === 0} onClick={() => setHotelPhotoIndex((index) => Math.max(0, index - 1))} aria-label="上一张民宿宣传图"><ChevronLeft /></button><span>{hotelPhotoIndex + 1} / {MOUNTAIN_INN_GALLERY.length}</span><button disabled={hotelPhotoIndex === MOUNTAIN_INN_GALLERY.length - 1} onClick={() => setHotelPhotoIndex((index) => Math.min(MOUNTAIN_INN_GALLERY.length - 1, index + 1))} aria-label="下一张民宿宣传图"><ChevronRight /></button></div>
+        </section>}
         <h2>预订信息</h2><dl className="ota-fields"><div><dt>使用日期</dt><dd>{order.date}</dd></div><div><dt>订单编号</dt><dd>{order.number}</dd></div><div><dt>下单时间</dt><dd>{order.booked}</dd></div><div><dt>订单金额</dt><dd>¥{order.price.toLocaleString()}</dd></div><div><dt>联系人</dt><dd>周** · 138 **** 0726</dd></div></dl>
         {order.category === "酒店" && <><h2>入住信息</h2><dl className="ota-fields"><div><dt>入住人</dt><dd>周**、林**</dd></div><div><dt>房型</dt><dd>{order.detail.split(" · ")[0]}</dd></div><div><dt>特殊要求</dt><dd>尽量安排安静的房间，谢谢。</dd></div></dl></>}
         {order.id === "lighthouse" && <div className="ota-file"><FileText /><div><strong>灯塔接驳电子票.pdf</strong><p>运营方电子票 · 已保存到本机</p></div><Button variant="outline" size="sm" onClick={onDownloads}><Download />打开下载</Button></div>}
@@ -105,7 +116,7 @@ export function TravelPlatform({ state, onCancel, onDownloads }: { state: Chapte
       <div className="ota-orders-heading"><div><p className="eyebrow">MY JOURNEY</p><h1>我的订单</h1><p>每一段出发，都有记录。</p></div><div className="ota-trip-summary"><MapPin /><div><strong>雾汀 · 旅行安排</strong><small>8月23日 — 8月31日</small></div></div></div>
       <div className="ota-workspace"><aside className="ota-sidebar"><p>订单管理</p>{["全部", "酒店", "交通", "门票"].map((value) => <button key={value} aria-pressed={category === value} onClick={() => setCategory(value)}>{value === "全部" ? "全部订单" : value}<span>{value === "全部" ? 5 : ORDERS.filter((item) => item.category === value).length}</span></button>)}<div className="ota-help-card"><LifeBuoy /><strong>需要帮助？</strong><p>退款政策、票据与<br />订单常见问题</p><button onClick={() => setPage("help")}>订单帮助 <ArrowUpRight /></button></div></aside>
       <section className="ota-order-list"><div className="ota-list-toolbar"><div className="ota-status-tabs">{[["all", "全部", 5], ["pending", "待出行", 5 - completed], ["cancelled", "已取消", completed]].map(([value, label, count]) => <button key={value} aria-pressed={status === value} onClick={() => setStatus(String(value))}>{label}<span>{count}</span></button>)}</div><label className="ota-order-search"><Search /><Input aria-label="搜索订单名称或订单号" placeholder="搜索订单" value={filter} onChange={(event) => setFilter(event.target.value)} /></label></div>
-      {filtered.length ? filtered.map((item) => <article className="ota-order-card" key={item.id}><header><span>{item.category}订单 <i />{item.number}</span><span className={`ota-state ${state.cancelled[item.id] ? "cancelled" : ""}`}>{state.cancelled[item.id] ? "已取消" : item.id === "return" && state.refundedPassengers.length ? "部分已退" : "预订成功"}</span></header><div className="ota-order-main"><button className={`ota-order-photo ${item.id === "south" ? "hotel-crop" : "order-icon"}`} onClick={() => openOrder(item.id)} aria-label={`查看${item.title}订单`}>{item.id === "south" ? <img src={item.image} alt="南岸民宿走廊" /> : <item.icon aria-hidden="true" />}</button><div className="ota-order-copy"><span><item.icon />{item.category}</span><button onClick={() => openOrder(item.id)}><h2>{item.title}</h2></button><p>{item.detail}</p><small>{item.date}</small></div><div className="ota-order-price"><strong><small>¥</small>{item.price.toLocaleString()}</strong><span>订单总额</span><Button variant="outline" size="sm" onClick={() => openOrder(item.id)}>查看订单 <ChevronRight /></Button></div></div></article>) : <div className="ota-empty"><Search /><p>没有符合条件的订单</p><Button variant="ghost" onClick={() => { setFilter(""); setCategory("全部"); setStatus("all"); }}>清除筛选</Button></div>}
+      {filtered.length ? filtered.map((item) => <article className="ota-order-card" key={item.id}><header><span>{item.category}订单 <i />{item.number}</span><span className={`ota-state ${state.cancelled[item.id] ? "cancelled" : ""}`}>{state.cancelled[item.id] ? "已取消" : item.id === "return" && state.refundedPassengers.length ? "部分已退" : "预订成功"}</span></header><div className="ota-order-main"><button className={`ota-order-photo ${item.category === "酒店" ? "" : "order-icon"}`} onClick={() => openOrder(item.id)} aria-label={`查看${item.title}订单`}>{item.category === "酒店" ? <img src={item.image} alt={`${item.title}宣传图`} /> : <item.icon aria-hidden="true" />}</button><div className="ota-order-copy"><span><item.icon />{item.category}</span><button onClick={() => openOrder(item.id)}><h2>{item.title}</h2></button><p>{item.detail}</p><small>{item.date}</small></div><div className="ota-order-price"><strong><small>¥</small>{item.price.toLocaleString()}</strong><span>订单总额</span><Button variant="outline" size="sm" onClick={() => openOrder(item.id)}>查看订单 <ChevronRight /></Button></div></div></article>) : <div className="ota-empty"><Search /><p>没有符合条件的订单</p><Button variant="ghost" onClick={() => { setFilter(""); setCategory("全部"); setStatus("all"); }}>清除筛选</Button></div>}
       <p className="ota-list-end">已显示全部订单 · {completed}笔已取消</p></section></div>
     </main>}
     <footer className="ota-footer"><Waves /><span>泊岸旅行</span><small>好好出发，慢慢回来。</small><span>订单信息仅对当前账号可见</span></footer>

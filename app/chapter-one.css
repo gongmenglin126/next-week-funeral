@@ -57,7 +57,14 @@
 .ota-order-photo img { width: 100%; height: 100%; object-fit: cover; }
 .ota-order-photo.order-icon { display: grid; place-items: center; color: #7894ac; background: #edf2f6; }
 .ota-order-photo.order-icon svg { width: 34px; height: 34px; stroke-width: 1.3; }
-.ota-order-photo.hotel-crop img { width: 140%; max-width: none; transform: translateX(-25%); object-position: 75%; }
+.inn-gallery { margin: 0 0 28px; padding-bottom: 24px; border-bottom: 1px solid #e6ebf2; }
+.inn-gallery-stage { position: relative; height: clamp(210px, 34vw, 360px); overflow: hidden; border-radius: 8px; background: #edf1f5; }
+.inn-gallery-stage img { width: 100%; height: 100%; object-fit: cover; }
+.inn-gallery-stage span { position: absolute; right: 12px; bottom: 12px; padding: 6px 9px; border-radius: 5px; background: #15233db8; color: white; font-size: 9px; }
+.inn-gallery-controls { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 12px; color: #7f8fa5; font-size: 10px; }
+.inn-gallery-controls button { display: grid; width: 30px; height: 28px; place-items: center; border: 1px solid #dce4ef; border-radius: 6px; background: #f8faff; color: #5e7591; }
+.inn-gallery-controls button:disabled { cursor: default; opacity: .35; }
+.inn-gallery-controls svg { width: 15px; }
 .ota-order-copy > span { display: flex; align-items: center; gap: 4px; margin-bottom: 7px; color: #a0adbc; font-size: 9px; }
 .ota-order-copy > span svg { width: 12px; height: 12px; }
 .ota-order-copy button { text-align: left; }
