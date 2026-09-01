@@ -631,8 +631,6 @@ button:focus-visible { outline: 2px solid #2a73ac; outline-offset: 3px; }
 .community-page > header > aside small { color: #969b97; font-size: 8px; }
 .community-page > header > aside strong { color: #5d6761; font-size: 11px; }
 .community-page main { max-width: 720px; margin: auto; padding: 48px 24px 70px; }
-.community-intro { margin-bottom: 40px; color: #7c837e; font-family: "Noto Serif SC", serif; font-size: 12px; line-height: 2; }
-.community-intro p { margin: 0; }
 .community-section-title { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 13px; border-bottom: 1px solid #777f79; }
 .community-section-title h1 { margin: 0; font-family: "Noto Serif SC", serif; font-size: 20px; font-weight: 500; }
 .community-section-title span { color: #919a94; font-size: 9px; }

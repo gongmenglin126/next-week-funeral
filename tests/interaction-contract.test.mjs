@@ -360,6 +360,7 @@ test("the optional fraud trail moves from the witness's cat to an address and th
   const community = renderToStaticMarkup(React.createElement(CommunityPage, { onOpenWitness() {}, onOpenFoundation() {} }));
   assert.match(community, /当前账号[\s\S]*潮汐失眠/);
   assert.match(community, /最近留下的文字/);
+  assert.doesNotMatch(community, /有人把一段经历留在这里/);
   assert.doesNotMatch(community, /我的帖子|community-avatar|<h2>复查结果/);
   assert.match(community, /胃低分化腺癌/);
   assert.match(community, /腹膜及肝脏多发转移，较前进展/);
