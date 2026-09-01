@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const STUDY_IMAGE = `${import.meta.env.BASE_URL}game/gu-weizhen-study-2022.webp`;
+const STUDY_IMAGE = "./game/gu-weizhen-study-2022.webp";
 
 export function GuWeizhenPoemPage() {
   return <article className="min-h-full bg-[#fbfaf7] text-[#252a27]">
@@ -51,11 +51,28 @@ export function GuWeizhenInterviewPage() {
     </header>
 
     <main className="mx-auto max-w-[980px] px-7 py-10 md:px-12 md:py-14">
-      <figure className="m-0">
-        <button className="group block w-full cursor-zoom-in overflow-hidden bg-[#d9d4ca] text-left" onClick={() => setPhotoOpen(true)} aria-label="放大查看顾惟真书房照片">
-          <img className="block h-auto min-h-[320px] w-full object-cover transition-transform duration-300 group-hover:scale-[1.008]" src={STUDY_IMAGE} alt="顾惟真书房一角，木质书架与书桌" />
-        </button>
-        <figcaption className="mt-3 flex justify-between gap-4 border-b border-[#cfc8bc] pb-4 text-[10px] leading-5 text-[#817a70]"><span>顾惟真书房一角，2022年。</span><span>受访者供图</span></figcaption>
+      <figure style={{ margin: 0 }}>
+        <div style={{ width: "100%", minHeight: 360, overflow: "hidden", background: "#d9d4ca" }}>
+          <img
+            src={STUDY_IMAGE}
+            alt="顾惟真书房一角，木质书架与书桌"
+            width={1600}
+            height={1000}
+            loading="eager"
+            onClick={() => setPhotoOpen(true)}
+            style={{
+              display: "block",
+              width: "100%",
+              height: "clamp(360px, 52vw, 590px)",
+              objectFit: "cover",
+              cursor: "zoom-in",
+            }}
+          />
+        </div>
+        <figcaption className="mt-3 flex items-center justify-between gap-4 border-b border-[#cfc8bc] pb-4 text-[10px] leading-5 text-[#817a70]">
+          <span>顾惟真书房一角，2022年。</span>
+          <button type="button" className="cursor-zoom-in border-0 bg-transparent p-0 text-[10px] text-[#625d55] underline underline-offset-4" onClick={() => setPhotoOpen(true)}>查看大图</button>
+        </figcaption>
       </figure>
 
       <div className="mx-auto mt-12 max-w-[700px] space-y-7 font-serif text-[15px] leading-[2.05] text-[#3c403c]">
@@ -72,7 +89,7 @@ export function GuWeizhenInterviewPage() {
     </main>
 
     {photoOpen && <button className="fixed inset-0 z-[90] grid cursor-zoom-out place-items-center bg-black/85 p-6" onClick={() => setPhotoOpen(false)} aria-label="关闭大图">
-      <img className="max-h-[90vh] max-w-[95vw] object-contain shadow-2xl" src={STUDY_IMAGE} alt="放大的顾惟真书房照片" />
+      <img style={{ display: "block", maxHeight: "90vh", maxWidth: "95vw", objectFit: "contain" }} src={STUDY_IMAGE} alt="放大的顾惟真书房照片" />
     </button>}
   </article>;
 }
