@@ -334,7 +334,7 @@ test("the unlisted seventh archive must be reached by changing 06 to 07", async 
   assert.match(seventh, /ARCHIVE \/ 07/);
   assert.match(seventh, /此页面未列入公开归档/);
   const seventhText = seventh.replace(/<[^>]+>/g, "");
-  for (const line of ["归期没有告诉家里", "潮落时，他说自己不怕了", "见不到明天也没关系", "证词会替我们留下来"]) assert.ok(seventhText.includes(line));
+  for (const line of ["归来的日期没有告诉家里", "潮落时，他说自己不怕了", "见不到明天也没关系", "证词会替我们留下来"]) assert.ok(seventhText.includes(line));
   const letter = seventh.match(/<blockquote>([\s\S]*?)<\/blockquote>/)?.[1] ?? "";
   assert.deepEqual([...letter.matchAll(/<strong>([^<]+)<\/strong>/g)].map((match) => match[1]), ["归", "潮", "见", "证"]);
   const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
@@ -359,7 +359,7 @@ test("the optional fraud trail requires the acrostic and then the witness's real
   assert.match(community, /腹膜及肝脏多发转移，较前进展/);
   assert.ok(community.indexOf("潮汐失眠") < community.indexOf("海盐苏打"));
   assert.match(community, /由安时生命关怀基金会提供支持/);
-  assert.doesNotMatch(community, /同行人|承时|留下者|见证完成/);
+  assert.doesNotMatch(community, /同行人|归期|承时|留下者|见证完成/);
   const foundation = renderToStaticMarkup(React.createElement(FoundationPage, { onBack() {} }));
   assert.match(foundation, /创办人[\s\S]*顾惟真/);
   assert.match(foundation, /一次重病康复后发起安时计划/);
