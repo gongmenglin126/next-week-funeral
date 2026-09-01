@@ -365,6 +365,8 @@ test("the optional fraud trail moves from the witness's cat to an address and th
   assert.doesNotMatch(community, /我的帖子|community-avatar|<h2>复查结果/);
   assert.match(community, /胃低分化腺癌/);
   assert.match(community, /腹膜及肝脏多发转移，较前进展/);
+  assert.match(community, /我这种情况还能活多久/);
+  assert.doesNotMatch(community, /不知道还能一起走多远/);
   assert.ok(community.indexOf("潮汐失眠") < community.indexOf("海盐苏打"));
   assert.match(community, /由安时生命关怀基金会提供支持/);
   assert.doesNotMatch(community, /同行人|归期|承时|留下者|见证完成/);
