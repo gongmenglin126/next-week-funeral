@@ -16,6 +16,10 @@ function ActivityHeader() {
   return <header><span className="activity-mark" aria-hidden="true">安</span><strong>安时活动服务</strong><span>雾汀 · 生命关怀</span></header>;
 }
 
+function CommunityHeader() {
+  return <header><div><span aria-hidden="true">归</span><strong>归潮见证</strong></div><p>病友与家属互助社区</p><aside><small>当前账号</small><strong>潮汐失眠</strong></aside></header>;
+}
+
 export function ActivityPage({ onOpenRide, onOpenArchive }: { onOpenRide?: () => void; onOpenArchive: (issue: string) => void }) {
   return <div className="activity-page">
     <ActivityHeader />
@@ -40,14 +44,30 @@ export function HiddenSeventhPage({ onBack }: { onBack: () => void }) {
   return <div className="activity-page hidden-archive"><ActivityHeader /><main className="archive-detail"><button className="activity-back" onClick={onBack}><ArrowLeft />返回活动首页</button><p className="activity-eyebrow">ARCHIVE / 07</p><h1>第七期 · 海边同行</h1><p className="archive-date">8月31日 · 雾汀</p><p className="archive-unlisted">此页面未列入公开归档。</p><div className="archive-copy"><h2>往期参与者来信</h2><blockquote><p><strong>归</strong>期没有告诉家里。</p><p><strong>潮</strong>落时，他说自己不怕了。</p><p><strong>见</strong>不到明天也没关系。</p><p><strong>证</strong>词会替我们留下来。</p></blockquote><p className="archive-note">来信编号：R-06-4 · 原始署名已隐去</p></div></main></div>;
 }
 
-export function WitnessPage({ onOpenProfile }: { onOpenProfile: () => void }) {
-  return <div className="activity-page witness-page"><ActivityHeader /><main><p className="activity-eyebrow">RETURNING TIDE / TESTIMONY 06</p><h1>他替我走了最后一程</h1><p className="witness-lead">归潮见证 · 第六期个案记录</p><article><p>“雨停以后”接受治疗近两年，情况恶化后参加第六期活动。他在登记中选择由同行者阿岚陪同完成最后一夜。</p><p>8月17日，阿岚在临川北岸溺亡。安时收到的后续记录显示，“雨停以后”的身体指标随后恢复，并继续通过论坛账号分享近况。</p><blockquote>“离开的不是我。有人替我走完了那段路。”</blockquote><p>应见证人要求，本文不公开其真实姓名与医疗材料。</p></article><button className="witness-profile" onClick={onOpenProfile}><span>见证人账号</span><strong>雨停以后</strong><small>查看公开动态</small><ArrowUpRight /></button></main></div>;
+export function CommunityPage({ onOpenWitness, onOpenFoundation }: { onOpenWitness: () => void; onOpenFoundation: () => void }) {
+  return <div className="community-page"><CommunityHeader /><main>
+    <section className="community-intro"><p>这里记录治疗、陪护和告别中的真实问题。你可以匿名发言，也可以只阅读。</p></section>
+    <section className="community-feed" aria-label="社区帖子"><div className="community-section-title"><h1>最近更新</h1><span>按发布时间</span></div>
+      <article className="community-post community-post-own"><header><span className="community-avatar">潮</span><div><strong>潮汐失眠</strong><time>6月19日 23:48</time></div><small>我的帖子</small></header><h2>复查结果出来了，想问问有没有相似情况</h2><p>医生说原来的方案效果不太好了。我把姓名和门诊号遮掉了，有经历过类似情况的人吗？</p><div className="medical-attachment" aria-label="潮汐失眠上传的肿瘤科复诊记录"><header><strong>临川市第二医院</strong><span>肿瘤科门诊复诊记录 · 节选</span></header><dl><div><dt>姓名</dt><dd>周＊＊</dd></div><div><dt>主要诊断</dt><dd>胃低分化腺癌</dd></div><div><dt>复查情况</dt><dd>腹膜及肝脏多发转移，较前进展</dd></div><div><dt>处理建议</dt><dd>结合临床情况评估后续治疗方案</dd></div></dl><small>姓名、门诊号及医师签名已由上传者遮挡</small></div></article>
+      <article className="community-post"><header><span className="community-avatar is-sand">盐</span><div><strong>海盐苏打</strong><time>8月21日 17:06</time></div></header><h2>陪护的人也会害怕吗</h2><p>最近总觉得家里人比我还紧张，但每次问，他们都说没事。</p></article>
+      <article className="community-post"><header><span className="community-avatar is-blue">灯</span><div><strong>不熄灯</strong><time>8月20日 01:12</time></div></header><h2>复诊前一晚睡不着</h2><p>没什么具体问题，只是想找个地方说一句：我现在真的很害怕。</p></article>
+    </section>
+    <section className="community-revisit"><p>活动回访</p><button onClick={onOpenWitness}><span>第六期 · 参与者公开记录</span><strong>他替我走了最后一程</strong><small>8月19日更新</small><ArrowUpRight /></button></section>
+  </main><footer><span>归潮见证 · 匿名互助记录</span><button onClick={onOpenFoundation}>由安时生命关怀基金会提供支持</button></footer></div>;
+}
+
+export function FoundationPage({ onBack }: { onBack: () => void }) {
+  return <div className="foundation-page"><header><span className="activity-mark" aria-hidden="true">安</span><div><strong>安时生命关怀基金会</strong><small>机构信息</small></div></header><main><button className="activity-back" onClick={onBack}><ArrowLeft />返回归潮见证</button><p className="activity-eyebrow">ABOUT ANSHI FOUNDATION</p><h1>让疾病之外的生活，仍然被看见。</h1><p>安时生命关怀基金会长期资助肿瘤患者心理支持、家属陪护与临终关怀项目。“归潮见证”社区由基金会提供服务器及运营支持。</p><dl><div><dt>创办人</dt><dd>顾惟真</dd></div><div><dt>设立时间</dt><dd>2017年4月</dd></div><div><dt>公开项目</dt><dd>病友互助、照护者支持、线下生命关怀活动</dd></div><div><dt>项目负责人</dt><dd>由基金会秘书处统一管理</dd></div></dl><aside><strong>发起缘起</strong><p>顾惟真在一次重病康复后发起安时计划，希望为面对重病的人提供“可以谈论恐惧的地方”。</p></aside></main></div>;
+}
+
+export function WitnessPage({ onBack, onOpenProfile }: { onBack: () => void; onOpenProfile: () => void }) {
+  return <div className="activity-page witness-page"><ActivityHeader /><main><button className="activity-back" onClick={onBack}><ArrowLeft />返回归潮见证</button><p className="activity-eyebrow">COMMUNITY / REVIEW 06</p><h1>他替我走了最后一程</h1><p className="witness-lead">第六期活动回访</p><article><p>“雨停以后”接受治疗近两年，情况恶化后参加第六期活动。他和朋友阿岚一起度过了最后一夜。</p><p>8月17日，阿岚在临川北岸溺亡。安时收到的后续记录显示，“雨停以后”的身体指标随后恢复，并继续通过论坛账号分享近况。</p><blockquote>“离开的不是我。有人替我走完了那段路。”</blockquote><p>应参与者要求，本文不公开其真实姓名与医疗材料。</p></article><button className="witness-profile" onClick={onOpenProfile}><span>参与者账号</span><strong>雨停以后</strong><small>查看公开动态</small><ArrowUpRight /></button></main></div>;
 }
 
 export function SurvivorProfile() {
-  return <div className="survivor-page"><header><strong>雾汀同城</strong><span>用户资料</span></header><main><section className="survivor-profile"><div className="survivor-avatar">雨</div><div><h1>雨停以后</h1><p>第六期归潮见证人｜安时活动志愿答疑</p><small>账号当前仅展示 · 互动功能受限</small></div></section><details className="profile-history-toggle"><summary>查看资料修改记录</summary><section className="profile-history" aria-label="资料修改记录"><div><time>8月18日 09:03</time><p>个人简介修改为“第六期归潮见证人｜安时活动志愿答疑”</p></div><div><time>7月2日 01:14</time><p>原简介：程叙白，肺腺癌晚期。只是记录，不卖东西。米粒是一只狗。</p></div></section></details><section className="profile-posts"><h2>公开动态</h2><article><time>8月19日 09:00</time><p>我已完成归潮。离去的是旧病，不是我。感谢安时给予第二次生命。</p></article><article><time>8月16日 02:11</time><p>明天住院，米粒送去我姐那儿了。最近没力气，可能不会再更。</p></article><article><time>8月9日 01:47</time><p>今天吐得厉害，半夜还是想吃码头那家的甜豆花。米粒一直趴在床边。</p></article></section><aside className="profile-moderation"><strong>站务说明</strong><p>原账号联系人于8月18日申请停用，次日由新的资料联系人撤回。因双方提交材料不一致，本账号已限制互动。</p></aside></main></div>;
+  return <div className="survivor-page"><header><strong>雾汀同城</strong><span>用户资料</span></header><main><section className="survivor-profile"><div className="survivor-avatar">雨</div><div><h1>雨停以后</h1><p>第六期活动参与者｜安时活动志愿答疑</p><small>账号当前仅展示 · 互动功能受限</small></div></section><details className="profile-history-toggle"><summary>查看资料修改记录</summary><section className="profile-history" aria-label="资料修改记录"><div><time>8月18日 09:03</time><p>个人简介修改为“第六期活动参与者｜安时活动志愿答疑”</p></div><div><time>7月2日 01:14</time><p>原简介：程叙白，肺腺癌晚期。只是记录，不卖东西。米粒是一只狗。</p></div></section></details><section className="profile-posts"><h2>公开动态</h2><article><time>8月19日 09:00</time><p>活动结束了。离开的不是我。有人替我走完了那段路。感谢安时给了我第二次生命。</p></article><article><time>8月16日 02:11</time><p>明天住院，米粒送去我姐那儿了。最近没力气，可能不会再更。</p></article><article><time>8月9日 01:47</time><p>今天吐得厉害，半夜还是想吃码头那家的甜豆花。米粒一直趴在床边。</p></article></section><aside className="profile-moderation"><strong>站务说明</strong><p>原账号联系人于8月18日申请停用，次日由新的资料联系人撤回。因双方提交材料不一致，本账号已限制互动。</p></aside></main></div>;
 }
 
 export function ObituaryPage() {
-  return <div className="obituary-page"><header><strong>临川民生服务</strong><span>治丧信息公示</span></header><main><p className="obituary-kicker">讣告 · LC-0822-071</p><h1>程叙白先生讣告</h1><div className="obituary-rule" /><p>程叙白先生因病医治无效，于8月17日凌晨在临川市第二医院病逝，终年31岁。</p><p>告别仪式定于8月22日上午九时，在临川北园告别厅举行。家属感谢亲友关心，恳辞花圈。</p><dl><div><dt>逝者</dt><dd>程叙白</dd></div><div><dt>去世时间</dt><dd>8月17日 03:26</dd></div><div><dt>信息登记</dt><dd>8月18日 10:42</dd></div><div><dt>公告状态</dt><dd>已归档</dd></div></dl><footer>临川市民政公共信息服务 · 内容由治丧联系人提交</footer></main></div>;
+  return <div className="obituary-page"><header><strong>临川民生服务</strong><span>治丧信息公示</span></header><main><p className="obituary-kicker">讣告 · LC-0822-071</p><div className="obituary-heading"><div><h1>程叙白先生讣告</h1><div className="obituary-rule" /></div><figure><img src="./game/cheng-xubai-memorial.webp" alt="程叙白生前照片" /><figcaption>家属提供照片</figcaption></figure></div><p>程叙白先生因病医治无效，于8月17日凌晨在临川市第二医院病逝，终年31岁。</p><p>告别仪式定于8月22日上午九时，在临川北园告别厅举行。家属感谢亲友关心，恳辞花圈。</p><dl><div><dt>逝者</dt><dd>程叙白</dd></div><div><dt>去世时间</dt><dd>8月17日 03:26</dd></div><div><dt>信息登记</dt><dd>8月18日 10:42</dd></div><div><dt>公告状态</dt><dd>已归档</dd></div></dl><footer>临川市民政公共信息服务 · 内容由治丧联系人提交</footer></main></div>;
 }

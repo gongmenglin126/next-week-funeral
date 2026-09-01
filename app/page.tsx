@@ -34,7 +34,7 @@ import { DesktopPanel, type DesktopPanelKind } from "./desktop-evidence";
 import { SearchBox } from "./search-box";
 import { ForumPage, LIGHTHOUSE_THREAD } from "./forum-page";
 import { SearchResults, BrowserNotFound } from "./search-results";
-import { ActivityArchivePage, ActivityPage, HiddenSeventhPage, ObituaryPage, SurvivorProfile, WitnessPage } from "./activity-page";
+import { ActivityArchivePage, ActivityPage, CommunityPage, FoundationPage, HiddenSeventhPage, ObituaryPage, SurvivorProfile, WitnessPage } from "./activity-page";
 import { ACTIVITY_URL, resolveBrowserInput, type BrowserRoute } from "@/lib/browser-navigation";
 import type { WindowPoint } from "@/lib/window-position";
 
@@ -138,8 +138,18 @@ export default function Home() {
     };
     if (tab === "forum" && forumPaths[pageQuery]) return `wuting-talk.example/thread/${forumPaths[pageQuery]}`;
     if (tab === "activity" && pageQuery.startsWith("archive/")) return `anshi.example/activities/${pageQuery}`;
-    if (tab === "activity" && pageQuery === "witness") return "anshi.example/records/returning-tide";
+    if (tab === "activity" && pageQuery === "community") return "guichao.example/home";
+    if (tab === "activity" && pageQuery === "witness") return "guichao.example/records/session-06";
+    if (tab === "activity" && pageQuery === "foundation") return "anshi-foundation.example/about";
     return urls[tab] ?? pageQuery;
+  }
+
+  function browserTabLabel(tab: string) {
+    if (tab !== "activity") return labels[tab];
+    const activityQuery = [...routes].reverse().find((item) => item.tab === "activity")?.query;
+    if (["community", "witness"].includes(activityQuery ?? "")) return "归潮见证";
+    if (activityQuery === "foundation") return "安时基金会";
+    return labels.activity;
   }
 
   function navigate(tab: string, nextQuery = "") {
@@ -217,7 +227,7 @@ export default function Home() {
         <div className="browser-titlebar"><div className="window-controls"><button onClick={() => setBrowserOpen(false)} aria-label="关闭浏览器"><X /></button></div><p>雾行浏览器</p><span /></div>
         <Tabs value={activeTab} onValueChange={(value) => navigate(value, [...routes].reverse().find((item) => item.tab === value)?.query ?? "")} className="h-[calc(100%-34px)] gap-0!">
           <TabsList className="browser-tabs">
-            {displayedTabs.map((tab) => <TabsTrigger value={tab} key={tab}>{tab === "trip" ? <Plane /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}{labels[tab]}</TabsTrigger>)}
+            {displayedTabs.map((tab) => <TabsTrigger value={tab} key={tab}>{tab === "trip" ? <Plane /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}{browserTabLabel(tab)}</TabsTrigger>)}
           </TabsList>
           <form className="browser-toolbar" onSubmit={runSearch}>
             <div className="browser-nav">
@@ -244,9 +254,9 @@ export default function Home() {
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={`search-box:${query}`} query={query} onSearch={submitBrowserInput} />
-              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openWitness={() => navigate("activity", "witness")} openObituary={() => navigate("obituary")} />
+              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openObituary={() => navigate("obituary")} />
             </TabsContent>
-            <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden">{query === "witness" ? <WitnessPage onOpenProfile={() => navigate("survivor")} /> : query === "archive/07" ? <HiddenSeventhPage onBack={() => navigate("activity")} /> : query.startsWith("archive/") ? <ActivityArchivePage issue={query.slice(-2)} onBack={() => navigate("activity")} /> : <ActivityPage onOpenRide={unlocked ? openRide : undefined} onOpenArchive={(issue) => navigate("activity", `archive/${issue}`)} />}</TabsContent>
+            <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden">{query === "community" ? <CommunityPage onOpenWitness={() => navigate("activity", "witness")} onOpenFoundation={() => navigate("activity", "foundation")} /> : query === "witness" ? <WitnessPage onBack={() => navigate("activity", "community")} onOpenProfile={() => navigate("survivor")} /> : query === "foundation" ? <FoundationPage onBack={() => navigate("activity", "community")} /> : query === "archive/07" ? <HiddenSeventhPage onBack={() => navigate("activity")} /> : query.startsWith("archive/") ? <ActivityArchivePage issue={query.slice(-2)} onBack={() => navigate("activity")} /> : <ActivityPage onOpenRide={unlocked ? openRide : undefined} onOpenArchive={(issue) => navigate("activity", `archive/${issue}`)} />}</TabsContent>
             <TabsContent value="survivor" className="min-h-full data-[state=inactive]:hidden"><SurvivorProfile /></TabsContent>
             <TabsContent value="obituary" className="min-h-full data-[state=inactive]:hidden"><ObituaryPage /></TabsContent>
             <TabsContent value="not-found" className="min-h-full data-[state=inactive]:hidden"><BrowserNotFound address={query} onSearch={() => navigate("search")} /></TabsContent>

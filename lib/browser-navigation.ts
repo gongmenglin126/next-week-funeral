@@ -30,10 +30,15 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
       if (["/", "/activities"].includes(path)) return { tab: "activity", query: "" };
       const archive = path.match(/^\/activities\/archive\/(0[1-7])$/);
       if (archive) return { tab: "activity", query: `archive/${archive[1]}` };
-      if (path === "/records/returning-tide") return { tab: "activity", query: "witness" };
       if (path === "/booking/WT-0831-2140" && unlocked) return { tab: "ride", query: "" };
       return missing;
     }
+    if (url.hostname === "guichao.example") {
+      if (["/", "/home"].includes(path)) return { tab: "activity", query: "community" };
+      if (path === "/records/session-06") return { tab: "activity", query: "witness" };
+      return missing;
+    }
+    if (url.hostname === "anshi-foundation.example" && path === "/about") return { tab: "activity", query: "foundation" };
     if (url.hostname === "wuting-talk.example") {
       if (["/", "/latest"].includes(path)) return { tab: "forum", query: "" };
       if (path === "/u/rain-after") return { tab: "survivor", query: "" };

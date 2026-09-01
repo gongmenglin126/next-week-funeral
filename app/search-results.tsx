@@ -19,10 +19,10 @@ const resultSets = [
   },
 ];
 
-export function SearchResults({ query, unlocked, openTravel, openForum, openActivity, openWitness, openObituary }: { query: string; unlocked: boolean; openTravel: () => void; openForum: () => void; openActivity: () => void; openWitness: () => void; openObituary: () => void }) {
+export function SearchResults({ query, unlocked, openTravel, openForum, openActivity, openCommunity, openObituary }: { query: string; unlocked: boolean; openTravel: () => void; openForum: () => void; openActivity: () => void; openCommunity: () => void; openObituary: () => void }) {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   if (isActivitySearch(query)) return <div className="mt-8"><button className="search-result" onClick={openActivity}><small className="text-[#78957e]">anshi.example/activities · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">安时活动服务 · 雾汀生命关怀</h3><p className="text-xs text-[#8493a4]">线下交流、活动介绍与预约咨询。</p></button></div>;
-  if (query.replace(/\s+/g, "") === "归潮见证") return <div className="mt-8"><button className="search-result" onClick={openWitness}><small className="text-[#78957e]">anshi.example/records/returning-tide · 未列入导航</small><h3 className="my-3 text-xl text-[#286ab3]">归潮见证｜第六期个案记录</h3><p className="text-xs text-[#8493a4]">“他替我走了最后一程”——见证人公开记录。</p></button></div>;
+  if (query.replace(/\s+/g, "") === "归潮见证") return <div className="mt-8"><button className="search-result" onClick={openCommunity}><small className="text-[#78957e]">guichao.example · 病友互助社区</small><h3 className="my-3 text-xl text-[#286ab3]">归潮见证｜病友与家属互助社区</h3><p className="text-xs text-[#8493a4]">匿名记录治疗、陪护和告别中的真实问题。</p></button></div>;
   if (query.trim() === "程叙白") return <div className="mt-8"><button className="search-result" onClick={openObituary}><small className="text-[#78957e]">linchuan-memorial.example · 公共信息归档</small><h3 className="my-3 text-xl text-[#286ab3]">程叙白先生讣告</h3><p className="text-xs text-[#8493a4]">临川市治丧信息公示 · 8月18日登记。</p></button></div>;
   const matched = unlocked ? resultSets.find((set) => set.test(query)) : undefined;
   if (/泊岸|boan|旅行平台/.test(query.toLowerCase())) return <div className="mt-8"><button className="search-result" onClick={openTravel}><small className="text-[#78957e]">boan.example · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">泊岸旅行 — 酒店、车票、当地体验预订</h3><p className="text-xs text-[#8493a4]">好好出发，慢慢回来。查询预订、管理订单与查看电子票。</p></button></div>;

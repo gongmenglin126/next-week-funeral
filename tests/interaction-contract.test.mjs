@@ -281,11 +281,14 @@ test("activity aliases resolve while invalid addresses cannot bypass the ride ga
   assert.equal(resolveBrowserInput("anshi.example/booking/WT-0831-2140", true).tab, "ride");
   assert.equal(resolveBrowserInput("wuting-talk.example/thread/60307", false).tab, "not-found");
   assert.equal(resolveBrowserInput("wuting-talk.example/thread/60307", true).tab, "forum");
+  assert.deepEqual(resolveBrowserInput("guichao.example/home", true), { tab: "activity", query: "community" });
+  assert.deepEqual(resolveBrowserInput("guichao.example/records/session-06", true), { tab: "activity", query: "witness" });
+  assert.deepEqual(resolveBrowserInput("anshi-foundation.example/about", true), { tab: "activity", query: "foundation" });
 });
 
 test("activity search has one result and wrong text or URLs show explicit recoverable feedback", async () => {
   const { SearchResults, BrowserNotFound } = await vite.ssrLoadModule("/app/search-results.tsx");
-  const render = (query) => renderToStaticMarkup(React.createElement(SearchResults, { query, unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openWitness() {}, openObituary() {} }));
+  const render = (query) => renderToStaticMarkup(React.createElement(SearchResults, { query, unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openObituary() {} }));
   const html = render("安时活动服务");
   assert.match(html, /安时活动服务 · 雾汀生命关怀/);
   assert.equal((html.match(/<button\b/g) ?? []).length, 1);
@@ -342,13 +345,25 @@ test("the unlisted seventh archive must be reached by changing 06 to 07", async 
 
 test("the optional fraud trail requires the acrostic and then the witness's real name", async () => {
   const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
-  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openWitness() {}, openObituary() {} };
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openObituary() {} };
   const renderSearch = (query) => renderToStaticMarkup(React.createElement(SearchResults, { ...props, query }));
-  assert.match(renderSearch("归潮见证"), /他替我走了最后一程/);
+  const communitySearch = renderSearch("归潮见证");
+  assert.match(communitySearch, /病友与家属互助社区/);
+  assert.doesNotMatch(communitySearch, /他替我走了最后一程|第六期个案记录/);
   assert.match(renderSearch("程叙白"), /程叙白先生讣告/);
   for (const query of ["第七期", "雨停以后", "讣告", "安时骗局"]) assert.match(renderSearch(query), /未找到与/);
-  const { WitnessPage, SurvivorProfile, ObituaryPage } = await vite.ssrLoadModule("/app/activity-page.tsx");
-  const witness = renderToStaticMarkup(React.createElement(WitnessPage, { onOpenProfile() {} }));
+  const { CommunityPage, FoundationPage, WitnessPage, SurvivorProfile, ObituaryPage } = await vite.ssrLoadModule("/app/activity-page.tsx");
+  const community = renderToStaticMarkup(React.createElement(CommunityPage, { onOpenWitness() {}, onOpenFoundation() {} }));
+  assert.match(community, /当前账号[\s\S]*潮汐失眠/);
+  assert.match(community, /胃低分化腺癌/);
+  assert.match(community, /腹膜及肝脏多发转移，较前进展/);
+  assert.ok(community.indexOf("潮汐失眠") < community.indexOf("海盐苏打"));
+  assert.match(community, /由安时生命关怀基金会提供支持/);
+  assert.doesNotMatch(community, /同行人|承时|留下者|见证完成/);
+  const foundation = renderToStaticMarkup(React.createElement(FoundationPage, { onBack() {} }));
+  assert.match(foundation, /创办人[\s\S]*顾惟真/);
+  assert.match(foundation, /一次重病康复后发起安时计划/);
+  const witness = renderToStaticMarkup(React.createElement(WitnessPage, { onBack() {}, onOpenProfile() {} }));
   assert.match(witness, /8月17日，阿岚在临川北岸溺亡/);
   assert.match(witness, /雨停以后/);
   const profile = renderToStaticMarkup(React.createElement(SurvivorProfile));
@@ -358,7 +373,9 @@ test("the optional fraud trail requires the acrostic and then the witness's real
   const obituary = renderToStaticMarkup(React.createElement(ObituaryPage));
   assert.match(obituary, /8月17日 03:26/);
   assert.match(obituary, /8月18日 10:42/);
-  assert.doesNotMatch(witness + profile + obituary, /这说明|账号已被组织接管|骗局已揭穿/);
+  assert.match(obituary, /cheng-xubai-memorial\.webp/);
+  await access(path.join(root, "public/game/cheng-xubai-memorial.webp"));
+  assert.doesNotMatch(community + foundation + witness + profile + obituary, /这说明|账号已被组织接管|骗局已揭穿/);
 });
 
 test("the crop hides session seven while the full corridor is last in the mountain inn gallery", async () => {
