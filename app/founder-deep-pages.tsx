@@ -93,7 +93,7 @@ export function GuWeizhenCollectionPage({ onOpenAuction }: { onOpenAuction: () =
       <section className="mt-12 grid gap-5 md:grid-cols-3">
         <article className="border border-[#cbc6bd] bg-[#f6f3ed] p-6"><small className="text-[10px] text-[#918b81]">07</small><h2 className="mt-5 font-serif text-[20px] font-normal">《海岬盐路碑》旧拓</h2><p className="mt-3 text-[11px] leading-6 text-[#747169]">民国旧拓，残损。馆藏编号 LC-TB-07。</p></article>
         <article className="border border-[#cbc6bd] bg-[#f6f3ed] p-6"><small className="text-[10px] text-[#918b81]">12</small><h2 className="mt-5 font-serif text-[20px] font-normal">《海州杂录》抄本</h2><p className="mt-3 text-[11px] leading-6 text-[#747169]">杂记沿海乡俗、祠祀与地方见闻。</p></article>
-        <article className="border border-[#8f998f] bg-[#f8f6f0] p-6"><small className="text-[10px] text-[#7b877d]">17</small><h2 className="mt-5 font-serif text-[20px] font-normal">《大罗无相尊仪轨残卷》</h2><p className="mt-3 text-[11px] leading-6 text-[#6f746e]">纸本残页，年代不详。残存礼赞、仪注及祝词，首尾均缺。</p><button className="mt-5 text-[11px] font-semibold text-[#486157] underline underline-offset-4" onClick={onOpenAuction}>查看入藏前流转记录</button></article>
+        <article className="border border-[#8f998f] bg-[#f8f6f0] p-6"><small className="text-[10px] text-[#7b877d]">17</small><h2 className="mt-5 font-serif text-[20px] font-normal">《大罗无相尊仪轨残卷》</h2><p className="mt-3 text-[11px] leading-6 text-[#6f746e]">纸本残页，年代不详。残存礼赞、仪注及祝词，首尾均缺。</p><button className="mt-5 text-[11px] font-semibold text-[#486157] underline underline-offset-4" onClick={onOpenAuction}>查看同场拍卖记录</button></article>
       </section>
 
       <footer className="mt-12 border-t border-[#c9c5bc] pt-5 text-[10px] leading-6 text-[#858078]">临川文献馆地方文献部 · 展览档案编号 EX-2024-04</footer>
@@ -105,10 +105,11 @@ export function GuWeizhenAuctionPage() {
   return <article className="min-h-full bg-[#f7f7f5] text-[#292d2a]">
     <header className="border-b border-[#dedfdc] bg-white"><div className="mx-auto max-w-[860px] px-7 py-6 md:px-12"><strong className="text-[13px] tracking-[.18em]">海州嘉闻拍卖</strong><span className="ml-5 text-[10px] text-[#9a9e99]">成交档案</span></div></header>
     <main className="mx-auto max-w-[860px] px-7 py-12 md:px-12 md:py-16">
-      <p className="text-[10px] tracking-[.14em] text-[#8d928d]">2018 秋拍 · LOT 17</p>
-      <h1 className="mt-4 font-serif text-[34px] font-normal leading-[1.3]">《大罗无相尊仪轨残卷》</h1>
+      <p className="text-[10px] tracking-[.14em] text-[#8d928d]">2018 秋拍 · LOT 21</p>
+      <h1 className="mt-4 font-serif text-[34px] font-normal leading-[1.3]">无面小像</h1>
+      <p className="mt-5 max-w-[650px] text-[12px] leading-7 text-[#737873]">木质，通高18.6厘米。人物正坐，衣纹简略，面部未刻五官。底座内侧有后刻“无相”二字，具体年代及用途未详。</p>
       <div className="mt-9 border-y border-[#d9dcd8] py-7">
-        <dl className="grid gap-6 text-[12px] sm:grid-cols-3"><div><dt className="text-[#999e99]">估价</dt><dd className="mt-2">¥80,000—120,000</dd></div><div><dt className="text-[#999e99]">成交价</dt><dd className="mt-2 font-semibold">¥380,000</dd></div><div><dt className="text-[#999e99]">竞得方</dt><dd className="mt-2">匿名委托</dd></div></dl>
+        <dl className="grid gap-6 text-[12px] sm:grid-cols-3"><div><dt className="text-[#999e99]">估价</dt><dd className="mt-2">¥12,000—18,000</dd></div><div><dt className="text-[#999e99]">成交价</dt><dd className="mt-2 font-semibold">¥86,000</dd></div><div><dt className="text-[#999e99]">竞得方</dt><dd className="mt-2">匿名委托</dd></div></dl>
       </div>
       <p className="mt-7 max-w-[620px] text-[12px] leading-7 text-[#737873]">拍品来自“临川私人旧藏”专场。委托人与竞得人信息均未公开。</p>
     </main>
