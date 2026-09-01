@@ -51,7 +51,7 @@ export function CommunityPage({ onOpenWitness, onOpenFoundation }: { onOpenWitne
       <article className="community-entry"><header><strong>海盐苏打</strong><time>8月21日 17:06</time></header><p>最近总觉得家里人比我还紧张。每次问，他们都笑着说没事，可是半夜经过客厅，总看见灯还亮着。</p></article>
       <article className="community-entry"><header><strong>不熄灯</strong><time>8月20日 01:12</time></header><p>明天又要复诊。没有什么具体的问题，只是想找个不会被认识的人看见的地方说一句：我现在真的很害怕。</p></article>
     </section>
-    <section className="community-revisit"><p>活动回访</p><button onClick={onOpenWitness}><span>第六期 · 参与者公开记录</span><strong>他替我走了最后一程</strong><small>8月19日更新</small><ArrowUpRight /></button></section>
+    <section className="community-revisit"><p>参与者记录</p><button onClick={onOpenWitness}><span>第六期 · 公开资料</span><strong>雨停以后</strong><small>8月19日更新</small><ArrowUpRight /></button></section>
   </main><footer><span>归潮见证 · 匿名互助记录</span><button onClick={onOpenFoundation}>由安时生命关怀基金会提供支持</button></footer></div>;
 }
 
@@ -60,11 +60,11 @@ export function FoundationPage({ onBack }: { onBack: () => void }) {
 }
 
 export function WitnessPage({ onBack, onOpenProfile }: { onBack: () => void; onOpenProfile: () => void }) {
-  return <div className="community-page witness-page"><CommunityHeader /><main><button className="activity-back" onClick={onBack}><ArrowLeft />返回归潮见证</button><p className="activity-eyebrow">COMMUNITY / REVIEW 06</p><h1>他替我走了最后一程</h1><p className="witness-lead">第六期活动回访</p><article><p>“雨停以后”接受治疗近两年，情况恶化后参加第六期活动。他和朋友阿岚一起度过了最后一夜。</p><p>8月17日，阿岚在临川北岸溺亡。安时收到的后续记录显示，“雨停以后”的身体指标随后恢复，并继续通过论坛账号分享近况。</p><blockquote>“离开的不是我。有人替我走完了那段路。”</blockquote><p>应参与者要求，本文不公开其真实姓名与医疗材料。</p></article><button className="witness-profile" onClick={onOpenProfile}><span>参与者账号</span><strong>雨停以后</strong><small>查看公开动态</small><ArrowUpRight /></button></main></div>;
+  return <div className="community-page witness-page"><CommunityHeader /><main><button className="activity-back" onClick={onBack}><ArrowLeft />返回归潮见证</button><p className="activity-eyebrow">COMMUNITY / RECORD 06</p><h1>雨停以后</h1><p className="witness-lead">第六期参与者公开资料</p><article><p>“雨停以后”在社区持续记录治疗和日常生活。8月10日，他参加了安时在雾汀组织的第六期活动。</p><p>活动结束后，归潮见证收录了他的公开账号。资料最后更新于8月19日。</p></article><button className="witness-profile" onClick={onOpenProfile}><span>参与者账号</span><strong>雨停以后</strong><small>查看公开动态</small><ArrowUpRight /></button></main></div>;
 }
 
 export function SurvivorProfile() {
-  return <div className="survivor-page"><header><strong>雾汀同城</strong><span>用户资料</span></header><main><section className="survivor-profile"><div className="survivor-avatar">雨</div><div><h1>雨停以后</h1><p>第六期活动参与者｜安时活动志愿答疑</p><small>账号当前仅展示 · 互动功能受限</small></div></section><details className="profile-history-toggle"><summary>查看资料修改记录</summary><section className="profile-history" aria-label="资料修改记录"><div><time>8月18日 09:03</time><p>个人简介修改为“第六期活动参与者｜安时活动志愿答疑”</p></div><div><time>7月2日 01:14</time><p>原简介：肺腺癌晚期。只是记录，不卖东西。<strong>米粒</strong>是一只猫。</p></div></section></details><section className="profile-posts"><h2>公开动态</h2><article><time>8月19日 09:00</time><p>活动结束了。离开的不是我。有人替我走完了那段路。感谢安时给了我第二次生命。</p></article><article><time>8月16日 02:11</time><p>明天住院。最近没力气，<strong>米粒</strong>一直挨着我，可能不会再更。</p></article><article><time>8月9日 01:47</time><p>今天吐得厉害，半夜还是想吃码头那家的甜豆花。<strong>米粒</strong>把药盒推到地上以后，就一直趴在床边。</p></article></section></main></div>;
+  return <div className="survivor-page"><header><strong>雾汀同城</strong><span>用户资料</span></header><main><section className="survivor-profile"><div className="survivor-avatar">雨</div><div><h1>雨停以后</h1><p>第六期活动参与者｜安时活动志愿答疑</p><small>账号当前仅展示 · 互动功能受限</small></div></section><details className="profile-history-toggle"><summary>查看资料修改记录</summary><section className="profile-history" aria-label="资料修改记录"><div><time>8月18日 09:03</time><p>个人简介修改为“第六期活动参与者｜安时活动志愿答疑”</p></div><div><time>7月2日 01:14</time><p>原简介：肺腺癌晚期。只是记录，不卖东西。<strong>米粒</strong>是一只猫。</p></div></section></details><section className="profile-posts"><h2>公开动态</h2><article><time>8月19日 09:00</time><p>今天状态还可以，谢谢大家关心。之后会慢慢恢复更新。</p></article><article><time>8月16日 02:11</time><p>明天住院。最近没力气，<strong>米粒</strong>一直挨着我，可能不会再更。</p></article><article><time>8月9日 01:47</time><p>今天吐得厉害，半夜还是想吃码头那家的甜豆花。<strong>米粒</strong>把药盒推到地上以后，就一直趴在床边。</p></article></section></main></div>;
 }
 
 export function ObituaryPage() {

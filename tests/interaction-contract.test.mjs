@@ -374,14 +374,17 @@ test("the optional fraud trail moves from the witness's cat to an address and th
   assert.match(foundation, /创办人[\s\S]*顾惟真/);
   assert.match(foundation, /一次重病康复后发起安时计划/);
   const witness = renderToStaticMarkup(React.createElement(WitnessPage, { onBack() {}, onOpenProfile() {} }));
-  assert.match(witness, /8月17日，阿岚在临川北岸溺亡/);
   assert.match(witness, /雨停以后/);
+  assert.match(witness, /资料最后更新于8月19日/);
+  assert.doesNotMatch(witness, /他替我走了最后一程|阿岚|溺亡|身体指标|有人替我|第二次生命/);
   const profile = renderToStaticMarkup(React.createElement(SurvivorProfile));
   assert.match(profile, /原简介：肺腺癌晚期/);
   assert.match(profile.replace(/<[^>]+>/g, ""), /米粒是一只猫/);
   assert.ok((profile.match(/<strong>米粒<\/strong>/g) ?? []).length >= 3);
   assert.doesNotMatch(profile, /程叙白|站务说明|原账号联系人/);
   assert.match(profile, /8月19日 09:00/);
+  assert.match(profile, /之后会慢慢恢复更新/);
+  assert.doesNotMatch(profile, /有人替我|第二次生命|离开的不是我/);
   const { LostCatPage, NeighborhoodNoticePage } = await vite.ssrLoadModule("/app/cat-trail-pages.tsx");
   const lostCat = renderToStaticMarkup(React.createElement(LostCatPage));
   assert.match(lostCat, /mili-lost-cat\.webp/);
