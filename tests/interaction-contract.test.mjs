@@ -25,7 +25,7 @@ test("entering the desktop cannot reuse the intro button as a focused photo icon
 test("every exposed game button has an action or submits a handled form", async () => {
   const failures = [];
   let buttons = 0;
-  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx"]) {
+  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -284,11 +284,13 @@ test("activity aliases resolve while invalid addresses cannot bypass the ride ga
   assert.deepEqual(resolveBrowserInput("guichao.example/home", true), { tab: "activity", query: "community" });
   assert.deepEqual(resolveBrowserInput("guichao.example/records/session-06", true), { tab: "activity", query: "witness" });
   assert.deepEqual(resolveBrowserInput("anshi-foundation.example/about", true), { tab: "activity", query: "foundation" });
+  assert.deepEqual(resolveBrowserInput("linchuan-pets.example/lost/mili-0818", true), { tab: "lost-cat", query: "" });
+  assert.deepEqual(resolveBrowserInput("qingtongli.example/notices/0822", true), { tab: "neighborhood-notice", query: "" });
 });
 
 test("activity search has one result and wrong text or URLs show explicit recoverable feedback", async () => {
   const { SearchResults, BrowserNotFound } = await vite.ssrLoadModule("/app/search-results.tsx");
-  const render = (query) => renderToStaticMarkup(React.createElement(SearchResults, { query, unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openObituary() {} }));
+  const render = (query) => renderToStaticMarkup(React.createElement(SearchResults, { query, unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {} }));
   const html = render("安时活动服务");
   assert.match(html, /安时活动服务 · 雾汀生命关怀/);
   assert.equal((html.match(/<button\b/g) ?? []).length, 1);
@@ -343,18 +345,22 @@ test("the unlisted seventh archive must be reached by changing 06 to 07", async 
   assert.doesNotMatch(home, /session07_notice_old|第七期参与须知/);
 });
 
-test("the optional fraud trail requires the acrostic and then the witness's real name", async () => {
+test("the optional fraud trail moves from the witness's cat to an address and then the real obituary", async () => {
   const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
-  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openObituary() {} };
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {} };
   const renderSearch = (query) => renderToStaticMarkup(React.createElement(SearchResults, { ...props, query }));
   const communitySearch = renderSearch("归潮见证");
   assert.match(communitySearch, /病友与家属互助社区/);
   assert.doesNotMatch(communitySearch, /他替我走了最后一程|第六期个案记录/);
+  assert.match(renderSearch("米粒 猫"), /寻猫启事｜米粒/);
+  assert.match(renderSearch("临川市青桐里3栋"), /青桐里3栋居民治丧通知/);
   assert.match(renderSearch("程叙白"), /程叙白先生讣告/);
-  for (const query of ["第七期", "雨停以后", "讣告", "安时骗局"]) assert.match(renderSearch(query), /未找到与/);
+  for (const query of ["第七期", "雨停以后", "米粒", "讣告", "安时骗局"]) assert.match(renderSearch(query), /未找到与/);
   const { CommunityPage, FoundationPage, WitnessPage, SurvivorProfile, ObituaryPage } = await vite.ssrLoadModule("/app/activity-page.tsx");
   const community = renderToStaticMarkup(React.createElement(CommunityPage, { onOpenWitness() {}, onOpenFoundation() {} }));
   assert.match(community, /当前账号[\s\S]*潮汐失眠/);
+  assert.match(community, /最近留下的文字/);
+  assert.doesNotMatch(community, /我的帖子|community-avatar|<h2>复查结果/);
   assert.match(community, /胃低分化腺癌/);
   assert.match(community, /腹膜及肝脏多发转移，较前进展/);
   assert.ok(community.indexOf("潮汐失眠") < community.indexOf("海盐苏打"));
@@ -367,15 +373,27 @@ test("the optional fraud trail requires the acrostic and then the witness's real
   assert.match(witness, /8月17日，阿岚在临川北岸溺亡/);
   assert.match(witness, /雨停以后/);
   const profile = renderToStaticMarkup(React.createElement(SurvivorProfile));
-  assert.match(profile, /原简介：程叙白，肺腺癌晚期/);
+  assert.match(profile, /原简介：肺腺癌晚期/);
+  assert.match(profile, /米粒是一只猫/);
+  assert.doesNotMatch(profile, /程叙白|站务说明|原账号联系人/);
   assert.match(profile, /8月19日 09:00/);
-  assert.match(profile, /原账号联系人于8月18日申请停用/);
+  const { LostCatPage, NeighborhoodNoticePage } = await vite.ssrLoadModule("/app/cat-trail-pages.tsx");
+  const lostCat = renderToStaticMarkup(React.createElement(LostCatPage));
+  assert.match(lostCat, /mili-lost-cat\.webp/);
+  assert.match(lostCat, /临川市青桐里3栋东门附近/);
+  assert.match(lostCat, /原主人近日突发状况/);
+  assert.doesNotMatch(lostCat, /程叙白/);
+  const notice = renderToStaticMarkup(React.createElement(NeighborhoodNoticePage, { onOpenObituary() {} }));
+  assert.match(notice, /青桐里3栋居民治丧通知/);
+  assert.match(notice, /程叙白/);
+  assert.match(notice, /查看正式治丧信息/);
   const obituary = renderToStaticMarkup(React.createElement(ObituaryPage));
   assert.match(obituary, /8月17日 03:26/);
   assert.match(obituary, /8月18日 10:42/);
   assert.match(obituary, /cheng-xubai-memorial\.webp/);
+  await access(path.join(root, "public/game/mili-lost-cat.webp"));
   await access(path.join(root, "public/game/cheng-xubai-memorial.webp"));
-  assert.doesNotMatch(community + foundation + witness + profile + obituary, /这说明|账号已被组织接管|骗局已揭穿/);
+  assert.doesNotMatch(community + foundation + witness + profile + lostCat + notice + obituary, /这说明|账号已被组织接管|骗局已揭穿/);
 });
 
 test("the crop hides session seven while the full corridor is last in the mountain inn gallery", async () => {

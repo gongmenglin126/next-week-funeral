@@ -44,6 +44,8 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
       if (path === "/u/rain-after") return { tab: "survivor", query: "" };
       if (FORUM_PATHS[path] && (path !== "/thread/60307" || unlocked)) return { tab: "forum", query: FORUM_PATHS[path] };
     }
+    if (url.hostname === "linchuan-pets.example" && path === "/lost/mili-0818") return { tab: "lost-cat", query: "" };
+    if (url.hostname === "qingtongli.example" && path === "/notices/0822") return { tab: "neighborhood-notice", query: "" };
     if (url.hostname === "linchuan-memorial.example" && path === "/notices/cheng-xubai") return { tab: "obituary", query: "" };
     return missing;
   } catch {

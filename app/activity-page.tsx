@@ -17,7 +17,7 @@ function ActivityHeader() {
 }
 
 function CommunityHeader() {
-  return <header><div><span aria-hidden="true">归</span><strong>归潮见证</strong></div><p>病友与家属互助社区</p><aside><small>当前账号</small><strong>潮汐失眠</strong></aside></header>;
+  return <header><div><strong>归潮见证</strong><span>病友与家属的匿名文字记录</span></div><aside><small>当前账号</small><strong>潮汐失眠</strong></aside></header>;
 }
 
 export function ActivityPage({ onOpenRide, onOpenArchive }: { onOpenRide?: () => void; onOpenArchive: (issue: string) => void }) {
@@ -46,11 +46,11 @@ export function HiddenSeventhPage({ onBack }: { onBack: () => void }) {
 
 export function CommunityPage({ onOpenWitness, onOpenFoundation }: { onOpenWitness: () => void; onOpenFoundation: () => void }) {
   return <div className="community-page"><CommunityHeader /><main>
-    <section className="community-intro"><p>这里记录治疗、陪护和告别中的真实问题。你可以匿名发言，也可以只阅读。</p></section>
-    <section className="community-feed" aria-label="社区帖子"><div className="community-section-title"><h1>最近更新</h1><span>按发布时间</span></div>
-      <article className="community-post community-post-own"><header><span className="community-avatar">潮</span><div><strong>潮汐失眠</strong><time>6月19日 23:48</time></div><small>我的帖子</small></header><h2>复查结果出来了，想问问有没有相似情况</h2><p>医生说原来的方案效果不太好了。我把姓名和门诊号遮掉了，有经历过类似情况的人吗？</p><div className="medical-attachment" aria-label="潮汐失眠上传的肿瘤科复诊记录"><header><strong>临川市第二医院</strong><span>肿瘤科门诊复诊记录 · 节选</span></header><dl><div><dt>姓名</dt><dd>周＊＊</dd></div><div><dt>主要诊断</dt><dd>胃低分化腺癌</dd></div><div><dt>复查情况</dt><dd>腹膜及肝脏多发转移，较前进展</dd></div><div><dt>处理建议</dt><dd>结合临床情况评估后续治疗方案</dd></div></dl><small>姓名、门诊号及医师签名已由上传者遮挡</small></div></article>
-      <article className="community-post"><header><span className="community-avatar is-sand">盐</span><div><strong>海盐苏打</strong><time>8月21日 17:06</time></div></header><h2>陪护的人也会害怕吗</h2><p>最近总觉得家里人比我还紧张，但每次问，他们都说没事。</p></article>
-      <article className="community-post"><header><span className="community-avatar is-blue">灯</span><div><strong>不熄灯</strong><time>8月20日 01:12</time></div></header><h2>复诊前一晚睡不着</h2><p>没什么具体问题，只是想找个地方说一句：我现在真的很害怕。</p></article>
+    <section className="community-intro"><p>有人把一段经历留在这里。没有回复，也不要求得到答案。</p></section>
+    <section className="community-feed" aria-label="匿名文字记录"><div className="community-section-title"><h1>最近留下的文字</h1><span>按发布时间</span></div>
+      <article className="community-entry community-entry-own"><header><strong>潮汐失眠</strong><time>6月19日 23:48</time></header><p>复查结果出来了。医生说原来的方案效果不太好了，我不知道该怎么跟最亲近的人开口。病例上的姓名和门诊号已经遮掉，只想问问，有没有人也经历过这种不知道还能一起走多远的时候。</p><div className="medical-attachment" aria-label="潮汐失眠上传的肿瘤科复诊记录"><header><strong>临川市第二医院</strong><span>肿瘤科门诊复诊记录 · 节选</span></header><dl><div><dt>姓名</dt><dd>周＊＊</dd></div><div><dt>主要诊断</dt><dd>胃低分化腺癌</dd></div><div><dt>复查情况</dt><dd>腹膜及肝脏多发转移，较前进展</dd></div><div><dt>处理建议</dt><dd>结合临床情况评估后续治疗方案</dd></div></dl><small>姓名、门诊号及医师签名已由上传者遮挡</small></div></article>
+      <article className="community-entry"><header><strong>海盐苏打</strong><time>8月21日 17:06</time></header><p>最近总觉得家里人比我还紧张。每次问，他们都笑着说没事，可是半夜经过客厅，总看见灯还亮着。</p></article>
+      <article className="community-entry"><header><strong>不熄灯</strong><time>8月20日 01:12</time></header><p>明天又要复诊。没有什么具体的问题，只是想找个不会被认识的人看见的地方说一句：我现在真的很害怕。</p></article>
     </section>
     <section className="community-revisit"><p>活动回访</p><button onClick={onOpenWitness}><span>第六期 · 参与者公开记录</span><strong>他替我走了最后一程</strong><small>8月19日更新</small><ArrowUpRight /></button></section>
   </main><footer><span>归潮见证 · 匿名互助记录</span><button onClick={onOpenFoundation}>由安时生命关怀基金会提供支持</button></footer></div>;
@@ -65,7 +65,7 @@ export function WitnessPage({ onBack, onOpenProfile }: { onBack: () => void; onO
 }
 
 export function SurvivorProfile() {
-  return <div className="survivor-page"><header><strong>雾汀同城</strong><span>用户资料</span></header><main><section className="survivor-profile"><div className="survivor-avatar">雨</div><div><h1>雨停以后</h1><p>第六期活动参与者｜安时活动志愿答疑</p><small>账号当前仅展示 · 互动功能受限</small></div></section><details className="profile-history-toggle"><summary>查看资料修改记录</summary><section className="profile-history" aria-label="资料修改记录"><div><time>8月18日 09:03</time><p>个人简介修改为“第六期活动参与者｜安时活动志愿答疑”</p></div><div><time>7月2日 01:14</time><p>原简介：程叙白，肺腺癌晚期。只是记录，不卖东西。米粒是一只狗。</p></div></section></details><section className="profile-posts"><h2>公开动态</h2><article><time>8月19日 09:00</time><p>活动结束了。离开的不是我。有人替我走完了那段路。感谢安时给了我第二次生命。</p></article><article><time>8月16日 02:11</time><p>明天住院，米粒送去我姐那儿了。最近没力气，可能不会再更。</p></article><article><time>8月9日 01:47</time><p>今天吐得厉害，半夜还是想吃码头那家的甜豆花。米粒一直趴在床边。</p></article></section><aside className="profile-moderation"><strong>站务说明</strong><p>原账号联系人于8月18日申请停用，次日由新的资料联系人撤回。因双方提交材料不一致，本账号已限制互动。</p></aside></main></div>;
+  return <div className="survivor-page"><header><strong>雾汀同城</strong><span>用户资料</span></header><main><section className="survivor-profile"><div className="survivor-avatar">雨</div><div><h1>雨停以后</h1><p>第六期活动参与者｜安时活动志愿答疑</p><small>账号当前仅展示 · 互动功能受限</small></div></section><details className="profile-history-toggle"><summary>查看资料修改记录</summary><section className="profile-history" aria-label="资料修改记录"><div><time>8月18日 09:03</time><p>个人简介修改为“第六期活动参与者｜安时活动志愿答疑”</p></div><div><time>7月2日 01:14</time><p>原简介：肺腺癌晚期。只是记录，不卖东西。米粒是一只猫。</p></div></section></details><section className="profile-posts"><h2>公开动态</h2><article><time>8月19日 09:00</time><p>活动结束了。离开的不是我。有人替我走完了那段路。感谢安时给了我第二次生命。</p></article><article><time>8月16日 02:11</time><p>明天住院。最近没力气，米粒一直挨着我，可能不会再更。</p></article><article><time>8月9日 01:47</time><p>今天吐得厉害，半夜还是想吃码头那家的甜豆花。米粒把药盒推到地上以后，就一直趴在床边。</p></article></section></main></div>;
 }
 
 export function ObituaryPage() {
