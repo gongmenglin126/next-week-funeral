@@ -488,7 +488,7 @@ body {
 .evidence-canvas { overflow: auto; height: min(47vh, 440px); padding: 12px; background: #dbe2e5; border-radius: 8px; }
 .evidence-image { flex-shrink: 0; overflow: hidden; margin: 0 auto; }
 .evidence-image img { display: block; width: 100%; height: auto; max-width: none; }
-.evidence-image.is-cropped img, .evidence-thumbnail.is-cropped img { width: 128%; max-width: none; transform: translateX(-22%); }
+.evidence-image.is-cropped img, .evidence-thumbnail.is-cropped img { width: 118%; max-width: none; transform: translateX(-1%); }
 .evidence-thumbnail { width: 100%; aspect-ratio: 4/3; border-radius: 6px; overflow: hidden; background: #dfe5e7; }
 .evidence-thumbnail img { display: block; width: 100%; height: 100%; object-fit: cover; box-shadow: none; border-radius: 0; }
 .evidence-metadata { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 18px 0; font-size: 12px; }
@@ -575,6 +575,17 @@ button:focus-visible { outline: 2px solid #2a73ac; outline-offset: 3px; }
 .activity-eyebrow { color: #86917c; font-size: 10px; letter-spacing: .12em; }
 .activity-intro h1 { margin: 16px 0 24px; font-family: "Noto Serif SC", serif; font-size: clamp(27px, 3vw, 40px); font-weight: 500; line-height: 1.65; }
 .activity-intro > p:last-child { max-width: 600px; font-size: 13px; line-height: 2; color: #798275; }
+.activity-archive { margin: 38px 0; padding: 26px; border: 1px solid #dbe1d3; background: #f0f3e9; }
+.activity-archive > div:first-child { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 14px; }
+.activity-archive > div:first-child .activity-eyebrow { width: 100%; }
+.activity-archive > div:first-child h2 { margin: 4px 0; }
+.activity-archive > div:first-child > p:last-child { margin-left: auto; color: #84907f; font-size: 11px; }
+.activity-archive-list { margin-top: 18px; border-top: 1px solid #d6dece; }
+.activity-archive-list button { display: grid; width: 100%; grid-template-columns: 34px 1fr 70px 18px; align-items: center; gap: 12px; padding: 15px 4px; cursor: pointer; border: 0; border-bottom: 1px solid #d6dece; background: transparent; color: #48594e; text-align: left; }
+.activity-archive-list button:hover { background: rgba(255,255,255,.45); }
+.activity-archive-list button span, .activity-archive-list button small { color: #879280; font-size: 10px; }
+.activity-archive-list button strong { font-size: 12px; font-weight: 500; }
+.activity-archive-list button svg { width: 14px; }
 .activity-program { margin: 36px 0; padding: 26px; border: 1px solid #dbe1d3; background: #f0f3e9; }
 .activity-page h2 { font-size: 20px; font-weight: 500; }
 .activity-program > div > p:last-child { font-size: 12px; color: #7d8775; }
@@ -587,6 +598,63 @@ button:focus-visible { outline: 2px solid #2a73ac; outline-offset: 3px; }
 .activity-questions details p { color: #7b8475; padding: 8px 0; }
 .activity-questions button { margin-top: 24px; }
 .activity-page footer { padding: 20px 7%; border-top: 1px solid #e1e5dc; color: #929a8b; font-size: 10px; }
+.archive-detail { max-width: 760px!important; }
+.activity-back { display: flex; align-items: center; gap: 6px; margin-bottom: 42px; padding: 0; cursor: pointer; border: 0; background: transparent; color: #728078; font-size: 11px; }
+.activity-back svg { width: 14px; }
+.archive-detail > h1, .witness-page h1 { margin: 12px 0; font-family: "Noto Serif SC", serif; font-size: clamp(28px, 4vw, 42px); font-weight: 500; }
+.archive-date, .witness-lead { color: #7f8c82; font-size: 12px; }
+.archive-copy { margin-top: 36px; padding: 30px; border: 1px solid #dbe1d3; background: #f5f5ed; color: #5a675e; font-size: 13px; line-height: 2; }
+.archive-copy h2 { margin-top: 0; }
+.archive-copy blockquote { margin: 22px 0; padding: 20px 24px; border-left: 2px solid #83927d; background: #ecefe5; font-family: "Noto Serif SC", serif; }
+.archive-copy blockquote p { margin: 0; line-height: 2.15; }
+.archive-note, .archive-pagination { color: #8a9389; font-size: 10px; }
+.archive-pagination { margin-top: 32px; padding: 16px 0!important; border-top: 1px solid #dfe4dc!important; }
+.archive-unlisted { display: inline-block; padding: 6px 10px; background: #e7e6dc; color: #7d796d; font-size: 10px; }
+.witness-page main { max-width: 760px; }
+.witness-page article { margin-top: 36px; font-family: "Noto Serif SC", serif; color: #536158; font-size: 13px; line-height: 2.1; }
+.witness-page article blockquote { margin: 28px 0; padding: 22px 28px; border-left: 2px solid #81927c; background: #eff1e9; font-size: 18px; }
+.witness-profile { display: grid; width: 100%; grid-template-columns: 1fr auto; gap: 5px 20px; margin-top: 36px; padding: 18px 20px; cursor: pointer; border: 1px solid #d4dccf; background: #f0f3e9; color: #495b50; text-align: left; }
+.witness-profile span, .witness-profile small { font-size: 10px; color: #7c897e; }
+.witness-profile strong { grid-row: 2; font-size: 17px; }
+.witness-profile small { grid-column: 2; grid-row: 2; }
+.witness-profile svg { grid-column: 2; grid-row: 1; width: 15px; }
+.survivor-page { min-height: 100%; padding-bottom: 60px; background: #f4f1e9; color: #342f29; }
+.survivor-page > header { display: flex; align-items: baseline; gap: 14px; padding: 20px 7%; background: #233d42; color: #f1efe7; }
+.survivor-page > header strong { font-family: "Noto Serif SC", serif; font-size: 22px; font-weight: 500; }
+.survivor-page > header span { color: #aebdbd; font-size: 10px; }
+.survivor-page main { max-width: 760px; margin: auto; padding: 44px 24px; }
+.survivor-profile { display: flex; align-items: center; gap: 18px; padding-bottom: 28px; border-bottom: 1px solid #d9d1c3; }
+.survivor-avatar { display: grid; width: 68px; height: 68px; place-items: center; border-radius: 50%; background: #718b8b; color: white; font-family: serif; font-size: 28px; }
+.survivor-profile h1 { margin: 0 0 7px; font-family: "Noto Serif SC", serif; font-size: 28px; font-weight: 500; }
+.survivor-profile p, .survivor-profile small { margin: 0 0 5px; color: #716a61; font-size: 11px; }
+.profile-history-toggle { margin: 20px 0; border: 1px solid #cfc6b8; background: rgba(255,255,255,.5); color: #615a51; font-size: 11px; }
+.profile-history-toggle > summary { padding: 10px 12px; cursor: pointer; }
+.profile-history { padding: 8px 20px; border: 1px solid #d9d0c2; background: rgba(255,255,255,.48); }
+.profile-history > div { display: grid; grid-template-columns: 110px 1fr; padding: 14px 0; border-bottom: 1px solid #e0d9ce; }
+.profile-history > div:last-child { border-bottom: 0; }
+.profile-history time { color: #8d8377; font-size: 10px; }
+.profile-history p { margin: 0; font-size: 12px; line-height: 1.8; }
+.profile-posts { margin-top: 38px; }
+.profile-posts h2 { font-size: 13px; }
+.profile-posts article { padding: 20px 4px; border-top: 1px solid #d9d1c4; }
+.profile-posts time { color: #8f8578; font-size: 10px; }
+.profile-posts p { margin: 8px 0 0; font-size: 12px; line-height: 1.9; }
+.profile-moderation { margin-top: 24px; padding: 18px 20px; border: 1px solid #d3c6b5; background: #ebe5da; }
+.profile-moderation strong { font-size: 11px; }
+.profile-moderation p { margin: 8px 0 0; color: #6f665c; font-size: 11px; line-height: 1.8; }
+.obituary-page { min-height: 100%; background: #f7f7f5; color: #323735; }
+.obituary-page > header { display: flex; align-items: baseline; gap: 18px; padding: 22px 7%; border-bottom: 3px solid #4a514e; }
+.obituary-page > header strong { font-size: 18px; }
+.obituary-page > header span { color: #7f8682; font-size: 10px; }
+.obituary-page main { max-width: 700px; margin: auto; padding: 52px 28px; }
+.obituary-kicker { color: #7e8481; font-size: 10px; letter-spacing: .12em; }
+.obituary-page h1 { margin: 20px 0; font-family: "Noto Serif SC", serif; font-size: clamp(28px, 4vw, 40px); font-weight: 500; }
+.obituary-rule { width: 44px; height: 2px; margin: 24px 0 34px; background: #575e5b; }
+.obituary-page main > p:not(.obituary-kicker) { font-family: "Noto Serif SC", serif; font-size: 14px; line-height: 2.2; }
+.obituary-page dl { margin-top: 38px; border-top: 1px solid #d5d8d6; }
+.obituary-page dl > div { display: grid; grid-template-columns: 110px 1fr; padding: 13px 0; border-bottom: 1px solid #dfe2e0; font-size: 11px; }
+.obituary-page dd { margin: 0; }
+.obituary-page main footer { margin-top: 44px; color: #858b88; font-size: 10px; }
 @media (max-width: 600px) { .activity-page > header > span:last-child { display: none; } .activity-program { padding: 20px; } .activity-program dl > div { grid-template-columns: 1fr; gap: 4px; } }
 
 .browser-record-page { max-width: 920px; min-height: 100%; margin: 0 auto; padding: clamp(30px, 6vw, 72px); }

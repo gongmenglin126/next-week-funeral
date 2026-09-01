@@ -28,13 +28,18 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
     if (url.hostname === "boan.example" && ["/", "/account/orders"].includes(path)) return { tab: "trip", query: "" };
     if (url.hostname === "anshi.example") {
       if (["/", "/activities"].includes(path)) return { tab: "activity", query: "" };
+      const archive = path.match(/^\/activities\/archive\/(0[1-7])$/);
+      if (archive) return { tab: "activity", query: `archive/${archive[1]}` };
+      if (path === "/records/returning-tide") return { tab: "activity", query: "witness" };
       if (path === "/booking/WT-0831-2140" && unlocked) return { tab: "ride", query: "" };
       return missing;
     }
     if (url.hostname === "wuting-talk.example") {
       if (["/", "/latest"].includes(path)) return { tab: "forum", query: "" };
+      if (path === "/u/rain-after") return { tab: "survivor", query: "" };
       if (FORUM_PATHS[path] && (path !== "/thread/60307" || unlocked)) return { tab: "forum", query: FORUM_PATHS[path] };
     }
+    if (url.hostname === "linchuan-memorial.example" && path === "/notices/cheng-xubai") return { tab: "obituary", query: "" };
     return missing;
   } catch {
     return missing;

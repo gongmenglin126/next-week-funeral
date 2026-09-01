@@ -1,13 +1,27 @@
 "use client";
 
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function ActivityPage({ onOpenRide }: { onOpenRide?: () => void }) {
+const ARCHIVES = [
+  { issue: "01", title: "第一次 · 留在岸上", date: "5月18日", summary: "围绕失去后的日常与睡眠，进行小组交流。" },
+  { issue: "02", title: "第二次 · 未寄出的信", date: "6月1日", summary: "通过书写练习，整理没有说出口的话。" },
+  { issue: "03", title: "第三次 · 海风之前", date: "6月22日", summary: "在海岸散步后，自愿分享近期的生活变化。" },
+  { issue: "04", title: "第四次 · 旧物交换", date: "7月6日", summary: "携带一件旧物，讲述它留下的记忆。" },
+  { issue: "05", title: "第五次 · 与惧同行", date: "7月27日", summary: "谈论疾病、离别以及人面对未知时的恐惧。" },
+  { issue: "06", title: "第六次 · 潮落以后", date: "8月10日", summary: "一次面向长期病患与陪伴者的封闭交流。" },
+] as const;
+
+function ActivityHeader() {
+  return <header><span className="activity-mark" aria-hidden="true">安</span><strong>安时活动服务</strong><span>雾汀 · 生命关怀</span></header>;
+}
+
+export function ActivityPage({ onOpenRide, onOpenArchive }: { onOpenRide?: () => void; onOpenArchive: (issue: string) => void }) {
   return <div className="activity-page">
-    <header><span className="activity-mark" aria-hidden="true">安</span><strong>安时活动服务</strong><span>雾汀 · 生命关怀</span></header>
+    <ActivityHeader />
     <main>
       <section className="activity-intro"><p className="activity-eyebrow">ANSHI / WUTING</p><h1>给未说出口的话，<br />留一点时间。</h1><p>我们在雾汀组织小规模的线下交流，围绕陪伴、失去与日常生活展开。你可以分享，也可以只听。</p></section>
-      <section className="activity-program"><div><p className="activity-eyebrow">线下交流</p><h2>第七期 · 海边同行</h2><p>8月31日 · 雾汀</p></div><dl><div><dt>海岸散步</dt><dd>在交流开始前，用一段步行熟悉彼此。</dd></div><div><dt>小组交流</dt><dd>谈谈生活中的变化，以及那些难以开口的事。</dd></div><div><dt>书写练习</dt><dd>写一封不必寄出的信。是否分享，由你决定。</dd></div></dl><p className="activity-small">本期采用邀请登记。具体场地和集合信息以参与通知为准。</p></section>
+      <section className="activity-archive"><div><p className="activity-eyebrow">ACTIVITY ARCHIVE</p><h2>往期活动</h2><p>公开归档 · 共6期</p></div><div className="activity-archive-list">{ARCHIVES.map((item) => <button key={item.issue} onClick={() => onOpenArchive(item.issue)}><span>{item.issue}</span><strong>{item.title}</strong><small>{item.date}</small><ArrowUpRight aria-hidden="true" /></button>)}</div></section>
       <section className="activity-questions"><h2>预约咨询</h2>
         <details><summary>为什么会收到安时接送的提醒？</summary><p>部分场次由活动方统一安排车辆。接送提醒只包含乘车信息，活动登记与车辆预约分别管理。</p></details>
         <details><summary>取消旅行平台的订单，会取消活动吗？</summary><p>不会。住宿、车票等旅行订单与活动登记不属于同一笔预约，需分别处理。</p></details>
@@ -16,4 +30,25 @@ export function ActivityPage({ onOpenRide }: { onOpenRide?: () => void }) {
       </section>
     </main><footer>安时活动服务 · 活动信息与参与说明</footer>
   </div>;
+}
+
+export function ActivityArchivePage({ issue, onBack }: { issue: string; onBack: () => void }) {
+  const item = ARCHIVES.find((entry) => entry.issue === issue) ?? ARCHIVES[0];
+  return <div className="activity-page"><ActivityHeader /><main className="archive-detail"><button className="activity-back" onClick={onBack}><ArrowLeft />返回往期活动</button><p className="activity-eyebrow">ARCHIVE / {item.issue}</p><h1>{item.title}</h1><p className="archive-date">{item.date} · 雾汀</p><div className="archive-copy"><p>{item.summary}</p><p>活动内容包括安静步行、自由书写与小组交流。现场不记录完整姓名，公开页面仅保留活动概况。</p></div><footer className="archive-pagination">第{Number(item.issue)}期 / 共6期公开归档</footer></main></div>;
+}
+
+export function HiddenSeventhPage({ onBack }: { onBack: () => void }) {
+  return <div className="activity-page hidden-archive"><ActivityHeader /><main className="archive-detail"><button className="activity-back" onClick={onBack}><ArrowLeft />返回活动首页</button><p className="activity-eyebrow">ARCHIVE / 07</p><h1>第七期 · 海边同行</h1><p className="archive-date">8月31日 · 雾汀</p><p className="archive-unlisted">此页面未列入公开归档。</p><div className="archive-copy"><h2>往期参与者来信</h2><blockquote><p>归期没有告诉家里。</p><p>潮落时，他说自己不怕了。</p><p>见不到明天也没关系。</p><p>证词会替我们留下来。</p></blockquote><p className="archive-note">来信编号：R-06-4 · 原始署名已隐去</p></div></main></div>;
+}
+
+export function WitnessPage({ onOpenProfile }: { onOpenProfile: () => void }) {
+  return <div className="activity-page witness-page"><ActivityHeader /><main><p className="activity-eyebrow">RETURNING TIDE / TESTIMONY 06</p><h1>他替我走了最后一程</h1><p className="witness-lead">归潮见证 · 第六期个案记录</p><article><p>“雨停以后”接受治疗近两年，情况恶化后参加第六期活动。他在登记中选择由同行者阿岚陪同完成最后一夜。</p><p>8月17日，阿岚在临川北岸溺亡。安时收到的后续记录显示，“雨停以后”的身体指标随后恢复，并继续通过论坛账号分享近况。</p><blockquote>“离开的不是我。有人替我走完了那段路。”</blockquote><p>应见证人要求，本文不公开其真实姓名与医疗材料。</p></article><button className="witness-profile" onClick={onOpenProfile}><span>见证人账号</span><strong>雨停以后</strong><small>查看公开动态</small><ArrowUpRight /></button></main></div>;
+}
+
+export function SurvivorProfile() {
+  return <div className="survivor-page"><header><strong>雾汀同城</strong><span>用户资料</span></header><main><section className="survivor-profile"><div className="survivor-avatar">雨</div><div><h1>雨停以后</h1><p>第六期归潮见证人｜安时活动志愿答疑</p><small>账号当前仅展示 · 互动功能受限</small></div></section><details className="profile-history-toggle"><summary>查看资料修改记录</summary><section className="profile-history" aria-label="资料修改记录"><div><time>8月18日 09:03</time><p>个人简介修改为“第六期归潮见证人｜安时活动志愿答疑”</p></div><div><time>7月2日 01:14</time><p>原简介：程叙白，肺腺癌晚期。只是记录，不卖东西。米粒是一只狗。</p></div></section></details><section className="profile-posts"><h2>公开动态</h2><article><time>8月19日 09:00</time><p>我已完成归潮。离去的是旧病，不是我。感谢安时给予第二次生命。</p></article><article><time>8月16日 02:11</time><p>明天住院，米粒送去我姐那儿了。最近没力气，可能不会再更。</p></article><article><time>8月9日 01:47</time><p>今天吐得厉害，半夜还是想吃码头那家的甜豆花。米粒一直趴在床边。</p></article></section><aside className="profile-moderation"><strong>站务说明</strong><p>原账号联系人于8月18日申请停用，次日由新的资料联系人撤回。因双方提交材料不一致，本账号已限制互动。</p></aside></main></div>;
+}
+
+export function ObituaryPage() {
+  return <div className="obituary-page"><header><strong>临川民生服务</strong><span>治丧信息公示</span></header><main><p className="obituary-kicker">讣告 · LC-0822-071</p><h1>程叙白先生讣告</h1><div className="obituary-rule" /><p>程叙白先生因病医治无效，于8月17日凌晨在临川市第二医院病逝，终年31岁。</p><p>告别仪式定于8月22日上午九时，在临川北园告别厅举行。家属感谢亲友关心，恳辞花圈。</p><dl><div><dt>逝者</dt><dd>程叙白</dd></div><div><dt>去世时间</dt><dd>8月17日 03:26</dd></div><div><dt>信息登记</dt><dd>8月18日 10:42</dd></div><div><dt>公告状态</dt><dd>已归档</dd></div></dl><footer>临川市民政公共信息服务 · 内容由治丧联系人提交</footer></main></div>;
 }

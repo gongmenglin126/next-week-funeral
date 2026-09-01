@@ -34,7 +34,7 @@ import { DesktopPanel, type DesktopPanelKind } from "./desktop-evidence";
 import { SearchBox } from "./search-box";
 import { ForumPage, LIGHTHOUSE_THREAD } from "./forum-page";
 import { SearchResults, BrowserNotFound } from "./search-results";
-import { ActivityPage } from "./activity-page";
+import { ActivityArchivePage, ActivityPage, HiddenSeventhPage, ObituaryPage, SurvivorProfile, WitnessPage } from "./activity-page";
 import { ACTIVITY_URL, resolveBrowserInput, type BrowserRoute } from "@/lib/browser-navigation";
 import type { WindowPoint } from "@/lib/window-position";
 
@@ -77,23 +77,13 @@ function HistoryPage({ navigate, unlocked }: { navigate: (action: string, query:
   );
 }
 
-function DownloadsPage({ unlocked, preview, setPreview }: { unlocked: boolean; preview: string | null; setPreview: (name: string | null) => void }) {
-  const available = preview === "灯塔接驳电子票.pdf" || (unlocked && preview === "session07_notice_old.pdf");
+function DownloadsPage({ preview, setPreview }: { preview: string | null; setPreview: (name: string | null) => void }) {
+  const available = preview === "灯塔接驳电子票.pdf";
   if (preview && available) {
     return (
       <div className="document-preview">
         <header><button onClick={() => setPreview(null)}><ArrowLeft />返回下载内容</button><span>{preview}</span></header>
-        {preview === "灯塔接驳电子票.pdf" ? <LighthouseTicket /> : (
-          <article className="pdf-sheet">
-            <p className="pdf-mark">SESSION 07 / ARCHIVED COPY</p>
-            <h1>第七期参与须知</h1>
-            <p>本文件由浏览器于8月24日 16:22 下载。来源网页当前无法访问。</p>
-            <hr />
-            <h2>陪同人员说明</h2>
-            <p>夜间环节需由登记陪同人留场。具体地点与到达方式将在活动开始前单独发送。</p>
-            <p className="pdf-foot">缓存节选 · 仅保存此页</p>
-          </article>
-        )}
+        <LighthouseTicket />
       </div>
     );
   }
@@ -102,10 +92,7 @@ function DownloadsPage({ unlocked, preview, setPreview }: { unlocked: boolean; p
       <header><Download /><div><h2>下载内容</h2><p>最近下载的文件</p></div></header>
       <section>
         <h3>本周</h3>
-        {[
-          ["8月18日", "灯塔接驳电子票.pdf", "186 KB · 下载完成"],
-          ["8月24日", "session07_notice_old.pdf", "428 KB · 来源页面已无法访问"],
-        ].filter(([, title]) => unlocked || !title.includes("session07")).map(([time, title, meta]) => (
+        {[["8月18日", "灯塔接驳电子票.pdf", "186 KB · 下载完成"]].map(([time, title, meta]) => (
           <button key={title} onClick={() => setPreview(title)}>
             <time>{time}</time><FileSearch /><span><strong>{title}</strong><small>{meta}</small></span><ArrowUpRight aria-hidden="true" />
           </button>
@@ -135,9 +122,9 @@ export default function Home() {
   const activeTab = route.tab;
   const query = route.query;
   const unlocked = allOrdersCancelled(chapter);
-  const urls: Record<string, string> = { trip: "boan.example/account/orders", forum: "wuting-talk.example/latest", history: "browser://history", downloads: "browser://downloads", ride: "anshi.example/booking/WT-0831-2140", activity: ACTIVITY_URL };
-  const labels: Record<string, string> = { trip: "泊岸旅行", forum: "雾汀同城", history: "历史记录", downloads: "下载内容", search: "雾搜", ride: "安时接送", activity: "安时活动服务", "not-found": "页面未找到" };
-  const visibleTabs = ["search", ...(travelDiscovered ? ["trip"] : []), ...(["forum", "history", "downloads", "activity", "not-found"].filter((tab) => routes.some((item) => item.tab === tab))), ...(unlocked ? ["ride"] : [])];
+  const urls: Record<string, string> = { trip: "boan.example/account/orders", forum: "wuting-talk.example/latest", history: "browser://history", downloads: "browser://downloads", ride: "anshi.example/booking/WT-0831-2140", activity: ACTIVITY_URL, survivor: "wuting-talk.example/u/rain-after", obituary: "linchuan-memorial.example/notices/cheng-xubai" };
+  const labels: Record<string, string> = { trip: "泊岸旅行", forum: "雾汀同城", history: "历史记录", downloads: "下载内容", search: "雾搜", ride: "安时接送", activity: "安时活动服务", survivor: "雨停以后", obituary: "治丧信息", "not-found": "页面未找到" };
+  const visibleTabs = ["search", ...(travelDiscovered ? ["trip"] : []), ...(["forum", "history", "downloads", "activity", "survivor", "obituary", "not-found"].filter((tab) => routes.some((item) => item.tab === tab))), ...(unlocked ? ["ride"] : [])];
   // The ride tab is only exposed after its notification has actually been opened.
   const displayedTabs = visibleTabs.filter((tab) => tab !== "ride" || routes.some((item) => item.tab === "ride"));
 
@@ -148,7 +135,10 @@ export default function Home() {
       "沿海公路夜间施工，临时公交调整汇总": "60320",
       "老城民宿到旧灯塔，早上五点能叫到车吗": "60285",
     };
-    return tab === "forum" && forumPaths[pageQuery] ? `wuting-talk.example/thread/${forumPaths[pageQuery]}` : urls[tab] ?? pageQuery;
+    if (tab === "forum" && forumPaths[pageQuery]) return `wuting-talk.example/thread/${forumPaths[pageQuery]}`;
+    if (tab === "activity" && pageQuery.startsWith("archive/")) return `anshi.example/activities/${pageQuery}`;
+    if (tab === "activity" && pageQuery === "witness") return "anshi.example/records/returning-tide";
+    return urls[tab] ?? pageQuery;
   }
 
   function navigate(tab: string, nextQuery = "") {
@@ -249,13 +239,15 @@ export default function Home() {
             <TabsContent forceMount value="trip" className="min-h-full data-[state=inactive]:hidden"><TravelPlatform state={chapter} onCancel={dispatch} onDownloads={() => navigate("downloads")} /></TabsContent>
             <TabsContent forceMount value="forum" className="min-h-full bg-[#f4f1e9] data-[state=inactive]:hidden"><ForumPage unlocked={unlocked} thread={activeTab === "forum" ? query || null : null} setThread={(title) => navigate("forum", title ?? "")} /></TabsContent>
             <TabsContent forceMount value="history" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><HistoryPage unlocked={unlocked} navigate={navigate} /></TabsContent>
-            <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage unlocked={unlocked} preview={downloadPreview} setPreview={(name) => navigate("downloads", name ?? "")} /></TabsContent>
+            <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage preview={downloadPreview} setPreview={(name) => navigate("downloads", name ?? "")} /></TabsContent>
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={`search-box:${query}`} query={query} onSearch={submitBrowserInput} />
-              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} />
+              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openWitness={() => navigate("activity", "witness")} openObituary={() => navigate("obituary")} />
             </TabsContent>
-            <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden"><ActivityPage onOpenRide={unlocked ? openRide : undefined} /></TabsContent>
+            <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden">{query === "witness" ? <WitnessPage onOpenProfile={() => navigate("survivor")} /> : query === "archive/07" ? <HiddenSeventhPage onBack={() => navigate("activity")} /> : query.startsWith("archive/") ? <ActivityArchivePage issue={query.slice(-2)} onBack={() => navigate("activity")} /> : <ActivityPage onOpenRide={unlocked ? openRide : undefined} onOpenArchive={(issue) => navigate("activity", `archive/${issue}`)} />}</TabsContent>
+            <TabsContent value="survivor" className="min-h-full data-[state=inactive]:hidden"><SurvivorProfile /></TabsContent>
+            <TabsContent value="obituary" className="min-h-full data-[state=inactive]:hidden"><ObituaryPage /></TabsContent>
             <TabsContent value="not-found" className="min-h-full data-[state=inactive]:hidden"><BrowserNotFound address={query} onSearch={() => navigate("search")} /></TabsContent>
             {unlocked && <TabsContent forceMount value="ride" className="min-h-full data-[state=inactive]:hidden"><SecretRide onOpenActivity={() => navigate("activity")} /></TabsContent>}
           </div>

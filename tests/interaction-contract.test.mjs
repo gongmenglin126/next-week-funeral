@@ -91,7 +91,7 @@ test("deleted photos cannot be opened through downloads and every photo fits bot
   const { visiblePhotos } = await vite.ssrLoadModule("/lib/photo-library.ts");
   const { PhotoViewer } = await vite.ssrLoadModule("/app/desktop-evidence.tsx");
   for (const photo of visiblePhotos(true)) {
-    const ratio = photo.width / photo.height / (photo.cropped ? 1.28 : 1);
+    const ratio = photo.width / photo.height / (photo.cropped ? 1.18 : 1);
     const html = renderToStaticMarkup(React.createElement(PhotoViewer, { photo, onClose() {} }));
     const renderedRatio = Number(html.match(/\* ([\d.]+)\)\)/)?.[1]);
     assert.ok(Math.abs(renderedRatio - ratio) < 1e-12);
@@ -266,7 +266,7 @@ test("activity aliases resolve while invalid addresses cannot bypass the ride ga
 
 test("activity search has one result and wrong text or URLs show explicit recoverable feedback", async () => {
   const { SearchResults, BrowserNotFound } = await vite.ssrLoadModule("/app/search-results.tsx");
-  const render = (query) => renderToStaticMarkup(React.createElement(SearchResults, { query, unlocked: true, openTravel() {}, openForum() {}, openActivity() {} }));
+  const render = (query) => renderToStaticMarkup(React.createElement(SearchResults, { query, unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openWitness() {}, openObituary() {} }));
   const html = render("安时活动服务");
   assert.match(html, /安时活动服务 · 雾汀生命关怀/);
   assert.equal((html.match(/<button\b/g) ?? []).length, 1);
@@ -281,15 +281,59 @@ test("activity search has one result and wrong text or URLs show explicit recove
 
 test("the activity homepage is reachable from the ride and keeps ride access gated", async () => {
   const { ActivityPage } = await vite.ssrLoadModule("/app/activity-page.tsx");
-  const publicPage = renderToStaticMarkup(React.createElement(ActivityPage));
-  assert.match(publicPage, /第七期 · 海边同行/);
+  const publicPage = renderToStaticMarkup(React.createElement(ActivityPage, { onOpenArchive() {} }));
+  assert.match(publicPage, /公开归档 · 共6期/);
+  assert.equal((publicPage.match(/class="activity-archive-list"[\s\S]*?<\/div>/)?.[0].match(/<button/g) ?? []).length, 6);
+  assert.doesNotMatch(publicPage, /第七期|海边同行|归潮见证/);
   assert.equal((publicPage.match(/<details>/g) ?? []).length, 3);
   assert.doesNotMatch(publicPage, /查看我的接送订单|替死|借命|邪教/);
-  assert.match(renderToStaticMarkup(React.createElement(ActivityPage, { onOpenRide() {} })), /查看我的接送订单/);
+  assert.match(renderToStaticMarkup(React.createElement(ActivityPage, { onOpenRide() {}, onOpenArchive() {} })), /查看我的接送订单/);
   const { SecretRide } = await vite.ssrLoadModule("/app/chapter-one.tsx");
   const ride = renderToStaticMarkup(React.createElement(SecretRide, { onOpenActivity() {} }));
   assert.match(ride, /<button class="ride-source-link"/);
   const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
   assert.match(source, /openActivity=\{\(\) => navigate\("activity"\)\}/);
   assert.match(source, /<SecretRide onOpenActivity=\{\(\) => navigate\("activity"\)\}/);
+});
+
+test("the unlisted seventh archive must be reached by changing 06 to 07", async () => {
+  const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
+  for (const issue of ["01", "02", "03", "04", "05", "06"]) {
+    assert.deepEqual(resolveBrowserInput(`anshi.example/activities/archive/${issue}`, true), { tab: "activity", query: `archive/${issue}` });
+  }
+  assert.deepEqual(resolveBrowserInput("anshi.example/activities/archive/07", true), { tab: "activity", query: "archive/07" });
+  assert.equal(resolveBrowserInput("anshi.example/activities/archive/08", true).tab, "not-found");
+  const { ActivityArchivePage, HiddenSeventhPage } = await vite.ssrLoadModule("/app/activity-page.tsx");
+  const sixth = renderToStaticMarkup(React.createElement(ActivityArchivePage, { issue: "06", onBack() {} }));
+  assert.match(sixth, /ARCHIVE \/ 06/);
+  assert.doesNotMatch(sixth, /第七期|归潮见证/);
+  const seventh = renderToStaticMarkup(React.createElement(HiddenSeventhPage, { onBack() {} }));
+  assert.match(seventh, /ARCHIVE \/ 07/);
+  assert.match(seventh, /此页面未列入公开归档/);
+  for (const line of ["归期没有告诉家里", "潮落时，他说自己不怕了", "见不到明天也没关系", "证词会替我们留下来"]) assert.ok(seventh.includes(line));
+  const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
+  assert.doesNotMatch(search, /第七期生前告别体验|session-07|图片匹配 · 低清存档/);
+  const home = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  assert.doesNotMatch(home, /session07_notice_old|第七期参与须知/);
+});
+
+test("the optional fraud trail requires the acrostic and then the witness's real name", async () => {
+  const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openWitness() {}, openObituary() {} };
+  const renderSearch = (query) => renderToStaticMarkup(React.createElement(SearchResults, { ...props, query }));
+  assert.match(renderSearch("归潮见证"), /他替我走了最后一程/);
+  assert.match(renderSearch("程叙白"), /程叙白先生讣告/);
+  for (const query of ["第七期", "雨停以后", "讣告", "安时骗局"]) assert.match(renderSearch(query), /未找到与/);
+  const { WitnessPage, SurvivorProfile, ObituaryPage } = await vite.ssrLoadModule("/app/activity-page.tsx");
+  const witness = renderToStaticMarkup(React.createElement(WitnessPage, { onOpenProfile() {} }));
+  assert.match(witness, /8月17日，阿岚在临川北岸溺亡/);
+  assert.match(witness, /雨停以后/);
+  const profile = renderToStaticMarkup(React.createElement(SurvivorProfile));
+  assert.match(profile, /原简介：程叙白，肺腺癌晚期/);
+  assert.match(profile, /8月19日 09:00/);
+  assert.match(profile, /原账号联系人于8月18日申请停用/);
+  const obituary = renderToStaticMarkup(React.createElement(ObituaryPage));
+  assert.match(obituary, /8月17日 03:26/);
+  assert.match(obituary, /8月18日 10:42/);
+  assert.doesNotMatch(witness + profile + obituary, /这说明|账号已被组织接管|骗局已揭穿/);
 });
