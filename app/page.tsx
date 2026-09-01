@@ -37,10 +37,9 @@ import { SearchResults, BrowserNotFound } from "./search-results";
 import { ActivityArchivePage, ActivityPage, CommunityPage, FoundationPage, HiddenSeventhPage, ObituaryPage, SurvivorProfile, WitnessPage } from "./activity-page";
 import { LostCatPage, NeighborhoodNoticePage } from "./cat-trail-pages";
 import { BiographyPage, FounderProfilePage, HaijiaHospitalPage, LuWenchuanMemorialPage } from "./founder-trail-pages";
+import { GuWeizhenAuctionPage, GuWeizhenCollectionPage, GuWeizhenInterviewPage, GuWeizhenPoemPage } from "./founder-deep-pages";
 import { ACTIVITY_URL, resolveBrowserInput, type BrowserRoute } from "@/lib/browser-navigation";
 import type { WindowPoint } from "@/lib/window-position";
-
-
 
 function HistoryPage({ navigate, unlocked }: { navigate: (action: string, query: string) => void; unlocked: boolean }) {
   const groups = [
@@ -125,10 +124,54 @@ export default function Home() {
   const activeTab = route.tab;
   const query = route.query;
   const unlocked = allOrdersCancelled(chapter);
-  const urls: Record<string, string> = { trip: "boan.example/account/orders", forum: "wuting-talk.example/latest", history: "browser://history", downloads: "browser://downloads", ride: "anshi.example/booking/WT-0831-2140", activity: ACTIVITY_URL, survivor: "wuting-talk.example/u/rain-after", "lost-cat": "linchuan-pets.example/lost/mili-0818", "neighborhood-notice": "qingtongli.example/notices/0822", obituary: "linchuan-memorial.example/notices/cheng-xubai", "founder-profile": "linchuan-people.example/figures/gu-weizhen", biography: "mingchuan-books.example/title/remaining-time", "lu-memorial": "linchuan-business.example/archive/2016/lu-wenchuan", hospital: "haijia-heji.example/history/2016-gu-weizhen" };
-  const labels: Record<string, string> = { trip: "泊岸旅行", forum: "雾汀同城", history: "历史记录", downloads: "下载内容", search: "雾搜", ride: "安时接送", activity: "安时活动服务", survivor: "雨停以后", "lost-cat": "寻猫启事", "neighborhood-notice": "社区通知", obituary: "治丧信息", "founder-profile": "顾惟真", biography: "顾惟真自传", "lu-memorial": "旧报归档", hospital: "海岬和济", "not-found": "页面未找到" };
-  const visibleTabs = ["search", ...(travelDiscovered ? ["trip"] : []), ...(["forum", "history", "downloads", "activity", "survivor", "lost-cat", "neighborhood-notice", "obituary", "founder-profile", "biography", "lu-memorial", "hospital", "not-found"].filter((tab) => routes.some((item) => item.tab === tab))), ...(unlocked ? ["ride"] : [])];
-  // The ride tab is only exposed after its notification has actually been opened.
+  const urls: Record<string, string> = {
+    trip: "boan.example/account/orders",
+    forum: "wuting-talk.example/latest",
+    history: "browser://history",
+    downloads: "browser://downloads",
+    ride: "anshi.example/booking/WT-0831-2140",
+    activity: ACTIVITY_URL,
+    survivor: "wuting-talk.example/u/rain-after",
+    "lost-cat": "linchuan-pets.example/lost/mili-0818",
+    "neighborhood-notice": "qingtongli.example/notices/0822",
+    obituary: "linchuan-memorial.example/notices/cheng-xubai",
+    "founder-profile": "linchuan-people.example/figures/gu-weizhen",
+    "founder-interview": "haizhou-people.example/interview/gu-weizhen-2023",
+    "founder-poem": "linchuan-literature.example/archive/2020/gu-weizhen",
+    "founder-collection": "linchuan-archive.example/exhibitions/tide-paper",
+    "founder-auction": "jiawen-auction.example/results/2018-autumn/linchuan",
+    biography: "mingchuan-books.example/title/remaining-time",
+    "lu-memorial": "linchuan-business.example/archive/2016/lu-wenchuan",
+    hospital: "haijia-heji.example/history/2016-gu-weizhen",
+  };
+  const labels: Record<string, string> = {
+    trip: "泊岸旅行",
+    forum: "雾汀同城",
+    history: "历史记录",
+    downloads: "下载内容",
+    search: "雾搜",
+    ride: "安时接送",
+    activity: "安时活动服务",
+    survivor: "雨停以后",
+    "lost-cat": "寻猫启事",
+    "neighborhood-notice": "社区通知",
+    obituary: "治丧信息",
+    "founder-profile": "顾惟真",
+    "founder-interview": "海州人物",
+    "founder-poem": "临川文艺",
+    "founder-collection": "文献收藏展",
+    "founder-auction": "秋拍记录",
+    biography: "顾惟真自传",
+    "lu-memorial": "旧报归档",
+    hospital: "海岬和济",
+    "not-found": "页面未找到",
+  };
+  const routeTabs = [
+    "forum", "history", "downloads", "activity", "survivor", "lost-cat", "neighborhood-notice", "obituary",
+    "founder-profile", "founder-interview", "founder-poem", "founder-collection", "founder-auction",
+    "biography", "lu-memorial", "hospital", "not-found",
+  ];
+  const visibleTabs = ["search", ...(travelDiscovered ? ["trip"] : []), ...(routeTabs.filter((tab) => routes.some((item) => item.tab === tab))), ...(unlocked ? ["ride"] : [])];
   const displayedTabs = visibleTabs.filter((tab) => tab !== "ride" || routes.some((item) => item.tab === "ride"));
 
   function browserAddress(tab: string, pageQuery: string) {
@@ -256,7 +299,25 @@ export default function Home() {
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={`search-box:${query}`} query={query} onSearch={submitBrowserInput} />
-              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openFounder={() => navigate("founder-profile")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} />
+              <SearchResults
+                key={`search-results:${query}`}
+                query={query}
+                unlocked={unlocked}
+                openTravel={() => navigate("trip")}
+                openForum={() => navigate("forum")}
+                openActivity={() => navigate("activity")}
+                openCommunity={() => navigate("activity", "community")}
+                openLostCat={() => navigate("lost-cat")}
+                openCommunityNotice={() => navigate("neighborhood-notice")}
+                openObituary={() => navigate("obituary")}
+                openFounder={() => navigate("founder-profile")}
+                openFounderInterview={() => navigate("founder-interview")}
+                openFounderPoem={() => navigate("founder-poem")}
+                openFounderCollection={() => navigate("founder-collection")}
+                openBiography={() => navigate("biography")}
+                openLuMemorial={() => navigate("lu-memorial")}
+                openHospital={() => navigate("hospital")}
+              />
             </TabsContent>
             <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden">{query === "community" ? <CommunityPage onOpenWitness={() => navigate("activity", "witness")} onOpenFoundation={() => navigate("activity", "foundation")} /> : query === "witness" ? <WitnessPage onBack={() => navigate("activity", "community")} onOpenProfile={() => navigate("survivor")} /> : query === "foundation" ? <FoundationPage onBack={() => navigate("activity", "community")} /> : query === "archive/07" ? <HiddenSeventhPage onBack={() => navigate("activity")} /> : query.startsWith("archive/") ? <ActivityArchivePage issue={query.slice(-2)} onBack={() => navigate("activity")} /> : <ActivityPage onOpenRide={unlocked ? openRide : undefined} onOpenArchive={(issue) => navigate("activity", `archive/${issue}`)} />}</TabsContent>
             <TabsContent value="survivor" className="min-h-full data-[state=inactive]:hidden"><SurvivorProfile /></TabsContent>
@@ -264,6 +325,10 @@ export default function Home() {
             <TabsContent value="neighborhood-notice" className="min-h-full data-[state=inactive]:hidden"><NeighborhoodNoticePage onOpenObituary={() => navigate("obituary")} /></TabsContent>
             <TabsContent value="obituary" className="min-h-full data-[state=inactive]:hidden"><ObituaryPage /></TabsContent>
             <TabsContent value="founder-profile" className="min-h-full data-[state=inactive]:hidden"><FounderProfilePage /></TabsContent>
+            <TabsContent value="founder-interview" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenInterviewPage /></TabsContent>
+            <TabsContent value="founder-poem" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenPoemPage /></TabsContent>
+            <TabsContent value="founder-collection" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenCollectionPage onOpenAuction={() => navigate("founder-auction")} /></TabsContent>
+            <TabsContent value="founder-auction" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenAuctionPage /></TabsContent>
             <TabsContent value="biography" className="min-h-full data-[state=inactive]:hidden"><BiographyPage /></TabsContent>
             <TabsContent value="lu-memorial" className="min-h-full data-[state=inactive]:hidden"><LuWenchuanMemorialPage /></TabsContent>
             <TabsContent value="hospital" className="min-h-full data-[state=inactive]:hidden"><HaijiaHospitalPage /></TabsContent>
