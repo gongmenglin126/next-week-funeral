@@ -23,8 +23,8 @@ const founderDeepResults = [
   {
     id: "interview",
     eyebrow: "海州人物 · 2023年11月刊",
-    title: "顾惟真：现在一天只排两件事",
-    text: "《海州人物》跟访顾惟真的一天：公司、基金会，以及塞满旧书和地方文献的书房。",
+    title: "顾惟真，病后七年",
+    text: "七年前那场重病之后，他的工作节奏慢了下来，也开始把更多时间留给基金会和书房。",
     url: "haizhou-people.example/interview/gu-weizhen-2023",
   },
   {
