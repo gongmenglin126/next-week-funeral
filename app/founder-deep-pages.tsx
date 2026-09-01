@@ -45,9 +45,9 @@ export function GuWeizhenInterviewPage() {
     </header>
 
     <main className="mx-auto max-w-[980px] px-7 py-10 md:px-12 md:py-14">
-      <figure>
-        <img src="./game/gu-weizhen-study-2022.jpg" alt="顾惟真书房一角，木质书架与书桌，书架上摆着一尊无面小像" />
-        <figcaption>顾惟真书房一角，2022年。</figcaption>
+      <figure className="mx-auto max-w-[860px] text-center">
+        <img className="mx-auto block h-auto w-full max-w-[860px] object-contain" src="./game/gu-weizhen-study-2022.jpg" alt="顾惟真书房一角，木质书架与书桌，书架上摆着一尊无面小像" />
+        <figcaption className="mt-3 text-center text-[10px] leading-5 text-[#8b877f]">顾惟真书房一角，2022年。</figcaption>
       </figure>
 
       <div className="mx-auto mt-12 max-w-[700px] space-y-7 font-serif text-[15px] leading-[2.05] text-[#3c403c]">
