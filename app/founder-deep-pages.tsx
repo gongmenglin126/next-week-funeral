@@ -1,9 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
-const STUDY_IMAGE = "./game/gu-weizhen-study-2022.webp";
-
 export function GuWeizhenPoemPage() {
   return <article className="min-h-full bg-[#fbfaf7] text-[#252a27]">
     <header className="border-b border-[#dedbd4] bg-white">
@@ -34,8 +30,6 @@ export function GuWeizhenPoemPage() {
 }
 
 export function GuWeizhenInterviewPage() {
-  const [photoOpen, setPhotoOpen] = useState(false);
-
   return <article className="min-h-full bg-[#f3efe8] text-[#292d2a]">
     <header className="bg-[#202622] text-[#f4f0e8]">
       <div className="mx-auto max-w-[980px] px-7 pb-10 pt-7 md:px-12 md:pb-12 md:pt-9">
@@ -51,28 +45,9 @@ export function GuWeizhenInterviewPage() {
     </header>
 
     <main className="mx-auto max-w-[980px] px-7 py-10 md:px-12 md:py-14">
-      <figure style={{ margin: 0 }}>
-        <div style={{ width: "100%", minHeight: 360, overflow: "hidden", background: "#d9d4ca" }}>
-          <img
-            src={STUDY_IMAGE}
-            alt="顾惟真书房一角，木质书架与书桌"
-            width={1600}
-            height={1000}
-            loading="eager"
-            onClick={() => setPhotoOpen(true)}
-            style={{
-              display: "block",
-              width: "100%",
-              height: "clamp(360px, 52vw, 590px)",
-              objectFit: "cover",
-              cursor: "zoom-in",
-            }}
-          />
-        </div>
-        <figcaption className="mt-3 flex items-center justify-between gap-4 border-b border-[#cfc8bc] pb-4 text-[10px] leading-5 text-[#817a70]">
-          <span>顾惟真书房一角，2022年。</span>
-          <button type="button" className="cursor-zoom-in border-0 bg-transparent p-0 text-[10px] text-[#625d55] underline underline-offset-4" onClick={() => setPhotoOpen(true)}>查看大图</button>
-        </figcaption>
+      <figure>
+        <img src="./game/gu-weizhen-study-2022.webp" alt="顾惟真书房一角，木质书架与书桌" />
+        <figcaption>顾惟真书房一角，2022年。</figcaption>
       </figure>
 
       <div className="mx-auto mt-12 max-w-[700px] space-y-7 font-serif text-[15px] leading-[2.05] text-[#3c403c]">
@@ -87,10 +62,6 @@ export function GuWeizhenInterviewPage() {
         <p>临走前，他把我们刚看过的一册地方旧志重新塞回书架。位置显然不对，他停了一下，还是没再找，笑着说：“下次又会有人替它换地方。”</p>
       </div>
     </main>
-
-    {photoOpen && <button className="fixed inset-0 z-[90] grid cursor-zoom-out place-items-center bg-black/85 p-6" onClick={() => setPhotoOpen(false)} aria-label="关闭大图">
-      <img style={{ display: "block", maxHeight: "90vh", maxWidth: "95vw", objectFit: "contain" }} src={STUDY_IMAGE} alt="放大的顾惟真书房照片" />
-    </button>}
   </article>;
 }
 
