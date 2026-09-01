@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { clampNotePosition, type WindowPoint } from "@/lib/window-position";
 
-export function useNoteDrag(position?: WindowPoint | null, onPositionChange?: (point: WindowPoint) => void) {
+export function useNoteDrag(position?: WindowPoint | null, onPositionChange?: (point: WindowPoint) => void, titlebarLabel = "记事本标题栏，可拖动或按方向键移动") {
   const panel = useRef<HTMLElement>(null);
   const drag = useRef<{ pointerId: number; pointer: WindowPoint; origin: WindowPoint } | null>(null);
   const [localPosition, setLocalPosition] = useState<WindowPoint | null>(null);
@@ -79,6 +79,6 @@ export function useNoteDrag(position?: WindowPoint | null, onPositionChange?: (p
   return {
     panel,
     style: currentPosition ? { left: currentPosition.x, top: currentPosition.y, transform: "none" } : undefined,
-    titlebar: { onPointerDown, onPointerMove, onPointerUp: endDrag, onPointerCancel: endDrag, onLostPointerCapture: endDrag, onKeyDown, tabIndex: 0, "data-dragging": dragging, "aria-label": "记事本标题栏，可拖动或按方向键移动" },
+    titlebar: { onPointerDown, onPointerMove, onPointerUp: endDrag, onPointerCancel: endDrag, onLostPointerCapture: endDrag, onKeyDown, tabIndex: 0, "data-dragging": dragging, "aria-label": titlebarLabel },
   };
 }

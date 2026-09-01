@@ -250,6 +250,25 @@ test("note position is bounded and retained independently of whether the window 
   assert.match(hook, /window\.removeEventListener\("resize", fit\)/);
 });
 
+test("photos, trash, and files share the same retained draggable window position", async () => {
+  const { DesktopPanel } = await vite.ssrLoadModule("/app/desktop-evidence.tsx");
+  const render = (kind) => renderToStaticMarkup(React.createElement(DesktopPanel, {
+    kind, position: { x: 118, y: 76 }, onPositionChange() {}, restoredPhoto: false,
+    onRestorePhoto() {}, onClose() {}, onDownloads() {}, onPanelChange() {},
+  }));
+  for (const [kind, title] of [["photos", "旅行照片"], ["trash", "回收站"], ["files", "雾汀旅行"]]) {
+    const html = render(kind);
+    assert.match(html, /left:118px;top:76px;transform:none/);
+    assert.ok(html.includes(`${title}窗口标题栏，可拖动或按方向键移动`));
+  }
+  const home = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  assert.match(home, /const \[evidencePosition, setEvidencePosition\] = useState<WindowPoint \| null>\(null\)/);
+  assert.match(home, /<DesktopPanel key=\{desktopPanel\} position=\{evidencePosition\} onPositionChange=\{setEvidencePosition\}/);
+  const css = await readFile(path.join(root, "app/globals.css"), "utf8");
+  assert.match(css, /\.evidence-window > header \{ cursor: grab; touch-action: none; user-select: none; \}/);
+  assert.match(css, /\.evidence-window > header\[data-dragging="true"\] \{ cursor: grabbing; \}/);
+});
+
 test("activity aliases resolve while invalid addresses cannot bypass the ride gate", async () => {
   const { isActivitySearch, resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
   for (const input of ["安时活动服务", " 安时 活动 服务 ", "安时活动服务官网", "安时接送", "ANSHI"]) assert.equal(isActivitySearch(input), true, input);

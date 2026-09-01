@@ -339,6 +339,9 @@ body {
   backdrop-filter: blur(20px);
 }
 .desktop-panel > header { display: grid; height: 42px; grid-template-columns: 100px 1fr 100px; align-items: center; padding: 0 14px; border-bottom: 1px solid #d4dcdf; background: #e3e9eb; }
+.evidence-window > header { cursor: grab; touch-action: none; user-select: none; }
+.evidence-window > header[data-dragging="true"] { cursor: grabbing; }
+.evidence-window > header:focus-visible { outline: 2px solid #6f8794; outline-offset: -3px; }
 .desktop-panel > header > strong { justify-self: center; font-size: 11px; }
 .desktop-panel > header > svg { width: 16px; justify-self: end; color: #6d7b81; }
 .desktop-panel-body { display: grid; height: calc(100% - 42px); grid-template-columns: 180px 1fr; }

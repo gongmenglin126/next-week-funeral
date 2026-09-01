@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ArrowLeft, ArrowRight, Download, FileSearch, FolderClosed, Image as ImageIcon, Trash2, X, ZoomIn, ZoomOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DELETED_PHOTO, visiblePhotos, type TravelPhoto } from "@/lib/photo-library";
+import type { WindowPoint } from "@/lib/window-position";
+import { useNoteDrag } from "./use-note-drag";
 
 export type DesktopPanelKind = "files" | "photos" | "trash";
 
@@ -34,9 +36,10 @@ export function PhotoViewer({ photo, onClose, onPrevious, onNext }: {
   </section>;
 }
 
-export function DesktopPanel({ kind, restoredPhoto, onRestorePhoto, onClose, onDownloads, onPanelChange }: {
+export function DesktopPanel({ kind, restoredPhoto, onRestorePhoto, onClose, onDownloads, onPanelChange, position, onPositionChange }: {
   kind: DesktopPanelKind; restoredPhoto: boolean; onRestorePhoto: () => void;
   onClose: () => void; onDownloads: (name?: string) => void; onPanelChange: (kind: DesktopPanelKind) => void;
+  position?: WindowPoint | null; onPositionChange?: (point: WindowPoint) => void;
 }) {
   const [selected, setSelected] = useState<string | null>(null);
   const photos = visiblePhotos(restoredPhoto);
@@ -44,9 +47,10 @@ export function DesktopPanel({ kind, restoredPhoto, onRestorePhoto, onClose, onD
   const current = kind === "trash" && selected === DELETED_PHOTO.id ? DELETED_PHOTO : photos[index];
   const title = kind === "photos" ? "旅行照片" : kind === "trash" ? "回收站" : "雾汀旅行";
   const movePhoto = (delta: number) => setSelected(photos[(index + delta + photos.length) % photos.length].id);
+  const windowDrag = useNoteDrag(position, onPositionChange, `${title}窗口标题栏，可拖动或按方向键移动`);
 
-  return <section className="desktop-panel evidence-window" aria-label={title}>
-    <header><div className="window-controls"><button onClick={onClose} aria-label={`关闭${title}`}><X /></button></div><strong>{title}</strong><span /></header>
+  return <section ref={windowDrag.panel} style={windowDrag.style} className="desktop-panel evidence-window" aria-label={title}>
+    <header {...windowDrag.titlebar}><div className="window-controls"><button onClick={onClose} aria-label={`关闭${title}`}><X /></button></div><strong>{title}</strong><span /></header>
     <div className="desktop-panel-body">
       <aside aria-label="文件位置">
         <span>位置</span>

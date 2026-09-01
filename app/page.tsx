@@ -109,6 +109,7 @@ export default function Home() {
   const [chapter, dispatch] = useReducer(chapterReducer, undefined, initialChapterState);
   const [checked, setChecked] = useState<string[]>([]);
   const [notePosition, setNotePosition] = useState<WindowPoint | null>(null);
+  const [evidencePosition, setEvidencePosition] = useState<WindowPoint | null>(null);
   const [downloadPreview, setDownloadPreview] = useState<string | null>(null);
   const [routes, setRoutes] = useState<BrowserRoute[]>([{ tab: "search", query: "" }]);
   const [routeIndex, setRouteIndex] = useState(0);
@@ -254,7 +255,7 @@ export default function Home() {
         </Tabs>
       </section>
 
-      {desktopPanel === "notes" ? <NotesPanel position={notePosition} onPositionChange={setNotePosition} checked={checked} onCheck={(id) => setChecked((oldChecked) => oldChecked.includes(id) ? oldChecked.filter((value) => value !== id) : [...oldChecked, id])} onClose={() => setDesktopPanel(null)} /> : desktopPanel ? <DesktopPanel key={desktopPanel} kind={desktopPanel} restoredPhoto={restoredPhoto} onRestorePhoto={() => setRestoredPhoto(true)} onClose={() => setDesktopPanel(null)} onDownloads={(name) => navigate("downloads", name)} onPanelChange={setDesktopPanel} /> : null}
+      {desktopPanel === "notes" ? <NotesPanel position={notePosition} onPositionChange={setNotePosition} checked={checked} onCheck={(id) => setChecked((oldChecked) => oldChecked.includes(id) ? oldChecked.filter((value) => value !== id) : [...oldChecked, id])} onClose={() => setDesktopPanel(null)} /> : desktopPanel ? <DesktopPanel key={desktopPanel} position={evidencePosition} onPositionChange={setEvidencePosition} kind={desktopPanel} restoredPhoto={restoredPhoto} onRestorePhoto={() => setRestoredPhoto(true)} onClose={() => setDesktopPanel(null)} onDownloads={(name) => navigate("downloads", name)} onPanelChange={setDesktopPanel} /> : null}
 
       {(chapter.notification === "visible" || notificationCentre) && <aside className="chapter-notification" role="status" aria-live="polite" aria-label={unlocked ? "安时接送通知" : "通知中心"}>
         <header><Bell /><strong>{unlocked ? "安时接送 · 行程提醒" : "通知中心"}</strong><button aria-label="收起通知" onClick={closeNotification}><X /></button></header>
