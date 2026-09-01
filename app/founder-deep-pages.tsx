@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 export function GuWeizhenPoemPage() {
   return <article className="search-document max-w-[860px]">
     <p>《临川文艺》 · 2020年第3期</p>
@@ -14,49 +16,58 @@ export function GuWeizhenPoemPage() {
 }
 
 export function GuWeizhenInterviewPage() {
+  const [photoOpen, setPhotoOpen] = useState(false);
+
   return <article className="search-document max-w-[940px]">
     <p>《海州人物》 · 2023年11月刊</p>
     <h1>顾惟真：现在一天只排两件事</h1>
     <code>haizhou-people.example/interview/gu-weizhen-2023</code>
 
-    <p className="mt-7 max-w-[720px] text-[13px] leading-8 text-[#5c686d]">
-      采访约在下午两点。顾惟真刚从公司回来，外套搭在椅背上，桌上还摊着上午没看完的文件。比起会议室，他更愿意在这间书房里聊天。
+    <p className="mt-7 max-w-[760px] text-[13px] leading-8 text-[#5c686d]">
+      采访约在下午两点。顾惟真刚从公司回来，外套搭在椅背上。他先问记者喝不喝茶，又把桌上摊着的文件往旁边挪了挪。比起会议室，他更愿意在这间书房里聊天。
     </p>
 
-    <div className="mt-8 grid gap-9 md:grid-cols-[1.18fr_.82fr]">
-      <section className="space-y-5 text-[13px] leading-8 text-[#435158]">
-        <p><strong>记者：</strong>你现在还每天去公司吗？</p>
-        <p><strong>顾惟真：</strong>去，但不像以前。上午看看文件，见一两个人，下午如果基金会有事就过去。现在一天排两件事，第三件就往后挪。</p>
+    <figure className="mt-8 m-0 max-w-[880px]">
+      <button className="group block w-full cursor-zoom-in overflow-hidden border border-[#d8ddd9] bg-[#eceeea] text-left" onClick={() => setPhotoOpen(true)} aria-label="放大查看顾惟真书房照片">
+        <img className="block h-auto w-full transition-transform duration-300 group-hover:scale-[1.01]" src="./game/gu-weizhen-study-2022.webp" alt="顾惟真书房一角，木质书架与书桌" />
+      </button>
+      <figcaption className="mt-2 text-[10px] text-[#808a86]">顾惟真书房一角，2022年。图片由受访者提供。</figcaption>
+    </figure>
 
-        <p><strong>记者：</strong>以前应该不是这个节奏。</p>
-        <p><strong>顾惟真：</strong>以前一天能塞十件。刚慢下来的时候挺不习惯，后来发现我少开几个会，公司也没有因此倒掉。（笑）</p>
+    <section className="mt-9 max-w-[720px] space-y-5 text-[13px] leading-8 text-[#435158]">
+      <p className="text-[#657178]">我们先聊他的日程。顾惟真看了一眼手机，说当天上午已经在公司开过一个会，下午还要去基金会。</p>
 
-        <p><strong>记者：</strong>书房里旧东西很多，都是你自己收的吗？</p>
-        <p><strong>顾惟真：</strong>大部分是。也有别人送的。我不太丢旧东西，放久了就舍不得。</p>
+      <p><strong>记者：</strong>你现在一天一般怎么排？</p>
+      <p><strong>顾惟真：</strong>上午去公司，下午看基金会的事。一天两件，第三件就算了，挪到明天。</p>
 
-        <p><strong>记者：</strong>这一排像是地方文献？</p>
-        <p><strong>顾惟真：</strong>旧志、碑拓、残本都有。谈不上研究，偶尔翻翻。有些我自己也看不懂，就是觉得留着挺有意思。</p>
+      <p><strong>记者：</strong>听起来还是挺满的。</p>
+      <p><strong>顾惟真：</strong>那是你没见过我以前。（笑）以前总觉得日程空下来就是浪费，恨不得从早排到晚。现在空着也挺好。</p>
 
-        <p><strong>记者：</strong>你桌边那本2016年的台历也一直留着？</p>
-        <p><strong>顾惟真：</strong>嗯。一直没收。</p>
+      <p className="text-[#657178]">说话间他起身找茶叶，绕过书桌去开书柜。书架上除了企业管理和地方史，还有不少线装旧书、拓片册和看不出年代的薄册子。</p>
 
-        <p><strong>记者：</strong>因为那年住院？</p>
-        <p><strong>顾惟真：</strong>也不全是。那一年事情比较多。</p>
+      <p><strong>记者：</strong>这些你都看过？</p>
+      <p><strong>顾惟真：</strong>哪可能。有些翻过，有些我自己都看不太懂。</p>
 
-        <p><strong>记者：</strong>后来媒体总把那次抢救叫“海岬奇迹”。</p>
-        <p><strong>顾惟真：</strong>媒体总得起个标题。医生听见这个说法，可能比我还尴尬。</p>
+      <p><strong>记者：</strong>那为什么还收？</p>
+      <p><strong>顾惟真：</strong>看见喜欢的就带回来，朋友也会送。东西放久了，人就舍不得扔。大概都这样。</p>
 
-        <p><strong>记者：</strong>现在还会想起那段时间吗？</p>
-        <p><strong>顾惟真：</strong>偶尔。人到现在还活着，总归会想。但也不会天天想，日子还是照常过。</p>
-      </section>
+      <p className="text-[#657178]">话题后来绕到作息。他说自己现在很少熬夜，这个习惯是2016年住院之后才慢慢改掉的。</p>
 
-      <figure className="m-0">
-        <div className="grid min-h-[330px] place-items-center border border-[#d8ddd9] bg-[#eceeea] text-[#8a918d]" aria-label="顾惟真书房照片占位">
-          <span className="text-[11px] tracking-[.16em]">PHOTO</span>
-        </div>
-        <figcaption className="mt-2 text-[10px] text-[#808a86]">顾惟真书房一角，2022年。</figcaption>
-      </figure>
-    </div>
+      <p><strong>记者：</strong>出院以后马上就能早睡？</p>
+      <p><strong>顾惟真：</strong>当然不能。刚开始是医生盯得严，十点多就催我躺下。我以前两三点睡是常事，突然十点半关灯，睁着眼睛能躺一个多小时。后来慢慢也习惯了。</p>
+
+      <p><strong>记者：</strong>外面一直把那次抢救叫“海岬奇迹”。</p>
+      <p><strong>顾惟真：</strong>这个名字太大了。我第一次看到报道还问了一句，他们说的是我吗？医生听见这个叫法，大概比我更尴尬。</p>
+
+      <p><strong>记者：</strong>现在再看到这种报道呢？</p>
+      <p><strong>顾惟真：</strong>就翻过去。医生做了他们能做的，我只是刚好留下来了。日子还是得正常过，不然天天想着那一晚，人也受不了。</p>
+
+      <p className="text-[#657178]">三点四十左右，采访结束。他重新把桌上的文件摞齐，说晚上原本还有一个饭局，“能推掉就推掉”。</p>
+    </section>
+
+    {photoOpen && <button className="fixed inset-0 z-[90] grid cursor-zoom-out place-items-center bg-black/80 p-6" onClick={() => setPhotoOpen(false)} aria-label="关闭大图">
+      <img className="max-h-[88vh] max-w-[94vw] object-contain shadow-2xl" src="./game/gu-weizhen-study-2022.webp" alt="放大的顾惟真书房照片" />
+    </button>}
   </article>;
 }
 
