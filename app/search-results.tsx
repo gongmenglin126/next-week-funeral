@@ -36,6 +36,54 @@ const founderDeepResults = [
   },
 ] as const;
 
+const AUCTION_FORUM_URL = "haizhou-oldthings.example/thread/18421";
+
+function AuctionForumThread({ onBack }: { onBack: () => void }) {
+  return <article className="mx-auto mt-7 max-w-[900px] overflow-hidden border border-[#c9ced1] bg-[#f4f2ec] text-[#303538] shadow-[0_10px_32px_rgba(30,38,42,.08)]">
+    <header className="border-b border-[#303b42] bg-[#34434b] px-6 py-4 text-[#eef1ef] md:px-9">
+      <div className="flex items-center justify-between gap-5">
+        <div><strong className="text-[15px] tracking-[.14em]">旧藏网</strong><span className="ml-3 text-[10px] text-white/55">海州收藏讨论区</span></div>
+        <span className="text-[10px] text-white/45">网页存档 · 2021</span>
+      </div>
+    </header>
+
+    <div className="border-b border-[#d3d4d1] bg-[#e9e7e1] px-6 py-3 text-[10px] text-[#81827d] md:px-9">首页　›　拍卖杂谈　›　旧帖</div>
+
+    <main className="px-6 pb-10 pt-7 md:px-9 md:pb-14">
+      <button onClick={onBack} className="mb-7 inline-flex items-center gap-2 text-[11px] text-[#66757b] hover:text-[#34434b]"><ArrowLeft className="size-3.5" />返回搜索结果</button>
+      <h1 className="m-0 max-w-[730px] font-serif text-[26px] font-normal leading-[1.45] text-[#2c3235]">嘉闻18年秋拍那件无面木像，现场有人记得吗？</h1>
+      <p className="mt-3 text-[10px] text-[#969792]">纸页边角　·　2021-05-08 22:14　·　浏览 1,284　·　回复 6</p>
+
+      <section className="mt-8 border border-[#d3d4d0] bg-[#fbfaf6]">
+        <div className="grid md:grid-cols-[128px_1fr]">
+          <aside className="border-b border-[#dedfdb] bg-[#f0eee8] p-5 md:border-b-0 md:border-r">
+            <strong className="text-[12px] font-medium text-[#4c5559]">纸页边角</strong>
+            <p className="mt-2 text-[9px] leading-5 text-[#9a9c98]">注册 2017<br />海州</p>
+          </aside>
+          <div className="p-6 text-[13px] leading-8 text-[#454b4e] md:p-8">
+            <p>最近整理旧图录，翻到嘉闻2018秋拍“临川私人旧藏”专场的 LOT 21。就是那件没刻脸的小木像，估价一万二到一万八，最后拍到八万六。</p>
+            <p className="mt-5">我那天刚好在现场。最后几口价都是电话委托。成交以后，其他拍品照常送后台登记，那件东西没进库。</p>
+            <p className="mt-5">过了一会儿，一个工作人员进来跟主管说：</p>
+            <blockquote className="my-5 border-l-2 border-[#89969a] bg-[#f1f2ef] px-5 py-3 font-serif text-[15px] text-[#31383b]">“先生那边已经确认了。”</blockquote>
+            <p>主管点了下头。后来那件东西装箱，从侧门拿走了。</p>
+            <p className="mt-5">一直记得这事，主要是当时没有一个人问“哪位先生”。</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-4 space-y-3">
+        <div className="border border-[#d6d7d3] bg-[#faf9f5] px-5 py-4 text-[12px] leading-7 text-[#565c5f]"><p><strong className="mr-3 text-[10px] text-[#879096]">2F · 石瓷</strong>匿名电话委托挺常见的吧，拍卖行大客户多。</p></div>
+        <div className="border border-[#d6d7d3] bg-[#faf9f5] px-5 py-4 text-[12px] leading-7 text-[#565c5f]"><p><strong className="mr-3 text-[10px] text-[#879096]">3F · 纸页边角</strong>匿名正常。我奇怪的是那句话。主管听完就知道是谁，旁边几个人也都知道。</p></div>
+        <div className="border border-[#d6d7d3] bg-[#faf9f5] px-5 py-4 text-[12px] leading-7 text-[#565c5f]"><p><strong className="mr-3 text-[10px] text-[#879096]">4F · 海石</strong>可能就是固定客户，内部有自己的称呼。</p></div>
+        <div className="border border-[#d6d7d3] bg-[#faf9f5] px-5 py-4 text-[12px] leading-7 text-[#565c5f]"><p><strong className="mr-3 text-[10px] text-[#879096]">5F · 木槿旧货</strong>你后来问过最后是谁拿走的吗？</p></div>
+        <div className="border border-[#d6d7d3] bg-[#faf9f5] px-5 py-4 text-[12px] leading-7 text-[#565c5f]"><p><strong className="mr-3 text-[10px] text-[#879096]">6F · 纸页边角</strong>问过一个认识的工作人员，只说委托信息不公开。别的没讲。</p></div>
+      </section>
+
+      <p className="mt-7 border-t border-[#d3d4d0] pt-4 text-[9px] leading-5 text-[#999b97]">本帖最后回复于 2021-05-09。旧帖已归档，停止编辑。</p>
+    </main>
+  </article>;
+}
+
 export function SearchResults({
   query,
   unlocked,
@@ -73,6 +121,20 @@ export function SearchResults({
 }) {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const normalized = query.normalize("NFKC").replace(/\s+/g, "");
+  const auctionForumSearch = normalized === "无面小像" || normalized === "无面木像" || normalized === "嘉闻无面小像" || normalized.toUpperCase() === "LOT21";
+
+  if (auctionForumSearch) {
+    if (selectedUrl === AUCTION_FORUM_URL) return <AuctionForumThread onBack={() => setSelectedUrl(null)} />;
+    return <div className="mt-8 max-w-[860px]">
+      <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+      <button className="search-result" onClick={() => setSelectedUrl(AUCTION_FORUM_URL)}>
+        <small className="text-[#78957e]">旧藏网 · 海州收藏讨论区 · 2021</small>
+        <h3 className="my-3 text-xl text-[#286ab3]">嘉闻18年秋拍那件无面木像，现场有人记得吗？</h3>
+        <p className="text-xs text-[#8493a4]">老帖讨论嘉闻2018秋拍 LOT 21 的成交现场。有网友回忆，该拍品成交后的交接方式与其他拍品不同。</p>
+        <code className="mt-2 block text-[10px] text-[#718c76]">{AUCTION_FORUM_URL}</code>
+      </button>
+    </div>;
+  }
 
   if (normalized === "顾惟真") {
     const founderActions = {
