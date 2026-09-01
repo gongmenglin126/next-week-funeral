@@ -18,52 +18,66 @@ export function GuWeizhenPoemPage() {
 export function GuWeizhenInterviewPage() {
   const [photoOpen, setPhotoOpen] = useState(false);
 
-  return <article className="search-document max-w-[940px]">
-    <p>《海州人物》 · 2023年11月刊</p>
-    <h1>顾惟真：现在一天只排两件事</h1>
-    <code>haizhou-people.example/interview/gu-weizhen-2023</code>
+  return <article className="min-h-full bg-[#f5f2ec] text-[#292e2c]">
+    <header className="border-b border-[#d8d1c6] bg-[#faf8f4]">
+      <div className="mx-auto max-w-[980px] px-7 pb-10 pt-7 md:px-12 md:pb-14 md:pt-10">
+        <div className="mb-9 flex items-center justify-between border-b border-[#cfc7bb] pb-3 text-[10px] tracking-[.16em] text-[#77736c]">
+          <strong className="font-sans text-[12px] tracking-[.22em] text-[#252824]">海州人物</strong>
+          <span>2023.11 · 人物</span>
+        </div>
+        <p className="mb-4 text-[11px] tracking-[.14em] text-[#8a8176]">PROFILE / GU WEIZHEN</p>
+        <h1 className="m-0 max-w-[760px] font-serif text-[38px] font-normal leading-[1.25] tracking-[-.03em] text-[#232622] md:text-[48px]">顾惟真，病后七年</h1>
+        <p className="mt-6 max-w-[690px] text-[14px] leading-8 text-[#625f58]">七年前的一场重病改变了他的作息，却没有让他彻底离开公司。现在，他把更多时间留给基金会，也留给一间堆满旧书、拓片和残页的书房。</p>
+        <div className="mt-7 flex flex-wrap gap-x-7 gap-y-2 text-[10px] text-[#8a857d]"><span>文 / 孟嘉</span><span>摄影 / 陈昀</span><span>2023年11月16日</span></div>
+      </div>
+    </header>
 
-    <p className="mt-7 max-w-[760px] text-[13px] leading-8 text-[#5c686d]">
-      采访约在下午两点。顾惟真刚从公司回来，外套搭在椅背上。他先问记者喝不喝茶，又把桌上摊着的文件往旁边挪了挪。比起会议室，他更愿意在这间书房里聊天。
-    </p>
+    <main className="mx-auto max-w-[980px] px-7 py-10 md:px-12 md:py-14">
+      <figure className="m-0">
+        <button className="group block w-full cursor-zoom-in overflow-hidden bg-[#dedbd5] text-left" onClick={() => setPhotoOpen(true)} aria-label="放大查看顾惟真书房照片">
+          <img className="block h-auto w-full transition-transform duration-300 group-hover:scale-[1.008]" src="./game/gu-weizhen-study-2022.webp" alt="顾惟真书房一角，木质书架与书桌" />
+        </button>
+        <figcaption className="mt-3 flex justify-between gap-4 border-b border-[#d7d0c5] pb-4 text-[10px] leading-5 text-[#858078]"><span>顾惟真书房一角，2022年。</span><span>受访者供图</span></figcaption>
+      </figure>
 
-    <figure className="mt-8 m-0 max-w-[880px]">
-      <button className="group block w-full cursor-zoom-in overflow-hidden border border-[#d8ddd9] bg-[#eceeea] text-left" onClick={() => setPhotoOpen(true)} aria-label="放大查看顾惟真书房照片">
-        <img className="block h-auto w-full transition-transform duration-300 group-hover:scale-[1.01]" src="./game/gu-weizhen-study-2022.webp" alt="顾惟真书房一角，木质书架与书桌" />
-      </button>
-      <figcaption className="mt-2 text-[10px] text-[#808a86]">顾惟真书房一角，2022年。图片由受访者提供。</figcaption>
-    </figure>
+      <div className="mx-auto mt-11 grid max-w-[840px] gap-10 md:grid-cols-[150px_minmax(0,1fr)] md:gap-14">
+        <aside className="text-[10px] leading-6 text-[#8a847b]">
+          <div className="border-t border-[#bfb7ac] pt-3">
+            <strong className="block text-[11px] font-semibold text-[#514e48]">顾惟真</strong>
+            <span>澜序实业集团创办人</span><br />
+            <span>安时生命关怀基金会发起人</span>
+          </div>
+        </aside>
 
-    <section className="mt-9 max-w-[720px] space-y-5 text-[13px] leading-8 text-[#435158]">
-      <p className="text-[#657178]">我们先聊他的日程。顾惟真看了一眼手机，说当天上午已经在公司开过一个会，下午还要去基金会。</p>
+        <section className="space-y-7 font-serif text-[15px] leading-[2.05] text-[#3d403c]">
+          <p>下午两点多，顾惟真从公司回来。采访原本约在会议室，他临时改了地方，说书房安静些。进门以后，他先把桌上的文件往旁边推了推，又问我们喝茶还是咖啡。最后茶泡得有点浓，他自己先皱了下眉。</p>
 
-      <p><strong>记者：</strong>你现在一天一般怎么排？</p>
-      <p><strong>顾惟真：</strong>上午去公司，下午看基金会的事。一天两件，第三件就算了，挪到明天。</p>
+          <p>他现在仍然去公司，只是不再从早待到晚。上午看文件、见人，下午有时去基金会，有时直接回来。说起以前的日程，他笑了一下：“那时候什么都往里塞，一天排十件也觉得正常。现在不行了，排满了反而烦。”</p>
 
-      <p><strong>记者：</strong>听起来还是挺满的。</p>
-      <p><strong>顾惟真：</strong>那是你没见过我以前。（笑）以前总觉得日程空下来就是浪费，恨不得从早排到晚。现在空着也挺好。</p>
+          <p>书房占了房子里不小的一块地方。靠墙的几排柜子没有统一整理，企业管理、地方志、旧刊、碑拓册混在一起，最上层还有几摞没有装订的残页。顾惟真说自己算不上收藏家，“就是看见顺眼的东西会留下”。</p>
 
-      <p className="text-[#657178]">说话间他起身找茶叶，绕过书桌去开书柜。书架上除了企业管理和地方史，还有不少线装旧书、拓片册和看不出年代的薄册子。</p>
+          <div className="my-9 border-y border-[#cfc7bc] py-6 font-sans text-[13px] leading-7 text-[#4f524d]">
+            <p><span className="mr-3 text-[10px] font-semibold tracking-[.12em] text-[#91897f]">记者</span>这些都看得完吗？</p>
+            <p className="mt-3"><span className="mr-3 text-[10px] font-semibold tracking-[.12em] text-[#91897f]">顾惟真</span>当然看不完。收藏跟看完是两回事。</p>
+            <p className="mt-3"><span className="mr-3 text-[10px] font-semibold tracking-[.12em] text-[#91897f]">记者</span>那还继续收？</p>
+            <p className="mt-3"><span className="mr-3 text-[10px] font-semibold tracking-[.12em] text-[#91897f]">顾惟真</span>碰到了就收一点。有人知道我喜欢这些，也会往这里送。时间长了，自己都记不清哪件是哪来的。</p>
+          </div>
 
-      <p><strong>记者：</strong>这些你都看过？</p>
-      <p><strong>顾惟真：</strong>哪可能。有些翻过，有些我自己都看不太懂。</p>
+          <p>聊到作息时，他才顺带提起2016年那次住院。出院后的头几个月，医生要求他尽量在十一点前睡觉，对一个多年凌晨两三点才回家的人来说，这件事比他预想得难得多。“最开始不是睡得早，是躺得早。”他说，“关了灯还是醒着，后来才一点点改过来。”</p>
 
-      <p><strong>记者：</strong>那为什么还收？</p>
-      <p><strong>顾惟真：</strong>看见喜欢的就带回来，朋友也会送。东西放久了，人就舍不得扔。大概都这样。</p>
+          <p>那场抢救后来被不少报道写成“海岬奇迹”。他看过其中几篇，但没有特意保存。</p>
 
-      <p className="text-[#657178]">话题后来绕到作息。他说自己现在很少熬夜，这个习惯是2016年住院之后才慢慢改掉的。</p>
+          <div className="my-9 border-l-2 border-[#9e9589] pl-6 font-sans text-[13px] leading-7 text-[#4d504b]">
+            <p><span className="mr-3 text-[10px] font-semibold tracking-[.12em] text-[#91897f]">记者</span>你介意别人一直这么叫吗？</p>
+            <p className="mt-3"><span className="mr-3 text-[10px] font-semibold tracking-[.12em] text-[#91897f]">顾惟真</span>以前觉得夸张。现在也懒得纠正了，新闻总要有个标题。</p>
+            <p className="mt-3"><span className="mr-3 text-[10px] font-semibold tracking-[.12em] text-[#91897f]">记者</span>自己会把那次经历看成运气吗？</p>
+            <p className="mt-3"><span className="mr-3 text-[10px] font-semibold tracking-[.12em] text-[#91897f]">顾惟真</span>医生救的，机器撑的，最后人醒了。怎么解释都行。我现在不太想替那件事下结论。</p>
+          </div>
 
-      <p><strong>记者：</strong>出院以后马上就能早睡？</p>
-      <p><strong>顾惟真：</strong>当然不能。刚开始是医生盯得严，十点多就催我躺下。我以前两三点睡是常事，突然十点半关灯，睁着眼睛能躺一个多小时。后来慢慢也习惯了。</p>
-
-      <p><strong>记者：</strong>外面一直把那次抢救叫“海岬奇迹”。</p>
-      <p><strong>顾惟真：</strong>这个名字太大了。我第一次看到报道还问了一句，他们说的是我吗？医生听见这个叫法，大概比我更尴尬。</p>
-
-      <p><strong>记者：</strong>现在再看到这种报道呢？</p>
-      <p><strong>顾惟真：</strong>就翻过去。医生做了他们能做的，我只是刚好留下来了。日子还是得正常过，不然天天想着那一晚，人也受不了。</p>
-
-      <p className="text-[#657178]">三点四十左右，采访结束。他重新把桌上的文件摞齐，说晚上原本还有一个饭局，“能推掉就推掉”。</p>
-    </section>
+          <p>采访快结束时，他接了一个基金会的电话。对方问晚上的饭局是否照旧，他想了几秒，说：“能推就推吧。”挂断之后，他把已经凉掉的茶倒掉，又重新添了一点热水。</p>
+        </section>
+      </div>
+    </main>
 
     {photoOpen && <button className="fixed inset-0 z-[90] grid cursor-zoom-out place-items-center bg-black/80 p-6" onClick={() => setPhotoOpen(false)} aria-label="关闭大图">
       <img className="max-h-[88vh] max-w-[94vw] object-contain shadow-2xl" src="./game/gu-weizhen-study-2022.webp" alt="放大的顾惟真书房照片" />
