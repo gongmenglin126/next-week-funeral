@@ -24,7 +24,6 @@ export function ActivityPage({ onOpenRide, onOpenArchive }: { onOpenRide?: () =>
       <section className="activity-archive"><div><p className="activity-eyebrow">ACTIVITY ARCHIVE</p><h2>往期活动</h2><p>公开归档 · 共6期</p></div><div className="activity-archive-list">{ARCHIVES.map((item) => <button key={item.issue} onClick={() => onOpenArchive(item.issue)}><span>{item.issue}</span><strong>{item.title}</strong><small>{item.date}</small><ArrowUpRight aria-hidden="true" /></button>)}</div></section>
       <section className="activity-questions"><h2>预约咨询</h2>
         <details><summary>为什么会收到安时接送的提醒？</summary><p>部分场次由活动方统一安排车辆。接送提醒只包含乘车信息，活动登记与车辆预约分别管理。</p></details>
-        <details><summary>取消旅行平台的订单，会取消活动吗？</summary><p>不会。住宿、车票等旅行订单与活动登记不属于同一笔预约，需分别处理。</p></details>
         <details><summary>如何申请变更或退出？</summary><p>请向原邀请人提出申请，并核对活动登记信息。车辆预约号不能代替活动登记编号；本页面不受理新的报名或直接办理退出。</p></details>
         {onOpenRide ? <Button variant="outline" onClick={onOpenRide}>查看我的接送订单</Button> : null}
       </section>
@@ -38,7 +37,7 @@ export function ActivityArchivePage({ issue, onBack }: { issue: string; onBack: 
 }
 
 export function HiddenSeventhPage({ onBack }: { onBack: () => void }) {
-  return <div className="activity-page hidden-archive"><ActivityHeader /><main className="archive-detail"><button className="activity-back" onClick={onBack}><ArrowLeft />返回活动首页</button><p className="activity-eyebrow">ARCHIVE / 07</p><h1>第七期 · 海边同行</h1><p className="archive-date">8月31日 · 雾汀</p><p className="archive-unlisted">此页面未列入公开归档。</p><div className="archive-copy"><h2>往期参与者来信</h2><blockquote><p>归期没有告诉家里。</p><p>潮落时，他说自己不怕了。</p><p>见不到明天也没关系。</p><p>证词会替我们留下来。</p></blockquote><p className="archive-note">来信编号：R-06-4 · 原始署名已隐去</p></div></main></div>;
+  return <div className="activity-page hidden-archive"><ActivityHeader /><main className="archive-detail"><button className="activity-back" onClick={onBack}><ArrowLeft />返回活动首页</button><p className="activity-eyebrow">ARCHIVE / 07</p><h1>第七期 · 海边同行</h1><p className="archive-date">8月31日 · 雾汀</p><p className="archive-unlisted">此页面未列入公开归档。</p><div className="archive-copy"><h2>往期参与者来信</h2><blockquote><p><strong>归</strong>期没有告诉家里。</p><p><strong>潮</strong>落时，他说自己不怕了。</p><p><strong>见</strong>不到明天也没关系。</p><p><strong>证</strong>词会替我们留下来。</p></blockquote><p className="archive-note">来信编号：R-06-4 · 原始署名已隐去</p></div></main></div>;
 }
 
 export function WitnessPage({ onOpenProfile }: { onOpenProfile: () => void }) {

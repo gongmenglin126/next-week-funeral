@@ -304,7 +304,8 @@ test("the activity homepage is reachable from the ride and keeps ride access gat
   assert.match(publicPage, /公开归档 · 共6期/);
   assert.equal((publicPage.match(/class="activity-archive-list"[\s\S]*?<\/div>/)?.[0].match(/<button/g) ?? []).length, 6);
   assert.doesNotMatch(publicPage, /第七期|海边同行|归潮见证/);
-  assert.equal((publicPage.match(/<details>/g) ?? []).length, 3);
+  assert.equal((publicPage.match(/<details>/g) ?? []).length, 2);
+  assert.doesNotMatch(publicPage, /取消旅行平台的订单，会取消活动吗|旅行订单与活动登记不属于同一笔预约/);
   assert.doesNotMatch(publicPage, /查看我的接送订单|替死|借命|邪教/);
   assert.match(renderToStaticMarkup(React.createElement(ActivityPage, { onOpenRide() {}, onOpenArchive() {} })), /查看我的接送订单/);
   const { SecretRide } = await vite.ssrLoadModule("/app/chapter-one.tsx");
@@ -329,7 +330,10 @@ test("the unlisted seventh archive must be reached by changing 06 to 07", async 
   const seventh = renderToStaticMarkup(React.createElement(HiddenSeventhPage, { onBack() {} }));
   assert.match(seventh, /ARCHIVE \/ 07/);
   assert.match(seventh, /此页面未列入公开归档/);
-  for (const line of ["归期没有告诉家里", "潮落时，他说自己不怕了", "见不到明天也没关系", "证词会替我们留下来"]) assert.ok(seventh.includes(line));
+  const seventhText = seventh.replace(/<[^>]+>/g, "");
+  for (const line of ["归期没有告诉家里", "潮落时，他说自己不怕了", "见不到明天也没关系", "证词会替我们留下来"]) assert.ok(seventhText.includes(line));
+  const letter = seventh.match(/<blockquote>([\s\S]*?)<\/blockquote>/)?.[1] ?? "";
+  assert.deepEqual([...letter.matchAll(/<strong>([^<]+)<\/strong>/g)].map((match) => match[1]), ["归", "潮", "见", "证"]);
   const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
   assert.doesNotMatch(search, /第七期生前告别体验|session-07|图片匹配 · 低清存档/);
   const home = await readFile(path.join(root, "app/page.tsx"), "utf8");

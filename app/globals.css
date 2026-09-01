@@ -610,6 +610,7 @@ button:focus-visible { outline: 2px solid #2a73ac; outline-offset: 3px; }
 .archive-copy h2 { margin-top: 0; }
 .archive-copy blockquote { margin: 22px 0; padding: 20px 24px; border-left: 2px solid #83927d; background: #ecefe5; font-family: "Noto Serif SC", serif; }
 .archive-copy blockquote p { margin: 0; line-height: 2.15; }
+.archive-copy blockquote strong { color: #202521; font-weight: 800; }
 .archive-note, .archive-pagination { color: #8a9389; font-size: 10px; }
 .archive-pagination { margin-top: 32px; padding: 16px 0!important; border-top: 1px solid #dfe4dc!important; }
 .archive-unlisted { display: inline-block; padding: 6px 10px; background: #e7e6dc; color: #7d796d; font-size: 10px; }
