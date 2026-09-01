@@ -25,7 +25,7 @@ test("entering the desktop cannot reuse the intro button as a focused photo icon
 test("every exposed game button has an action or submits a handled form", async () => {
   const failures = [];
   let buttons = 0;
-  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx"]) {
+  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx", "app/founder-trail-pages.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -134,7 +134,7 @@ test("the shared itinerary PDF is absent from downloads and the file folder", as
 
 test("sibling components never share a reconciliation key when navigating materials", async () => {
   const failures = [];
-  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx"]) {
+  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/founder-trail-pages.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxElement(node) || ts.isJsxFragment(node)) {
@@ -286,11 +286,15 @@ test("activity aliases resolve while invalid addresses cannot bypass the ride ga
   assert.deepEqual(resolveBrowserInput("anshi-foundation.example/about", true), { tab: "activity", query: "foundation" });
   assert.deepEqual(resolveBrowserInput("linchuan-pets.example/lost/mili-0818", true), { tab: "lost-cat", query: "" });
   assert.deepEqual(resolveBrowserInput("qingtongli.example/notices/0822", true), { tab: "neighborhood-notice", query: "" });
+  assert.deepEqual(resolveBrowserInput("linchuan-people.example/figures/gu-weizhen", true), { tab: "founder-profile", query: "" });
+  assert.deepEqual(resolveBrowserInput("mingchuan-books.example/title/remaining-time", true), { tab: "biography", query: "" });
+  assert.deepEqual(resolveBrowserInput("linchuan-business.example/archive/2016/lu-wenchuan", true), { tab: "lu-memorial", query: "" });
+  assert.deepEqual(resolveBrowserInput("haijia-heji.example/history/2016-gu-weizhen", true), { tab: "hospital", query: "" });
 });
 
 test("activity search has one result and wrong text or URLs show explicit recoverable feedback", async () => {
   const { SearchResults, BrowserNotFound } = await vite.ssrLoadModule("/app/search-results.tsx");
-  const render = (query) => renderToStaticMarkup(React.createElement(SearchResults, { query, unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {} }));
+  const render = (query) => renderToStaticMarkup(React.createElement(SearchResults, { query, unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openFounder() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} }));
   const html = render("安时活动服务");
   assert.match(html, /安时活动服务 · 雾汀生命关怀/);
   assert.equal((html.match(/<button\b/g) ?? []).length, 1);
@@ -347,7 +351,7 @@ test("the unlisted seventh archive must be reached by changing 06 to 07", async 
 
 test("the optional fraud trail moves from the witness's cat to an address and then the real obituary", async () => {
   const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
-  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {} };
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openFounder() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
   const renderSearch = (query) => renderToStaticMarkup(React.createElement(SearchResults, { ...props, query }));
   const communitySearch = renderSearch("归潮见证");
   assert.match(communitySearch, /病友与家属互助社区/);
@@ -402,6 +406,50 @@ test("the optional fraud trail moves from the witness's cat to an address and th
   await access(path.join(root, "public/game/mili-lost-cat.webp"));
   await access(path.join(root, "public/game/cheng-xubai-memorial.webp"));
   assert.doesNotMatch(community + foundation + witness + profile + lostCat + notice + obituary, /这说明|账号已被组织接管|骗局已揭穿/);
+});
+
+test("the founder trail delays the hospital night until chapter seven and exposes two searchable names", async () => {
+  const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openFounder() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
+  const search = (query) => renderToStaticMarkup(React.createElement(SearchResults, { ...props, query }));
+  assert.match(search("顾惟真"), /企业家、公益基金会发起人/);
+  assert.doesNotMatch(search("顾惟真"), /没有回应的夜晚|陆闻川|海岬和济/);
+  assert.match(search("把余下的时间还给别人"), /顾惟真口述自传/);
+  assert.match(search("《把余下的时间还给别人》"), /顾惟真口述自传/);
+  assert.match(search("陆闻川"), /因交通事故去世/);
+  assert.match(search("海岬和济医院"), /持续十七小时的生命接力/);
+
+  const { FounderProfilePage, BiographyPage, LuWenchuanMemorialPage, HaijiaHospitalPage } = await vite.ssrLoadModule("/app/founder-trail-pages.tsx");
+  const founder = renderToStaticMarkup(React.createElement(FounderProfilePage));
+  assert.match(founder, /澜序实业集团创办人/);
+  assert.match(founder, /2021年[\s\S]*海州年度公益人物/);
+  assert.match(founder, /《把余下的时间还给别人》/);
+  assert.doesNotMatch(founder, /神佛|病危|闻川却没能等到天亮/);
+
+  const biography = renderToStaticMarkup(React.createElement(BiographyPage));
+  assert.equal((biography.match(/<button/g) ?? []).length, 7);
+  assert.match(biography, /第六章|没有回应的夜晚/);
+  assert.doesNotMatch(biography, /观音、地藏、耶稣|顾惟真（左）与陆闻川/);
+  const biographySource = await readFile(path.join(root, "app/founder-trail-pages.tsx"), "utf8");
+  assert.match(biographySource, /<strong>海岬和济医院<\/strong>/);
+  assert.match(biographySource, /顾惟真（左）与陆闻川，2014年/);
+  assert.match(biographySource, /gu-weizhen-lu-wenchuan-2014\.webp/);
+
+  const friend = renderToStaticMarkup(React.createElement(LuWenchuanMemorialPage));
+  assert.match(friend, /2016年11月3日 03:47/);
+  assert.match(friend, /2016年11月3日 04:26/);
+  assert.match(friend, /准备前往海岬和济医院/);
+  const hospital = renderToStaticMarkup(React.createElement(HaijiaHospitalPage));
+  assert.match(hospital, /暴发性心肌炎、心源性休克/);
+  assert.match(hospital, /恢复自主循环，37天后出院/);
+  assert.match(hospital, /海岬奇迹/);
+  await access(path.join(root, "public/game/gu-weizhen-lu-wenchuan-2014.webp"));
+
+  const css = await readFile(path.join(root, "app/globals.css"), "utf8");
+  assert.match(css, /\.founder-profile-page \{[^}]*background: #fff;/);
+  assert.match(css, /\.biography-page \{[^}]*background: #171713;/);
+  assert.match(css, /\.lu-memorial-page \{[^}]*background: #fff;/);
+  assert.match(css, /\.hospital-history-page \{[^}]*background: #f6f9fc;/);
 });
 
 test("the crop hides session seven while the full corridor is last in the mountain inn gallery", async () => {

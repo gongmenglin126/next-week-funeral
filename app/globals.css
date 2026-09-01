@@ -726,6 +726,97 @@ button:focus-visible { outline: 2px solid #2a73ac; outline-offset: 3px; }
 .neighborhood-notice-page button strong { grid-row: 2; font-size: 14px; }
 .neighborhood-notice-page button svg { grid-column: 2; grid-row: 1 / 3; width: 16px; align-self: center; }
 .neighborhood-notice-page main > footer { margin-top: 42px; color: #929995; font-size: 9px; }
+.founder-profile-page { min-height: 100%; background: #fff; color: #111; }
+.founder-profile-page > header { display: flex; align-items: baseline; gap: 18px; padding: 21px 7%; border-bottom: 1px solid #171717; background: #fff; }
+.founder-profile-page > header strong { font-size: 19px; }
+.founder-profile-page > header span { color: #727272; font-size: 9px; }
+.founder-profile-page main { max-width: 780px; margin: auto; padding: 52px 28px 68px; }
+.founder-profile-kicker { color: #787878; font-size: 9px; letter-spacing: .16em; }
+.founder-profile-heading { display: flex; align-items: center; gap: 22px; margin: 28px 0 32px; }
+.founder-monogram { display: grid; width: 82px; height: 82px; place-items: center; background: #111; color: #fff; font-family: "Noto Serif SC", serif; font-size: 34px; }
+.founder-profile-heading h1 { margin: 0; font-family: "Noto Serif SC", serif; font-size: 42px; font-weight: 500; }
+.founder-profile-heading p { margin: 6px 0 0; color: #666; font-size: 11px; }
+.founder-profile-lead { max-width: 680px; font-family: "Noto Serif SC", serif; font-size: 14px; line-height: 2.1; }
+.founder-achievements { margin: 38px 0; border-top: 2px solid #111; }
+.founder-achievements > div { display: grid; grid-template-columns: 90px 1fr; padding: 14px 4px; border-bottom: 1px solid #d7d7d7; font-size: 11px; }
+.founder-achievements dt { font-weight: 700; }
+.founder-achievements dd { margin: 0; }
+.founder-book-credit { display: grid; grid-template-columns: 34px 1fr; gap: 16px; padding: 24px; background: #f1f1ef; border-left: 4px solid #111; }
+.founder-book-credit svg { width: 25px; margin-top: 4px; }
+.founder-book-credit small { color: #757575; font-size: 8px; letter-spacing: .12em; }
+.founder-book-credit h2 { margin: 5px 0; font-family: "Noto Serif SC", serif; font-size: 20px; font-weight: 600; }
+.founder-book-credit p { margin: 0; color: #666; font-size: 10px; }
+.founder-profile-page main > footer { margin-top: 46px; color: #8b8b8b; font-size: 9px; }
+.biography-page { min-height: 100%; background: #171713; color: #ece9df; }
+.biography-page > header { display: flex; align-items: baseline; gap: 18px; padding: 20px 7%; border-bottom: 1px solid #44443b; background: #10100e; }
+.biography-page > header strong { font-family: "Noto Serif SC", serif; font-size: 18px; font-weight: 500; }
+.biography-page > header span { color: #969589; font-size: 9px; }
+.biography-page main { max-width: 960px; margin: auto; padding: 50px 28px 78px; }
+.biography-hero { display: grid; grid-template-columns: 230px 1fr; gap: 54px; align-items: center; }
+.biography-cover { display: flex; min-height: 330px; flex-direction: column; justify-content: space-between; padding: 28px 25px; border: 1px solid #5a574c; background: #2a211d; box-shadow: 0 20px 48px rgba(0,0,0,.35); }
+.biography-cover span, .biography-cover small { color: #bdb5a4; font-size: 9px; letter-spacing: .12em; }
+.biography-cover strong { font-family: "Noto Serif SC", serif; font-size: 25px; font-weight: 500; line-height: 1.75; }
+.biography-label { color: #a3a095; font-size: 9px; letter-spacing: .14em; }
+.biography-hero h1 { margin: 10px 0 7px; font-family: "Noto Serif SC", serif; font-size: clamp(28px, 4vw, 42px); font-weight: 500; }
+.biography-subtitle { color: #aaa79d; font-size: 10px!important; }
+.biography-hero > div:last-child > p:not(.biography-label,.biography-subtitle) { max-width: 560px; color: #cbc7bb; font-size: 11px; line-height: 2; }
+.biography-hero dl { margin-top: 24px; border-top: 1px solid #48473f; }
+.biography-hero dl > div { display: grid; grid-template-columns: 76px 1fr; padding: 10px 0; border-bottom: 1px solid #3b3b34; font-size: 9px; }
+.biography-hero dt { color: #8f8e84; }
+.biography-hero dd { margin: 0; }
+.biography-contents { margin-top: 58px; border-top: 1px solid #555348; }
+.biography-section-title { display: flex; justify-content: space-between; align-items: baseline; padding: 18px 0; }
+.biography-section-title p { margin: 0; font-family: "Noto Serif SC", serif; font-size: 18px; }
+.biography-section-title span { color: #8f8d84; font-size: 8px; }
+.biography-contents > button { display: grid; width: 100%; grid-template-columns: 50px 180px 1fr; align-items: baseline; gap: 14px; padding: 15px 4px; cursor: pointer; border: 0; border-top: 1px solid #33332e; background: transparent; color: #e8e5dc; text-align: left; }
+.biography-contents > button:hover, .biography-contents > button[aria-expanded="true"] { background: #24241f; }
+.biography-contents > button span { color: #918f84; font-size: 9px; }
+.biography-contents > button strong { font-family: "Noto Serif SC", serif; font-size: 14px; font-weight: 500; }
+.biography-contents > button small { color: #9e9c92; font-size: 9px; line-height: 1.7; }
+.biography-excerpt { margin-top: 34px; padding: 36px 42px; background: #f4f0e6; color: #39352f; box-shadow: 0 18px 44px rgba(0,0,0,.28); }
+.biography-excerpt > header { padding-bottom: 20px; border-bottom: 1px solid #cfc7b8; }
+.biography-excerpt > header span { color: #8a8172; font-size: 9px; letter-spacing: .12em; }
+.biography-excerpt h2 { margin: 7px 0 0; font-family: "Noto Serif SC", serif; font-size: 28px; font-weight: 500; }
+.biography-excerpt > p, .biography-night > header p { color: #71695e; font-size: 11px; line-height: 2; }
+.biography-interview { padding: 22px 0 8px; }
+.biography-interview p { margin: 0 0 18px; font-family: "Noto Serif SC", serif; font-size: 12px; line-height: 2; }
+.biography-interview strong { color: #1f1d1a; }
+.biography-night figure { margin: 28px 0; }
+.biography-night figure img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; filter: saturate(.82) contrast(.96); }
+.biography-night figcaption { margin-top: 8px; color: #81786c; font-size: 9px; }
+.biography-night aside { display: grid; grid-template-columns: 28px 1fr; gap: 13px; margin-top: 28px; padding: 22px; border-left: 3px solid #332e28; background: #e5ded0; }
+.biography-night aside svg { width: 22px; }
+.biography-night aside p { margin: 0; font-family: "Noto Serif SC", serif; font-size: 15px; line-height: 1.9; }
+.lu-memorial-page { min-height: 100%; background: #fff; color: #111; }
+.lu-memorial-page > header { display: flex; align-items: baseline; justify-content: space-between; padding: 20px 7%; border-top: 5px solid #111; border-bottom: 1px solid #111; }
+.lu-memorial-page > header strong { font-family: "Noto Serif SC", serif; font-size: 22px; }
+.lu-memorial-page > header span { color: #686868; font-size: 9px; }
+.lu-memorial-page main { max-width: 760px; margin: auto; padding: 50px 28px 68px; }
+.lu-archive-label { color: #777; font-size: 9px; }
+.lu-memorial-page h1 { margin: 20px 0; font-family: "Noto Serif SC", serif; font-size: clamp(29px, 4vw, 42px); font-weight: 700; line-height: 1.55; }
+.lu-summary { padding: 18px 0; border-top: 2px solid #111; border-bottom: 1px solid #aaa; font-size: 13px; font-weight: 600; line-height: 2; }
+.lu-memorial-page dl { margin: 28px 0; }
+.lu-memorial-page dl > div { display: grid; grid-template-columns: 90px 1fr; padding: 11px 0; border-bottom: 1px solid #ddd; font-size: 10px; }
+.lu-memorial-page dt { color: #666; }
+.lu-memorial-page dd { margin: 0; font-weight: 600; }
+.lu-memorial-page article { columns: 2; column-gap: 36px; font-family: "Noto Serif SC", serif; font-size: 12px; line-height: 2.15; }
+.lu-memorial-page article p { margin-top: 0; break-inside: avoid; }
+.lu-memorial-page main > footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid #111; color: #777; font-size: 9px; }
+.hospital-history-page { min-height: 100%; background: #f6f9fc; color: #142331; }
+.hospital-history-page > header { display: flex; align-items: baseline; gap: 18px; padding: 21px 7%; border-bottom: 4px solid #164b72; background: #fff; }
+.hospital-history-page > header strong { color: #113f61; font-size: 19px; }
+.hospital-history-page > header span { color: #738493; font-size: 9px; }
+.hospital-history-page main { max-width: 820px; margin: auto; padding: 52px 28px 70px; }
+.hospital-history-label { color: #55758e; font-size: 9px; letter-spacing: .13em; }
+.hospital-history-page h1 { max-width: 720px; margin: 18px 0; font-family: "Noto Serif SC", serif; font-size: clamp(28px, 4vw, 42px); font-weight: 500; line-height: 1.55; }
+.hospital-history-deck { max-width: 700px; color: #536979; font-size: 12px; line-height: 2; }
+.hospital-patient-card { display: grid; grid-template-columns: 1fr 1fr; margin: 34px 0; border-top: 3px solid #164b72; background: #fff; box-shadow: 0 7px 24px rgba(23,66,96,.08); }
+.hospital-patient-card > div { display: grid; gap: 5px; padding: 17px 20px; border-right: 1px solid #dce6ed; border-bottom: 1px solid #dce6ed; }
+.hospital-patient-card span { color: #6b8292; font-size: 8px; }
+.hospital-patient-card strong { font-size: 11px; }
+.hospital-history-page article { color: #425968; font-size: 11px; line-height: 2.1; }
+.hospital-history-page blockquote { margin: 28px 0; padding: 21px 25px; border-left: 3px solid #21638e; background: #e8f0f5; color: #23485f; font-family: "Noto Serif SC", serif; font-size: 14px; }
+.hospital-history-page main > footer { margin-top: 40px; color: #78909f; font-size: 9px; }
 .obituary-page { min-height: 100%; background: #f7f7f5; color: #323735; }
 .obituary-page > header { display: flex; align-items: baseline; gap: 18px; padding: 22px 7%; border-bottom: 3px solid #4a514e; }
 .obituary-page > header strong { font-size: 18px; }
@@ -743,7 +834,7 @@ button:focus-visible { outline: 2px solid #2a73ac; outline-offset: 3px; }
 .obituary-page dl > div { display: grid; grid-template-columns: 110px 1fr; padding: 13px 0; border-bottom: 1px solid #dfe2e0; font-size: 11px; }
 .obituary-page dd { margin: 0; }
 .obituary-page main footer { margin-top: 44px; color: #858b88; font-size: 10px; }
-@media (max-width: 600px) { .activity-page > header > span:last-child { display: none; } .activity-program { padding: 20px; } .activity-program dl > div { grid-template-columns: 1fr; gap: 4px; } .community-page > header > aside { padding-left: 12px; } .medical-attachment { padding: 18px 16px; } .medical-attachment dl > div { grid-template-columns: 70px 1fr; } .community-page > footer { flex-direction: column; } .lost-cat-layout { grid-template-columns: 1fr; } .obituary-heading { grid-template-columns: 1fr 84px; gap: 18px; } .obituary-heading img { width: 84px; } }
+@media (max-width: 600px) { .activity-page > header > span:last-child { display: none; } .activity-program { padding: 20px; } .activity-program dl > div { grid-template-columns: 1fr; gap: 4px; } .community-page > header > aside { padding-left: 12px; } .medical-attachment { padding: 18px 16px; } .medical-attachment dl > div { grid-template-columns: 70px 1fr; } .community-page > footer { flex-direction: column; } .lost-cat-layout, .biography-hero { grid-template-columns: 1fr; } .biography-cover { width: min(230px, 100%); } .biography-contents > button { grid-template-columns: 36px 1fr; } .biography-contents > button small { grid-column: 2; } .biography-excerpt { padding: 28px 22px; } .lu-memorial-page article { columns: 1; } .hospital-patient-card { grid-template-columns: 1fr; } .obituary-heading { grid-template-columns: 1fr 84px; gap: 18px; } .obituary-heading img { width: 84px; } }
 
 .browser-record-page { max-width: 920px; min-height: 100%; margin: 0 auto; padding: clamp(30px, 6vw, 72px); }
 .browser-record-page > header { display: flex; align-items: center; gap: 18px; margin-bottom: 42px; }
