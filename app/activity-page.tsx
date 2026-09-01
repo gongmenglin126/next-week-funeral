@@ -61,7 +61,7 @@ export function FoundationPage({ onBack }: { onBack: () => void }) {
 }
 
 export function WitnessPage({ onBack, onOpenProfile }: { onBack: () => void; onOpenProfile: () => void }) {
-  return <div className="activity-page witness-page"><ActivityHeader /><main><button className="activity-back" onClick={onBack}><ArrowLeft />返回归潮见证</button><p className="activity-eyebrow">COMMUNITY / REVIEW 06</p><h1>他替我走了最后一程</h1><p className="witness-lead">第六期活动回访</p><article><p>“雨停以后”接受治疗近两年，情况恶化后参加第六期活动。他和朋友阿岚一起度过了最后一夜。</p><p>8月17日，阿岚在临川北岸溺亡。安时收到的后续记录显示，“雨停以后”的身体指标随后恢复，并继续通过论坛账号分享近况。</p><blockquote>“离开的不是我。有人替我走完了那段路。”</blockquote><p>应参与者要求，本文不公开其真实姓名与医疗材料。</p></article><button className="witness-profile" onClick={onOpenProfile}><span>参与者账号</span><strong>雨停以后</strong><small>查看公开动态</small><ArrowUpRight /></button></main></div>;
+  return <div className="community-page witness-page"><CommunityHeader /><main><button className="activity-back" onClick={onBack}><ArrowLeft />返回归潮见证</button><p className="activity-eyebrow">COMMUNITY / REVIEW 06</p><h1>他替我走了最后一程</h1><p className="witness-lead">第六期活动回访</p><article><p>“雨停以后”接受治疗近两年，情况恶化后参加第六期活动。他和朋友阿岚一起度过了最后一夜。</p><p>8月17日，阿岚在临川北岸溺亡。安时收到的后续记录显示，“雨停以后”的身体指标随后恢复，并继续通过论坛账号分享近况。</p><blockquote>“离开的不是我。有人替我走完了那段路。”</blockquote><p>应参与者要求，本文不公开其真实姓名与医疗材料。</p></article><button className="witness-profile" onClick={onOpenProfile}><span>参与者账号</span><strong>雨停以后</strong><small>查看公开动态</small><ArrowUpRight /></button></main></div>;
 }
 
 export function SurvivorProfile() {
