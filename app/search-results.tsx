@@ -23,23 +23,16 @@ const founderDeepResults = [
   {
     id: "interview",
     eyebrow: "海州人物 · 2023年11月刊",
-    title: "顾惟真，病后七年",
-    text: "七年前那场重病之后，他的工作节奏慢了下来，也开始把更多时间留给基金会和书房。",
+    title: "顾惟真的书房",
+    text: "《海州人物》空间栏目走进顾惟真的书房：旧书、地方志、工程资料和一些来历各异的小物件。",
     url: "haizhou-people.example/interview/gu-weizhen-2023",
   },
   {
     id: "poem",
     eyebrow: "临川文艺 · 2020年第3期",
     title: "《山居杂记》｜顾惟真",
-    text: "顾惟真病后发表的一首短诗，写山居、旧册与夜雨。",
+    text: "顾惟真的一首短诗，写山居、旧册与夜雨。",
     url: "linchuan-literature.example/archive/2020/gu-weizhen",
-  },
-  {
-    id: "collection",
-    eyebrow: "临川文献馆 · 特展回顾",
-    title: "顾惟真私人藏品首次公开｜“潮痕与旧纸”",
-    text: "2024年文献特展，展出顾惟真私人收藏中的地方旧籍、拓片与残卷。",
-    url: "linchuan-archive.example/exhibitions/tide-paper",
   },
 ] as const;
 
@@ -85,14 +78,18 @@ export function SearchResults({
     const founderActions = {
       interview: openFounderInterview,
       poem: openFounderPoem,
-      collection: openFounderCollection,
     } as const;
     return <div className="mt-8 max-w-[860px]">
-      <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">4 条相关结果</p>
+      <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">3 条相关结果</p>
       <button className="search-result" onClick={openFounder}><small className="text-[#78957e]">linchuan-people.example · 企业与公益人物资料</small><h3 className="my-3 text-xl text-[#286ab3]">顾惟真｜企业家、公益基金会发起人</h3><p className="text-xs text-[#8493a4]">澜序实业集团创办人，安时生命关怀基金会发起人。</p></button>
       {founderDeepResults.map((item) => <button className="search-result" key={item.id} onClick={founderActions[item.id]}><small className="text-[#78957e]">{item.eyebrow}</small><h3 className="my-3 text-xl text-[#286ab3]">{item.title}</h3><p className="text-xs text-[#8493a4]">{item.text}</p><code className="mt-2 block text-[10px] text-[#718c76]">{item.url}</code></button>)}
     </div>;
   }
+
+  if (normalized === "大罗无相尊" || normalized === "大罗无相尊仪轨残卷") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openFounderCollection}><small className="text-[#78957e]">临川文献馆 · 特展回顾</small><h3 className="my-3 text-xl text-[#286ab3]">潮痕与旧纸｜临川民间文献特展</h3><p className="text-xs text-[#8493a4]">2024年特展目录收录《大罗无相尊仪轨残卷》，年代与来源仍在整理。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/exhibitions/tide-paper</code></button>
+  </div>;
 
   if (isActivitySearch(query)) return <div className="mt-8"><button className="search-result" onClick={openActivity}><small className="text-[#78957e]">anshi.example/activities · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">安时活动服务 · 雾汀生命关怀</h3><p className="text-xs text-[#8493a4]">线下交流、活动介绍与预约咨询。</p></button></div>;
   if (query.replace(/\s+/g, "") === "归潮见证") return <div className="mt-8"><button className="search-result" onClick={openCommunity}><small className="text-[#78957e]">guichao.example · 病友互助社区</small><h3 className="my-3 text-xl text-[#286ab3]">归潮见证｜病友与家属互助社区</h3><p className="text-xs text-[#8493a4]">匿名记录治疗、陪护和告别中的真实问题。</p></button></div>;
