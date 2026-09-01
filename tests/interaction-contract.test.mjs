@@ -352,10 +352,11 @@ test("the optional fraud trail moves from the witness's cat to an address and th
   const communitySearch = renderSearch("归潮见证");
   assert.match(communitySearch, /病友与家属互助社区/);
   assert.doesNotMatch(communitySearch, /他替我走了最后一程|第六期个案记录/);
-  assert.match(renderSearch("米粒 猫"), /寻猫启事｜米粒/);
+  assert.match(renderSearch("米粒"), /寻猫启事｜米粒/);
+  assert.match(renderSearch("米粒 猫"), /未找到与/);
   assert.match(renderSearch("临川市青桐里3栋"), /青桐里3栋居民治丧通知/);
   assert.match(renderSearch("程叙白"), /程叙白先生讣告/);
-  for (const query of ["第七期", "雨停以后", "米粒", "讣告", "安时骗局"]) assert.match(renderSearch(query), /未找到与/);
+  for (const query of ["第七期", "雨停以后", "讣告", "安时骗局"]) assert.match(renderSearch(query), /未找到与/);
   const { CommunityPage, FoundationPage, WitnessPage, SurvivorProfile, ObituaryPage } = await vite.ssrLoadModule("/app/activity-page.tsx");
   const community = renderToStaticMarkup(React.createElement(CommunityPage, { onOpenWitness() {}, onOpenFoundation() {} }));
   assert.match(community, /当前账号[\s\S]*潮汐失眠/);
@@ -375,7 +376,8 @@ test("the optional fraud trail moves from the witness's cat to an address and th
   assert.match(witness, /雨停以后/);
   const profile = renderToStaticMarkup(React.createElement(SurvivorProfile));
   assert.match(profile, /原简介：肺腺癌晚期/);
-  assert.match(profile, /米粒是一只猫/);
+  assert.match(profile.replace(/<[^>]+>/g, ""), /米粒是一只猫/);
+  assert.ok((profile.match(/<strong>米粒<\/strong>/g) ?? []).length >= 3);
   assert.doesNotMatch(profile, /程叙白|站务说明|原账号联系人/);
   assert.match(profile, /8月19日 09:00/);
   const { LostCatPage, NeighborhoodNoticePage } = await vite.ssrLoadModule("/app/cat-trail-pages.tsx");
