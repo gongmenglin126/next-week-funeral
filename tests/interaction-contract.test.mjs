@@ -35,7 +35,7 @@ test("entering the desktop cannot reuse the intro button as a focused photo icon
 test("every exposed game button has an action or submits a handled form", async () => {
   const failures = [];
   let buttons = 0;
-  for (const name of ["app/page.tsx", "app/browser-record-pages.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx", "app/founder-trail-pages.tsx"]) {
+  for (const name of ["app/page.tsx", "app/browser-record-pages.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx", "app/founder-trail-pages.tsx", "app/founder-deep-pages.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -144,7 +144,7 @@ test("the shared itinerary PDF is absent from downloads and the file folder", as
 
 test("sibling components never share a reconciliation key when navigating materials", async () => {
   const failures = [];
-  for (const name of ["app/page.tsx", "app/browser-record-pages.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/founder-trail-pages.tsx"]) {
+  for (const name of ["app/page.tsx", "app/browser-record-pages.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/founder-trail-pages.tsx", "app/founder-deep-pages.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxElement(node) || ts.isJsxFragment(node)) {
@@ -479,4 +479,27 @@ test("the crop hides session seven while the full corridor is last in the mounta
   assert.doesNotMatch(chapter, /hotel-crop|南岸民宿走廊/);
   const css = await readProjectCss();
   assert.match(css, /\.evidence-image\.is-cropped img, \.evidence-thumbnail\.is-cropped img \{ width: 128%; max-width: none; transform: translateX\(-22%\); \}/);
+});
+
+test("the faceless figurine trail remains reachable after the browser split", async () => {
+  const { GuWeizhenInterviewPage, GuWeizhenCollectionPage, GuWeizhenAuctionPage } = await vite.ssrLoadModule("/app/founder-deep-pages.tsx");
+  const interview = renderToStaticMarkup(React.createElement(GuWeizhenInterviewPage));
+  assert.match(interview, /gu-weizhen-study-2022-v3\.webp/);
+  assert.match(interview, /无面小像/);
+  const collection = renderToStaticMarkup(React.createElement(GuWeizhenCollectionPage, { onOpenAuction() {} }));
+  assert.match(collection, /大罗无相尊仪轨残卷/);
+  assert.match(collection, /查看同场拍卖记录/);
+  const auction = renderToStaticMarkup(React.createElement(GuWeizhenAuctionPage));
+  assert.match(auction, /无面小像/);
+  assert.match(auction, /¥86,000/);
+  await access(path.join(root, "public/game/gu-weizhen-study-2022-v3.webp"));
+
+  const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  assert.match(page, /navigate\("founder-interview"\)/);
+  assert.match(page, /navigate\("founder-poem"\)/);
+  assert.match(page, /navigate\("founder-collection"\)/);
+  assert.match(page, /navigate\("founder-auction"\)/);
+
+  const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
+  assert.deepEqual(resolveBrowserInput("jiawen-auction.example/results/2018-autumn/linchuan", true), { tab: "founder-auction", query: "" });
 });
