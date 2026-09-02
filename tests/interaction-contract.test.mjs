@@ -424,8 +424,8 @@ test("the founder trail delays the hospital night until chapter seven and expose
   const search = (query) => renderToStaticMarkup(React.createElement(SearchResults, { ...props, query }));
   assert.match(search("顾惟真"), /企业家、公益基金会发起人/);
   assert.doesNotMatch(search("顾惟真"), /没有回应的夜晚|陆闻川|海岬和济/);
-  assert.match(search("把余下的时间还给别人"), /顾惟真口述自传/);
-  assert.match(search("《把余下的时间还给别人》"), /顾惟真口述自传/);
+  assert.match(search("走到今天"), /顾惟真口述自传/);
+  assert.match(search("《走到今天》"), /顾惟真口述自传/);
   assert.match(search("陆闻川"), /因交通事故去世/);
   assert.match(search("海岬和济医院"), /持续十七小时的生命接力/);
 
@@ -433,7 +433,7 @@ test("the founder trail delays the hospital night until chapter seven and expose
   const founder = renderToStaticMarkup(React.createElement(FounderProfilePage));
   assert.match(founder, /澜序实业集团创办人/);
   assert.match(founder, /2021年[\s\S]*海州年度公益人物/);
-  assert.match(founder, /《把余下的时间还给别人》/);
+  assert.match(founder, /《走到今天》/);
   assert.doesNotMatch(founder, /神佛|病危|闻川却没能等到天亮/);
 
   const biography = renderToStaticMarkup(React.createElement(BiographyPage));
@@ -462,7 +462,7 @@ test("the founder trail delays the hospital night until chapter seven and expose
   assert.match(css, /\.hospital-history-page \{[^}]*background: #f6f9fc;/);
   assert.match(css, /\.biography-contents > button strong \{[^}]*font-size: 18px;/);
   assert.match(css, /\.biography-contents > button small \{[^}]*font-size: 13px;/);
-  assert.match(css, /\.biography-contents > button span \{[^}]*font-size: 13px;/);
+  assert.match(css, /\.biography-contents > button span \{[^}]*font-size: 11px;/);
 });
 
 test("the crop hides session seven while the full corridor is last in the mountain inn gallery", async () => {

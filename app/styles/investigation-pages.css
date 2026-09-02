@@ -252,7 +252,7 @@
 .biography-section-title span { color: #aaa89f; font-size: 12px; }
 .biography-contents > button { display: grid; width: 100%; grid-template-columns: 54px 210px 1fr; align-items: baseline; gap: 16px; padding: 19px 6px; cursor: pointer; border: 0; border-top: 1px solid #33332e; background: transparent; color: #e8e5dc; text-align: left; }
 .biography-contents > button:hover, .biography-contents > button[aria-expanded="true"] { background: #24241f; }
-.biography-contents > button span { color: #aaa89f; font-size: 13px; }
+.biography-contents > button span { color: #aaa89f; font-size: 11px; }
 .biography-contents > button strong { font-family: "Noto Serif SC", serif; font-size: 18px; font-weight: 500; }
 .biography-contents > button small { color: #aaa89f; font-size: 13px; line-height: 1.7; }
 .biography-excerpt { margin-top: 34px; padding: 36px 42px; background: #f4f0e6; color: #39352f; box-shadow: 0 18px 44px rgba(0,0,0,.28); }
@@ -332,4 +332,3 @@
 .browser-record-page button span { display: grid; gap: 4px; }
 .browser-record-page button strong { font-size: 12px; font-weight: 500; }
 .browser-record-page button small { color: #89969b; font-size: 9px; }
-
