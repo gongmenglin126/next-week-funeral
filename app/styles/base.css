@@ -1,0 +1,63 @@
+:root {
+  --background: #d9dfe3;
+  --foreground: #162028;
+  --card: #ffffff;
+  --card-foreground: #162028;
+  --popover: #ffffff;
+  --popover-foreground: #162028;
+  --primary: #243b4a;
+  --primary-foreground: #f7fafb;
+  --secondary: #eef2f4;
+  --secondary-foreground: #26343d;
+  --muted: #eef2f4;
+  --muted-foreground: #6f7c84;
+  --accent: #e7eef2;
+  --accent-foreground: #1d333f;
+  --destructive: #9b3f43;
+  --border: #dce2e5;
+  --input: #d5dde1;
+  --ring: #8196a2;
+  --radius: 0.7rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+}

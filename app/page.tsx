@@ -9,7 +9,6 @@ import {
   Bell,
   Bookmark,
   Download,
-  FileSearch,
   FolderClosed,
   Globe2,
   History,
@@ -29,79 +28,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { allOrdersCancelled, chapterReducer, initialChapterState } from "@/lib/chapter-one";
-import { LighthouseTicket, NotesPanel, SecretRide, TravelPlatform } from "./chapter-one";
+import { browserAddress, browserTabLabel, visibleBrowserTabs } from "@/lib/browser-tabs";
+import { NotesPanel, SecretRide, TravelPlatform } from "./chapter-one";
+import { DownloadsPage, HistoryPage } from "./browser-record-pages";
 import { DesktopPanel, type DesktopPanelKind } from "./desktop-evidence";
 import { SearchBox } from "./search-box";
-import { ForumPage, LIGHTHOUSE_THREAD } from "./forum-page";
+import { ForumPage } from "./forum-page";
 import { SearchResults, BrowserNotFound } from "./search-results";
 import { ActivityArchivePage, ActivityPage, CommunityPage, FoundationPage, HiddenSeventhPage, ObituaryPage, SurvivorProfile, WitnessPage } from "./activity-page";
 import { LostCatPage, NeighborhoodNoticePage } from "./cat-trail-pages";
 import { BiographyPage, FounderProfilePage, HaijiaHospitalPage, LuWenchuanMemorialPage } from "./founder-trail-pages";
-import { GuWeizhenAuctionPage, GuWeizhenCollectionPage, GuWeizhenInterviewPage, GuWeizhenPoemPage } from "./founder-deep-pages";
-import { ACTIVITY_URL, resolveBrowserInput, type BrowserRoute } from "@/lib/browser-navigation";
+import { resolveBrowserInput, type BrowserRoute } from "@/lib/browser-navigation";
 import type { WindowPoint } from "@/lib/window-position";
-
-function HistoryPage({ navigate, unlocked }: { navigate: (action: string, query: string) => void; unlocked: boolean }) {
-  const groups = [
-    {
-      date: "昨天 · 8月25日",
-      items: [
-        ["04:53", "北站附近有通宵药店吗？最好能送到老城", "wuting-talk.example/thread/60318", "forum", "北站附近有通宵药店吗？最好能送到老城"],
-      ],
-    },
-    {
-      date: "8月24日",
-      items: [
-        ["23:14", "泊岸旅行｜我的订单", "boan.example/account/orders", "trip", ""],
-        ["16:20", "有人参加过安时那边的周末活动吗", "wuting-talk.example/thread/60307", "forum", "有人参加过安时那边的周末活动吗"],
-      ],
-    },
-    {
-      date: "8月22日",
-      items: [["21:23", LIGHTHOUSE_THREAD, "wuting-talk.example/thread/60285", "forum", LIGHTHOUSE_THREAD]],
-    },
-  ];
-  return (
-    <div className="browser-record-page">
-      <header><History /><div><h2>历史记录</h2><p>此设备上的浏览记录</p></div></header>
-      {groups.map((group) => (
-        <section key={group.date}>
-          <h3>{group.date}</h3>
-          {group.items.filter((item) => unlocked || !item[1].includes("安时")).map(([time, title, url, action, pageQuery]) => (
-            <button key={time + title} onClick={() => navigate(action, pageQuery)}>
-              <time>{time}</time><Globe2 /><span><strong>{title}</strong><small>{url}</small></span><ArrowUpRight aria-hidden="true" />
-            </button>
-          ))}
-        </section>
-      ))}
-    </div>
-  );
-}
-
-function DownloadsPage({ preview, setPreview }: { preview: string | null; setPreview: (name: string | null) => void }) {
-  const available = preview === "灯塔接驳电子票.pdf";
-  if (preview && available) {
-    return (
-      <div className="document-preview">
-        <header><button onClick={() => setPreview(null)}><ArrowLeft />返回下载内容</button><span>{preview}</span></header>
-        <LighthouseTicket />
-      </div>
-    );
-  }
-  return (
-    <div className="browser-record-page">
-      <header><Download /><div><h2>下载内容</h2><p>最近下载的文件</p></div></header>
-      <section>
-        <h3>本周</h3>
-        {[["8月18日", "灯塔接驳电子票.pdf", "186 KB · 下载完成"]].map(([time, title, meta]) => (
-          <button key={title} onClick={() => setPreview(title)}>
-            <time>{time}</time><FileSearch /><span><strong>{title}</strong><small>{meta}</small></span><ArrowUpRight aria-hidden="true" />
-          </button>
-        ))}
-      </section>
-    </div>
-  );
-}
 
 export default function Home() {
   const [enteredComputer, setEnteredComputer] = useState(false);
@@ -124,78 +62,9 @@ export default function Home() {
   const activeTab = route.tab;
   const query = route.query;
   const unlocked = allOrdersCancelled(chapter);
-  const urls: Record<string, string> = {
-    trip: "boan.example/account/orders",
-    forum: "wuting-talk.example/latest",
-    history: "browser://history",
-    downloads: "browser://downloads",
-    ride: "anshi.example/booking/WT-0831-2140",
-    activity: ACTIVITY_URL,
-    survivor: "wuting-talk.example/u/rain-after",
-    "lost-cat": "linchuan-pets.example/lost/mili-0818",
-    "neighborhood-notice": "qingtongli.example/notices/0822",
-    obituary: "linchuan-memorial.example/notices/cheng-xubai",
-    "founder-profile": "linchuan-people.example/figures/gu-weizhen",
-    "founder-interview": "haizhou-people.example/interview/gu-weizhen-2023",
-    "founder-poem": "linchuan-literature.example/archive/2020/gu-weizhen",
-    "founder-collection": "linchuan-archive.example/exhibitions/tide-paper",
-    "founder-auction": "jiawen-auction.example/results/2018-autumn/linchuan",
-    biography: "mingchuan-books.example/title/remaining-time",
-    "lu-memorial": "linchuan-business.example/archive/2016/lu-wenchuan",
-    hospital: "haijia-heji.example/history/2016-gu-weizhen",
-  };
-  const labels: Record<string, string> = {
-    trip: "泊岸旅行",
-    forum: "雾汀同城",
-    history: "历史记录",
-    downloads: "下载内容",
-    search: "雾搜",
-    ride: "安时接送",
-    activity: "安时活动服务",
-    survivor: "雨停以后",
-    "lost-cat": "寻猫启事",
-    "neighborhood-notice": "社区通知",
-    obituary: "治丧信息",
-    "founder-profile": "顾惟真",
-    "founder-interview": "海州人物",
-    "founder-poem": "临川文艺",
-    "founder-collection": "文献收藏展",
-    "founder-auction": "秋拍记录",
-    biography: "顾惟真自传",
-    "lu-memorial": "旧报归档",
-    hospital: "海岬和济",
-    "not-found": "页面未找到",
-  };
-  const routeTabs = [
-    "forum", "history", "downloads", "activity", "survivor", "lost-cat", "neighborhood-notice", "obituary",
-    "founder-profile", "founder-interview", "founder-poem", "founder-collection", "founder-auction",
-    "biography", "lu-memorial", "hospital", "not-found",
-  ];
-  const visibleTabs = ["search", ...(travelDiscovered ? ["trip"] : []), ...(routeTabs.filter((tab) => routes.some((item) => item.tab === tab))), ...(unlocked ? ["ride"] : [])];
+  const visibleTabs = visibleBrowserTabs(routes, travelDiscovered, unlocked);
+  // The ride tab is only exposed after its notification has actually been opened.
   const displayedTabs = visibleTabs.filter((tab) => tab !== "ride" || routes.some((item) => item.tab === "ride"));
-
-  function browserAddress(tab: string, pageQuery: string) {
-    const forumPaths: Record<string, string> = {
-      "北站附近有通宵药店吗？最好能送到老城": "60318",
-      "有人参加过安时那边的周末活动吗": "60307",
-      "沿海公路夜间施工，临时公交调整汇总": "60320",
-      "老城民宿到旧灯塔，早上五点能叫到车吗": "60285",
-    };
-    if (tab === "forum" && forumPaths[pageQuery]) return `wuting-talk.example/thread/${forumPaths[pageQuery]}`;
-    if (tab === "activity" && pageQuery.startsWith("archive/")) return `anshi.example/activities/${pageQuery}`;
-    if (tab === "activity" && pageQuery === "community") return "guichao.example/home";
-    if (tab === "activity" && pageQuery === "witness") return "guichao.example/records/session-06";
-    if (tab === "activity" && pageQuery === "foundation") return "anshi-foundation.example/about";
-    return urls[tab] ?? pageQuery;
-  }
-
-  function browserTabLabel(tab: string) {
-    if (tab !== "activity") return labels[tab];
-    const activityQuery = [...routes].reverse().find((item) => item.tab === "activity")?.query;
-    if (["community", "witness"].includes(activityQuery ?? "")) return "归潮见证";
-    if (activityQuery === "foundation") return "安时基金会";
-    return labels.activity;
-  }
 
   function navigate(tab: string, nextQuery = "") {
     if (tab === "ride" && !unlocked) return;
@@ -272,7 +141,7 @@ export default function Home() {
         <div className="browser-titlebar"><div className="window-controls"><button onClick={() => setBrowserOpen(false)} aria-label="关闭浏览器"><X /></button></div><p>雾行浏览器</p><span /></div>
         <Tabs value={activeTab} onValueChange={(value) => navigate(value, [...routes].reverse().find((item) => item.tab === value)?.query ?? "")} className="h-[calc(100%-34px)] gap-0!">
           <TabsList className="browser-tabs">
-            {displayedTabs.map((tab) => <TabsTrigger value={tab} key={tab}>{tab === "trip" ? <Plane /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}{browserTabLabel(tab)}</TabsTrigger>)}
+            {displayedTabs.map((tab) => <TabsTrigger value={tab} key={tab}>{tab === "trip" ? <Plane /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}{browserTabLabel(tab, routes)}</TabsTrigger>)}
           </TabsList>
           <form className="browser-toolbar" onSubmit={runSearch}>
             <div className="browser-nav">
@@ -299,25 +168,7 @@ export default function Home() {
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={`search-box:${query}`} query={query} onSearch={submitBrowserInput} />
-              <SearchResults
-                key={`search-results:${query}`}
-                query={query}
-                unlocked={unlocked}
-                openTravel={() => navigate("trip")}
-                openForum={() => navigate("forum")}
-                openActivity={() => navigate("activity")}
-                openCommunity={() => navigate("activity", "community")}
-                openLostCat={() => navigate("lost-cat")}
-                openCommunityNotice={() => navigate("neighborhood-notice")}
-                openObituary={() => navigate("obituary")}
-                openFounder={() => navigate("founder-profile")}
-                openFounderInterview={() => navigate("founder-interview")}
-                openFounderPoem={() => navigate("founder-poem")}
-                openFounderCollection={() => navigate("founder-collection")}
-                openBiography={() => navigate("biography")}
-                openLuMemorial={() => navigate("lu-memorial")}
-                openHospital={() => navigate("hospital")}
-              />
+              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openFounder={() => navigate("founder-profile")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} />
             </TabsContent>
             <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden">{query === "community" ? <CommunityPage onOpenWitness={() => navigate("activity", "witness")} onOpenFoundation={() => navigate("activity", "foundation")} /> : query === "witness" ? <WitnessPage onBack={() => navigate("activity", "community")} onOpenProfile={() => navigate("survivor")} /> : query === "foundation" ? <FoundationPage onBack={() => navigate("activity", "community")} /> : query === "archive/07" ? <HiddenSeventhPage onBack={() => navigate("activity")} /> : query.startsWith("archive/") ? <ActivityArchivePage issue={query.slice(-2)} onBack={() => navigate("activity")} /> : <ActivityPage onOpenRide={unlocked ? openRide : undefined} onOpenArchive={(issue) => navigate("activity", `archive/${issue}`)} />}</TabsContent>
             <TabsContent value="survivor" className="min-h-full data-[state=inactive]:hidden"><SurvivorProfile /></TabsContent>
@@ -325,10 +176,6 @@ export default function Home() {
             <TabsContent value="neighborhood-notice" className="min-h-full data-[state=inactive]:hidden"><NeighborhoodNoticePage onOpenObituary={() => navigate("obituary")} /></TabsContent>
             <TabsContent value="obituary" className="min-h-full data-[state=inactive]:hidden"><ObituaryPage /></TabsContent>
             <TabsContent value="founder-profile" className="min-h-full data-[state=inactive]:hidden"><FounderProfilePage /></TabsContent>
-            <TabsContent value="founder-interview" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenInterviewPage /></TabsContent>
-            <TabsContent value="founder-poem" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenPoemPage /></TabsContent>
-            <TabsContent value="founder-collection" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenCollectionPage onOpenAuction={() => navigate("founder-auction")} /></TabsContent>
-            <TabsContent value="founder-auction" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenAuctionPage /></TabsContent>
             <TabsContent value="biography" className="min-h-full data-[state=inactive]:hidden"><BiographyPage /></TabsContent>
             <TabsContent value="lu-memorial" className="min-h-full data-[state=inactive]:hidden"><LuWenchuanMemorialPage /></TabsContent>
             <TabsContent value="hospital" className="min-h-full data-[state=inactive]:hidden"><HaijiaHospitalPage /></TabsContent>

@@ -12,9 +12,19 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const vite = await createServer({ appType: "custom", configFile: false, root, resolve: { alias: { "@": root } }, server: { middlewareMode: true } });
 after(() => vite.close());
 
+async function readProjectCss() {
+  return Promise.all([
+    "app/globals.css",
+    "app/styles/base.css",
+    "app/styles/game-shell.css",
+    "app/styles/investigation-pages.css",
+    "app/styles/responsive.css",
+  ].map((name) => readFile(path.join(root, name), "utf8"))).then((files) => files.join("\n"));
+}
+
 test("entering the desktop cannot reuse the intro button as a focused photo icon", async () => {
   const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
-  const css = await readFile(path.join(root, "app/globals.css"), "utf8");
+  const css = await readProjectCss();
   assert.match(source, /<main key="intro" className="intro-screen"/);
   assert.match(source, /<main key="desktop" className="computer-desktop"/);
   assert.doesNotMatch(css, /\.desktop-icons button:focus\s+\.desktop-app/);
@@ -25,7 +35,7 @@ test("entering the desktop cannot reuse the intro button as a focused photo icon
 test("every exposed game button has an action or submits a handled form", async () => {
   const failures = [];
   let buttons = 0;
-  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx", "app/founder-trail-pages.tsx"]) {
+  for (const name of ["app/page.tsx", "app/browser-record-pages.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx", "app/founder-trail-pages.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -134,7 +144,7 @@ test("the shared itinerary PDF is absent from downloads and the file folder", as
 
 test("sibling components never share a reconciliation key when navigating materials", async () => {
   const failures = [];
-  for (const name of ["app/page.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/founder-trail-pages.tsx"]) {
+  for (const name of ["app/page.tsx", "app/browser-record-pages.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/founder-trail-pages.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxElement(node) || ts.isJsxFragment(node)) {
@@ -215,7 +225,7 @@ test("the discussion opens from its forum row, returns to the list, and has an i
   const detail = ForumPage({ ...props, thread: selected });
   elements(detail).find((element) => element.props.className === "forum-back").props.onClick();
   assert.equal(selected, null);
-  const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  const source = await readFile(path.join(root, "app/browser-record-pages.tsx"), "utf8");
   assert.match(source, /\["21:23", LIGHTHOUSE_THREAD, "wuting-talk\.example\/thread\/60285", "forum", LIGHTHOUSE_THREAD\]/);
   const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
   assert.deepEqual(resolveBrowserInput("wuting-talk.example/thread/60285", false), { tab: "forum", query: LIGHTHOUSE_THREAD });
@@ -264,7 +274,7 @@ test("photos, trash, and files share the same retained draggable window position
   const home = await readFile(path.join(root, "app/page.tsx"), "utf8");
   assert.match(home, /const \[evidencePosition, setEvidencePosition\] = useState<WindowPoint \| null>\(null\)/);
   assert.match(home, /<DesktopPanel key=\{desktopPanel\} position=\{evidencePosition\} onPositionChange=\{setEvidencePosition\}/);
-  const css = await readFile(path.join(root, "app/globals.css"), "utf8");
+  const css = await readProjectCss();
   assert.match(css, /\.evidence-window > header \{ cursor: grab; touch-action: none; user-select: none; \}/);
   assert.match(css, /\.evidence-window > header\[data-dragging="true"\] \{ cursor: grabbing; \}/);
 });
@@ -445,11 +455,14 @@ test("the founder trail delays the hospital night until chapter seven and expose
   assert.match(hospital, /海岬奇迹/);
   await access(path.join(root, "public/game/gu-weizhen-lu-wenchuan-2014.webp"));
 
-  const css = await readFile(path.join(root, "app/globals.css"), "utf8");
+  const css = await readProjectCss();
   assert.match(css, /\.founder-profile-page \{[^}]*background: #fff;/);
   assert.match(css, /\.biography-page \{[^}]*background: #171713;/);
   assert.match(css, /\.lu-memorial-page \{[^}]*background: #fff;/);
   assert.match(css, /\.hospital-history-page \{[^}]*background: #f6f9fc;/);
+  assert.match(css, /\.biography-contents > button strong \{[^}]*font-size: 18px;/);
+  assert.match(css, /\.biography-contents > button small \{[^}]*font-size: 13px;/);
+  assert.match(css, /\.biography-contents > button span \{[^}]*font-size: 13px;/);
 });
 
 test("the crop hides session seven while the full corridor is last in the mountain inn gallery", async () => {
@@ -464,6 +477,6 @@ test("the crop hides session seven while the full corridor is last in the mounta
   assert.match(chapter, /setHotelPhotoIndex\(0\)/);
   assert.match(chapter, /item\.category === "酒店" \? <img src=\{item\.image\}/);
   assert.doesNotMatch(chapter, /hotel-crop|南岸民宿走廊/);
-  const css = await readFile(path.join(root, "app/globals.css"), "utf8");
+  const css = await readProjectCss();
   assert.match(css, /\.evidence-image\.is-cropped img, \.evidence-thumbnail\.is-cropped img \{ width: 128%; max-width: none; transform: translateX\(-22%\); \}/);
 });

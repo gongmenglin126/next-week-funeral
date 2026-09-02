@@ -48,10 +48,6 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
     if (url.hostname === "qingtongli.example" && path === "/notices/0822") return { tab: "neighborhood-notice", query: "" };
     if (url.hostname === "linchuan-memorial.example" && path === "/notices/cheng-xubai") return { tab: "obituary", query: "" };
     if (url.hostname === "linchuan-people.example" && path === "/figures/gu-weizhen") return { tab: "founder-profile", query: "" };
-    if (url.hostname === "haizhou-people.example" && path === "/interview/gu-weizhen-2023") return { tab: "founder-interview", query: "" };
-    if (url.hostname === "linchuan-literature.example" && path === "/archive/2020/gu-weizhen") return { tab: "founder-poem", query: "" };
-    if (url.hostname === "linchuan-archive.example" && path === "/exhibitions/tide-paper") return { tab: "founder-collection", query: "" };
-    if (url.hostname === "jiawen-auction.example" && path === "/results/2018-autumn/linchuan") return { tab: "founder-auction", query: "" };
     if (url.hostname === "mingchuan-books.example" && path === "/title/remaining-time") return { tab: "biography", query: "" };
     if (url.hostname === "linchuan-business.example" && path === "/archive/2016/lu-wenchuan") return { tab: "lu-memorial", query: "" };
     if (url.hostname === "haijia-heji.example" && path === "/history/2016-gu-weizhen") return { tab: "hospital", query: "" };
