@@ -52,6 +52,7 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
     if (url.hostname === "linchuan-literature.example" && path === "/archive/2020/gu-weizhen") return { tab: "founder-poem", query: "" };
     if (url.hostname === "linchuan-archive.example" && path === "/exhibitions/tide-paper") return { tab: "founder-collection", query: "" };
     if (url.hostname === "jiawen-auction.example" && path === "/results/2018-autumn/linchuan") return { tab: "founder-auction", query: "" };
+    if (url.hostname === "jiawen-auction.example" && path === "/catalog/2017-spring/lanxu-buddhist-art") return { tab: "buddhist-sale", query: "" };
     if (url.hostname === "beilu-care.example" && path === "/about") return { tab: "rehab-center", query: "" };
     if (url.hostname === "beilu-care.example" && path === "/archive/linchao-2019") return { tab: "aid-review", query: "" };
     if (url.hostname === "linchuan-archive.example" && path === "/places/beilu-17") return { tab: "beilu-address", query: "" };

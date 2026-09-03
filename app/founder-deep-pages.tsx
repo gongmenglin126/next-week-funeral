@@ -58,7 +58,9 @@ export function GuWeizhenInterviewPage() {
 
         <p>“不是为了研究。”顾惟真说，“看见喜欢的就留下。有些看得懂，有些看不懂，先放着。”朋友知道他有这个习惯，出差碰见旧书、旧地图，也会顺手带回来。</p>
 
-        <p>靠窗矮柜的最下层还收着一只旧香炉和一串念珠。孟嘉记得2014年第一次采访时，顾惟真曾说自己早晚礼佛，出差也不会中断。他把盒盖重新合上：“2016年以后就没有再用过。不是换了一尊去信，我已经不信这些了。留着，只是因为扔掉也不能改变什么。”</p>
+        <p>靠窗矮柜的最下层还收着一只旧香炉和一串念珠。孟嘉记得2014年第一次采访时，这间屋子另一侧还是三层供架；顾惟真早晚礼佛，出差也不会中断。2017年嘉闻春拍“澜序旧藏·佛教艺术”专场之后，供架和大部分藏品都不见了，只剩这两件东西留在箱底。</p>
+
+        <p>顾惟真把盒盖重新合上：“2016年以后就没有再用过。不是换了一尊去信，我已经不信这些了。留下它们，也不是舍不得，只是扔掉不能改变什么。”</p>
 
         <p>桌上倒很简单：几份当天的文件，一只茶杯，一支用了很多年的钢笔。我们问他平时会不会专门坐在这里读书，他想了想，说其实更多时候只是回来坐一会儿，“翻两页，接个电话，天就黑了”。</p>
 
@@ -104,5 +106,30 @@ export function GuWeizhenAuctionPage() {
       </div>
       <p className="mt-7 max-w-[620px] text-[12px] leading-7 text-[#737873]">拍品来自“临川私人旧藏”专场。委托人与竞得人信息均未公开。</p>
     </main>
+  </article>;
+}
+
+export function GuWeizhenBuddhistSalePage() {
+  return <article className="min-h-full bg-[#ece9e2] px-5 py-10 text-[#27251f] md:px-10 md:py-14">
+    <div className="mx-auto max-w-[900px] border border-[#aaa394] bg-[#faf8f2] shadow-[0_18px_45px_rgba(45,39,28,.12)]">
+      <header className="flex flex-wrap items-start justify-between gap-5 border-b-2 border-[#29261f] px-7 py-7 md:px-10"><div><strong className="text-[14px] tracking-[.2em]">海州嘉闻拍卖</strong><p className="mt-2 text-[11px] tracking-[.12em] text-[#8a8375]">2017 春季艺术品拍卖会 · 成交图录</p></div><span className="border border-[#767064] px-3 py-1 text-[11px]">专场 06</span></header>
+      <main className="px-7 py-10 md:px-10 md:py-12">
+        <p className="text-[11px] tracking-[.16em] text-[#8b8477]">2017年5月20日 · 海州</p>
+        <h1 className="mt-4 font-serif text-[38px] font-normal leading-tight md:text-[48px]">澜序旧藏·佛教艺术</h1>
+        <p className="mt-6 max-w-[740px] text-[16px] leading-8 text-[#666055]">本专场共31件，全部成交。依委托人授权，藏品原持有人为澜序实业创办人顾惟真；入藏时间横跨1989年至2015年，其中多件长期用于家中供奉，并非短期购入的陈设性收藏。</p>
+
+        <section className="mt-10 border-y border-[#bdb6a9] py-7"><dl className="grid gap-6 text-[13px] leading-7 sm:grid-cols-3"><div><dt className="text-[#918a7e]">委托入库</dt><dd className="mt-1 font-semibold">2017年3月14日</dd></div><div><dt className="text-[#918a7e]">拍品数量</dt><dd className="mt-1 font-semibold">31件</dd></div><div><dt className="text-[#918a7e]">成交情况</dt><dd className="mt-1 font-semibold">31件成交</dd></div></dl></section>
+
+        <section className="mt-9 divide-y divide-[#d2ccc0] border border-[#c3bcaf]">
+          <article className="grid gap-3 p-5 md:grid-cols-[90px_1fr_120px]"><strong className="text-[12px] text-[#81796c]">LOT 03</strong><div><h2 className="font-serif text-[20px]">清末木雕观音坐像</h2><p className="mt-2 text-[14px] leading-7 text-[#716a5f]">底座及背光留有长期熏香痕迹；委托记录注明“家中旧供”。</p></div><span className="text-[12px] text-[#80796e]">成交 ¥128,000</span></article>
+          <article className="grid gap-3 p-5 md:grid-cols-[90px_1fr_120px]"><strong className="text-[12px] text-[#81796c]">LOT 08</strong><div><h2 className="font-serif text-[20px]">顾惟真手抄《心经》册</h2><p className="mt-2 text-[14px] leading-7 text-[#716a5f]">1992年，末页题“愿母病安”，共四十九纸。</p></div><span className="text-[12px] text-[#80796e]">成交 ¥36,000</span></article>
+          <article className="grid gap-3 p-5 md:grid-cols-[90px_1fr_120px]"><strong className="text-[12px] text-[#81796c]">LOT 16</strong><div><h2 className="font-serif text-[20px]">地藏菩萨铜像</h2><p className="mt-2 text-[14px] leading-7 text-[#716a5f]">2003年入藏，附临川旧寺开光疏文及历年供养记录。</p></div><span className="text-[12px] text-[#80796e]">成交 ¥92,000</span></article>
+          <article className="grid gap-3 p-5 md:grid-cols-[90px_1fr_120px]"><strong className="text-[12px] text-[#81796c]">LOT 27</strong><div><h2 className="font-serif text-[20px]">佛堂铜香具一组</h2><p className="mt-2 text-[14px] leading-7 text-[#716a5f]">香炉内底刻“惟真敬奉”，积灰及使用痕迹明显。</p></div><span className="text-[12px] text-[#80796e]">成交 ¥54,000</span></article>
+        </section>
+
+        <aside className="mt-8 border-l-4 border-[#6d6558] bg-[#efebe2] px-6 py-5 text-[14px] leading-7 text-[#625c52]"><strong>图录附记</strong><p className="mt-2">委托人保留一只早年日用香炉及一串随身念珠，其余家中供奉与佛教艺术收藏在本场集中释出。拍卖方未披露成交款用途。</p></aside>
+        <footer className="mt-10 border-t border-[#c9c2b6] pt-5 text-[11px] leading-6 text-[#8a8377]">图录编号：JW-2017-SP06 · 委托人姓名经本人授权刊载</footer>
+      </main>
+    </div>
   </article>;
 }

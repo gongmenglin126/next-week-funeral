@@ -127,6 +127,7 @@ export function SearchResults({
   openFounderInterview,
   openFounderPoem,
   openFounderCollection,
+  openBuddhistSale,
   openRehabCenter,
   openBeiluAddress,
   openAidSelection,
@@ -148,6 +149,7 @@ export function SearchResults({
   openFounderInterview: () => void;
   openFounderPoem: () => void;
   openFounderCollection: () => void;
+  openBuddhistSale: () => void;
   openRehabCenter: () => void;
   openBeiluAddress: () => void;
   openAidSelection: () => void;
@@ -206,6 +208,11 @@ export function SearchResults({
   if (normalized === "大罗无相尊仪轨残卷") return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openFounderCollection}><small className="text-[#78957e]">临川文献馆 · 特展回顾</small><h3 className="my-3 text-xl text-[#286ab3]">潮痕与旧纸｜临川民间文献特展</h3><p className="text-xs text-[#8493a4]">2024年特展目录收录《大罗无相尊仪轨残卷》，年代与来源仍在整理。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/exhibitions/tide-paper</code></button>
+  </div>;
+
+  if (["澜序旧藏佛教艺术", "澜序旧藏·佛教艺术", "顾惟真佛教藏品", "嘉闻2017春拍"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openBuddhistSale}><small className="text-[#78957e]">海州嘉闻拍卖 · 2017春拍成交图录</small><h3 className="my-3 text-xl text-[#286ab3]">澜序旧藏·佛教艺术</h3><p className="text-xs text-[#8493a4]">顾惟真委托的佛教艺术专场，共31件拍品，全部成交。</p><code className="mt-2 block text-[10px] text-[#718c76]">jiawen-auction.example/catalog/2017-spring/lanxu-buddhist-art</code></button>
   </div>;
 
   if (["临川异地就医陪护短住", "临川北麓康复中心", "北麓康复中心"].includes(normalized)) return <div className="mt-8 max-w-[860px]">

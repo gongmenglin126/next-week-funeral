@@ -446,10 +446,13 @@ test("the founder trail delays the hospital night until chapter seven and expose
   assert.match(biography, /第六章|没有回应的夜晚/);
   assert.doesNotMatch(biography, /观音、地藏、耶稣|顾惟真（左）与陆闻川/);
   const biographySource = await readFile(path.join(root, "app/founder-trail-pages.tsx"), "utf8");
-  assert.match(biographySource, /少年时起便供着一尊观音/);
-  assert.match(biographySource, /这个习惯一直持续到四十五岁/);
-  assert.match(biographySource, /收起佛像和香炉/);
-  assert.match(biographySource, /只是不再拜了/);
+  assert.match(biographySource, /每天放学后在家中观音像前抄《心经》/);
+  assert.match(biographySource, /每月初一、十五茹素/);
+  assert.match(biographySource, /这个习惯持续了三十多年/);
+  assert.match(biographySource, /撤去佛堂里的供桌/);
+  assert.match(biographySource, /澜序旧藏·佛教艺术/);
+  assert.match(biographySource, /我不能再对着它们假装还有谁在听/);
+  assert.match(biographySource, /三十多年的供奉[ -￿]*得到的是同一种沉默/);
   assert.match(biographySource, /<strong>海岬和济医院<\/strong>/);
   assert.match(biographySource, /顾惟真（左）与陆闻川，2014年/);
   assert.match(biographySource, /gu-weizhen-lu-wenchuan-2014\.webp/);
@@ -472,6 +475,37 @@ test("the founder trail delays the hospital night until chapter seven and expose
   assert.match(css, /\.biography-contents > button strong \{[^}]*font-size: 18px;/);
   assert.match(css, /\.biography-contents > button small \{[^}]*font-size: 13px;/);
   assert.match(css, /\.biography-contents > button span \{[^}]*font-size: 11px;/);
+});
+
+test("Gu's decades of Buddhist devotion end in a documented 2017 collection sale", async () => {
+  const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openBuddhistSale() {}, openRehabCenter() {}, openBeiluAddress() {}, openAidSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
+  const search = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "澜序旧藏·佛教艺术" }));
+  assert.match(search, /2017春拍成交图录/);
+  assert.match(search, /31件拍品，全部成交/);
+  assert.doesNotMatch(search, /无面小像|大罗无相尊/);
+
+  const { GuWeizhenBuddhistSalePage, GuWeizhenInterviewPage, GuWeizhenAuctionPage } = await vite.ssrLoadModule("/app/founder-deep-pages.tsx");
+  const sale = renderToStaticMarkup(React.createElement(GuWeizhenBuddhistSalePage));
+  assert.match(sale, /入藏时间横跨1989年至2015年/);
+  assert.match(sale, /长期用于家中供奉/);
+  assert.match(sale, /顾惟真手抄《心经》册/);
+  assert.match(sale, /愿母病安/);
+  assert.match(sale, /香炉内底刻“惟真敬奉”/);
+  assert.match(sale, /未披露成交款用途/);
+
+  const interview = renderToStaticMarkup(React.createElement(GuWeizhenInterviewPage));
+  assert.match(interview, /2014年第一次采访时[ -￿]*三层供架/);
+  assert.match(interview, /2017年嘉闻春拍“澜序旧藏·佛教艺术”专场之后/);
+  assert.match(interview, /我已经不信这些了/);
+
+  const facelessAuction = renderToStaticMarkup(React.createElement(GuWeizhenAuctionPage));
+  assert.match(facelessAuction, /2018 秋拍/);
+  assert.match(facelessAuction, /竞得方[ -￿]*匿名委托/);
+  assert.doesNotMatch(facelessAuction, /顾惟真/);
+
+  const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
+  assert.deepEqual(resolveBrowserInput("jiawen-auction.example/catalog/2017-spring/lanxu-buddhist-art", true), { tab: "buddhist-sale", query: "" });
 });
 
 test("the hidden record number opens a layered internal trail instead of explaining the cult on the public page", async () => {
