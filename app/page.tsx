@@ -205,7 +205,7 @@ export default function Home() {
             <TabsContent value="rehab-center" className="min-h-full data-[state=inactive]:hidden"><BeiluRehabilitationPage onOpenReview={() => navigate("aid-review")} /></TabsContent>
             <TabsContent value="aid-review" className="min-h-full data-[state=inactive]:hidden"><LinchaoAidReviewPage /></TabsContent>
             <TabsContent value="beilu-address" className="min-h-full data-[state=inactive]:hidden"><BeiluPlaceArchivePage onOpenCentre={() => navigate("rehab-center")} /></TabsContent>
-            <TabsContent value="aid-selection" className="min-h-full data-[state=inactive]:hidden"><BeiluSelectionMemoPage onOpenMinutes={() => navigate("founder-briefing")} /></TabsContent>
+            <TabsContent value="aid-selection" className="min-h-full data-[state=inactive]:hidden"><BeiluSelectionMemoPage /></TabsContent>
             <TabsContent value="biography" className="min-h-full data-[state=inactive]:hidden"><BiographyPage /></TabsContent>
             <TabsContent value="lu-memorial" className="min-h-full data-[state=inactive]:hidden"><LuWenchuanMemorialPage /></TabsContent>
             <TabsContent value="hospital" className="min-h-full data-[state=inactive]:hidden"><HaijiaHospitalPage /></TabsContent>
