@@ -40,6 +40,7 @@ import { LostCatPage, NeighborhoodNoticePage } from "./cat-trail-pages";
 import { BiographyPage, FounderProfilePage, HaijiaHospitalPage, LuWenchuanMemorialPage } from "./founder-trail-pages";
 import { GuWeizhenAuctionPage, GuWeizhenBuddhistSalePage, GuWeizhenCollectionPage, GuWeizhenInterviewPage, GuWeizhenPoemPage } from "./founder-deep-pages";
 import { ContinuityRulePage, FounderBriefingPage, RecordRevisionPage } from "./anshi-internal-pages";
+import { ConvergencePuzzlePage } from "./convergence-puzzle";
 import { BeiluPlaceArchivePage, BeiluRehabilitationPage, BeiluSelectionMemoPage, LinchaoAidReviewPage } from "./qichao-pages";
 import { resolveBrowserInput, type BrowserRoute } from "@/lib/browser-navigation";
 import type { WindowPoint } from "@/lib/window-position";
@@ -61,6 +62,7 @@ export default function Home() {
   const [browserMenuOpen, setBrowserMenuOpen] = useState(false);
   const [notificationCentre, setNotificationCentre] = useState(false);
   const [restoredPhoto, setRestoredPhoto] = useState(false);
+  const [crossIndexUnlocked, setCrossIndexUnlocked] = useState(false);
   const route = routes[routeIndex];
   const activeTab = route.tab;
   const query = route.query;
@@ -209,7 +211,8 @@ export default function Home() {
             <TabsContent value="hospital" className="min-h-full data-[state=inactive]:hidden"><HaijiaHospitalPage /></TabsContent>
             <TabsContent value="record-revision" className="min-h-full data-[state=inactive]:hidden"><RecordRevisionPage onOpenRule={() => navigate("continuity-rule")} /></TabsContent>
             <TabsContent value="continuity-rule" className="min-h-full data-[state=inactive]:hidden"><ContinuityRulePage onOpenMinutes={() => navigate("founder-briefing")} /></TabsContent>
-            <TabsContent value="founder-briefing" className="min-h-full data-[state=inactive]:hidden"><FounderBriefingPage onOpenAidSelection={() => navigate("aid-selection")} /></TabsContent>
+            <TabsContent value="founder-briefing" className="min-h-full data-[state=inactive]:hidden"><FounderBriefingPage onOpenAidSelection={() => navigate("aid-selection")} onOpenCrossIndex={() => navigate("convergence-index")} /></TabsContent>
+            <TabsContent value="convergence-index" className="min-h-full data-[state=inactive]:hidden"><ConvergencePuzzlePage unlocked={crossIndexUnlocked} onUnlock={() => setCrossIndexUnlocked(true)} /></TabsContent>
             <TabsContent value="not-found" className="min-h-full data-[state=inactive]:hidden"><BrowserNotFound address={query} onSearch={() => navigate("search")} /></TabsContent>
             {unlocked && <TabsContent forceMount value="ride" className="min-h-full data-[state=inactive]:hidden"><SecretRide onOpenActivity={() => navigate("activity")} /></TabsContent>}
           </div>

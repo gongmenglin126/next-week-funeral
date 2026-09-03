@@ -63,6 +63,7 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
     if (url.hostname === "wusou-cache.example" && path === "/snapshot/QC-AID-19") return { tab: "aid-selection", query: "" };
     if (url.hostname === "anshi-office.example" && path === "/rules/S-17") return { tab: "continuity-rule", query: "" };
     if (url.hostname === "anshi-office.example" && path === "/minutes/2019-04-17") return { tab: "founder-briefing", query: "" };
+    if (url.hostname === "anshi-office.example" && path === "/archive/cross-index-A00") return { tab: "convergence-index", query: "" };
     return missing;
   } catch {
     return missing;
