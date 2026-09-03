@@ -16,9 +16,15 @@ export const BROWSER_URLS: Record<string, string> = {
   "founder-poem": "linchuan-literature.example/archive/2020/gu-weizhen",
   "founder-collection": "linchuan-archive.example/exhibitions/tide-paper",
   "founder-auction": "jiawen-auction.example/results/2018-autumn/linchuan",
-  biography: "mingchuan-books.example/title/remaining-time",
+  "qichao-academy": "qichao-house.example/about",
+  "qichao-review": "qichao-house.example/archive/coastal-aid-2019",
+  "qichao-selection": "wusou-cache.example/snapshot/QC-AID-19",
+  biography: "mingchuan-books.example/title/walk-to-today",
   "lu-memorial": "linchuan-business.example/archive/2016/lu-wenchuan",
   hospital: "haijia-heji.example/history/2016-gu-weizhen",
+  "record-revision": "wusou-cache.example/snapshot/R-06-4",
+  "continuity-rule": "anshi-office.example/rules/S-17",
+  "founder-briefing": "anshi-office.example/minutes/2019-04-17",
 };
 
 export const BROWSER_LABELS: Record<string, string> = {
@@ -38,9 +44,15 @@ export const BROWSER_LABELS: Record<string, string> = {
   "founder-poem": "临川文艺",
   "founder-collection": "文献收藏展",
   "founder-auction": "秋拍记录",
+  "qichao-academy": "栖潮书院",
+  "qichao-review": "援助回顾",
+  "qichao-selection": "项目批注",
   biography: "顾惟真自传",
   "lu-memorial": "旧报归档",
   hospital: "海岬和济",
+  "record-revision": "记录校对",
+  "continuity-rule": "内部规则",
+  "founder-briefing": "说明会纪要",
   "not-found": "页面未找到",
 };
 
@@ -58,9 +70,15 @@ const OPTIONAL_TABS = [
   "founder-poem",
   "founder-collection",
   "founder-auction",
+  "qichao-academy",
+  "qichao-review",
+  "qichao-selection",
   "biography",
   "lu-memorial",
   "hospital",
+  "record-revision",
+  "continuity-rule",
+  "founder-briefing",
   "not-found",
 ];
 

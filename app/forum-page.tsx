@@ -22,10 +22,10 @@ export const FORUM_THREADS: Record<string, ForumThread> = {
   },
   "有人参加过安时那边的周末活动吗": {
     tag: "闲聊", author: "灰鲸", date: "8月23日 15:09", locked: true,
-    body: ["朋友收到过邀请，公开页面只写了生命教育。", "想问问有没有人去过，具体都做什么？"],
+    body: ["朋友收到过邀请，公开页面只写了生命关怀活动。", "想问问有没有人去过，具体都做什么？"],
     replies: [
       { id: "activity-1", author: "一杯温水", date: "8月23日 16:42", text: "参加过普通场，写信、聊天，没什么特别的。" },
-      { id: "activity-2", author: "纸船", date: "8月23日 18:03", text: "你说的是第七期吗？那一期后来删页了。" },
+      { id: "activity-2", author: "纸船", date: "8月23日 18:03", text: "你说的是第七期吗？那一期后来没列进公开归档。" },
     ],
   },
   [LIGHTHOUSE_THREAD]: {

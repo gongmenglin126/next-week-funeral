@@ -4,12 +4,22 @@ import { useState } from "react";
 import { BookOpen, Quote } from "lucide-react";
 
 const CHAPTERS = [
-  { number: "01", title: "山脚", summary: "关于临川旧城、家庭和顾惟真最早的求学经历。" },
+  {
+    number: "01",
+    title: "山脚",
+    summary: "关于临川旧城、家中佛龛，以及顾惟真从少年时开始的礼佛习惯。",
+    excerpt: "顾惟真说，家里从他少年时起便供着一尊观音。后来创业再忙，他仍会在清晨上香；出差住久了，也会把念珠放在床头。这个习惯一直持续到四十五岁。",
+  },
   { number: "02", title: "潮水之前", summary: "澜序实业创办初期，以及创业团队共同工作的十年。" },
   { number: "03", title: "一座工厂的十年", summary: "从海工零部件厂到澜序实业集团的扩张过程。" },
   { number: "04", title: "被看见的人", summary: "教育捐助、基层医疗项目和顾惟真早期的公益活动。" },
   { number: "05", title: "停下来的一年", summary: "2016年，他第一次离开公司管理岗位。" },
-  { number: "06", title: "病房外的时间", summary: "康复后的生活变化，以及成立生命关怀项目的想法。" },
+  {
+    number: "06",
+    title: "病房外的时间",
+    summary: "康复后停止礼佛，以及成立生命关怀项目的想法。",
+    excerpt: "从海岬出院回家后，他让人收起佛像和香炉。顾惟真说：“我没有砸，也没有烧，只是不再拜了。以前我相信，只要足够诚心，总会有谁听见；那一夜以后，我不再这样想。”",
+  },
 ] as const;
 
 export function FounderProfilePage() {
@@ -34,7 +44,7 @@ export function BiographyPage() {
     <main>
       <section className="biography-hero"><div className="biography-cover"><span>顾惟真<br />口述</span><strong>走到今天</strong><small>明川书局</small></div><div><p className="biography-label">人物自传 · 2021</p><h1>走到今天</h1><p className="biography-subtitle">顾惟真口述，记者孟嘉整理</p><p>从临川旧城的一间设备厂，到长期投入医疗与照护公益，本书以七次访谈整理顾惟真的成长、创业和重病康复经历。</p><dl><div><dt>出版社</dt><dd>明川书局</dd></div><div><dt>出版时间</dt><dd>2021年4月</dd></div><div><dt>章节</dt><dd>全书七章</dd></div></dl></div></section>
       <section className="biography-contents"><div className="biography-section-title"><p>目录与试读</p><span style={{ fontSize: 10 }}>点击章节查看节选</span></div>{CHAPTERS.map((item) => <button key={item.number} onClick={() => setChapter(item.number)} aria-expanded={chapter === item.number}><span style={{ fontSize: 11 }}>{item.number}</span><strong style={{ fontSize: 18, lineHeight: 1.55 }}>{item.title}</strong><small style={{ fontSize: 13, lineHeight: 1.75 }}>{item.summary}</small></button>)}<button onClick={() => setChapter("07")} aria-expanded={chapter === "07"}><span style={{ fontSize: 11 }}>07</span><strong style={{ fontSize: 18, lineHeight: 1.55 }}>没有回应的夜晚</strong><small style={{ fontSize: 13, lineHeight: 1.75 }}>一次关于病危、祈求与幸存的访谈。</small></button></section>
-      {selected ? <article className="biography-excerpt" aria-live="polite"><header><span>第{Number(selected.number)}章</span><h2>{selected.title}</h2></header><p>{selected.summary}</p><p>本章试读仅收录访谈整理稿的一部分。完整版内容请以纸质出版物为准。</p></article> : chapter === "07" ? <article className="biography-excerpt biography-night" aria-live="polite"><header><span>第七章</span><h2>没有回应的夜晚</h2><p>以下内容整理自孟嘉对顾惟真的第四次访谈。</p></header><div className="biography-interview"><p><strong>孟嘉：</strong>你还记得在重症监护室里的那个晚上吗？</p><p><strong>顾惟真：</strong>记得。<strong>海岬和济医院</strong>的灯很白，我不知道自己能不能看见第二天。我把记得的佛号、祷词和神名全念了一遍，观音、地藏、耶稣，连小时候在道观听过的名字都喊了。没有谁回应我。</p><p><strong>孟嘉：</strong>你当时许过愿吗？</p><p><strong>顾惟真：</strong>我说，如果让我活下来，我愿意把拥有的东西都还回去。钱、公司、名声，都可以。</p><p><strong>孟嘉：</strong>后来发生了什么？</p><p><strong>顾惟真：</strong>我活了下来。闻川却没能等到天亮。很长一段时间，我都不知道该怎样理解这两件同时发生的事。</p></div><figure><img src="./game/gu-weizhen-lu-wenchuan-2014.webp" alt="顾惟真与陆闻川在临川海边活动上的合照" /><figcaption>顾惟真（左）与陆闻川，2014年</figcaption></figure><aside><Quote aria-hidden="true" /><p>“我活下来了。可这件事，我一直不知道该高兴还是该愧疚。”</p></aside></article> : null}
+      {selected ? <article className="biography-excerpt" aria-live="polite"><header><span>第{Number(selected.number)}章</span><h2>{selected.title}</h2></header><p>{"excerpt" in selected ? selected.excerpt : selected.summary}</p><p>本章试读仅收录访谈整理稿的一部分。完整版内容请以纸质出版物为准。</p></article> : chapter === "07" ? <article className="biography-excerpt biography-night" aria-live="polite"><header><span>第七章</span><h2>没有回应的夜晚</h2><p>以下内容整理自孟嘉对顾惟真的第四次访谈。</p></header><div className="biography-interview"><p><strong>孟嘉：</strong>你还记得在重症监护室里的那个晚上吗？</p><p><strong>顾惟真：</strong>记得。<strong>海岬和济医院</strong>的灯很白，我不知道自己能不能看见第二天。我把记得的佛号、祷词和神名全念了一遍，观音、地藏、耶稣，连小时候在道观听过的名字都喊了。没有谁回应我。</p><p><strong>孟嘉：</strong>你当时许过愿吗？</p><p><strong>顾惟真：</strong>我说，如果让我活下来，我愿意把拥有的东西都还回去。钱、公司、名声，都可以。</p><p><strong>孟嘉：</strong>后来发生了什么？</p><p><strong>顾惟真：</strong>我活了下来。闻川却没能等到天亮。很长一段时间，我都不知道该怎样理解这两件同时发生的事。</p></div><figure><img src="./game/gu-weizhen-lu-wenchuan-2014.webp" alt="顾惟真与陆闻川在临川海边活动上的合照" /><figcaption>顾惟真（左）与陆闻川，2014年</figcaption></figure><aside><Quote aria-hidden="true" /><p>“我活下来了。可这件事，我一直不知道该高兴还是该愧疚。”</p></aside></article> : null}
     </main>
   </div>;
 }
@@ -66,4 +76,3 @@ export function HaijiaHospitalPage() {
     </main>
   </div>;
 }
-

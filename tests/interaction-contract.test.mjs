@@ -35,7 +35,7 @@ test("entering the desktop cannot reuse the intro button as a focused photo icon
 test("every exposed game button has an action or submits a handled form", async () => {
   const failures = [];
   let buttons = 0;
-  for (const name of ["app/page.tsx", "app/browser-record-pages.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx", "app/founder-trail-pages.tsx", "app/founder-deep-pages.tsx"]) {
+  for (const name of ["app/page.tsx", "app/browser-record-pages.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx", "app/founder-trail-pages.tsx", "app/founder-deep-pages.tsx", "app/anshi-internal-pages.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -297,9 +297,13 @@ test("activity aliases resolve while invalid addresses cannot bypass the ride ga
   assert.deepEqual(resolveBrowserInput("linchuan-pets.example/lost/mili-0818", true), { tab: "lost-cat", query: "" });
   assert.deepEqual(resolveBrowserInput("qingtongli.example/notices/0822", true), { tab: "neighborhood-notice", query: "" });
   assert.deepEqual(resolveBrowserInput("linchuan-people.example/figures/gu-weizhen", true), { tab: "founder-profile", query: "" });
-  assert.deepEqual(resolveBrowserInput("mingchuan-books.example/title/remaining-time", true), { tab: "biography", query: "" });
+  assert.deepEqual(resolveBrowserInput("mingchuan-books.example/title/walk-to-today", true), { tab: "biography", query: "" });
+  assert.deepEqual(resolveBrowserInput("mingchuan-books.example/title/remaining-time", true), { tab: "not-found", query: "mingchuan-books.example/title/remaining-time" });
   assert.deepEqual(resolveBrowserInput("linchuan-business.example/archive/2016/lu-wenchuan", true), { tab: "lu-memorial", query: "" });
   assert.deepEqual(resolveBrowserInput("haijia-heji.example/history/2016-gu-weizhen", true), { tab: "hospital", query: "" });
+  assert.deepEqual(resolveBrowserInput("wusou-cache.example/snapshot/R-06-4", true), { tab: "record-revision", query: "" });
+  assert.deepEqual(resolveBrowserInput("anshi-office.example/rules/S-17", true), { tab: "continuity-rule", query: "" });
+  assert.deepEqual(resolveBrowserInput("anshi-office.example/minutes/2019-04-17", true), { tab: "founder-briefing", query: "" });
 });
 
 test("activity search has one result and wrong text or URLs show explicit recoverable feedback", async () => {
@@ -426,6 +430,7 @@ test("the founder trail delays the hospital night until chapter seven and expose
   assert.doesNotMatch(search("顾惟真"), /没有回应的夜晚|陆闻川|海岬和济/);
   assert.match(search("走到今天"), /顾惟真口述自传/);
   assert.match(search("《走到今天》"), /顾惟真口述自传/);
+  assert.match(search("把余下的时间还给别人"), /未找到与/);
   assert.match(search("陆闻川"), /因交通事故去世/);
   assert.match(search("海岬和济医院"), /持续十七小时的生命接力/);
 
@@ -441,6 +446,10 @@ test("the founder trail delays the hospital night until chapter seven and expose
   assert.match(biography, /第六章|没有回应的夜晚/);
   assert.doesNotMatch(biography, /观音、地藏、耶稣|顾惟真（左）与陆闻川/);
   const biographySource = await readFile(path.join(root, "app/founder-trail-pages.tsx"), "utf8");
+  assert.match(biographySource, /少年时起便供着一尊观音/);
+  assert.match(biographySource, /这个习惯一直持续到四十五岁/);
+  assert.match(biographySource, /收起佛像和香炉/);
+  assert.match(biographySource, /只是不再拜了/);
   assert.match(biographySource, /<strong>海岬和济医院<\/strong>/);
   assert.match(biographySource, /顾惟真（左）与陆闻川，2014年/);
   assert.match(biographySource, /gu-weizhen-lu-wenchuan-2014\.webp/);
@@ -465,6 +474,42 @@ test("the founder trail delays the hospital night until chapter seven and expose
   assert.match(css, /\.biography-contents > button span \{[^}]*font-size: 11px;/);
 });
 
+test("the hidden record number opens a layered internal trail instead of explaining the cult on the public page", async () => {
+  const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
+  const search = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "R-06-4" }));
+  assert.match(search, /R-06-4 公开记录校对单/);
+  assert.match(search, /已停止公开访问/);
+  assert.doesNotMatch(search, /死者账号|接管|顾惟真|仪式结果/);
+
+  const { RecordRevisionPage, ContinuityRulePage, FounderBriefingPage } = await vite.ssrLoadModule("/app/anshi-internal-pages.tsx");
+  const revision = renderToStaticMarkup(React.createElement(RecordRevisionPage, { onOpenRule() {} }));
+  assert.match(revision, /8月16日 02:11/);
+  assert.match(revision, /8月19日 09:00/);
+  assert.match(revision, /项目组账号 RC-03/);
+  assert.match(revision, /查看引用规则：S-17/);
+
+  const rule = renderToStaticMarkup(React.createElement(ContinuityRulePage, { onOpenMinutes() {} }));
+  assert.match(rule, /每组必须是两个人/);
+  assert.match(rule, /申请者自行确认的最深关系人/);
+  assert.match(rule, /捐赠记录与支付能力不得进入筛选表/);
+  assert.match(rule, /公开记录不能出现失败/);
+  assert.match(rule, /公开服务组[\s\S]*联络组[\s\S]*记录组[\s\S]*说明会成员/);
+  assert.match(rule, /保护还没有准备好理解结果的人/);
+  assert.match(rule, /查看附件：项目说明会纪要/);
+
+  const minutes = renderToStaticMarkup(React.createElement(FounderBriefingPage));
+  assert.match(minutes, /无面小像一尊/);
+  assert.match(minutes, /闻川付出了代价/);
+  assert.match(minutes, /最终说明权归顾惟真本人/);
+  assert.doesNotMatch(revision + rule + minutes, /守夜人|承受人|借丧礼|生期转移/);
+
+  const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  assert.match(page, /navigate\("record-revision"\)/);
+  assert.match(page, /navigate\("continuity-rule"\)/);
+  assert.match(page, /navigate\("founder-briefing"\)/);
+});
+
 test("the crop hides session seven while the full corridor is last in the mountain inn gallery", async () => {
   const { MOUNTAIN_INN_GALLERY } = await vite.ssrLoadModule("/app/chapter-one.tsx");
   assert.equal(MOUNTAIN_INN_GALLERY.length, 3);
@@ -486,6 +531,10 @@ test("the faceless figurine trail remains reachable after the browser split", as
   const interview = renderToStaticMarkup(React.createElement(GuWeizhenInterviewPage));
   assert.match(interview, /gu-weizhen-study-2022-v3\.webp/);
   assert.match(interview, /无面小像/);
+  assert.match(interview, /2014年第一次采访时/);
+  assert.match(interview, /早晚礼佛/);
+  assert.match(interview, /2016年以后就没有再用过/);
+  assert.match(interview, /我已经不信这些了/);
   const collection = renderToStaticMarkup(React.createElement(GuWeizhenCollectionPage, { onOpenAuction() {} }));
   assert.match(collection, /大罗无相尊仪轨残卷/);
   assert.match(collection, /查看同场拍卖记录/);
@@ -502,4 +551,63 @@ test("the faceless figurine trail remains reachable after the browser split", as
 
   const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
   assert.deepEqual(resolveBrowserInput("jiawen-auction.example/results/2018-autumn/linchuan", true), { tab: "founder-auction", query: "" });
+});
+
+test("the Qichao academy trail separates real aid from the miracle story Gu curates", async () => {
+  const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openQichaoAcademy() {}, openQichaoSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
+  const academySearch = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "栖潮书院" }));
+  assert.match(academySearch, /山居、阅读与病中生活支持/);
+  assert.doesNotMatch(academySearch, /神迹|大罗无相尊|顾惟真本人确认/);
+  const memoSearch = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "QC-AID-19" }));
+  assert.match(memoSearch, /项目筛选与公开回访/);
+  assert.doesNotMatch(memoSearch, /被点过名|最终援助名单/);
+
+  const { GuWeizhenPoemPage } = await vite.ssrLoadModule("/app/founder-deep-pages.tsx");
+  const poem = renderToStaticMarkup(React.createElement(GuWeizhenPoemPage));
+  assert.match(poem, /写于栖潮书院，2019年秋/);
+
+  const { QichaoAcademyPage, QichaoAidReviewPage, QichaoSelectionMemoPage } = await vite.ssrLoadModule("/app/qichao-pages.tsx");
+  const academy = renderToStaticMarkup(React.createElement(QichaoAcademyPage, { onOpenReview() {} }));
+  assert.match(academy, /2018年起[ -￿]*安时生命关怀基金会/);
+  assert.match(academy, /临潮重症援助计划回顾/);
+  const review = renderToStaticMarkup(React.createElement(QichaoAidReviewPage));
+  assert.match(review, /会诊、转运、重症床位、特殊用药与陪护住宿/);
+  assert.match(review, /医疗救治、照护条件与患者自身情况/);
+  assert.match(review, /这里公开的好像都是后来转好的/);
+  assert.doesNotMatch(review, /大罗无相尊|顾先生/);
+  assert.match(review, /QC-AID-19/);
+  const memo = renderToStaticMarkup(React.createElement(QichaoSelectionMemoPage, { onOpenMinutes() {} }));
+  assert.match(memo, /仍存在明确可逆因素/);
+  assert.match(memo, /不进入书院公开回顾/);
+  assert.match(memo, /最终援助名单与公开回访名单均由顾惟真本人确认/);
+  assert.match(memo, /不主动引用，也不要求删除/);
+  assert.match(memo, /不要替他们说，也不必替他们改/);
+  assert.doesNotMatch(academy + review + memo, /守夜人|承受人|借丧礼|生期转移/);
+
+  const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
+  assert.deepEqual(resolveBrowserInput("qichao-house.example/about", true), { tab: "qichao-academy", query: "" });
+  assert.deepEqual(resolveBrowserInput("qichao-house.example/archive/coastal-aid-2019", true), { tab: "qichao-review", query: "" });
+  assert.deepEqual(resolveBrowserInput("wusou-cache.example/snapshot/QC-AID-19", true), { tab: "qichao-selection", query: "" });
+});
+
+test("searching Daluo Wuxiang exposes an ordinary folk belief post without identifying Gu", async () => {
+  const { SearchResults, DaluoPraiseThread } = await vite.ssrLoadModule("/app/search-results.tsx");
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openQichaoAcademy() {}, openQichaoSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
+  const search = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "大罗无相尊" }));
+  assert.match(search, /2 条相关结果/);
+  assert.match(search, /有人听说过“大罗无相尊”吗/);
+  assert.match(search, /旧书摊偶然听到这个名字/);
+  assert.match(search, /大罗无相尊仪轨残卷/);
+  assert.doesNotMatch(search, /先生|名单|栖潮书院|顾惟真本人|筛选更可能/);
+
+  const thread = renderToStaticMarkup(React.createElement(DaluoPraiseThread, { onBack() {} }));
+  assert.match(thread, /逛旧书摊[ -￿]*偶然听到这个名字/);
+  assert.match(thread, /名字写在纸上[ -￿]*放了一杯清水/);
+  assert.match(thread, /医院突然通知有床位[ -￿]*手术后来也很顺利/);
+  assert.match(thread, /这多半只是碰巧/);
+  assert.match(thread, /顾惟真在一次公开文化活动里提过这个名字/);
+  assert.equal((thread.match(/顾惟真/g) ?? []).length, 1);
+  assert.doesNotMatch(thread, /先生|名单|栖潮书院/);
+  assert.doesNotMatch(thread, /守夜人|承受人|借丧礼|生期转移/);
 });

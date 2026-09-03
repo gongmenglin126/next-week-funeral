@@ -37,6 +37,34 @@ const founderDeepResults = [
 ] as const;
 
 const AUCTION_FORUM_URL = "haizhou-oldthings.example/thread/18421";
+const DALUO_PRAISE_URL = "linchuan-patient.example/archive/2916";
+
+export function DaluoPraiseThread({ onBack }: { onBack: () => void }) {
+  return <article className="mx-auto mt-7 max-w-[900px] overflow-hidden border border-[#c6c9c5] bg-[#f6f5f1] text-[#313633] shadow-[0_10px_32px_rgba(30,38,42,.08)]">
+    <header className="border-b border-[#45544c] bg-[#52645a] px-6 py-4 text-[#f1f4f1] md:px-9">
+      <div className="flex items-center justify-between gap-5"><strong className="text-[14px] tracking-[.12em]">临川生活闲谈 · 旧帖归档</strong><span className="text-[10px] text-white/55">只读</span></div>
+    </header>
+    <main className="px-6 py-7 md:px-9 md:py-9">
+      <button className="mb-7 inline-flex items-center gap-2 text-[12px] text-[#5a7164] underline underline-offset-4" onClick={onBack}><ArrowLeft aria-hidden="true" className="size-4" />返回搜索结果</button>
+      <p className="text-[11px] text-[#868c88]">发表于 2021-05-03 22:14 · 民俗闲谈</p>
+      <h1 className="mt-3 max-w-[760px] font-serif text-[30px] font-normal leading-[1.45]">有人听说过“大罗无相尊”吗？</h1>
+
+      <section className="mt-8 border-t border-[#d2d4d0] pt-7 text-[14px] leading-8 text-[#4d5550]">
+        <p>前阵子逛旧书摊，和摊主闲聊时偶然听到这个名字。他说临川沿海以前有人拜“大罗无相尊”，没有固定的庙，也没有一定要供什么样的像，遇到过不去的事时念一念就行。我当时只当成地方故事听了。</p>
+        <p className="mt-5">那阵子我家里很不顺，母亲的手术因为没有床位改了两次。我也不知道该怎么拜，就把名字写在纸上，旁边放了一杯清水，早晚各念了几遍。第二天下午医院突然通知有床位，手术后来也很顺利。</p>
+        <p className="mt-5">我知道这多半只是碰巧，床位是医院协调出来的，手术也是医生做的。但从那以后我还是连续换了七天清水。至少在最慌的时候，我确实觉得有什么东西听见了。</p>
+        <p className="mt-5">不是劝大家都去拜，只是想问问，还有没有人听过这个名字？网上能找到的东西很少，连他到底算佛、算神还是别的什么都说不清。</p>
+      </section>
+
+      <section className="mt-9 space-y-3 border-t border-[#d2d4d0] pt-6 text-[13px] leading-7">
+        <article className="bg-[#eceeea] px-5 py-4"><strong className="text-[#607268]">南桥旧客</strong><p className="mt-1">我好像听顾惟真在一次公开文化活动里提过这个名字，说是在临川旧纸里见过。</p></article>
+        <article className="bg-[#eceeea] px-5 py-4"><strong className="text-[#607268]">海边白房子</strong><p className="mt-1">床位是医院协调的，别因为碰巧赶上就耽误正常看病。</p></article>
+      </section>
+
+      <footer className="mt-8 border-t border-[#d2d4d0] pt-4 text-[10px] leading-5 text-[#909590]">本帖最后回复于 2021-05-09。因原站关闭，由网页归档项目保存。</footer>
+    </main>
+  </article>;
+}
 
 function AuctionForumThread({ onBack }: { onBack: () => void }) {
   return <article className="mx-auto mt-7 max-w-[900px] overflow-hidden border border-[#c9ced1] bg-[#f4f2ec] text-[#303538] shadow-[0_10px_32px_rgba(30,38,42,.08)]">
@@ -94,10 +122,13 @@ export function SearchResults({
   openLostCat,
   openCommunityNotice,
   openObituary,
+  openRecordRevision,
   openFounder,
   openFounderInterview,
   openFounderPoem,
   openFounderCollection,
+  openQichaoAcademy,
+  openQichaoSelection,
   openBiography,
   openLuMemorial,
   openHospital,
@@ -111,10 +142,13 @@ export function SearchResults({
   openLostCat: () => void;
   openCommunityNotice: () => void;
   openObituary: () => void;
+  openRecordRevision: () => void;
   openFounder: () => void;
   openFounderInterview: () => void;
   openFounderPoem: () => void;
   openFounderCollection: () => void;
+  openQichaoAcademy: () => void;
+  openQichaoSelection: () => void;
   openBiography: () => void;
   openLuMemorial: () => void;
   openHospital: () => void;
@@ -122,6 +156,16 @@ export function SearchResults({
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const normalized = query.normalize("NFKC").replace(/\s+/g, "");
   const auctionForumSearch = normalized === "无面小像" || normalized === "无面木像" || normalized === "嘉闻无面小像" || normalized.toUpperCase() === "LOT21";
+
+  if (normalized.toUpperCase() === "R-06-4") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openRecordRevision}><small className="text-[#78957e]">雾搜网页缓存 · 8月19日</small><h3 className="my-3 text-xl text-[#286ab3]">R-06-4 公开记录校对单</h3><p className="text-xs text-[#8493a4]">归潮见证的一份已停止公开访问的校对页面，缓存保留了部分字段。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/snapshot/R-06-4</code></button>
+  </div>;
+
+  if (normalized.toUpperCase() === "QC-AID-19") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openQichaoSelection}><small className="text-[#78957e]">雾搜网页缓存 · 工作材料索引</small><h3 className="my-3 text-xl text-[#286ab3]">QC-AID-19 项目筛选与公开回访</h3><p className="text-xs text-[#8493a4]">栖潮书院临潮重症援助计划的一份工作批注，原链接已限制访问。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/snapshot/QC-AID-19</code></button>
+  </div>;
 
   if (auctionForumSearch) {
     if (selectedUrl === AUCTION_FORUM_URL) return <AuctionForumThread onBack={() => setSelectedUrl(null)} />;
@@ -148,9 +192,23 @@ export function SearchResults({
     </div>;
   }
 
-  if (normalized === "大罗无相尊" || normalized === "大罗无相尊仪轨残卷") return <div className="mt-8 max-w-[860px]">
+  if (normalized === "大罗无相尊") {
+    if (selectedUrl === DALUO_PRAISE_URL) return <DaluoPraiseThread onBack={() => setSelectedUrl(null)} />;
+    return <div className="mt-8 max-w-[860px]">
+      <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">2 条相关结果</p>
+      <button className="search-result" onClick={() => setSelectedUrl(DALUO_PRAISE_URL)}><small className="text-[#78957e]">临川生活闲谈 · 旧帖归档 · 2021</small><h3 className="my-3 text-xl text-[#286ab3]">有人听说过“大罗无相尊”吗？</h3><p className="text-xs text-[#8493a4]">发帖人说自己在旧书摊偶然听到这个名字，照着念了几天后，家里碰巧有了好消息。</p><code className="mt-2 block text-[10px] text-[#718c76]">{DALUO_PRAISE_URL}</code></button>
+      <button className="search-result" onClick={openFounderCollection}><small className="text-[#78957e]">临川文献馆 · 特展回顾</small><h3 className="my-3 text-xl text-[#286ab3]">潮痕与旧纸｜临川民间文献特展</h3><p className="text-xs text-[#8493a4]">2024年特展目录收录《大罗无相尊仪轨残卷》，年代与来源仍在整理。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/exhibitions/tide-paper</code></button>
+    </div>;
+  }
+
+  if (normalized === "大罗无相尊仪轨残卷") return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openFounderCollection}><small className="text-[#78957e]">临川文献馆 · 特展回顾</small><h3 className="my-3 text-xl text-[#286ab3]">潮痕与旧纸｜临川民间文献特展</h3><p className="text-xs text-[#8493a4]">2024年特展目录收录《大罗无相尊仪轨残卷》，年代与来源仍在整理。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/exhibitions/tide-paper</code></button>
+  </div>;
+
+  if (normalized === "栖潮书院") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openQichaoAcademy}><small className="text-[#78957e]">qichao-house.example · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">栖潮书院｜山居、阅读与病中生活支持</h3><p className="text-xs text-[#8493a4]">提供短期居住、阅读活动、照护者休息与重症患者临时援助。</p><code className="mt-2 block text-[10px] text-[#718c76]">qichao-house.example/about</code></button>
   </div>;
 
   if (isActivitySearch(query)) return <div className="mt-8"><button className="search-result" onClick={openActivity}><small className="text-[#78957e]">anshi.example/activities · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">安时活动服务 · 雾汀生命关怀</h3><p className="text-xs text-[#8493a4]">线下交流、活动介绍与预约咨询。</p></button></div>;
@@ -203,4 +261,3 @@ export function SearchResults({
 export function BrowserNotFound({ address, onSearch }: { address: string; onSearch: () => void }) {
   return <section className="browser-missing" role="status"><p>404</p><h1>无法打开此页面</h1><p>找不到这个网址，请检查拼写或返回搜索。</p><code>{address}</code><button onClick={onSearch}>返回雾搜</button></section>;
 }
-

@@ -52,9 +52,15 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
     if (url.hostname === "linchuan-literature.example" && path === "/archive/2020/gu-weizhen") return { tab: "founder-poem", query: "" };
     if (url.hostname === "linchuan-archive.example" && path === "/exhibitions/tide-paper") return { tab: "founder-collection", query: "" };
     if (url.hostname === "jiawen-auction.example" && path === "/results/2018-autumn/linchuan") return { tab: "founder-auction", query: "" };
-    if (url.hostname === "mingchuan-books.example" && path === "/title/remaining-time") return { tab: "biography", query: "" };
+    if (url.hostname === "qichao-house.example" && path === "/about") return { tab: "qichao-academy", query: "" };
+    if (url.hostname === "qichao-house.example" && path === "/archive/coastal-aid-2019") return { tab: "qichao-review", query: "" };
+    if (url.hostname === "mingchuan-books.example" && path === "/title/walk-to-today") return { tab: "biography", query: "" };
     if (url.hostname === "linchuan-business.example" && path === "/archive/2016/lu-wenchuan") return { tab: "lu-memorial", query: "" };
     if (url.hostname === "haijia-heji.example" && path === "/history/2016-gu-weizhen") return { tab: "hospital", query: "" };
+    if (url.hostname === "wusou-cache.example" && path === "/snapshot/R-06-4") return { tab: "record-revision", query: "" };
+    if (url.hostname === "wusou-cache.example" && path === "/snapshot/QC-AID-19") return { tab: "qichao-selection", query: "" };
+    if (url.hostname === "anshi-office.example" && path === "/rules/S-17") return { tab: "continuity-rule", query: "" };
+    if (url.hostname === "anshi-office.example" && path === "/minutes/2019-04-17") return { tab: "founder-briefing", query: "" };
     return missing;
   } catch {
     return missing;
