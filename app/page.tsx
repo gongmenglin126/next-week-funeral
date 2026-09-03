@@ -57,6 +57,7 @@ export default function Home() {
   const [routeIndex, setRouteIndex] = useState(0);
   const [address, setAddress] = useState("");
   const [travelDiscovered, setTravelDiscovered] = useState(false);
+  const [closedTabs, setClosedTabs] = useState<string[]>([]);
   const [bookmarkOpen, setBookmarkOpen] = useState(false);
   const [browserMenuOpen, setBrowserMenuOpen] = useState(false);
   const [notificationCentre, setNotificationCentre] = useState(false);
@@ -67,12 +68,13 @@ export default function Home() {
   const unlocked = allOrdersCancelled(chapter);
   const visibleTabs = visibleBrowserTabs(routes, travelDiscovered, unlocked);
   // The ride tab is only exposed after its notification has actually been opened.
-  const displayedTabs = visibleTabs.filter((tab) => tab !== "ride" || routes.some((item) => item.tab === "ride"));
+  const displayedTabs = visibleTabs.filter((tab) => (tab !== "ride" || routes.some((item) => item.tab === "ride")) && !closedTabs.includes(tab));
 
   function navigate(tab: string, nextQuery = "") {
     if (tab === "ride" && !unlocked) return;
     if (tab === "trip") setTravelDiscovered(true);
     if (tab === "downloads") setDownloadPreview(nextQuery || null);
+    setClosedTabs((oldClosedTabs) => oldClosedTabs.filter((value) => value !== tab));
     setRoutes((oldRoutes) => [...oldRoutes.slice(0, routeIndex + 1), { tab, query: nextQuery }]);
     setRouteIndex(routeIndex + 1);
     setAddress(browserAddress(tab, nextQuery));
@@ -85,6 +87,27 @@ export default function Home() {
     setRouteIndex(nextIndex);
     setAddress(browserAddress(routes[nextIndex].tab, routes[nextIndex].query));
     if (routes[nextIndex].tab === "downloads") setDownloadPreview(routes[nextIndex].query || null);
+    setBookmarkOpen(false); setBrowserMenuOpen(false);
+  }
+  function closeTab(tab: string) {
+    if (tab === "search") return;
+    const currentRoute = routes[routeIndex];
+    const nextRoutes = routes.filter((item) => item.tab !== tab);
+    const safeRoutes = nextRoutes.length > 0 ? nextRoutes : [{ tab: "search", query: "" }];
+    let nextIndex = safeRoutes.findIndex((item) => item === currentRoute);
+
+    if (currentRoute.tab === tab || nextIndex < 0) {
+      const previousRoute = [...routes.slice(0, routeIndex)].reverse().find((item) => item.tab !== tab);
+      const fallbackRoute = previousRoute ?? safeRoutes.find((item) => item.tab === "search") ?? safeRoutes[0];
+      nextIndex = Math.max(0, safeRoutes.indexOf(fallbackRoute));
+    }
+
+    const nextRoute = safeRoutes[nextIndex];
+    setRoutes(safeRoutes);
+    setRouteIndex(nextIndex);
+    setAddress(browserAddress(nextRoute.tab, nextRoute.query));
+    if (nextRoute.tab === "downloads") setDownloadPreview(nextRoute.query || null);
+    setClosedTabs((oldClosedTabs) => oldClosedTabs.includes(tab) ? oldClosedTabs : [...oldClosedTabs, tab]);
     setBookmarkOpen(false); setBrowserMenuOpen(false);
   }
   function runSearch(event: FormEvent<HTMLFormElement>) {
@@ -144,10 +167,30 @@ export default function Home() {
         <div className="browser-titlebar"><div className="window-controls"><button onClick={() => setBrowserOpen(false)} aria-label="关闭浏览器"><X /></button></div><p>雾行浏览器</p><span /></div>
         <Tabs value={activeTab} onValueChange={(value) => navigate(value, [...routes].reverse().find((item) => item.tab === value)?.query ?? "")} className="h-[calc(100%-34px)] gap-0!">
           <TabsList className="browser-tabs">
-            {displayedTabs.map((tab) => <TabsTrigger value={tab} key={tab}>{tab === "trip" ? <Plane /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}{browserTabLabel(tab, routes)}</TabsTrigger>)}
+            {displayedTabs.map((tab) => {
+              const label = browserTabLabel(tab, routes);
+              return <TabsTrigger value={tab} key={tab}>
+                {tab === "trip" ? <Plane /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}
+                {label}
+                {tab !== "search" && <span
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`关闭${label}`}
+                  title={`关闭${label}`}
+                  style={{ marginLeft: "auto", display: "inline-flex", width: 18, height: 18, flexShrink: 0, alignItems: "center", justifyContent: "center", borderRadius: 4 }}
+                  onPointerDown={(event) => { event.preventDefault(); event.stopPropagation(); }}
+                  onClick={(event) => { event.preventDefault(); event.stopPropagation(); closeTab(tab); }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault(); event.stopPropagation(); closeTab(tab);
+                    }
+                  }}
+                ><X style={{ width: 12, height: 12 }} /></span>}
+              </TabsTrigger>;
+            })}
           </TabsList>
           <form className="browser-toolbar" onSubmit={runSearch}>
-            <div className="browser-nav">
+            <div className="browser-nav" style={{ display: "flex", flexShrink: 0 }}>
               <button type="button" disabled={routeIndex === 0} onClick={() => moveHistory(-1)} aria-label="返回"><ArrowLeft /></button>
               <button type="button" disabled={routeIndex === routes.length - 1} onClick={() => moveHistory(1)} aria-label="前进"><ArrowRight /></button>
             </div>
