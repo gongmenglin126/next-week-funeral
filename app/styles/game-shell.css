@@ -360,6 +360,7 @@
 
 .browser-nav { display: flex; gap: 5px; color: #6d7d84; }
 .browser-nav button { display: grid; width: 27px; height: 27px; cursor: pointer; place-items: center; border: 0; border-radius: 7px; background: transparent; color: inherit; }
+.browser-nav .browser-back { width: auto; grid-auto-flow: column; gap: 4px; padding: 0 8px 0 5px; font-size: 10px; }
 .browser-nav button:hover:not(:disabled) { background: #e7ecee; color: #243a43; }
 .browser-nav button:disabled { opacity: .35; cursor: default; }
 .browser-nav svg { width: 15px; }

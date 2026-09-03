@@ -16,9 +16,10 @@ export const BROWSER_URLS: Record<string, string> = {
   "founder-poem": "linchuan-literature.example/archive/2020/gu-weizhen",
   "founder-collection": "linchuan-archive.example/exhibitions/tide-paper",
   "founder-auction": "jiawen-auction.example/results/2018-autumn/linchuan",
-  "qichao-academy": "qichao-house.example/about",
-  "qichao-review": "qichao-house.example/archive/coastal-aid-2019",
-  "qichao-selection": "wusou-cache.example/snapshot/QC-AID-19",
+  "rehab-center": "beilu-care.example/about",
+  "aid-review": "beilu-care.example/archive/linchao-2019",
+  "beilu-address": "linchuan-archive.example/places/beilu-17",
+  "aid-selection": "wusou-cache.example/snapshot/QC-AID-19",
   biography: "mingchuan-books.example/title/walk-to-today",
   "lu-memorial": "linchuan-business.example/archive/2016/lu-wenchuan",
   hospital: "haijia-heji.example/history/2016-gu-weizhen",
@@ -44,9 +45,10 @@ export const BROWSER_LABELS: Record<string, string> = {
   "founder-poem": "临川文艺",
   "founder-collection": "文献收藏展",
   "founder-auction": "秋拍记录",
-  "qichao-academy": "栖潮书院",
-  "qichao-review": "援助回顾",
-  "qichao-selection": "项目批注",
+  "rehab-center": "北麓康复中心",
+  "aid-review": "援助回顾",
+  "beilu-address": "北麓旧址",
+  "aid-selection": "项目批注",
   biography: "顾惟真自传",
   "lu-memorial": "旧报归档",
   hospital: "海岬和济",
@@ -70,9 +72,10 @@ const OPTIONAL_TABS = [
   "founder-poem",
   "founder-collection",
   "founder-auction",
-  "qichao-academy",
-  "qichao-review",
-  "qichao-selection",
+  "rehab-center",
+  "aid-review",
+  "beilu-address",
+  "aid-selection",
   "biography",
   "lu-memorial",
   "hospital",
@@ -108,8 +111,27 @@ export function browserTabLabel(tab: string, routes: BrowserRoute[]) {
 export function visibleBrowserTabs(routes: BrowserRoute[], travelDiscovered: boolean, unlocked: boolean) {
   return [
     "search",
-    ...(travelDiscovered ? ["trip"] : []),
+    ...(travelDiscovered && routes.some((item) => item.tab === "trip") ? ["trip"] : []),
     ...OPTIONAL_TABS.filter((tab) => routes.some((item) => item.tab === tab)),
     ...(unlocked ? ["ride"] : []),
   ];
+}
+
+export function closeBrowserTabHistory(routes: BrowserRoute[], routeIndex: number, tab: string) {
+  const currentIndex = Math.min(Math.max(routeIndex, 0), routes.length - 1);
+  const remainingRoutes = routes.filter((item) => item.tab !== tab);
+
+  if (remainingRoutes.length === 0) {
+    return { routes: [{ tab: "search", query: "" }], routeIndex: 0 };
+  }
+
+  const routesKeptThroughCurrent = routes
+    .slice(0, currentIndex + 1)
+    .filter((item) => item.tab !== tab).length;
+  const nextIndex = Math.max(0, routesKeptThroughCurrent - 1);
+
+  return {
+    routes: remainingRoutes,
+    routeIndex: Math.min(nextIndex, remainingRoutes.length - 1),
+  };
 }

@@ -22,6 +22,10 @@ export function HistoryPage({ navigate, unlocked }: { navigate: (action: string,
       date: "8月22日",
       items: [["21:23", LIGHTHOUSE_THREAD, "wuting-talk.example/thread/60285", "forum", LIGHTHOUSE_THREAD]],
     },
+    {
+      date: "8月20日",
+      items: [["01:18", "临川异地就医 陪护短住", "wusou.example/search?q=临川异地就医+陪护短住", "search", "临川异地就医 陪护短住"]],
+    },
   ];
 
   return (

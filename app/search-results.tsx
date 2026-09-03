@@ -127,8 +127,9 @@ export function SearchResults({
   openFounderInterview,
   openFounderPoem,
   openFounderCollection,
-  openQichaoAcademy,
-  openQichaoSelection,
+  openRehabCenter,
+  openBeiluAddress,
+  openAidSelection,
   openBiography,
   openLuMemorial,
   openHospital,
@@ -147,8 +148,9 @@ export function SearchResults({
   openFounderInterview: () => void;
   openFounderPoem: () => void;
   openFounderCollection: () => void;
-  openQichaoAcademy: () => void;
-  openQichaoSelection: () => void;
+  openRehabCenter: () => void;
+  openBeiluAddress: () => void;
+  openAidSelection: () => void;
   openBiography: () => void;
   openLuMemorial: () => void;
   openHospital: () => void;
@@ -164,7 +166,7 @@ export function SearchResults({
 
   if (normalized.toUpperCase() === "QC-AID-19") return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openQichaoSelection}><small className="text-[#78957e]">雾搜网页缓存 · 工作材料索引</small><h3 className="my-3 text-xl text-[#286ab3]">QC-AID-19 项目筛选与公开回访</h3><p className="text-xs text-[#8493a4]">栖潮书院临潮重症援助计划的一份工作批注，原链接已限制访问。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/snapshot/QC-AID-19</code></button>
+    <button className="search-result" onClick={openAidSelection}><small className="text-[#78957e]">雾搜网页缓存 · 工作材料索引</small><h3 className="my-3 text-xl text-[#286ab3]">QC-AID-19 项目筛选与公开回访</h3><p className="text-xs text-[#8493a4]">一份援助项目工作批注，原链接已限制访问。卷宗前缀沿用自旧院档案。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/snapshot/QC-AID-19</code></button>
   </div>;
 
   if (auctionForumSearch) {
@@ -206,9 +208,14 @@ export function SearchResults({
     <button className="search-result" onClick={openFounderCollection}><small className="text-[#78957e]">临川文献馆 · 特展回顾</small><h3 className="my-3 text-xl text-[#286ab3]">潮痕与旧纸｜临川民间文献特展</h3><p className="text-xs text-[#8493a4]">2024年特展目录收录《大罗无相尊仪轨残卷》，年代与来源仍在整理。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/exhibitions/tide-paper</code></button>
   </div>;
 
-  if (normalized === "栖潮书院") return <div className="mt-8 max-w-[860px]">
+  if (["临川异地就医陪护短住", "临川北麓康复中心", "北麓康复中心"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openQichaoAcademy}><small className="text-[#78957e]">qichao-house.example · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">栖潮书院｜山居、阅读与病中生活支持</h3><p className="text-xs text-[#8493a4]">提供短期居住、阅读活动、照护者休息与重症患者临时援助。</p><code className="mt-2 block text-[10px] text-[#718c76]">qichao-house.example/about</code></button>
+    <button className="search-result" onClick={openRehabCenter}><small className="text-[#78957e]">beilu-care.example · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">临川北麓康复中心｜异地就医与家属支持</h3><p className="text-xs text-[#8493a4]">提供院外短住、康复衔接、照护者喘息与医疗资源转介。</p><code className="mt-2 block text-[10px] text-[#718c76]">beilu-care.example/about</code></button>
+  </div>;
+
+  if (["栖潮旧院", "栖潮疗养院", "北麓路17号"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openBeiluAddress}><small className="text-[#78957e]">临川地方建筑档案 · 旧址沿革</small><h3 className="my-3 text-xl text-[#286ab3]">北麓疗养院旧址｜北麓路17号</h3><p className="text-xs text-[#8493a4]">旧址曾增挂“栖潮疗养院”院名，附近居民至今仍称其为“栖潮旧院”。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/places/beilu-17</code></button>
   </div>;
 
   if (isActivitySearch(query)) return <div className="mt-8"><button className="search-result" onClick={openActivity}><small className="text-[#78957e]">anshi.example/activities · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">安时活动服务 · 雾汀生命关怀</h3><p className="text-xs text-[#8493a4]">线下交流、活动介绍与预约咨询。</p></button></div>;

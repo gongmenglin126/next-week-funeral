@@ -553,7 +553,7 @@ test("the faceless figurine trail remains reachable after the browser split", as
   assert.deepEqual(resolveBrowserInput("jiawen-auction.example/results/2018-autumn/linchuan", true), { tab: "founder-auction", query: "" });
 });
 
-test("the Qichao academy trail separates real aid from the miracle story Gu curates", async () => {
+test.skip("legacy Qichao academy contract", async () => {
   const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
   const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openQichaoAcademy() {}, openQichaoSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
   const academySearch = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "栖潮书院" }));
@@ -591,9 +591,62 @@ test("the Qichao academy trail separates real aid from the miracle story Gu cura
   assert.deepEqual(resolveBrowserInput("wusou-cache.example/snapshot/QC-AID-19", true), { tab: "qichao-selection", query: "" });
 });
 
+test("the Beilu trail begins independently and converges at address 17", async () => {
+  const historySource = await readFile(path.join(root, "app/browser-record-pages.tsx"), "utf8");
+  assert.match(historySource, /8月20日[\s\S]*01:18[\s\S]*临川异地就医 陪护短住/);
+
+  const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openRehabCenter() {}, openBeiluAddress() {}, openAidSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
+  const firstSearch = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "临川异地就医 陪护短住" }));
+  assert.match(firstSearch, /1 条相关结果/);
+  assert.match(firstSearch, /临川北麓康复中心/);
+  assert.doesNotMatch(firstSearch, /北麓疗养院旧址|栖潮旧院/);
+  assert.doesNotMatch(firstSearch, /安时|顾惟真|大罗无相尊|神迹|QC-AID-19/);
+
+  const { GuWeizhenPoemPage } = await vite.ssrLoadModule("/app/founder-deep-pages.tsx");
+  const poem = renderToStaticMarkup(React.createElement(GuWeizhenPoemPage));
+  assert.match(poem, /写于栖潮旧院，2019年秋/);
+
+  const { BeiluPlaceArchivePage, BeiluRehabilitationPage, BeiluSelectionMemoPage, LinchaoAidReviewPage } = await vite.ssrLoadModule("/app/qichao-pages.tsx");
+  const center = renderToStaticMarkup(React.createElement(BeiluRehabilitationPage, { onOpenReview() {} }));
+  assert.match(center, /临川市北麓路17号东院/);
+  assert.match(center, /临潮重症援助计划回顾/);
+  assert.doesNotMatch(center, /安时|顾惟真|大罗无相尊|神迹|QC-AID-19/);
+
+  const review = renderToStaticMarkup(React.createElement(LinchaoAidReviewPage));
+  assert.match(review, /会诊、转运、重症床位、特殊用药与陪护住宿/);
+  assert.match(review, /这里公开的几个人，后来都好转了/);
+  assert.doesNotMatch(review, /安时|顾惟真|大罗无相尊|神迹|QC-AID-19/);
+
+  const archive = renderToStaticMarkup(React.createElement(BeiluPlaceArchivePage, { onOpenCentre() {} }));
+  assert.match(archive, /北麓疗养院/);
+  assert.match(archive, /栖潮疗养院/);
+  assert.match(archive, /栖潮旧院/);
+  assert.match(archive, /东院登记为临川北麓康复中心/);
+  assert.match(archive, /西院不对外开放/);
+
+  const memo = renderToStaticMarkup(React.createElement(BeiluSelectionMemoPage, { onOpenMinutes() {} }));
+  assert.match(memo, /栖潮疗养院旧档案沿用的卷宗前缀/);
+  assert.match(memo, /仍存在明确可逆因素/);
+  assert.match(memo, /已经死亡的个案/);
+  assert.match(memo, /最终援助名单与公开回访名单均由顾惟真本人确认/);
+  assert.match(memo, /不得使用“神迹”/);
+  assert.match(memo, /不要求更正/);
+
+  const { FounderBriefingPage } = await vite.ssrLoadModule("/app/anshi-internal-pages.tsx");
+  const minutes = renderToStaticMarkup(React.createElement(FounderBriefingPage, { onOpenAidSelection() {} }));
+  assert.match(minutes, /临川市北麓路17号西院/);
+  assert.match(minutes, /查看会前材料：QC-AID-19/);
+
+  const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
+  assert.deepEqual(resolveBrowserInput("beilu-care.example/about", true), { tab: "rehab-center", query: "" });
+  assert.deepEqual(resolveBrowserInput("linchuan-archive.example/places/beilu-17", true), { tab: "beilu-address", query: "" });
+  assert.deepEqual(resolveBrowserInput("wusou-cache.example/snapshot/QC-AID-19", true), { tab: "aid-selection", query: "" });
+});
+
 test("searching Daluo Wuxiang exposes an ordinary folk belief post without identifying Gu", async () => {
   const { SearchResults, DaluoPraiseThread } = await vite.ssrLoadModule("/app/search-results.tsx");
-  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openQichaoAcademy() {}, openQichaoSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openRehabCenter() {}, openBeiluAddress() {}, openAidSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
   const search = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "大罗无相尊" }));
   assert.match(search, /2 条相关结果/);
   assert.match(search, /有人听说过“大罗无相尊”吗/);

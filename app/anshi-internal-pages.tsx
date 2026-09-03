@@ -73,11 +73,11 @@ export function ContinuityRulePage({ onOpenMinutes }: { onOpenMinutes: () => voi
   </article>;
 }
 
-export function FounderBriefingPage() {
+export function FounderBriefingPage({ onOpenAidSelection }: { onOpenAidSelection: () => void }) {
   return <article className="min-h-full bg-white px-5 py-8 text-[#161616] md:px-10 md:py-12">
     <div className="mx-auto max-w-[850px] border-x border-black/15 px-6 md:px-12">
       <header className="flex items-start justify-between gap-6 border-b-2 border-black pb-5">
-        <div><strong className="text-[16px] tracking-[.16em]">安时项目说明会纪要</strong><p className="mt-2 text-[13px] text-black/55">2019年4月17日 · 海岬会馆二层</p></div>
+        <div><strong className="text-[16px] tracking-[.16em]">安时项目说明会纪要</strong><p className="mt-2 text-[13px] text-black/55">2019年4月17日 · 临川市北麓路17号西院</p></div>
         <span className="border-2 border-[#8b1e1e] px-3 py-1 text-[13px] font-bold tracking-[.18em] text-[#8b1e1e]">内部</span>
       </header>
 
@@ -95,6 +95,8 @@ export function FounderBriefingPage() {
           <h2 className="font-sans text-[15px] font-bold">会后确认</h2>
           <ul className="mt-3 list-disc space-y-2 pl-5"><li>“失败”“无效”“错误对象”等词不得进入内部结案材料。</li><li>对外回访由记录组统一维护，具体处理沿用 S-17。</li><li>所有仪式结果的最终说明权归顾惟真本人。</li></ul>
         </section>
+
+        <button className="mt-8 inline-flex items-center gap-3 border border-black bg-black px-5 py-3 text-[13px] font-semibold text-white hover:bg-black/80" onClick={onOpenAidSelection}>查看会前材料：QC-AID-19 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
 
         <footer className="mt-12 flex items-center gap-3 border-t border-black/20 py-6 text-[12px] text-black/45"><FileText aria-hidden="true" className="size-4" />附件编号：M-2019-0417 / 页码 3—5</footer>
       </main>

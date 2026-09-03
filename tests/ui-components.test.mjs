@@ -46,6 +46,29 @@ test("notes and downloaded ticket expose the intended non-search starting clues"
   assert.match(ticket, /8月18日 23:47/);
 });
 
+test("closing a browser tab removes its history and selects the nearest previous page", async () => {
+  const { closeBrowserTabHistory, visibleBrowserTabs } = await vite.ssrLoadModule("/lib/browser-tabs.ts");
+  const history = [
+    { tab: "search", query: "顾惟真" },
+    { tab: "founder-profile", query: "" },
+    { tab: "founder-interview", query: "" },
+  ];
+
+  const closedCurrent = closeBrowserTabHistory(history, 2, "founder-interview");
+  assert.deepEqual(closedCurrent, {
+    routes: history.slice(0, 2),
+    routeIndex: 1,
+  });
+
+  const closedInactive = closeBrowserTabHistory(history, 2, "founder-profile");
+  assert.deepEqual(closedInactive, {
+    routes: [history[0], history[2]],
+    routeIndex: 1,
+  });
+
+  assert.deepEqual(visibleBrowserTabs(closedInactive.routes, true, false), ["search", "founder-interview"]);
+});
+
 async function readCssTree(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const contents = await Promise.all(

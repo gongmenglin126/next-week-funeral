@@ -28,7 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { allOrdersCancelled, chapterReducer, initialChapterState } from "@/lib/chapter-one";
-import { browserAddress, browserTabLabel, visibleBrowserTabs } from "@/lib/browser-tabs";
+import { browserAddress, browserTabLabel, closeBrowserTabHistory, visibleBrowserTabs } from "@/lib/browser-tabs";
 import { NotesPanel, SecretRide, TravelPlatform } from "./chapter-one";
 import { DownloadsPage, HistoryPage } from "./browser-record-pages";
 import { DesktopPanel, type DesktopPanelKind } from "./desktop-evidence";
@@ -40,7 +40,7 @@ import { LostCatPage, NeighborhoodNoticePage } from "./cat-trail-pages";
 import { BiographyPage, FounderProfilePage, HaijiaHospitalPage, LuWenchuanMemorialPage } from "./founder-trail-pages";
 import { GuWeizhenAuctionPage, GuWeizhenCollectionPage, GuWeizhenInterviewPage, GuWeizhenPoemPage } from "./founder-deep-pages";
 import { ContinuityRulePage, FounderBriefingPage, RecordRevisionPage } from "./anshi-internal-pages";
-import { QichaoAcademyPage, QichaoAidReviewPage, QichaoSelectionMemoPage } from "./qichao-pages";
+import { BeiluPlaceArchivePage, BeiluRehabilitationPage, BeiluSelectionMemoPage, LinchaoAidReviewPage } from "./qichao-pages";
 import { resolveBrowserInput, type BrowserRoute } from "@/lib/browser-navigation";
 import type { WindowPoint } from "@/lib/window-position";
 
@@ -57,7 +57,6 @@ export default function Home() {
   const [routeIndex, setRouteIndex] = useState(0);
   const [address, setAddress] = useState("");
   const [travelDiscovered, setTravelDiscovered] = useState(false);
-  const [closedTabs, setClosedTabs] = useState<string[]>([]);
   const [bookmarkOpen, setBookmarkOpen] = useState(false);
   const [browserMenuOpen, setBrowserMenuOpen] = useState(false);
   const [notificationCentre, setNotificationCentre] = useState(false);
@@ -68,13 +67,12 @@ export default function Home() {
   const unlocked = allOrdersCancelled(chapter);
   const visibleTabs = visibleBrowserTabs(routes, travelDiscovered, unlocked);
   // The ride tab is only exposed after its notification has actually been opened.
-  const displayedTabs = visibleTabs.filter((tab) => (tab !== "ride" || routes.some((item) => item.tab === "ride")) && !closedTabs.includes(tab));
+  const displayedTabs = visibleTabs.filter((tab) => tab !== "ride" || routes.some((item) => item.tab === "ride"));
 
   function navigate(tab: string, nextQuery = "") {
     if (tab === "ride" && !unlocked) return;
     if (tab === "trip") setTravelDiscovered(true);
     if (tab === "downloads") setDownloadPreview(nextQuery || null);
-    setClosedTabs((oldClosedTabs) => oldClosedTabs.filter((value) => value !== tab));
     setRoutes((oldRoutes) => [...oldRoutes.slice(0, routeIndex + 1), { tab, query: nextQuery }]);
     setRouteIndex(routeIndex + 1);
     setAddress(browserAddress(tab, nextQuery));
@@ -89,25 +87,14 @@ export default function Home() {
     if (routes[nextIndex].tab === "downloads") setDownloadPreview(routes[nextIndex].query || null);
     setBookmarkOpen(false); setBrowserMenuOpen(false);
   }
-  function closeTab(tab: string) {
+  function closeBrowserTab(tab: string) {
     if (tab === "search") return;
-    const currentRoute = routes[routeIndex];
-    const nextRoutes = routes.filter((item) => item.tab !== tab);
-    const safeRoutes = nextRoutes.length > 0 ? nextRoutes : [{ tab: "search", query: "" }];
-    let nextIndex = safeRoutes.findIndex((item) => item === currentRoute);
-
-    if (currentRoute.tab === tab || nextIndex < 0) {
-      const previousRoute = [...routes.slice(0, routeIndex)].reverse().find((item) => item.tab !== tab);
-      const fallbackRoute = previousRoute ?? safeRoutes.find((item) => item.tab === "search") ?? safeRoutes[0];
-      nextIndex = Math.max(0, safeRoutes.indexOf(fallbackRoute));
-    }
-
-    const nextRoute = safeRoutes[nextIndex];
-    setRoutes(safeRoutes);
-    setRouteIndex(nextIndex);
+    const nextHistory = closeBrowserTabHistory(routes, routeIndex, tab);
+    const nextRoute = nextHistory.routes[nextHistory.routeIndex];
+    setRoutes(nextHistory.routes);
+    setRouteIndex(nextHistory.routeIndex);
     setAddress(browserAddress(nextRoute.tab, nextRoute.query));
     if (nextRoute.tab === "downloads") setDownloadPreview(nextRoute.query || null);
-    setClosedTabs((oldClosedTabs) => oldClosedTabs.includes(tab) ? oldClosedTabs : [...oldClosedTabs, tab]);
     setBookmarkOpen(false); setBrowserMenuOpen(false);
   }
   function runSearch(event: FormEvent<HTMLFormElement>) {
@@ -169,29 +156,15 @@ export default function Home() {
           <TabsList className="browser-tabs">
             {displayedTabs.map((tab) => {
               const label = browserTabLabel(tab, routes);
-              return <TabsTrigger value={tab} key={tab}>
-                {tab === "trip" ? <Plane /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}
-                {label}
-                {tab !== "search" && <span
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`关闭${label}`}
-                  title={`关闭${label}`}
-                  style={{ marginLeft: "auto", display: "inline-flex", width: 18, height: 18, flexShrink: 0, alignItems: "center", justifyContent: "center", borderRadius: 4 }}
-                  onPointerDown={(event) => { event.preventDefault(); event.stopPropagation(); }}
-                  onClick={(event) => { event.preventDefault(); event.stopPropagation(); closeTab(tab); }}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault(); event.stopPropagation(); closeTab(tab);
-                    }
-                  }}
-                ><X style={{ width: 12, height: 12 }} /></span>}
-              </TabsTrigger>;
+              return <div className="browser-tab" data-pinned={tab === "search"} key={tab}>
+                <TabsTrigger value={tab}>{tab === "trip" ? <Plane /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}<span>{label}</span></TabsTrigger>
+                {tab !== "search" && <button type="button" className="browser-tab-close" aria-label={`关闭${label}页签`} title={`关闭${label}`} onClick={() => closeBrowserTab(tab)}><X /></button>}
+              </div>;
             })}
           </TabsList>
           <form className="browser-toolbar" onSubmit={runSearch}>
-            <div className="browser-nav" style={{ display: "flex", flexShrink: 0 }}>
-              <button type="button" disabled={routeIndex === 0} onClick={() => moveHistory(-1)} aria-label="返回"><ArrowLeft /></button>
+            <div className="browser-nav">
+              <button type="button" className="browser-back" disabled={routeIndex === 0} onClick={() => moveHistory(-1)} aria-label="返回上一页" title="返回上一页"><ArrowLeft /><span>返回</span></button>
               <button type="button" disabled={routeIndex === routes.length - 1} onClick={() => moveHistory(1)} aria-label="前进"><ArrowRight /></button>
             </div>
             <div className="browser-address"><LockKeyhole /><Input aria-label="地址栏和搜索框" placeholder="搜索网页或输入网址" value={address} onChange={(event) => setAddress(event.target.value)} onFocus={(event) => event.currentTarget.select()} spellCheck={false} /></div>
@@ -214,7 +187,7 @@ export default function Home() {
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={`search-box:${query}`} query={query} onSearch={submitBrowserInput} />
-              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openRecordRevision={() => navigate("record-revision")} openFounder={() => navigate("founder-profile")} openFounderInterview={() => navigate("founder-interview")} openFounderPoem={() => navigate("founder-poem")} openFounderCollection={() => navigate("founder-collection")} openQichaoAcademy={() => navigate("qichao-academy")} openQichaoSelection={() => navigate("qichao-selection")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} />
+              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openRecordRevision={() => navigate("record-revision")} openFounder={() => navigate("founder-profile")} openFounderInterview={() => navigate("founder-interview")} openFounderPoem={() => navigate("founder-poem")} openFounderCollection={() => navigate("founder-collection")} openRehabCenter={() => navigate("rehab-center")} openBeiluAddress={() => navigate("beilu-address")} openAidSelection={() => navigate("aid-selection")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} />
             </TabsContent>
             <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden">{query === "community" ? <CommunityPage onOpenWitness={() => navigate("activity", "witness")} onOpenFoundation={() => navigate("activity", "foundation")} /> : query === "witness" ? <WitnessPage onBack={() => navigate("activity", "community")} onOpenProfile={() => navigate("survivor")} /> : query === "foundation" ? <FoundationPage onBack={() => navigate("activity", "community")} /> : query === "archive/07" ? <HiddenSeventhPage onBack={() => navigate("activity")} /> : query.startsWith("archive/") ? <ActivityArchivePage issue={query.slice(-2)} onBack={() => navigate("activity")} /> : <ActivityPage onOpenRide={unlocked ? openRide : undefined} onOpenArchive={(issue) => navigate("activity", `archive/${issue}`)} />}</TabsContent>
             <TabsContent value="survivor" className="min-h-full data-[state=inactive]:hidden"><SurvivorProfile /></TabsContent>
@@ -226,15 +199,16 @@ export default function Home() {
             <TabsContent value="founder-poem" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenPoemPage /></TabsContent>
             <TabsContent value="founder-collection" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenCollectionPage onOpenAuction={() => navigate("founder-auction")} /></TabsContent>
             <TabsContent value="founder-auction" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenAuctionPage /></TabsContent>
-            <TabsContent value="qichao-academy" className="min-h-full data-[state=inactive]:hidden"><QichaoAcademyPage onOpenReview={() => navigate("qichao-review")} /></TabsContent>
-            <TabsContent value="qichao-review" className="min-h-full data-[state=inactive]:hidden"><QichaoAidReviewPage /></TabsContent>
-            <TabsContent value="qichao-selection" className="min-h-full data-[state=inactive]:hidden"><QichaoSelectionMemoPage onOpenMinutes={() => navigate("founder-briefing")} /></TabsContent>
+            <TabsContent value="rehab-center" className="min-h-full data-[state=inactive]:hidden"><BeiluRehabilitationPage onOpenReview={() => navigate("aid-review")} /></TabsContent>
+            <TabsContent value="aid-review" className="min-h-full data-[state=inactive]:hidden"><LinchaoAidReviewPage /></TabsContent>
+            <TabsContent value="beilu-address" className="min-h-full data-[state=inactive]:hidden"><BeiluPlaceArchivePage onOpenCentre={() => navigate("rehab-center")} /></TabsContent>
+            <TabsContent value="aid-selection" className="min-h-full data-[state=inactive]:hidden"><BeiluSelectionMemoPage onOpenMinutes={() => navigate("founder-briefing")} /></TabsContent>
             <TabsContent value="biography" className="min-h-full data-[state=inactive]:hidden"><BiographyPage /></TabsContent>
             <TabsContent value="lu-memorial" className="min-h-full data-[state=inactive]:hidden"><LuWenchuanMemorialPage /></TabsContent>
             <TabsContent value="hospital" className="min-h-full data-[state=inactive]:hidden"><HaijiaHospitalPage /></TabsContent>
             <TabsContent value="record-revision" className="min-h-full data-[state=inactive]:hidden"><RecordRevisionPage onOpenRule={() => navigate("continuity-rule")} /></TabsContent>
             <TabsContent value="continuity-rule" className="min-h-full data-[state=inactive]:hidden"><ContinuityRulePage onOpenMinutes={() => navigate("founder-briefing")} /></TabsContent>
-            <TabsContent value="founder-briefing" className="min-h-full data-[state=inactive]:hidden"><FounderBriefingPage /></TabsContent>
+            <TabsContent value="founder-briefing" className="min-h-full data-[state=inactive]:hidden"><FounderBriefingPage onOpenAidSelection={() => navigate("aid-selection")} /></TabsContent>
             <TabsContent value="not-found" className="min-h-full data-[state=inactive]:hidden"><BrowserNotFound address={query} onSearch={() => navigate("search")} /></TabsContent>
             {unlocked && <TabsContent forceMount value="ride" className="min-h-full data-[state=inactive]:hidden"><SecretRide onOpenActivity={() => navigate("activity")} /></TabsContent>}
           </div>

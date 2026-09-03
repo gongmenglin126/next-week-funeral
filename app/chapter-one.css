@@ -187,8 +187,14 @@
 .desktop-dock { z-index: 40; }
 .browser-window[hidden] { display: none; }
 .browser-tabs { height: 40px!important; flex-shrink: 0; width: 100%; justify-content: start!important; gap: 3px; border-radius: 0!important; padding: 5px 8px 0!important; background: #d8dee1!important; overflow-x: auto; }
-.browser-tabs [data-slot="tabs-trigger"] { flex: 0 1 185px; min-width: 105px; height: 35px; justify-content: flex-start; border-radius: 8px 8px 0 0; font-size: 11px; }
+.browser-tab { position: relative; flex: 0 1 185px; min-width: 105px; height: 35px; }
+.browser-tabs .browser-tab [data-slot="tabs-trigger"] { width: 100%; min-width: 0; height: 35px; justify-content: flex-start; padding-right: 29px; border-radius: 8px 8px 0 0; font-size: 11px; }
+.browser-tabs .browser-tab[data-pinned="true"] [data-slot="tabs-trigger"] { padding-right: 12px; }
+.browser-tabs [data-slot="tabs-trigger"] > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .browser-tabs [data-state="active"] { background: #f6f8f9!important; color: #2b4350; }
+.browser-tab-close { position: absolute; z-index: 2; top: 8px; right: 7px; display: grid; width: 19px; height: 19px; cursor: pointer; place-items: center; padding: 0; border: 0; border-radius: 5px; background: transparent; color: #738188; }
+.browser-tab-close:hover, .browser-tab-close:focus-visible { background: #cbd4d8; color: #263e49; outline: none; }
+.browser-tab-close svg { width: 12px; height: 12px; }
 .browser-toolbar { display: flex; height: 48px; flex-shrink: 0; align-items: center; gap: 7px; padding: 0 12px; background: #f6f8f9; border-bottom: 1px solid #d9e0e3; }
 .browser-address { display: flex; min-width: 0; flex: 1; align-items: center; gap: 7px; height: 34px; padding-left: 10px; border: 1px solid #dbe1e4; border-radius: 8px; background: #edf1f3; }
 .browser-address > svg { width: 12px; flex-shrink: 0; color: #7b8a91; }
@@ -248,10 +254,13 @@
 @media (max-width: 760px) {
   .browser-window { bottom: 72px; }
   .browser-toolbar { gap: 1px; padding: 0 6px; }
-  .browser-toolbar .browser-nav, .browser-toolbar .bookmark-control { display: none; }
+  .browser-toolbar .bookmark-control { display: none; }
+  .browser-toolbar .browser-nav button:nth-child(2) { display: none; }
+  .browser-toolbar .browser-back { width: 31px; padding: 0; }
+  .browser-toolbar .browser-back span { display: none; }
   .browser-address > svg { display: none; }
   .browser-toolbar > [data-slot="button"] { width: 30px; }
-  .browser-tabs [data-slot="tabs-trigger"] { flex: 0 0 auto; min-width: 90px; }
+  .browser-tab { flex: 0 0 132px; min-width: 90px; }
   .ota-header { min-height: 70px; gap: 20px; padding: 12px 18px; flex-wrap: wrap; }
   .ota-brand strong { font-size: 18px; }
   .ota-brand > span { width: 32px; height: 32px; }
