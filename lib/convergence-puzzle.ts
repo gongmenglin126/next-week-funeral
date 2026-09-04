@@ -1,4 +1,4 @@
-export type CrossIndexField = "origin" | "object" | "place" | "revision";
+export type CrossIndexField = "origin" | "object" | "place" | "participant";
 
 export const CROSS_INDEX_FIELDS: ReadonlyArray<{
   key: CrossIndexField;
@@ -25,10 +25,10 @@ export const CROSS_INDEX_FIELDS: ReadonlyArray<{
     placeholder: "输入院名或旧称",
   },
   {
-    key: "revision",
-    label: "续写记录",
-    prompt: "哪一份修订单证明死者的公开账号曾被项目组接手？",
-    placeholder: "输入记录编号",
+    key: "participant",
+    label: "第六期参与者",
+    prompt: "第六期账号“雨停以后”在8月19日仍然更新；社区治丧信息中，原使用者的真实姓名是什么？",
+    placeholder: "输入真实姓名",
   },
 ] as const;
 
@@ -36,7 +36,7 @@ const ANSWERS: Record<CrossIndexField, ReadonlySet<string>> = {
   origin: new Set(["陆闻川"]),
   object: new Set(["无面小像", "无面像"]),
   place: new Set(["栖潮疗养院", "栖潮旧院"]),
-  revision: new Set(["r064"]),
+  participant: new Set(["程叙白"]),
 };
 
 export function normalizeCrossIndexAnswer(value: string) {

@@ -118,7 +118,7 @@ export function BeiluSelectionMemoPage() {
         </section>
       </main>
 
-      <footer className="flex items-center gap-3 border-t border-[#aaa08e] pt-5 text-[11px] text-[#7a7162]"><FileText aria-hidden="true" className="size-4" />批注版本：2019年4月 / 与 M-2019-0417 同批归档</footer>
+      <footer className="flex items-center gap-3 border-t border-[#aaa08e] pt-5 text-[11px] text-[#7a7162]"><FileText aria-hidden="true" className="size-4" />批注版本：2019年4月 / 与当月说明会材料同批归档</footer>
     </div>
   </article>;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookOpen, Quote } from "lucide-react";
+import { ArrowUpRight, BookOpen, Quote } from "lucide-react";
 
 const CHAPTERS = [
   {
@@ -36,7 +36,7 @@ export function FounderProfilePage() {
   </div>;
 }
 
-export function BiographyPage() {
+export function BiographyPage({ onOpenInterview }: { onOpenInterview: () => void }) {
   const [chapter, setChapter] = useState<string | null>(null);
   const selected = CHAPTERS.find((item) => item.number === chapter);
   return <div className="biography-page">
@@ -44,7 +44,7 @@ export function BiographyPage() {
     <main>
       <section className="biography-hero"><div className="biography-cover"><span>顾惟真<br />口述</span><strong>走到今天</strong><small>明川书局</small></div><div><p className="biography-label">人物自传 · 2021</p><h1>走到今天</h1><p className="biography-subtitle">顾惟真口述，记者孟嘉整理</p><p>从临川旧城的一间设备厂，到长期投入医疗与照护公益，本书以七次访谈整理顾惟真的成长、创业和重病康复经历。</p><dl><div><dt>出版社</dt><dd>明川书局</dd></div><div><dt>出版时间</dt><dd>2021年4月</dd></div><div><dt>章节</dt><dd>全书七章</dd></div></dl></div></section>
       <section className="biography-contents"><div className="biography-section-title"><p>目录与试读</p><span style={{ fontSize: 10 }}>点击章节查看节选</span></div>{CHAPTERS.map((item) => <button key={item.number} onClick={() => setChapter(item.number)} aria-expanded={chapter === item.number}><span style={{ fontSize: 11 }}>{item.number}</span><strong style={{ fontSize: 18, lineHeight: 1.55 }}>{item.title}</strong><small style={{ fontSize: 13, lineHeight: 1.75 }}>{item.summary}</small></button>)}<button onClick={() => setChapter("07")} aria-expanded={chapter === "07"}><span style={{ fontSize: 11 }}>07</span><strong style={{ fontSize: 18, lineHeight: 1.55 }}>没有回应的夜晚</strong><small style={{ fontSize: 13, lineHeight: 1.75 }}>一次关于病危、祈求与幸存的访谈。</small></button></section>
-      {selected ? <article className="biography-excerpt" aria-live="polite"><header><span>第{Number(selected.number)}章</span><h2>{selected.title}</h2></header><p>{"excerpt" in selected ? selected.excerpt : selected.summary}</p><p>本章试读仅收录访谈整理稿的一部分。完整版内容请以纸质出版物为准。</p></article> : chapter === "07" ? <article className="biography-excerpt biography-night" aria-live="polite"><header><span>第七章</span><h2>没有回应的夜晚</h2><p>以下内容整理自孟嘉对顾惟真的第四次访谈。</p></header><div className="biography-interview"><p><strong>孟嘉：</strong>你还记得在重症监护室里的那个晚上吗？</p><p><strong>顾惟真：</strong>记得。<strong>海岬和济医院</strong>的灯很白，我不知道自己能不能看见第二天。手抬不起来，手指还在被子下面拨，像平时拨念珠一样。我先背《心经》，又念观音、地藏和阿弥陀佛。那些话我念了几十年，次序都不会错。</p><p><strong>孟嘉：</strong>后来为什么又求了别的神？</p><p><strong>顾惟真：</strong>因为熟悉的名字没有回答。念到后来，我已经不是在念，是在一个个喊。我把记得的佛号、祷词和神名全喊了一遍，耶稣，连小时候在道观听过的名字都喊了。我说只要让我活，钱、公司、名声都可以拿走。没有谁回应我。</p><p><strong>孟嘉：</strong>所以你出院后不再礼佛，是因为你差点死？</p><p><strong>顾惟真：</strong>不是。是因为我忽然明白，三十多年的供奉，和病床上临时喊出的一个陌生名字，得到的是同一种沉默。我不能再把沉默解释成慈悲。</p><p><strong>孟嘉：</strong>后来发生了什么？</p><p><strong>顾惟真：</strong>我活了下来。闻川却没能等到天亮。很长一段时间，我都不知道该怎样理解这两件同时发生的事。</p></div><figure><img src="./game/gu-weizhen-lu-wenchuan-2014.webp" alt="顾惟真与陆闻川在临川海边活动上的合照" /><figcaption>顾惟真（左）与陆闻川，2014年</figcaption></figure><aside><Quote aria-hidden="true" /><p>“我活下来了。可这件事，我一直不知道该高兴还是该愧疚。”</p></aside></article> : null}
+      {selected ? <article className="biography-excerpt" aria-live="polite"><header><span>第{Number(selected.number)}章</span><h2>{selected.title}</h2></header><p>{"excerpt" in selected ? selected.excerpt : selected.summary}</p><p>本章试读仅收录访谈整理稿的一部分。完整版内容请以纸质出版物为准。</p>{selected.number === "06" ? <button className="mt-6 inline-flex items-center gap-2 border border-current px-4 py-2 text-[13px] font-semibold" onClick={onOpenInterview}>查看后来采访：顾惟真的书房 <ArrowUpRight aria-hidden="true" className="size-4" /></button> : null}</article> : chapter === "07" ? <article className="biography-excerpt biography-night" aria-live="polite"><header><span>第七章</span><h2>没有回应的夜晚</h2><p>以下内容整理自孟嘉对顾惟真的第四次访谈。</p></header><div className="biography-interview"><p><strong>孟嘉：</strong>你还记得在重症监护室里的那个晚上吗？</p><p><strong>顾惟真：</strong>记得。<strong>海岬和济医院</strong>的灯很白，我不知道自己能不能看见第二天。手抬不起来，手指还在被子下面拨，像平时拨念珠一样。我先背《心经》，又念观音、地藏和阿弥陀佛。那些话我念了几十年，次序都不会错。</p><p><strong>孟嘉：</strong>后来为什么又求了别的神？</p><p><strong>顾惟真：</strong>因为熟悉的名字没有回答。念到后来，我已经不是在念，是在一个个喊。我把记得的佛号、祷词和神名全喊了一遍，耶稣，连小时候在道观听过的名字都喊了。我说只要让我活，钱、公司、名声都可以拿走。没有谁回应我。</p><p><strong>孟嘉：</strong>所以你出院后不再礼佛，是因为你差点死？</p><p><strong>顾惟真：</strong>不是。是因为我忽然明白，三十多年的供奉，和病床上临时喊出的一个陌生名字，得到的是同一种沉默。我不能再把沉默解释成慈悲。</p><p><strong>孟嘉：</strong>后来发生了什么？</p><p><strong>顾惟真：</strong>我活了下来。闻川却没能等到天亮。很长一段时间，我都不知道该怎样理解这两件同时发生的事。</p></div><figure><img src="./game/gu-weizhen-lu-wenchuan-2014.webp" alt="顾惟真与陆闻川在临川海边活动上的合照" /><figcaption>顾惟真（左）与陆闻川，2014年</figcaption></figure><aside><Quote aria-hidden="true" /><p>“我活下来了。可这件事，我一直不知道该高兴还是该愧疚。”</p></aside></article> : null}
     </main>
   </div>;
 }

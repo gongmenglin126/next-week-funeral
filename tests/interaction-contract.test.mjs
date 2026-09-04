@@ -533,7 +533,8 @@ test("the hidden record number opens a layered internal trail instead of explain
   assert.match(rule, /查看附件：项目说明会纪要/);
 
   const minutes = renderToStaticMarkup(React.createElement(FounderBriefingPage));
-  assert.match(minutes, /无面小像一尊/);
+  assert.match(minutes, /木质小像一尊，未登记名称/);
+  assert.doesNotMatch(minutes, /无面小像一尊/);
   assert.match(minutes, /闻川付出了代价/);
   assert.match(minutes, /最终说明权归顾惟真本人/);
   assert.doesNotMatch(revision + rule + minutes, /守夜人|承受人|借丧礼|生期转移/);
@@ -670,7 +671,7 @@ test("the Beilu trail begins independently and converges at address 17", async (
   const { FounderBriefingPage } = await vite.ssrLoadModule("/app/anshi-internal-pages.tsx");
   const minutes = renderToStaticMarkup(React.createElement(FounderBriefingPage, { onOpenAidSelection() {} }));
   assert.match(minutes, /临川市北麓路17号西院/);
-  assert.match(minutes, /查看会前材料：QC-AID-19/);
+  assert.match(minutes, /复核会前材料：QC-AID-19/);
 
   const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
   assert.deepEqual(resolveBrowserInput("beilu-care.example/about", true), { tab: "rehab-center", query: "" });

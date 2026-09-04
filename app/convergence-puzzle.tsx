@@ -7,13 +7,13 @@ import { CROSS_INDEX_FIELDS, isCrossIndexAnswerCorrect, type CrossIndexField } f
 
 type CrossIndexValues = Record<CrossIndexField, string>;
 
-const EMPTY_VALUES: CrossIndexValues = { origin: "", object: "", place: "", revision: "" };
+const EMPTY_VALUES: CrossIndexValues = { origin: "", object: "", place: "", participant: "" };
 
 const CONVERGENCE_ROWS = [
   ["2016", "海岬和济医院 / 陆闻川事故", "顾把同时发生的死亡与幸存解释成一次“代价”。"],
   ["2017—2018", "佛教旧藏图录 / 无面小像", "他清空长期供奉的佛教旧藏，随后让无名无面的物件进入私人叙事。"],
   ["2019", "QC-AID-19 / 北麓路17号西院", "优先挑选更可能好转的人，把无改善和死亡个案留在公开叙事之外。"],
-  ["第六期", "R-06-4 / S-17", "参与者死后仍由原账号继续叙述，失败因此不会出现在公开记录里。"],
+  ["第六期", "程叙白讣告 / R-06-4", "参与者死后仍由原账号继续叙述，失败因此不会出现在公开记录里。"],
 ] as const;
 
 export function ConvergencePuzzlePage({ unlocked, onUnlock }: { unlocked: boolean; onUnlock: () => void }) {

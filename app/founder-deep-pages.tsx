@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowUpRight } from "lucide-react";
+
 export function GuWeizhenPoemPage() {
   return <article className="min-h-full bg-[#fbfaf7] text-[#252a27]">
     <header className="border-b border-[#dedbd4] bg-white">
@@ -30,7 +32,7 @@ export function GuWeizhenPoemPage() {
   </article>;
 }
 
-export function GuWeizhenInterviewPage() {
+export function GuWeizhenInterviewPage({ onOpenPoem }: { onOpenPoem: () => void }) {
   return <article className="min-h-full bg-[#f3efe8] text-[#292d2a]">
     <header className="bg-[#202622] text-[#f4f0e8]">
       <div className="mx-auto max-w-[980px] px-7 pb-10 pt-7 md:px-12 md:pb-12 md:pt-9">
@@ -65,6 +67,10 @@ export function GuWeizhenInterviewPage() {
         <p>桌上倒很简单：几份当天的文件，一只茶杯，一支用了很多年的钢笔。我们问他平时会不会专门坐在这里读书，他想了想，说其实更多时候只是回来坐一会儿，“翻两页，接个电话，天就黑了”。</p>
 
         <p>临走前，他把我们刚看过的一册地方旧志重新塞回书架。位置显然不对，他停了一下，还是没再找，笑着说：“下次又会有人替它换地方。”</p>
+      </div>
+
+      <div className="mx-auto mt-10 max-w-[700px] border-t border-[#cfc9be] pt-6">
+        <button className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#46564d] underline underline-offset-4" onClick={onOpenPoem}>查看顾惟真刊载旧作《山居杂记》 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
       </div>
     </main>
   </article>;

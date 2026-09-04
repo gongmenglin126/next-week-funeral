@@ -13,7 +13,7 @@ export function RecordRevisionPage({ onOpenRule }: { onOpenRule: () => void }) {
       <main className="px-6 py-8 md:px-10 md:py-11">
         <p className="text-[13px] tracking-[.15em] text-[#76807b]">归潮见证 / 记录校对</p>
         <h1 className="mt-3 font-serif text-[32px] font-normal leading-tight md:text-[42px]">R-06-4 公开记录修订单</h1>
-        <p className="mt-5 max-w-[720px] text-[15px] leading-8 text-[#59625e]">页面标题与第七期归档来信编号相同。缓存保留了发布前后的字段，但没有保留编辑人的姓名。</p>
+        <p className="mt-5 max-w-[720px] text-[15px] leading-8 text-[#59625e]">该编号来自第六期公开回访的内部抽查索引。缓存保留了发布前后的字段，但没有保留编辑人的姓名。</p>
 
         <section className="mt-9 overflow-hidden border border-[#c7cbc9] bg-white">
           <div className="grid border-b border-[#d2d6d4] bg-[#eef0ef] text-[13px] font-semibold md:grid-cols-[160px_1fr_1fr]"><span className="px-5 py-3">字段</span><span className="border-l border-[#d2d6d4] px-5 py-3">原始记录</span><span className="border-l border-[#d2d6d4] px-5 py-3">公开版本</span></div>
@@ -82,7 +82,7 @@ export function FounderBriefingPage({ onOpenAidSelection, onOpenCrossIndex }: { 
       </header>
 
       <main className="py-9 md:py-12">
-        <dl className="grid gap-3 border-b border-black/20 pb-7 text-[14px] leading-7 md:grid-cols-2"><div><dt className="text-black/45">主讲</dt><dd>顾惟真</dd></div><div><dt className="text-black/45">记录</dt><dd>秘书处 / 纪要稿第三版</dd></div><div><dt className="text-black/45">参会范围</dt><dd>联络、记录与项目决策人员</dd></div><div><dt className="text-black/45">会前物品</dt><dd>无面小像一尊，置于主讲人右侧</dd></div></dl>
+        <dl className="grid gap-3 border-b border-black/20 pb-7 text-[14px] leading-7 md:grid-cols-2"><div><dt className="text-black/45">主讲</dt><dd>顾惟真</dd></div><div><dt className="text-black/45">记录</dt><dd>秘书处 / 纪要稿第三版</dd></div><div><dt className="text-black/45">参会范围</dt><dd>联络、记录与项目决策人员</dd></div><div><dt className="text-black/45">会前物品</dt><dd>木质小像一尊，未登记名称</dd></div></dl>
 
         <section className="mt-9 space-y-9 font-serif text-[16px] leading-9">
           <div><p className="mb-2 font-sans text-[13px] font-semibold text-black/50">问：为什么每一期都必须选两个人？</p><p>顾惟真：只害怕自己死，还不足以让死亡回头。一个人必须清楚知道，世上有谁会为他真正悲伤；也必须愿意把那个人放到死亡能够看见的位置。关系越深，选择才越有分量。</p></div>
@@ -97,7 +97,7 @@ export function FounderBriefingPage({ onOpenAidSelection, onOpenCrossIndex }: { 
         </section>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          <button className="inline-flex items-center gap-3 border border-black bg-black px-5 py-3 text-[13px] font-semibold text-white hover:bg-black/80" onClick={onOpenAidSelection}>查看会前材料：QC-AID-19 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
+          <button className="inline-flex items-center gap-3 border border-black bg-black px-5 py-3 text-[13px] font-semibold text-white hover:bg-black/80" onClick={onOpenAidSelection}>复核会前材料：QC-AID-19 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
           <button className="inline-flex items-center gap-3 border border-black px-5 py-3 text-[13px] font-semibold hover:bg-black/5" onClick={onOpenCrossIndex}>打开关联档案检索 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
         </div>
 

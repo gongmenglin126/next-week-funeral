@@ -29,3 +29,33 @@ test("the late record chain cannot skip from the selection memo to the briefing"
   assert.match(internalPages, /R-06-4 公开记录修订单[\s\S]*查看引用规则：S-17/);
   assert.match(internalPages, /S-17[\s\S]*查看附件：项目说明会纪要/);
 });
+
+test("public Beilu browsing and the Qichao nickname must be combined before the old archive appears", async () => {
+  const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
+  assert.match(search, /hasQichaoName && hasBeiluReference/);
+  assert.match(search, /“栖潮旧院”是地方俗称，暂时无法定位唯一地点/);
+  assert.match(search, /可以补充门牌地址或现用机构名称后再次搜索/);
+  const earlyBeiluBlock = search.slice(search.indexOf('["临川异地就医陪护短住"'), search.indexOf('if (normalized === "栖潮疗养院")'));
+  assert.match(earlyBeiluBlock, /openRehabCenter/);
+  assert.doesNotMatch(earlyBeiluBlock, /openBeiluAddress/);
+});
+
+test("the seventh-event hint no longer gives away the archive number", async () => {
+  const forum = await readFile(path.join(root, "app/forum-page.tsx"), "utf8");
+  const activityThread = forum.slice(forum.indexOf('"有人参加过安时那边的周末活动吗"'), forum.indexOf("[LIGHTHOUSE_THREAD]"));
+  assert.match(activityThread, /后来没列进公开归档的那一期/);
+  assert.doesNotMatch(activityThread, /第七期|07/);
+});
+
+test("the founder trail reveals biography, interview, and poem progressively", async () => {
+  const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
+  const founderResult = search.slice(search.indexOf('if (normalized === "顾惟真")'), search.indexOf('if (normalized.replace(/[《》]/g, "") === "顾惟真的书房")'));
+  assert.match(founderResult, /1 条相关结果/);
+  assert.match(founderResult, /openFounder/);
+  assert.doesNotMatch(founderResult, /openFounderInterview|openFounderPoem|山居杂记/);
+
+  const biography = await readFile(path.join(root, "app/founder-trail-pages.tsx"), "utf8");
+  const interview = await readFile(path.join(root, "app/founder-deep-pages.tsx"), "utf8");
+  assert.match(biography, /selected.number === "06"[\s\S]*顾惟真的书房/);
+  assert.match(interview, /onOpenPoem[\s\S]*查看顾惟真刊载旧作《山居杂记》/);
+});

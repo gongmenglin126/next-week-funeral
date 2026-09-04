@@ -19,23 +19,6 @@ const resultSets = [
   },
 ];
 
-const founderDeepResults = [
-  {
-    id: "interview",
-    eyebrow: "海州人物 · 2023年11月刊",
-    title: "顾惟真的书房",
-    text: "《海州人物》空间栏目走进顾惟真的书房：旧书、地方志、工程资料和一些来历各异的小物件。",
-    url: "haizhou-people.example/interview/gu-weizhen-2023",
-  },
-  {
-    id: "poem",
-    eyebrow: "临川文艺 · 2020年第3期",
-    title: "《山居杂记》｜顾惟真",
-    text: "顾惟真的一首短诗，写山居、旧册与夜雨。",
-    url: "linchuan-literature.example/archive/2020/gu-weizhen",
-  },
-] as const;
-
 const AUCTION_FORUM_URL = "haizhou-oldthings.example/thread/18421";
 const DALUO_PRAISE_URL = "linchuan-patient.example/archive/2916";
 
@@ -123,6 +106,7 @@ export function SearchResults({
   openCommunityNotice,
   openObituary,
   openRecordRevision,
+  openContinuityRule,
   openFounder,
   openFounderInterview,
   openFounderPoem,
@@ -145,6 +129,7 @@ export function SearchResults({
   openCommunityNotice: () => void;
   openObituary: () => void;
   openRecordRevision: () => void;
+  openContinuityRule: () => void;
   openFounder: () => void;
   openFounderInterview: () => void;
   openFounderPoem: () => void;
@@ -160,10 +145,17 @@ export function SearchResults({
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const normalized = query.normalize("NFKC").replace(/\s+/g, "");
   const auctionForumSearch = normalized === "无面小像" || normalized === "无面木像" || normalized === "嘉闻无面小像" || normalized.toUpperCase() === "LOT21";
+  const hasQichaoName = normalized.includes("栖潮旧院") || normalized.includes("栖潮疗养院");
+  const hasBeiluReference = normalized.includes("北麓路17号") || normalized.includes("北麓康复中心");
 
   if (normalized.toUpperCase() === "R-06-4") return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openRecordRevision}><small className="text-[#78957e]">雾搜网页缓存 · 8月19日</small><h3 className="my-3 text-xl text-[#286ab3]">R-06-4 公开记录校对单</h3><p className="text-xs text-[#8493a4]">归潮见证的一份已停止公开访问的校对页面，缓存保留了部分字段。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/snapshot/R-06-4</code></button>
+  </div>;
+
+  if (["S-17", "S17"].includes(normalized.toUpperCase())) return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openContinuityRule}><small className="text-[#78957e]">安时项目办公室 · 内部文件索引</small><h3 className="my-3 text-xl text-[#286ab3]">S-17 参与记录续写与关系筛选说明</h3><p className="text-xs text-[#8493a4]">被 R-06-4 修订单引用的一份内部工作说明。</p><code className="mt-2 block text-[10px] text-[#718c76]">anshi-office.example/rules/S-17</code></button>
   </div>;
 
   if (normalized.toUpperCase() === "QC-AID-19") return <div className="mt-8 max-w-[860px]">
@@ -185,16 +177,21 @@ export function SearchResults({
   }
 
   if (normalized === "顾惟真") {
-    const founderActions = {
-      interview: openFounderInterview,
-      poem: openFounderPoem,
-    } as const;
     return <div className="mt-8 max-w-[860px]">
-      <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">3 条相关结果</p>
+      <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
       <button className="search-result" onClick={openFounder}><small className="text-[#78957e]">linchuan-people.example · 企业与公益人物资料</small><h3 className="my-3 text-xl text-[#286ab3]">顾惟真｜企业家、公益基金会发起人</h3><p className="text-xs text-[#8493a4]">澜序实业集团创办人，安时生命关怀基金会发起人。</p></button>
-      {founderDeepResults.map((item) => <button className="search-result" key={item.id} onClick={founderActions[item.id]}><small className="text-[#78957e]">{item.eyebrow}</small><h3 className="my-3 text-xl text-[#286ab3]">{item.title}</h3><p className="text-xs text-[#8493a4]">{item.text}</p><code className="mt-2 block text-[10px] text-[#718c76]">{item.url}</code></button>)}
     </div>;
   }
+
+  if (normalized.replace(/[《》]/g, "") === "顾惟真的书房") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openFounderInterview}><small className="text-[#78957e]">海州人物 · 2023年11月刊</small><h3 className="my-3 text-xl text-[#286ab3]">顾惟真的书房</h3><p className="text-xs text-[#8493a4]">《海州人物》空间栏目走进顾惟真的书房：旧书、地方志、工程资料和一些来历各异的小物件。</p><code className="mt-2 block text-[10px] text-[#718c76]">haizhou-people.example/interview/gu-weizhen-2023</code></button>
+  </div>;
+
+  if (normalized.replace(/[《》]/g, "") === "山居杂记") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openFounderPoem}><small className="text-[#78957e]">临川文艺 · 2020年第3期</small><h3 className="my-3 text-xl text-[#286ab3]">《山居杂记》｜顾惟真</h3><p className="text-xs text-[#8493a4]">顾惟真的一首短诗，写山居、旧册与夜雨。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-literature.example/archive/2020/gu-weizhen</code></button>
+  </div>;
 
   if (normalized === "大罗无相尊") {
     if (selectedUrl === DALUO_PRAISE_URL) return <DaluoPraiseThread onBack={() => setSelectedUrl(null)} />;
@@ -215,14 +212,25 @@ export function SearchResults({
     <button className="search-result" onClick={openBuddhistSale}><small className="text-[#78957e]">海州嘉闻拍卖 · 2017春拍成交图录</small><h3 className="my-3 text-xl text-[#286ab3]">澜序旧藏·佛教艺术</h3><p className="text-xs text-[#8493a4]">顾惟真委托的佛教艺术专场，共31件拍品，全部成交。</p><code className="mt-2 block text-[10px] text-[#718c76]">jiawen-auction.example/catalog/2017-spring/lanxu-buddhist-art</code></button>
   </div>;
 
-  if (["临川异地就医陪护短住", "临川北麓康复中心", "北麓康复中心"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
+  if (hasQichaoName && hasBeiluReference) return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openBeiluAddress}><small className="text-[#78957e]">临川地方建筑档案 · 旧址沿革</small><h3 className="my-3 text-xl text-[#286ab3]">北麓疗养院旧址｜北麓路17号</h3><p className="text-xs text-[#8493a4]">两条检索信息指向同一片院落：东院现为康复中心，西院曾用于办公与资料保管。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/places/beilu-17</code></button>
+  </div>;
+
+  if (["临川异地就医陪护短住", "临川北麓康复中心", "北麓康复中心", "北麓路17号", "北麓路17号东院"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openRehabCenter}><small className="text-[#78957e]">beilu-care.example · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">临川北麓康复中心｜异地就医与家属支持</h3><p className="text-xs text-[#8493a4]">提供院外短住、康复衔接、照护者喘息与医疗资源转介。</p><code className="mt-2 block text-[10px] text-[#718c76]">beilu-care.example/about</code></button>
   </div>;
 
-  if (["栖潮旧院", "栖潮疗养院", "北麓路17号"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
+  if (normalized === "栖潮疗养院") return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openBeiluAddress}><small className="text-[#78957e]">临川地方建筑档案 · 旧址沿革</small><h3 className="my-3 text-xl text-[#286ab3]">北麓疗养院旧址｜北麓路17号</h3><p className="text-xs text-[#8493a4]">旧址曾增挂“栖潮疗养院”院名，附近居民至今仍称其为“栖潮旧院”。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/places/beilu-17</code></button>
+  </div>;
+
+  if (normalized === "栖潮旧院") return <div className="grid min-h-[330px] place-content-center justify-items-center gap-3 text-center text-[#87959b]">
+    <FileSearch className="size-8 stroke-[1.3]" aria-hidden="true" />
+    <p className="m-0 text-[13px] text-[#5c6d74]">“栖潮旧院”是地方俗称，暂时无法定位唯一地点</p>
+    <span className="max-w-[440px] text-[11px] leading-7">可以补充门牌地址或现用机构名称后再次搜索。</span>
   </div>;
 
   if (isActivitySearch(query)) return <div className="mt-8"><button className="search-result" onClick={openActivity}><small className="text-[#78957e]">anshi.example/activities · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">安时活动服务 · 雾汀生命关怀</h3><p className="text-xs text-[#8493a4]">线下交流、活动介绍与预约咨询。</p></button></div>;
