@@ -6,7 +6,7 @@ import path from "node:path";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 
-test("R-06-4 is withheld from the seventh archive and first appears in the late selection memo", async () => {
+test("the record revision stays out of the seventh archive and appears only through the late selection memo", async () => {
   const activity = await readFile(path.join(root, "app/activity-page.tsx"), "utf8");
   const hiddenPage = activity.slice(activity.indexOf("export function HiddenSeventhPage"), activity.indexOf("export function CommunityPage"));
   assert.doesNotMatch(hiddenPage, /R-06-4|来信编号/);
@@ -15,14 +15,15 @@ test("R-06-4 is withheld from the seventh archive and first appears in the late 
   const qichao = await readFile(path.join(root, "app/qichao-pages.tsx"), "utf8");
   const placeArchive = qichao.slice(qichao.indexOf("export function BeiluPlaceArchivePage"), qichao.indexOf("export function BeiluSelectionMemoPage"));
   const selectionMemo = qichao.slice(qichao.indexOf("export function BeiluSelectionMemoPage"));
-  assert.match(placeArchive, /数字化移交附记[\s\S]*QC-AID-19/);
-  assert.match(selectionMemo, /关联抽查样本[\s\S]*R-06-4/);
+  assert.match(placeArchive, /数字化移交附记[\s\S]*打开援助项目工作批注/);
+  assert.match(selectionMemo, /关联抽查样本[\s\S]*查看第六期记录校对样本/);
+  assert.doesNotMatch(placeArchive + selectionMemo, /输入|搜索编号/);
   assert.doesNotMatch(selectionMemo, /onOpenMinutes|查看同批说明会纪要/);
 });
 
 test("the late record chain cannot skip from the selection memo to the briefing", async () => {
   const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
-  assert.match(page, /<BeiluSelectionMemoPage\s*\/>/);
+  assert.match(page, /<BeiluSelectionMemoPage onOpenRevision=\{\(\) => navigate\("record-revision"\)\}/);
   assert.doesNotMatch(page, /<BeiluSelectionMemoPage onOpenMinutes/);
 
   const internalPages = await readFile(path.join(root, "app/anshi-internal-pages.tsx"), "utf8");
@@ -30,14 +31,13 @@ test("the late record chain cannot skip from the selection memo to the briefing"
   assert.match(internalPages, /S-17[\s\S]*查看附件：项目说明会纪要/);
 });
 
-test("public Beilu browsing and the Qichao nickname must be combined before the old archive appears", async () => {
+test("public Beilu browsing reaches the old archive through a natural address link", async () => {
   const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
-  assert.match(search, /hasQichaoName && hasBeiluReference/);
-  assert.match(search, /“栖潮旧院”是地方俗称，暂时无法定位唯一地点/);
-  assert.match(search, /可以补充门牌地址或现用机构名称后再次搜索/);
-  const earlyBeiluBlock = search.slice(search.indexOf('["临川异地就医陪护短住"'), search.indexOf('if (normalized === "栖潮疗养院")'));
-  assert.match(earlyBeiluBlock, /openRehabCenter/);
-  assert.doesNotMatch(earlyBeiluBlock, /openBeiluAddress/);
+  assert.doesNotMatch(search, /hasQichaoName && hasBeiluReference|可以补充门牌地址/);
+  assert.match(search, /if \(normalized === "北麓路17号"\)[\s\S]*openRehabCenter[\s\S]*openBeiluAddress/);
+  assert.match(search, /\["栖潮疗养院", "栖潮旧院", "北麓路17号西院"\]/);
+  const qichao = await readFile(path.join(root, "app/qichao-pages.tsx"), "utf8");
+  assert.match(qichao, /为什么地址写“东院”？查看院区沿革/);
 });
 
 test("the seventh-event hint no longer gives away the archive number", async () => {

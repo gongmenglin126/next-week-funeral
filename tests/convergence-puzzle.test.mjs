@@ -6,31 +6,19 @@ import path from "node:path";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 
-test("cross-index accepts exact evidence with harmless typography variations", async () => {
-  const { isCrossIndexAnswerCorrect, normalizeCrossIndexAnswer } = await import("../lib/convergence-puzzle.ts");
-  assert.equal(normalizeCrossIndexAnswer(" 《无面小像》 "), "无面小像");
-  assert.equal(isCrossIndexAnswerCorrect("origin", "陆闻川"), true);
-  assert.equal(isCrossIndexAnswerCorrect("object", "《无面小像》"), true);
-  assert.equal(isCrossIndexAnswerCorrect("place", "栖潮疗养院"), true);
-  assert.equal(isCrossIndexAnswerCorrect("participant", "程叙白"), true);
-  assert.equal(isCrossIndexAnswerCorrect("origin", "顾惟真"), false);
-  assert.equal(isCrossIndexAnswerCorrect("place", "栖潮旧院"), true, "the place archive explicitly records this local name");
-  assert.equal(isCrossIndexAnswerCorrect("participant", "R-06-4"), false);
-});
-
-test("the locked index asks for four prior clues before rendering its reward", async () => {
+test("the locked index asks players to select evidence instead of entering four answers", async () => {
   const source = await readFile(path.join(root, "app/convergence-puzzle.tsx"), "utf8");
   const lockedBranch = source.slice(source.indexOf("{!unlocked ?"), source.indexOf(": <CrossIndexResult onOpenMessage={onOpenMessage} />"));
-  for (const feature of ["CROSS_INDEX_FIELDS.map", "<label", "<input", "type=\"submit\"", "noValidate"]) assert.ok(lockedBranch.includes(feature), feature);
+  for (const feature of ["EVIDENCE_CARDS.map", "aria-pressed", "归档所选证据", "selected.length"]) assert.ok(lockedBranch.includes(feature), feature);
+  assert.doesNotMatch(lockedBranch, /<input|CROSS_INDEX_FIELDS|type="submit"/);
   assert.doesNotMatch(lockedBranch, /索引结论|第七期申请确认单|A-07-02|周惜 \/ 社区账号/);
-  const fields = await readFile(path.join(root, "lib/convergence-puzzle.ts"), "utf8");
-  for (const clue of ["2016年海岬病危夜晚", "2018年匿名成交", "北麓路17号", "原使用者的真实姓名"]) assert.ok(fields.includes(clue), clue);
+  for (const clue of ["项目优先选择", "雨停以后", "接管死者账号", "最终解释权"]) assert.ok(source.includes(clue), clue);
 });
 
 test("the convergence reward joins all four systems and preserves the limits of the application record", async () => {
   const source = await readFile(path.join(root, "app/convergence-puzzle.tsx"), "utf8");
   for (const evidence of ["海岬和济医院 / 陆闻川事故", "佛教旧藏图录 / 无面小像", "QC-AID-19 / 北麓路17号西院", "程叙白讣告 / R-06-4"]) assert.match(source, new RegExp(evidence.replaceAll("/", "\\/")));
-  for (const fact of ["A-07-02", "周惜 / 社区账号“潮汐失眠”", "林知还 / 同行朋友", "8月20日 19:44", "归潮社区站内消息", "8月23日 00:14", "本人勾选并二次输入关系人姓名", "她后来为什么突然转向", "WX-0825"]) assert.ok(source.includes(fact), fact);
+  for (const fact of ["A-07-02", "周惜 / 社区账号“潮汐失眠”", "林知还 / 同行朋友", "8月20日 19:44", "归潮社区站内消息", "8月23日 00:14", "本人勾选并二次输入关系人姓名", "她后来为什么突然转向", "事故设备中恢复的通讯"]) assert.ok(source.includes(fact), fact);
   assert.match(source, /没有证明死亡能够转移/);
 });
 

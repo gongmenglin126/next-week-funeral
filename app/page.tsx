@@ -54,7 +54,6 @@ export default function Home() {
   const [checked, setChecked] = useState<string[]>([]);
   const [notePosition, setNotePosition] = useState<WindowPoint | null>(null);
   const [evidencePosition, setEvidencePosition] = useState<WindowPoint | null>(null);
-  const [downloadPreview, setDownloadPreview] = useState<string | null>(null);
   const [routes, setRoutes] = useState<BrowserRoute[]>([{ tab: "search", query: "" }]);
   const [routeIndex, setRouteIndex] = useState(0);
   const [address, setAddress] = useState("");
@@ -78,7 +77,6 @@ export default function Home() {
   function navigate(tab: string, nextQuery = "") {
     if (tab === "ride" && !unlocked) return;
     if (tab === "trip") setTravelDiscovered(true);
-    if (tab === "downloads") setDownloadPreview(nextQuery || null);
     setRoutes((oldRoutes) => [...oldRoutes.slice(0, routeIndex + 1), { tab, query: nextQuery }]);
     setRouteIndex(routeIndex + 1);
     setAddress(browserAddress(tab, nextQuery));
@@ -90,7 +88,6 @@ export default function Home() {
     if (nextIndex < 0 || nextIndex >= routes.length) return;
     setRouteIndex(nextIndex);
     setAddress(browserAddress(routes[nextIndex].tab, routes[nextIndex].query));
-    if (routes[nextIndex].tab === "downloads") setDownloadPreview(routes[nextIndex].query || null);
     setBookmarkOpen(false); setBrowserMenuOpen(false);
   }
   function closeBrowserTab(tab: string) {
@@ -100,7 +97,6 @@ export default function Home() {
     setRoutes(nextHistory.routes);
     setRouteIndex(nextHistory.routeIndex);
     setAddress(browserAddress(nextRoute.tab, nextRoute.query));
-    if (nextRoute.tab === "downloads") setDownloadPreview(nextRoute.query || null);
     setBookmarkOpen(false); setBrowserMenuOpen(false);
   }
   function runSearch(event: FormEvent<HTMLFormElement>) {
@@ -148,7 +144,6 @@ export default function Home() {
         <button onClick={() => setDesktopPanel("notes")}><span className="desktop-app notes-app"><NotebookPen /></span><strong>记事本</strong></button>
         <button onClick={() => setDesktopPanel("files")}><span className="desktop-app"><FolderClosed /></span><strong>雾汀旅行</strong></button>
         <button onClick={() => setDesktopPanel("photos")}><span className="desktop-app photo-app"><ImageIcon /></span><strong>旅行照片</strong></button>
-        <button onClick={() => setDesktopPanel("private")}><span className="desktop-app private-app"><LockKeyhole /></span><strong>隐藏相簿</strong></button>
         <button onClick={() => setDesktopPanel("trash")}><span className="desktop-app trash-app"><Trash2 /></span><strong>回收站</strong></button>
       </section>
       <nav className="desktop-dock" aria-label="常用应用">
@@ -189,14 +184,14 @@ export default function Home() {
             </div>
           </form>
           <div className="browser-viewport">
-            <TabsContent forceMount value="trip" className="min-h-full data-[state=inactive]:hidden"><TravelPlatform state={chapter} onCancel={dispatch} onDownloads={() => navigate("downloads")} /></TabsContent>
+            <TabsContent forceMount value="trip" className="min-h-full data-[state=inactive]:hidden"><TravelPlatform state={chapter} onCancel={dispatch} /></TabsContent>
             <TabsContent forceMount value="forum" className="min-h-full bg-[#f4f1e9] data-[state=inactive]:hidden"><ForumPage unlocked={unlocked} thread={activeTab === "forum" ? query || null : null} setThread={(title) => navigate("forum", title ?? "")} /></TabsContent>
             <TabsContent forceMount value="history" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><HistoryPage unlocked={unlocked} navigate={navigate} /></TabsContent>
-            <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage preview={downloadPreview} setPreview={(name) => navigate("downloads", name ?? "")} /></TabsContent>
+            <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage /></TabsContent>
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={`search-box:${query}`} query={query} onSearch={submitBrowserInput} />
-              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openRecordRevision={() => navigate("record-revision")} openContinuityRule={() => navigate("continuity-rule")} openFounder={() => navigate("founder-profile")} openFounderInterview={() => navigate("founder-interview")} openFounderPoem={() => navigate("founder-poem")} openFounderCollection={() => navigate("founder-collection")} openBuddhistSale={() => navigate("buddhist-sale")} openRehabCenter={() => navigate("rehab-center")} openBeiluAddress={() => navigate("beilu-address")} openAidSelection={() => navigate("aid-selection")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} openZhouMessage={() => navigate("zhou-gu-message")} openFollowerRelay={() => navigate("follower-relay")} openFanaticArchive={() => navigate("fanatic-archive")} openAccidentDossier={() => navigate("accident-dossier")} openIncidentIndex={() => navigate("incident-index")} />
+              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openRecordRevision={() => navigate("record-revision")} openContinuityRule={() => navigate("continuity-rule")} openFounder={() => navigate("founder-profile")} openFounderInterview={() => navigate("founder-interview")} openFounderPoem={() => navigate("founder-poem")} openFounderCollection={() => navigate("founder-collection")} openBuddhistSale={() => navigate("buddhist-sale")} openRehabCenter={() => navigate("rehab-center")} openBeiluAddress={() => navigate("beilu-address")} openAidSelection={() => navigate("aid-selection")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} />
             </TabsContent>
             <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden">{query === "community" ? <CommunityPage onOpenWitness={() => navigate("activity", "witness")} onOpenFoundation={() => navigate("activity", "foundation")} /> : query === "witness" ? <WitnessPage onBack={() => navigate("activity", "community")} onOpenProfile={() => navigate("survivor")} /> : query === "foundation" ? <FoundationPage onBack={() => navigate("activity", "community")} /> : query === "archive/07" ? <HiddenSeventhPage onBack={() => navigate("activity")} /> : query.startsWith("archive/") ? <ActivityArchivePage issue={query.slice(-2)} onBack={() => navigate("activity")} /> : <ActivityPage onOpenRide={unlocked ? openRide : undefined} onOpenArchive={(issue) => navigate("activity", `archive/${issue}`)} />}</TabsContent>
             <TabsContent value="survivor" className="min-h-full data-[state=inactive]:hidden"><SurvivorProfile /></TabsContent>
@@ -209,10 +204,10 @@ export default function Home() {
             <TabsContent value="founder-collection" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenCollectionPage onOpenAuction={() => navigate("founder-auction")} /></TabsContent>
             <TabsContent value="founder-auction" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenAuctionPage /></TabsContent>
             <TabsContent value="buddhist-sale" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenBuddhistSalePage /></TabsContent>
-            <TabsContent value="rehab-center" className="min-h-full data-[state=inactive]:hidden"><BeiluRehabilitationPage onOpenReview={() => navigate("aid-review")} /></TabsContent>
+            <TabsContent value="rehab-center" className="min-h-full data-[state=inactive]:hidden"><BeiluRehabilitationPage onOpenReview={() => navigate("aid-review")} onOpenArchive={() => navigate("beilu-address")} /></TabsContent>
             <TabsContent value="aid-review" className="min-h-full data-[state=inactive]:hidden"><LinchaoAidReviewPage /></TabsContent>
-            <TabsContent value="beilu-address" className="min-h-full data-[state=inactive]:hidden"><BeiluPlaceArchivePage onOpenCentre={() => navigate("rehab-center")} /></TabsContent>
-            <TabsContent value="aid-selection" className="min-h-full data-[state=inactive]:hidden"><BeiluSelectionMemoPage /></TabsContent>
+            <TabsContent value="beilu-address" className="min-h-full data-[state=inactive]:hidden"><BeiluPlaceArchivePage onOpenCentre={() => navigate("rehab-center")} onOpenSelection={() => navigate("aid-selection")} /></TabsContent>
+            <TabsContent value="aid-selection" className="min-h-full data-[state=inactive]:hidden"><BeiluSelectionMemoPage onOpenRevision={() => navigate("record-revision")} /></TabsContent>
             <TabsContent value="biography" className="min-h-full data-[state=inactive]:hidden"><BiographyPage onOpenInterview={() => navigate("founder-interview")} /></TabsContent>
             <TabsContent value="lu-memorial" className="min-h-full data-[state=inactive]:hidden"><LuWenchuanMemorialPage /></TabsContent>
             <TabsContent value="hospital" className="min-h-full data-[state=inactive]:hidden"><HaijiaHospitalPage /></TabsContent>
@@ -220,9 +215,9 @@ export default function Home() {
             <TabsContent value="continuity-rule" className="min-h-full data-[state=inactive]:hidden"><ContinuityRulePage onOpenMinutes={() => navigate("founder-briefing")} /></TabsContent>
             <TabsContent value="founder-briefing" className="min-h-full data-[state=inactive]:hidden"><FounderBriefingPage onOpenAidSelection={() => navigate("aid-selection")} onOpenCrossIndex={() => navigate("convergence-index")} /></TabsContent>
             <TabsContent value="convergence-index" className="min-h-full data-[state=inactive]:hidden"><ConvergencePuzzlePage unlocked={crossIndexUnlocked} onUnlock={() => setCrossIndexUnlocked(true)} onOpenMessage={() => navigate("zhou-gu-message")} /></TabsContent>
-            <TabsContent value="zhou-gu-message" className="min-h-full data-[state=inactive]:hidden"><ZhouGuMessagePage /></TabsContent>
+            <TabsContent value="zhou-gu-message" className="min-h-full data-[state=inactive]:hidden"><ZhouGuMessagePage onOpenRelay={() => navigate("follower-relay")} /></TabsContent>
             <TabsContent value="follower-relay" className="min-h-full data-[state=inactive]:hidden"><FollowerRelayPage onOpenArchive={() => navigate("fanatic-archive")} /></TabsContent>
-            <TabsContent value="fanatic-archive" className="min-h-full data-[state=inactive]:hidden"><FanaticArchivePage /></TabsContent>
+            <TabsContent value="fanatic-archive" className="min-h-full data-[state=inactive]:hidden"><FanaticArchivePage onOpenAccident={() => navigate("accident-dossier")} /></TabsContent>
             <TabsContent value="accident-dossier" className="min-h-full data-[state=inactive]:hidden"><AccidentDossierPage onOpenFinal={() => navigate("incident-index")} /></TabsContent>
             <TabsContent value="incident-index" className="min-h-full data-[state=inactive]:hidden"><FinalIncidentPuzzlePage unlocked={incidentIndexUnlocked} onUnlock={() => setIncidentIndexUnlocked(true)} onFinish={() => setFinished(true)} /></TabsContent>
             <TabsContent value="not-found" className="min-h-full data-[state=inactive]:hidden"><BrowserNotFound address={query} onSearch={() => navigate("search")} /></TabsContent>

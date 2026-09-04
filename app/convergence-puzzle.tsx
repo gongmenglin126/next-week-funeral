@@ -1,13 +1,18 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { ArrowUpRight, Check, FileSearch, LockKeyhole } from "lucide-react";
 
-import { CROSS_INDEX_FIELDS, isCrossIndexAnswerCorrect, type CrossIndexField } from "@/lib/convergence-puzzle";
+const EVIDENCE_CARDS = [
+  { id: "hospital", source: "海岬和济医院院史", finding: "顾惟真获救的同一晚，陆闻川死于车祸。", correct: false },
+  { id: "sale", source: "澜序旧藏成交图录", finding: "顾在病危获救后卖出了长期收藏的佛教造像。", correct: false },
+  { id: "selection", source: "援助名单工作批注", finding: "项目优先选择原本更可能好转的人，失败个案不进入公开回访。", correct: true },
+  { id: "obituary", source: "程叙白讣告与账号动态", finding: "原使用者死亡后，“雨停以后”仍以本人语气继续更新。", correct: true },
+  { id: "continuity", source: "记录续写说明", finding: "记录组被要求接管死者账号，并从公开页面移除死亡信息。", correct: true },
+  { id: "minutes", source: "项目说明会纪要", finding: "顾规定任何结果都不得称为失败，最终解释权只属于他。", correct: true },
+] as const;
 
-type CrossIndexValues = Record<CrossIndexField, string>;
-
-const EMPTY_VALUES: CrossIndexValues = { origin: "", object: "", place: "", participant: "" };
+const REQUIRED_EVIDENCE = EVIDENCE_CARDS.filter((card) => card.correct).map((card) => card.id);
 
 const CONVERGENCE_ROWS = [
   ["2016", "海岬和济医院 / 陆闻川事故", "顾把同时发生的死亡与幸存解释成一次“代价”。"],
@@ -17,17 +22,18 @@ const CONVERGENCE_ROWS = [
 ] as const;
 
 export function ConvergencePuzzlePage({ unlocked, onUnlock, onOpenMessage }: { unlocked: boolean; onUnlock: () => void; onOpenMessage: () => void }) {
-  const [values, setValues] = useState<CrossIndexValues>(EMPTY_VALUES);
-  const [errors, setErrors] = useState<Partial<Record<CrossIndexField, string>>>({});
+  const [selected, setSelected] = useState<string[]>([]);
+  const [error, setError] = useState("");
 
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const nextErrors: Partial<Record<CrossIndexField, string>> = {};
-    for (const field of CROSS_INDEX_FIELDS) {
-      if (!isCrossIndexAnswerCorrect(field.key, values[field.key])) nextErrors[field.key] = "与现有档案不匹配";
-    }
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length === 0) onUnlock();
+  function toggleEvidence(id: string) {
+    setError("");
+    setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length < 4 ? [...current, id] : current);
+  }
+
+  function submit() {
+    const correct = selected.length === REQUIRED_EVIDENCE.length && REQUIRED_EVIDENCE.every((id) => selected.includes(id));
+    if (correct) onUnlock();
+    else setError("这组材料里还混着人物经历，却没有完整证明骗局怎样运转。请只保留能够证明筛选、删改和解释闭环的四份。");
   }
 
   return <article className="min-h-full bg-[#101715] px-5 py-8 text-[#e8eee9] md:px-10 md:py-12">
@@ -38,39 +44,27 @@ export function ConvergencePuzzlePage({ unlocked, onUnlock, onOpenMessage }: { u
       </header>
 
       <main className="py-9 md:py-12">
-        <p className="text-[13px] tracking-[.16em] text-[#8fa799]">关联材料核验</p>
-        <h1 className="mt-4 max-w-[760px] font-serif text-[34px] font-normal leading-tight md:text-[48px]">四项索引必须来自四条不同的记录</h1>
-        <p className="mt-5 max-w-[760px] text-[15px] leading-8 text-white/60">填写资料中出现的原名或编号。全部匹配后，系统才会返回与第七期有关的交叉档案。</p>
+        <p className="text-[13px] tracking-[.16em] text-[#8fa799]">证据归档台</p>
+        <h1 className="mt-4 max-w-[760px] font-serif text-[34px] font-normal leading-tight md:text-[48px]">从六份材料里，留下能证明“神迹”是怎样被制造的四份</h1>
+        <p className="mt-5 max-w-[760px] text-[15px] leading-8 text-white/60">人物经历能解释顾为什么开始相信自己，却不能单独证明骗局。选择真正构成筛选、删改与解释闭环的材料。</p>
 
-        {!unlocked ? <form className="mt-10 grid gap-5 md:grid-cols-2" onSubmit={submit} noValidate>
-          {CROSS_INDEX_FIELDS.map((field, index) => {
-            const errorId = `cross-index-${field.key}-error`;
-            return <div className="border border-white/15 bg-white/[.035] p-5" key={field.key}>
-              <label className="block" htmlFor={`cross-index-${field.key}`}>
-                <span className="text-[11px] tracking-[.15em] text-[#91aa9b]">0{index + 1} / {field.label}</span>
-                <strong className="mt-3 block text-[14px] font-normal leading-7 text-white/80">{field.prompt}</strong>
-              </label>
-              <input
-                id={`cross-index-${field.key}`}
-                className="mt-4 w-full border border-white/20 bg-black/20 px-4 py-3 text-[15px] text-white outline-none placeholder:text-white/25 focus:border-[#a8c1b1]"
-                value={values[field.key]}
-                onChange={(event) => setValues((old) => ({ ...old, [field.key]: event.target.value }))}
-                placeholder={field.placeholder}
-                autoComplete="off"
-                spellCheck={false}
-                aria-invalid={Boolean(errors[field.key])}
-                aria-describedby={errors[field.key] ? errorId : undefined}
-              />
-              {errors[field.key] ? <p className="mt-2 text-[12px] text-[#e0a29b]" id={errorId}>{errors[field.key]}</p> : null}
-            </div>;
-          })}
-          <div className="md:col-span-2">
-            <button className="inline-flex items-center gap-3 border border-[#9db4a6] bg-[#dfe9e2] px-6 py-3 text-[14px] font-semibold text-[#17211d] hover:bg-white" type="submit">
-              <LockKeyhole aria-hidden="true" className="size-4" />核验并检索
-            </button>
-            {Object.keys(errors).length > 0 ? <p className="mt-3 text-[13px] text-[#e0a29b]" role="alert">有些答案还对不上。四项都能在已经出现的网页中原样找到。</p> : null}
+        {!unlocked ? <section className="mt-10" aria-label="待归档证据">
+          <div className="grid gap-4 md:grid-cols-2">
+            {EVIDENCE_CARDS.map((card) => {
+              const active = selected.includes(card.id);
+              return <button className={`text-left border p-5 transition-colors ${active ? "border-[#b5cbbd] bg-[#26362f]" : "border-white/15 bg-white/[.035] hover:bg-white/[.07]"}`} key={card.id} onClick={() => toggleEvidence(card.id)} aria-pressed={active}>
+                <span className="flex items-center justify-between gap-3 text-[11px] tracking-[.14em] text-[#91aa9b]"><span>{card.source}</span>{active ? <Check className="size-4" aria-hidden="true" /> : null}</span>
+                <strong className="mt-3 block text-[14px] font-normal leading-7 text-white/78">{card.finding}</strong>
+              </button>;
+            })}
           </div>
-        </form> : <CrossIndexResult onOpenMessage={onOpenMessage} />}
+          <div className="mt-6 flex flex-wrap items-center gap-4">
+            <button className="inline-flex items-center gap-3 border border-[#9db4a6] bg-[#dfe9e2] px-6 py-3 text-[14px] font-semibold text-[#17211d] hover:bg-white disabled:cursor-not-allowed disabled:opacity-40" type="button" disabled={selected.length !== 4} onClick={submit}>
+              <LockKeyhole aria-hidden="true" className="size-4" />归档所选证据（{selected.length}/4）
+            </button>
+            {error ? <p className="max-w-[620px] text-[13px] leading-6 text-[#e0a29b]" role="alert">{error}</p> : null}
+          </div>
+        </section> : <CrossIndexResult onOpenMessage={onOpenMessage} />}
       </main>
     </div>
   </article>;
@@ -118,7 +112,7 @@ function CrossIndexResult({ onOpenMessage }: { onOpenMessage: () => void }) {
         </ol>
       </section>
       <footer className="mt-8 border-t border-[#c9c0ae] pt-5 text-[12px] leading-6 text-[#766d5e]">记录证明周惜曾经确认把林知还带进第七期。“未撤销”只说明系统状态；她后来为什么突然转向，以及谁在事故前收到她手里的材料，仍需从事故设备恢复记录继续核验。</footer>
-      <button className="mt-6 inline-flex items-center gap-2 border border-[#736957] px-4 py-2 text-[13px] font-semibold" onClick={onOpenMessage}>查看恢复的通讯片段 WX-0825 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
+      <button className="mt-6 inline-flex items-center gap-2 border border-[#736957] px-4 py-2 text-[13px] font-semibold" onClick={onOpenMessage}>查看事故设备中恢复的通讯 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
     </article>
   </section>;
 }

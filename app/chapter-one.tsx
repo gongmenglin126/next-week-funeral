@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, ArrowUpRight, BedDouble, BusFront, CheckCircle2, ChevronLeft, ChevronRight, Download, FileText, LifeBuoy, MapPin, Search, Ticket, TrainFront, Waves, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BedDouble, BusFront, CheckCircle2, ChevronLeft, ChevronRight, FileText, LifeBuoy, MapPin, Search, Ticket, TrainFront, Waves, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -39,19 +39,7 @@ export function NotesPanel({ checked, onCheck, onClose, position, onPositionChan
   </section>;
 }
 
-export function LighthouseTicket() {
-  return <article className="travel-eticket">
-    <div className="eticket-brand"><Waves /><span>泊岸旅行 / 电子票</span></div>
-    <p className="eyebrow">SOUTH COAST SHUTTLE</p><h1>去灯塔，看一场日出。</h1>
-    <p>南岸灯塔接驳 · 成人票 × 2</p>
-    <div className="ticket-route"><div><small>出发</small><strong>老城游客中心</strong></div><ChevronRight /><div><small>到达</small><strong>南岸灯塔</strong></div></div>
-    <dl><div><dt>乘车日期</dt><dd>8月27日 05:10</dd></div><div><dt>票号</dt><dd>LT-0827-310{TICKET_SUFFIX}</dd></div><div><dt>购票时间</dt><dd>8月18日 23:47</dd></div><div><dt>预订人</dt><dd>周惜</dd></div><div><dt>乘客</dt><dd>林知还、周惜</dd></div></dl>
-    <div className="ticket-code"><small>核验尾号</small><strong>{TICKET_SUFFIX}</strong><p>乘车及申请退票时使用，请勿公开转发。</p></div>
-    <footer>请提前10分钟到达。票据已保存到本机，离线可用。</footer>
-  </article>;
-}
-
-export function TravelPlatform({ state, onCancel, onDownloads }: { state: ChapterState; onCancel: (action: CancelAction) => void; onDownloads: () => void }) {
+export function TravelPlatform({ state, onCancel }: { state: ChapterState; onCancel: (action: CancelAction) => void }) {
   const [page, setPage] = useState("orders");
   const [selectedId, setSelectedId] = useState<BookingId | null>(null);
   const [category, setCategory] = useState("全部");
@@ -72,7 +60,7 @@ export function TravelPlatform({ state, onCancel, onDownloads }: { state: Chapte
   function openOrder(id: BookingId) { setSelectedId(id); setPage("orders"); setError(""); setHotelPhotoIndex(0); }
   function cancel() {
     if (!order) return;
-    if (order.id === "lighthouse" && code.trim() !== TICKET_SUFFIX) { setError("核验尾号不符，请查看下载的灯塔接驳电子票。不是本平台订单号的尾号。"); return; }
+    if (order.id === "lighthouse" && code.trim() !== TICKET_SUFFIX) { setError("核验尾号不符，请核对订单页中的运营方凭证。"); return; }
     if (order.id === "mountain" && !policyAccepted) { setError("请先阅读并确认退款规则。"); return; }
     if (order.id === "salt" && !ticketOpened) { setError("请先打开电子票。"); return; }
     if (order.id === "return" && !passengers.some((id) => !state.refundedPassengers.includes(id))) { setError("请先选择需要退票的乘车人。"); return; }
@@ -87,7 +75,7 @@ export function TravelPlatform({ state, onCancel, onDownloads }: { state: Chapte
       <div className="ota-profile"><button onClick={() => setProfile((open) => !open)} aria-expanded={profile}><span>潮</span><strong>潮汐失眠</strong></button>{profile && <div className="ota-profile-card"><strong>潮汐失眠</strong><p>已登录 · 138 **** 0726</p><small>普通会员 · 当前设备已信任</small></div>}</div>
     </header>
 
-    {page === "home" ? <div className="ota-home"><div className="ota-hero"><img src="./game/wuting-sea-wallpaper.webp" alt="雨中的雾汀海岸" /><div><p>把日子留给海。</p><h1>下一站，雾汀。</h1><Button onClick={() => setPage("orders")}>查看我的订单 <ArrowUpRight /></Button></div></div><section><small>你的旅行</small><h2>雾汀旅行</h2><p>8月23日 — 8月31日 · 2位出行人</p><button className="ota-home-order" onClick={() => setPage("orders")}><Ticket />5笔订单 <span>查看全部 <ChevronRight /></span></button></section></div> : page === "help" ? <section className="ota-help"><LifeBuoy /><p className="eyebrow">BOAN SUPPORT</p><h1>订单帮助</h1>{[["怎么取消订单？", "在“我的订单”中打开对应订单。酒店、体验项目和交通票据有各自的退款规则，金额会在确认前列出。"], ["电子票在哪里？", "盐场电子票保存在订单详情中；灯塔运营方发放的电子票已下载到本机，可从浏览器的下载内容打开。"], ["只退了一位乘车人的票，另一位会一起退吗？", "不会。每张车票独立处理；需要结束全部行程时，请确认所有乘车人的票均已退掉。"], ["退款什么时候到账？", "订单取消后，款项预计1—3个工作日原路退回。取消后仍可在“已取消”中查看记录。"]].map(([title, body]) => <details key={title}><summary>{title}</summary><p>{body}</p></details>)}</section> : order ? <main className="ota-detail">
+    {page === "home" ? <div className="ota-home"><div className="ota-hero"><img src="./game/wuting-sea-wallpaper.webp" alt="雨中的雾汀海岸" /><div><p>把日子留给海。</p><h1>下一站，雾汀。</h1><Button onClick={() => setPage("orders")}>查看我的订单 <ArrowUpRight /></Button></div></div><section><small>你的旅行</small><h2>雾汀旅行</h2><p>8月23日 — 8月31日 · 2位出行人</p><button className="ota-home-order" onClick={() => setPage("orders")}><Ticket />5笔订单 <span>查看全部 <ChevronRight /></span></button></section></div> : page === "help" ? <section className="ota-help"><LifeBuoy /><p className="eyebrow">BOAN SUPPORT</p><h1>订单帮助</h1>{[["怎么取消订单？", "在“我的订单”中打开对应订单。酒店、体验项目和交通票据有各自的退款规则，金额会在确认前列出。"], ["电子票在哪里？", "盐场电子票保存在订单详情中；灯塔接驳的运营方凭证也已合并到订单详情。"], ["只退了一位乘车人的票，另一位会一起退吗？", "不会。每张车票独立处理；需要结束全部行程时，请确认所有乘车人的票均已退掉。"], ["退款什么时候到账？", "订单取消后，款项预计1—3个工作日原路退回。取消后仍可在“已取消”中查看记录。"]].map(([title, body]) => <details key={title}><summary>{title}</summary><p>{body}</p></details>)}</section> : order ? <main className="ota-detail">
       <Button variant="ghost" size="sm" onClick={() => setSelectedId(null)}><ArrowLeft />全部订单</Button>
       <div className="ota-detail-heading"><div><p className="eyebrow">订单详情 / {order.category}</p><h1>{order.title}</h1><p>{order.detail}</p></div><span className={`ota-state ${state.cancelled[order.id] ? "cancelled" : ""}`}>{state.cancelled[order.id] ? "已取消" : order.id === "return" && state.refundedPassengers.length ? "部分已退" : "预订成功"}</span></div>
       <div className="ota-detail-layout"><section className="ota-paper">
@@ -97,13 +85,13 @@ export function TravelPlatform({ state, onCancel, onDownloads }: { state: Chapte
         </section>}
         <h2>预订信息</h2><dl className="ota-fields"><div><dt>使用日期</dt><dd>{order.date}</dd></div><div><dt>订单编号</dt><dd>{order.number}</dd></div><div><dt>下单时间</dt><dd>{order.booked}</dd></div><div><dt>订单金额</dt><dd>¥{order.price.toLocaleString()}</dd></div><div><dt>联系人</dt><dd>周** · 138 **** 0726</dd></div></dl>
         {order.category === "酒店" && <><h2>入住信息</h2><dl className="ota-fields"><div><dt>入住人</dt><dd>周**、林**</dd></div><div><dt>房型</dt><dd>{order.detail.split(" · ")[0]}</dd></div><div><dt>特殊要求</dt><dd>尽量安排安静的房间，谢谢。</dd></div></dl></>}
-        {order.id === "lighthouse" && <div className="ota-file"><FileText /><div><strong>灯塔接驳电子票.pdf</strong><p>运营方电子票 · 已保存到本机</p></div><Button variant="outline" size="sm" onClick={onDownloads}><Download />打开下载</Button></div>}
+        {order.id === "lighthouse" && <section className="salt-ticket"><p className="eyebrow">SOUTH COAST SHUTTLE / 运营方凭证</p><h2>南岸灯塔接驳</h2><strong>8月27日 · 05:10</strong><p>老城游客中心 → 南岸灯塔 · 成人 × 2</p><dl className="ota-fields"><div><dt>票号</dt><dd>LT-0827-310{TICKET_SUFFIX}</dd></div><div><dt>核验尾号</dt><dd><strong>{TICKET_SUFFIX}</strong></dd></div></dl></section>}
         {order.id === "salt" && <><Button variant="outline" onClick={() => setTicketOpened((open) => !open)}><Ticket />{ticketOpened ? "收起电子票" : "打开电子票"}</Button>{ticketOpened && <div className="salt-ticket"><p className="eyebrow">OLD SALT WORKS / ADMISSION</p><h2>旧盐场手作体验</h2><strong>8月26日 · 16:00场</strong><p>成人 × 2 · 入场凭证 YC-0826-5116</p><dl className="ota-fields"><div><dt>预约状态</dt><dd>{state.cancelled.salt ? "已取消 · 票据失效" : "待使用"}</dd></div></dl><p>退款入口位于本票下方的“取消预约”。请在开场前2小时办理。</p></div>}</>}
         {order.id === "return" && <div className="passenger-tickets"><h2>乘车人车票</h2>{[["zhou", "周**", "06车08A"], ["lin", "林**", "06车08B"]].map(([id, name, seat]) => <label key={id} className={state.refundedPassengers.includes(id) ? "refunded" : ""}><Checkbox checked={passengers.includes(id)} disabled={state.refundedPassengers.includes(id)} onCheckedChange={(checked) => setPassengers((old) => checked ? [...old, id] : old.filter((value) => value !== id))} aria-label={`选择${name}的回程票`} /><span><strong>{name}</strong><small>{seat} · 二等座 · ¥218</small></span><b>{state.refundedPassengers.includes(id) ? "已退票" : "已出票"}</b></label>)}</div>}
       </section><aside className="ota-refund">
         {state.cancelled[order.id] ? <div className="refund-success" role="status"><CheckCircle2 /><h2>取消成功</h2><p>退款金额</p><strong>¥{order.price.toLocaleString()}</strong><p>款项将原路退回<br />预计1—3个工作日到账</p><small>原订单信息仍可查看</small><Button variant="outline" onClick={() => setSelectedId(null)}>返回全部订单</Button></div> : <><p className="eyebrow">取消与退款</p><h2>{order.id === "return" ? "选择需要退票的乘车人" : "当前可免费取消"}</h2><p>退款原路返回支付账户。</p>
           {order.id === "mountain" ? <><details onToggle={(event) => { if (event.currentTarget.open) setPolicyRead(true); }} className="refund-policy"><summary>查看退款规则</summary><p>8月26日12:00前：免费取消，全额退还¥768。之后取消：扣除首晚房费¥384。</p><p>本次操作将取消整笔双人住宿订单，不保留房间。</p></details>{policyRead && <label className="refund-agree"><Checkbox checked={policyAccepted} onCheckedChange={(value) => setPolicyAccepted(value === true)} />我已阅读退款规则</label>}</> : <p className="refund-rule">{order.id === "salt" ? "开场前2小时可免费取消。请从电子票确认预约信息。" : order.id === "return" ? "发车前48小时以上免收手续费，每张票单独退回。" : "8月26日12:00前，可免费取消整笔订单。"}</p>}
-          {order.id === "lighthouse" && <label className="ticket-input">电子票核验尾号<Input value={code} maxLength={4} inputMode="numeric" placeholder="4位数字" onChange={(event) => setCode(event.target.value)} aria-describedby={error ? "cancel-error" : undefined} /><small>请填写电子票上的核验尾号</small></label>}
+          {order.id === "lighthouse" && <label className="ticket-input">运营方凭证核验尾号<Input value={code} maxLength={4} inputMode="numeric" placeholder="4位数字" onChange={(event) => setCode(event.target.value)} aria-describedby={error ? "cancel-error" : undefined} /><small>请核对订单详情左侧的凭证</small></label>}
           {order.id === "return" && state.refundedPassengers.length > 0 && <p className="partial-refund" role="status">已退{state.refundedPassengers.length}张，仍有{2 - state.refundedPassengers.length}张有效车票。</p>}
           <div className="refund-amount"><span>本次可退</span><strong>¥{order.id === "return" ? passengers.filter((id) => !state.refundedPassengers.includes(id)).length * 218 : order.price.toLocaleString()}</strong></div>
           {error && <p id="cancel-error" className="refund-error" role="alert">{error}</p>}

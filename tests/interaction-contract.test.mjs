@@ -75,7 +75,7 @@ test("restoring the deleted image empties the trash and exposes that file in the
   const render = (kind, restoredPhoto) => renderToStaticMarkup(React.createElement(DesktopPanel, {
     kind, restoredPhoto, onRestorePhoto() {}, onClose() {}, onDownloads() {}, onPanelChange() {},
   }));
-  assert.match(render("trash", false), /恢复到旅行照片/);
+  assert.match(render("trash", false), /恢复到照片/);
   assert.match(render("trash", false), /IMG_4821_crop.jpg/);
   assert.doesNotMatch(render("photos", false), /IMG_4821_crop.jpg/);
   assert.match(render("photos", true), /IMG_4821_crop.jpg/);
@@ -126,7 +126,7 @@ test("the itinerary note uses only the requested copy and retains five checkboxe
   assert.equal((html.match(/class="is-checked"/g) ?? []).length, 1);
 });
 
-test("the shared itinerary PDF is absent from downloads and the file folder", async () => {
+test("the shared itinerary PDF and lighthouse ticket are absent from the file folder", async () => {
   const source = await readFile(path.join(root, "app/page.tsx"), "utf8");
   assert.doesNotMatch(source, /雾汀行程_共同版\.pdf|雾汀共同旅行计划|WUTING \/ OUR TRIP/);
   const { DesktopPanel } = await vite.ssrLoadModule("/app/desktop-evidence.tsx");
@@ -135,11 +135,10 @@ test("the shared itinerary PDF is absent from downloads and the file folder", as
   }));
   assert.doesNotMatch(html, /共同版|共同旅行/);
   assert.doesNotMatch(html, /订单与票据/);
-  assert.match(html, /灯塔接驳电子票\.pdf/);
-  const fileTable = html.match(/<div class="file-table">([\s\S]*?)<\/div>/)?.[1] ?? "";
-  assert.equal((fileTable.match(/<button\b/g) ?? []).length, 1);
+  assert.doesNotMatch(html, /灯塔接驳电子票\.pdf/);
+  assert.match(html, /文件夹为空/);
   const panelSource = await readFile(path.join(root, "app/desktop-evidence.tsx"), "utf8");
-  assert.match(panelSource, /onClick=\{\(\) => onDownloads\("灯塔接驳电子票\.pdf"\)\}/);
+  assert.doesNotMatch(panelSource, /灯塔接驳电子票\.pdf/);
 });
 
 test("sibling components never share a reconciliation key when navigating materials", async () => {
@@ -190,14 +189,12 @@ test("the search page has a labelled input and a submit button that rejects blan
   assert.match(source, /<TabsContent value="search"/);
 });
 
-test("the lighthouse ticket and dated forum reply expose the timeline without explaining it", async () => {
-  const { LighthouseTicket } = await vite.ssrLoadModule("/app/chapter-one.tsx");
+test("the inline lighthouse credential and dated forum reply expose the timeline without explaining it", async () => {
   const { ForumPage, LIGHTHOUSE_THREAD, FORUM_THREADS } = await vite.ssrLoadModule("/app/forum-page.tsx");
-  const ticket = renderToStaticMarkup(React.createElement(LighthouseTicket));
-  assert.match(ticket, /<dt>购票时间<\/dt><dd>8月18日 23:47<\/dd>/);
-  assert.match(ticket, /<dt>预订人<\/dt><dd>周惜<\/dd>/);
-  assert.match(ticket, /<dt>乘客<\/dt><dd>林知还、周惜<\/dd>/);
-  assert.match(ticket, /7642/);
+  const chapter = await readFile(path.join(root, "app/chapter-one.tsx"), "utf8");
+  assert.match(chapter, /SOUTH COAST SHUTTLE \/ 运营方凭证/);
+  assert.match(chapter, /LT-0827-310\{TICKET_SUFFIX\}/);
+  assert.doesNotMatch(chapter, /灯塔接驳电子票\.pdf|已下载到本机|打开下载/);
   const reply = FORUM_THREADS[LIGHTHOUSE_THREAD].replies.find((item) => item.author === "潮汐失眠");
   assert.equal(reply.date, "8月22日 21:14");
   assert.match(reply.text, /刚说服朋友陪我去了，两个人第一次来/);
@@ -205,7 +202,7 @@ test("the lighthouse ticket and dated forum reply expose the timeline without ex
     const html = renderToStaticMarkup(React.createElement(ForumPage, { unlocked, thread: LIGHTHOUSE_THREAD, setThread() {} }));
     assert.match(html, /<span>潮汐失眠<\/span><time>8月22日 21:14<\/time>/);
     assert.ok(html.includes(reply.text));
-    assert.doesNotMatch(html + ticket, /<mark\b|data-clue|提前购买|日期矛盾|你还没答应|这说明/);
+    assert.doesNotMatch(html + chapter, /<mark\b|data-clue|提前购买|日期矛盾|你还没答应|这说明/);
   }
 });
 
@@ -266,7 +263,7 @@ test("photos, trash, and files share the same retained draggable window position
     kind, position: { x: 118, y: 76 }, onPositionChange() {}, restoredPhoto: false,
     onRestorePhoto() {}, onClose() {}, onDownloads() {}, onPanelChange() {},
   }));
-  for (const [kind, title] of [["photos", "旅行照片"], ["trash", "回收站"], ["files", "雾汀旅行"]]) {
+  for (const [kind, title] of [["photos", "照片"], ["trash", "回收站"], ["files", "雾汀旅行"]]) {
     const html = render(kind);
     assert.match(html, /left:118px;top:76px;transform:none/);
     assert.ok(html.includes(`${title}窗口标题栏，可拖动或按方向键移动`));

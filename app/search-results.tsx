@@ -118,11 +118,6 @@ export function SearchResults({
   openBiography,
   openLuMemorial,
   openHospital,
-  openZhouMessage,
-  openFollowerRelay,
-  openFanaticArchive,
-  openAccidentDossier,
-  openIncidentIndex,
 }: {
   query: string;
   unlocked: boolean;
@@ -146,42 +141,10 @@ export function SearchResults({
   openBiography: () => void;
   openLuMemorial: () => void;
   openHospital: () => void;
-  openZhouMessage: () => void;
-  openFollowerRelay: () => void;
-  openFanaticArchive: () => void;
-  openAccidentDossier: () => void;
-  openIncidentIndex: () => void;
 }) {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const normalized = query.normalize("NFKC").replace(/\s+/g, "");
   const auctionForumSearch = normalized === "无面小像" || normalized === "无面木像" || normalized === "嘉闻无面小像" || normalized.toUpperCase() === "LOT21";
-  const hasQichaoName = normalized.includes("栖潮旧院") || normalized.includes("栖潮疗养院");
-  const hasBeiluReference = normalized.includes("北麓路17号") || normalized.includes("北麓康复中心");
-
-  if (normalized.toUpperCase() === "WX-0825") return <div className="mt-8 max-w-[860px]">
-    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openZhouMessage}><small className="text-[#78957e]">事故设备恢复记录 · 8月25日</small><h3 className="my-3 text-xl text-[#286ab3]">周惜与顾惟真｜通讯片段</h3><p className="text-xs text-[#8493a4]">本地缓存保留了事故前夜的一段对话，以及一次已经撤回的外部转发标记。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/messages/WX-0825</code></button>
-  </div>;
-
-  if (normalized.toUpperCase() === "GZ-825-17") return <div className="mt-8 max-w-[860px]">
-    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openFollowerRelay}><small className="text-[#78957e]">消息中继归档 · 已撤回</small><h3 className="my-3 text-xl text-[#286ab3]">GZ-825-17 转发回执</h3><p className="text-xs text-[#8493a4]">记录保留了转发账号、接收群和三条群内回应。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/relay/GZ-825-17</code></button>
-  </div>;
-
-  if (["近身见证", "归岸者", "守潮人-17", "守潮人17"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
-    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openFanaticArchive}><small className="text-[#78957e]">归岸者旧站 · 搜索引擎镜像</small><h3 className="my-3 text-xl text-[#286ab3]">先生见证存档</h3><p className="text-xs text-[#8493a4]">部分成员把顾惟真称作“大罗无相尊”，旧站还保留了一条事故当天删除的帖子。</p><code className="mt-2 block text-[10px] text-[#718c76]">guichao.example/archive/returners</code></button>
-  </div>;
-
-  if (["LC7M21", "LC-7M21", "LC·7M21", "7M21"].includes(normalized.toUpperCase())) return <div className="mt-8 max-w-[860px]">
-    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openAccidentDossier}><small className="text-[#78957e]">雾汀交通事故补充影像目录</small><h3 className="my-3 text-xl text-[#286ab3]">沿海路口事故车辆核验｜LC·7M21</h3><p className="text-xs text-[#8493a4]">四段公共摄像头记录显示，该车从北麓路17号驶出后持续跟随周惜。</p><code className="mt-2 block text-[10px] text-[#718c76]">wuting-traffic.example/case/LC-7M21</code></button>
-  </div>;
-
-  if (["M-0826", "M0826"].includes(normalized.toUpperCase())) return <div className="mt-8 max-w-[860px]">
-    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openIncidentIndex}><small className="text-[#78957e]">限制访问 · 事件关联工具</small><h3 className="my-3 text-xl text-[#286ab3]">M-0826 事件交叉核验</h3><p className="text-xs text-[#8493a4]">需要四份独立记录中的原始名称和编号。</p><code className="mt-2 block text-[10px] text-[#718c76]">anshi-office.example/archive/incident-cross-M0826</code></button>
-  </div>;
 
   if (normalized.toUpperCase() === "R-06-4") return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
@@ -247,25 +210,20 @@ export function SearchResults({
     <button className="search-result" onClick={openBuddhistSale}><small className="text-[#78957e]">海州嘉闻拍卖 · 2017春拍成交图录</small><h3 className="my-3 text-xl text-[#286ab3]">澜序旧藏·佛教艺术</h3><p className="text-xs text-[#8493a4]">顾惟真委托的佛教艺术专场，共31件拍品，全部成交。</p><code className="mt-2 block text-[10px] text-[#718c76]">jiawen-auction.example/catalog/2017-spring/lanxu-buddhist-art</code></button>
   </div>;
 
-  if (hasQichaoName && hasBeiluReference) return <div className="mt-8 max-w-[860px]">
-    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openBeiluAddress}><small className="text-[#78957e]">临川地方建筑档案 · 旧址沿革</small><h3 className="my-3 text-xl text-[#286ab3]">北麓疗养院旧址｜北麓路17号</h3><p className="text-xs text-[#8493a4]">两条检索信息指向同一片院落：东院现为康复中心，西院曾用于办公与资料保管。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/places/beilu-17</code></button>
+  if (normalized === "北麓路17号") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">2 条相关结果</p>
+    <button className="search-result" onClick={openRehabCenter}><small className="text-[#78957e]">beilu-care.example · 现用机构</small><h3 className="my-3 text-xl text-[#286ab3]">临川北麓康复中心｜北麓路17号东院</h3><p className="text-xs text-[#8493a4]">院外短住、康复衔接与家属支持。</p></button>
+    <button className="search-result" onClick={openBeiluAddress}><small className="text-[#78957e]">临川地方建筑档案 · 地址沿革</small><h3 className="my-3 text-xl text-[#286ab3]">北麓路17号为什么分东西两院？</h3><p className="text-xs text-[#8493a4]">旧址由两片院落组成，西院的旧称和停办后的用途仍保留在地方档案里。</p></button>
   </div>;
 
-  if (["临川异地就医陪护短住", "临川北麓康复中心", "北麓康复中心", "北麓路17号", "北麓路17号东院"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
+  if (["临川异地就医陪护短住", "临川北麓康复中心", "北麓康复中心", "北麓路17号东院"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openRehabCenter}><small className="text-[#78957e]">beilu-care.example · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">临川北麓康复中心｜异地就医与家属支持</h3><p className="text-xs text-[#8493a4]">提供院外短住、康复衔接、照护者喘息与医疗资源转介。</p><code className="mt-2 block text-[10px] text-[#718c76]">beilu-care.example/about</code></button>
   </div>;
 
-  if (normalized === "栖潮疗养院") return <div className="mt-8 max-w-[860px]">
+  if (["栖潮疗养院", "栖潮旧院", "北麓路17号西院"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openBeiluAddress}><small className="text-[#78957e]">临川地方建筑档案 · 旧址沿革</small><h3 className="my-3 text-xl text-[#286ab3]">北麓疗养院旧址｜北麓路17号</h3><p className="text-xs text-[#8493a4]">旧址曾增挂“栖潮疗养院”院名，附近居民至今仍称其为“栖潮旧院”。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/places/beilu-17</code></button>
-  </div>;
-
-  if (normalized === "栖潮旧院") return <div className="grid min-h-[330px] place-content-center justify-items-center gap-3 text-center text-[#87959b]">
-    <FileSearch className="size-8 stroke-[1.3]" aria-hidden="true" />
-    <p className="m-0 text-[13px] text-[#5c6d74]">“栖潮旧院”是地方俗称，暂时无法定位唯一地点</p>
-    <span className="max-w-[440px] text-[11px] leading-7">可以补充门牌地址或现用机构名称后再次搜索。</span>
   </div>;
 
   if (isActivitySearch(query)) return <div className="mt-8"><button className="search-result" onClick={openActivity}><small className="text-[#78957e]">anshi.example/activities · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">安时活动服务 · 雾汀生命关怀</h3><p className="text-xs text-[#8493a4]">线下交流、活动介绍与预约咨询。</p></button></div>;

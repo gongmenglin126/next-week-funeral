@@ -8,7 +8,7 @@ export type PrivatePhoto = {
   note: string;
   alt: string;
   marked: boolean;
-  markPosition?: "cafe" | "promenade";
+  markPosition?: "bookshop" | "bus-stop";
 };
 
 export const PRIVATE_PHOTOS: readonly PrivatePhoto[] = [
@@ -17,8 +17,8 @@ export const PRIVATE_PHOTOS: readonly PrivatePhoto[] = [
     src: "./game/lin-private-cafe.webp",
     width: 1448,
     height: 1086,
-    time: "8月23日 16:12",
-    location: "雾汀旧港咖啡店",
+    time: "7月12日 16:12",
+    location: "临川南街咖啡店",
     note: "她怕冷，却还是把靠窗的位置让给我。",
     alt: "林知还坐在雨天的海边咖啡店窗前，望向镜头微笑",
     marked: false,
@@ -28,35 +28,35 @@ export const PRIVATE_PHOTOS: readonly PrivatePhoto[] = [
     src: "./game/lin-private-promenade.webp",
     width: 1448,
     height: 1086,
-    time: "8月24日 18:27",
-    location: "雾汀沿海步道",
+    time: "8月6日 18:27",
+    location: "临川江堤",
     note: "回头。",
     alt: "林知还走在雨后的沿海步道上，回头看向镜头",
     marked: false,
   },
   {
-    id: "IMG_2148_edit.jpg",
-    src: "./game/lin-private-cafe.webp",
+    id: "IMG_2387_edit.jpg",
+    src: "./game/lin-private-bookshop.webp",
     width: 1448,
     height: 1086,
-    time: "8月25日 00:41",
-    location: "编辑副本",
-    note: "别再这样看我。",
-    alt: "同一张咖啡店照片，林知还的脸被红色记号划去",
+    time: "8月21日 23:49",
+    location: "在相簿中编辑",
+    note: "为什么偏偏是你。",
+    alt: "书店咖啡馆里，林知还的脸被密集的红色记号反复划去",
     marked: true,
-    markPosition: "cafe",
+    markPosition: "bookshop",
   },
   {
-    id: "IMG_2191_edit.jpg",
-    src: "./game/lin-private-promenade.webp",
+    id: "IMG_2401_edit.jpg",
+    src: "./game/lin-private-bus-stop.webp",
     width: 1448,
     height: 1086,
-    time: "8月25日 00:43",
-    location: "编辑副本",
-    note: "你明明说不会走，却从来没有选过我。",
-    alt: "同一张沿海步道照片，林知还的脸被红色记号划去",
+    time: "8月22日 00:06",
+    location: "在相簿中编辑",
+    note: "最亲近的人，才算数。",
+    alt: "雨后的公交站里，林知还的脸被密集的红色记号反复划去",
     marked: true,
-    markPosition: "promenade",
+    markPosition: "bus-stop",
   },
 ] as const;
 

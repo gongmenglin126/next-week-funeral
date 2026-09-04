@@ -1,6 +1,4 @@
-import { ArrowLeft, ArrowUpRight, Download, FileSearch, Globe2, History } from "lucide-react";
-
-import { LighthouseTicket } from "./chapter-one";
+import { ArrowUpRight, Download, Globe2, History } from "lucide-react";
 import { LIGHTHOUSE_THREAD } from "./forum-page";
 
 export function HistoryPage({ navigate, unlocked }: { navigate: (action: string, query: string) => void; unlocked: boolean }) {
@@ -45,25 +43,11 @@ export function HistoryPage({ navigate, unlocked }: { navigate: (action: string,
   );
 }
 
-export function DownloadsPage({ preview, setPreview }: { preview: string | null; setPreview: (name: string | null) => void }) {
-  if (preview === "灯塔接驳电子票.pdf") {
-    return (
-      <div className="document-preview">
-        <header><button onClick={() => setPreview(null)}><ArrowLeft />返回下载内容</button><span>{preview}</span></header>
-        <LighthouseTicket />
-      </div>
-    );
-  }
-
+export function DownloadsPage() {
   return (
     <div className="browser-record-page">
       <header><Download /><div><h2>下载内容</h2><p>最近下载的文件</p></div></header>
-      <section>
-        <h3>本周</h3>
-        <button onClick={() => setPreview("灯塔接驳电子票.pdf")}>
-          <time>8月18日</time><FileSearch /><span><strong>灯塔接驳电子票.pdf</strong><small>186 KB · 下载完成</small></span><ArrowUpRight aria-hidden="true" />
-        </button>
-      </section>
+      <p className="evidence-empty">暂无下载记录。</p>
     </div>
   );
 }

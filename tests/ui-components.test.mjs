@@ -24,7 +24,7 @@ after(async () => {
 test("the travel account renders exactly five visible bookings, not the secret shuttle", async () => {
   const { TravelPlatform } = await vite.ssrLoadModule("/app/chapter-one.tsx");
   const { initialChapterState, chapterReducer, BOOKING_IDS, TICKET_SUFFIX } = await vite.ssrLoadModule("/lib/chapter-one.ts");
-  const render = (state) => renderToStaticMarkup(React.createElement(TravelPlatform, { state, onCancel() {}, onDownloads() {} }));
+  const render = (state) => renderToStaticMarkup(React.createElement(TravelPlatform, { state, onCancel() {} }));
   const initial = render(initialChapterState());
   assert.equal((initial.match(/class="ota-order-card"/g) ?? []).length, 5);
   assert.match(initial, /我的订单/);
@@ -34,16 +34,21 @@ test("the travel account renders exactly five visible bookings, not the secret s
   assert.equal((render(finished).match(/class="ota-state cancelled"/g) ?? []).length, 5);
 });
 
-test("notes and downloaded ticket expose the intended non-search starting clues", async () => {
-  const { NotesPanel, LighthouseTicket } = await vite.ssrLoadModule("/app/chapter-one.tsx");
+test("notes keep the starting clue and downloads no longer expose the lighthouse ticket", async () => {
+  const { NotesPanel } = await vite.ssrLoadModule("/app/chapter-one.tsx");
+  const { DownloadsPage } = await vite.ssrLoadModule("/app/browser-record-pages.tsx");
   const { TICKET_SUFFIX } = await vite.ssrLoadModule("/lib/chapter-one.ts");
   const notes = renderToStaticMarkup(React.createElement(NotesPanel, { checked: [], onCheck() {}, onClose() {} }));
   assert.match(notes, /泊岸旅行/);
   assert.equal((notes.match(/role="checkbox"/g) ?? []).length, 5);
   assert.doesNotMatch(notes, /安时|葬礼|一滴泪/);
-  const ticket = renderToStaticMarkup(React.createElement(LighthouseTicket));
-  assert.match(ticket, new RegExp(TICKET_SUFFIX));
-  assert.match(ticket, /8月18日 23:47/);
+  const downloads = renderToStaticMarkup(React.createElement(DownloadsPage));
+  assert.match(downloads, /暂无下载记录/);
+  assert.doesNotMatch(downloads, /灯塔接驳电子票/);
+  const chapter = await readFile(path.join(root, "app/chapter-one.tsx"), "utf8");
+  assert.match(chapter, /TICKET_SUFFIX/);
+  assert.equal(TICKET_SUFFIX, "7642");
+  assert.match(chapter, /运营方凭证/);
 });
 
 test("closing a browser tab removes its history and selects the nearest previous page", async () => {

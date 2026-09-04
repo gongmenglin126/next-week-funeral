@@ -2,7 +2,7 @@
 
 import { ArrowUpRight, Building2, FileText, Stethoscope } from "lucide-react";
 
-export function BeiluRehabilitationPage({ onOpenReview }: { onOpenReview: () => void }) {
+export function BeiluRehabilitationPage({ onOpenReview, onOpenArchive }: { onOpenReview: () => void; onOpenArchive: () => void }) {
   return <article className="min-h-full bg-[#eef4f6] text-[#22323a]">
     <header className="border-b border-[#c5d3d9] bg-white">
       <div className="mx-auto flex max-w-[980px] items-center justify-between gap-6 px-7 py-7 md:px-12">
@@ -27,7 +27,7 @@ export function BeiluRehabilitationPage({ onOpenReview }: { onOpenReview: () => 
         <button className="mt-6 inline-flex shrink-0 items-center gap-2 border border-[#50798a] px-5 py-3 text-[13px] font-semibold text-[#315f72] hover:bg-[#e8f0f3] md:mt-0" onClick={onOpenReview}>查看项目回顾 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
       </section>
 
-      <footer className="mt-12 border-t border-[#c2d0d5] pt-5 text-[11px] text-[#82949a]">地址：临川市北麓路17号东院 · 预约来访请提前登记</footer>
+      <footer className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[#c2d0d5] pt-5 text-[11px] text-[#82949a]"><span>地址：临川市北麓路17号东院 · 预约来访请提前登记</span><button className="inline-flex items-center gap-2 text-[12px] font-semibold text-[#486f7f] underline underline-offset-4" onClick={onOpenArchive}>为什么地址写“东院”？查看院区沿革 <ArrowUpRight aria-hidden="true" className="size-3" /></button></footer>
     </main>
   </article>;
 }
@@ -69,7 +69,7 @@ export function LinchaoAidReviewPage() {
   </article>;
 }
 
-export function BeiluPlaceArchivePage({ onOpenCentre }: { onOpenCentre: () => void }) {
+export function BeiluPlaceArchivePage({ onOpenCentre, onOpenSelection }: { onOpenCentre: () => void; onOpenSelection: () => void }) {
   return <article className="min-h-full bg-[#f1eee7] px-5 py-10 text-[#302f2a] md:px-10 md:py-14">
     <div className="mx-auto max-w-[900px] border border-[#c1bcae] bg-[#faf8f2] shadow-[0_16px_40px_rgba(58,52,39,.1)]">
       <header className="flex flex-wrap items-center justify-between gap-5 border-b border-[#bcb6a8] bg-[#4b5550] px-7 py-6 text-white md:px-10"><div className="flex items-center gap-4"><Building2 aria-hidden="true" className="size-7 text-[#cad4cc]" /><div><strong className="text-[16px] tracking-[.14em]">临川地方建筑档案</strong><p className="mt-1 text-[10px] text-white/55">旧址沿革 · BL-17</p></div></div><span className="text-[11px] text-white/60">北麓路17号</span></header>
@@ -89,7 +89,8 @@ export function BeiluPlaceArchivePage({ onOpenCentre }: { onOpenCentre: () => vo
 
         <aside className="mt-6 border border-[#c7c0b2] bg-[#eee9df] px-5 py-4 text-[12px] leading-7 text-[#716b60]">
           <strong className="text-[#55564e]">数字化移交附记</strong>
-          <p className="mt-1">2019年西院资料移交时，一份援助项目工作材料未随建筑档案公开，仅保留索引号 <code className="font-semibold text-[#3f5148]">QC-AID-19</code>。</p>
+          <p className="mt-1">2019年西院资料移交时，一份援助项目工作材料未随建筑档案公开。索引页仍保留了可读取的扫描副本。</p>
+          <button className="mt-3 inline-flex items-center gap-2 font-semibold text-[#3f5148] underline underline-offset-4" onClick={onOpenSelection}>打开援助项目工作批注 <ArrowUpRight aria-hidden="true" className="size-3" /></button>
         </aside>
 
         <button className="mt-8 inline-flex items-center gap-2 border border-[#596b62] px-5 py-3 text-[13px] font-semibold text-[#45594f] hover:bg-[#e8ece8]" onClick={onOpenCentre}>查看东院现用机构 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
@@ -98,7 +99,7 @@ export function BeiluPlaceArchivePage({ onOpenCentre }: { onOpenCentre: () => vo
   </article>;
 }
 
-export function BeiluSelectionMemoPage() {
+export function BeiluSelectionMemoPage({ onOpenRevision }: { onOpenRevision: () => void }) {
   return <article className="min-h-full bg-[#d8d1c2] px-5 py-9 text-[#29251d] md:px-10 md:py-14">
     <div className="mx-auto max-w-[860px] rotate-[-.12deg] border border-[#958c79] bg-[#f7f1e4] px-7 py-8 shadow-[0_18px_50px_rgba(53,43,27,.18)] md:px-12 md:py-11">
       <header className="flex flex-wrap items-start justify-between gap-5 border-b-2 border-[#3c372d] pb-5"><div><p className="text-[11px] tracking-[.16em] text-[#776f60]">会前材料 / 工作批注</p><h1 className="mt-3 font-serif text-[34px] font-normal">QC-AID-19 项目筛选与公开回访</h1></div><span className="border-2 border-[#8e2f28] px-3 py-1 text-[12px] font-bold tracking-[.18em] text-[#8e2f28]">内部</span></header>
@@ -114,7 +115,8 @@ export function BeiluSelectionMemoPage() {
         <p className="mt-8 text-[13px] leading-7 text-[#665d4f]">这份材料不否认援助确实发生；它只规定哪些人先得到稀缺资源、哪些结果会被外界看见，以及哪些称呼可以在官方否认之外继续流传。</p>
         <section className="mt-8 border border-[#a39986] bg-[#f0e8d9] px-5 py-4 text-[13px] leading-7 text-[#615849]">
           <p className="text-[11px] font-semibold tracking-[.13em] text-[#807664]">关联抽查样本</p>
-          <p className="mt-2">第六期公开回访的记录校对样本另存，索引号：<code className="font-semibold text-[#493f33]">R-06-4</code>。</p>
+          <p className="mt-2">第六期公开回访曾被内部抽查，缓存里保留了公开前后的字段差异。</p>
+          <button className="mt-3 inline-flex items-center gap-2 font-semibold text-[#493f33] underline underline-offset-4" onClick={onOpenRevision}>查看第六期记录校对样本 <ArrowUpRight aria-hidden="true" className="size-3" /></button>
         </section>
       </main>
 
