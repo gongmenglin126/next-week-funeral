@@ -118,6 +118,11 @@ export function SearchResults({
   openBiography,
   openLuMemorial,
   openHospital,
+  openZhouMessage,
+  openFollowerRelay,
+  openFanaticArchive,
+  openAccidentDossier,
+  openIncidentIndex,
 }: {
   query: string;
   unlocked: boolean;
@@ -141,12 +146,42 @@ export function SearchResults({
   openBiography: () => void;
   openLuMemorial: () => void;
   openHospital: () => void;
+  openZhouMessage: () => void;
+  openFollowerRelay: () => void;
+  openFanaticArchive: () => void;
+  openAccidentDossier: () => void;
+  openIncidentIndex: () => void;
 }) {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const normalized = query.normalize("NFKC").replace(/\s+/g, "");
   const auctionForumSearch = normalized === "无面小像" || normalized === "无面木像" || normalized === "嘉闻无面小像" || normalized.toUpperCase() === "LOT21";
   const hasQichaoName = normalized.includes("栖潮旧院") || normalized.includes("栖潮疗养院");
   const hasBeiluReference = normalized.includes("北麓路17号") || normalized.includes("北麓康复中心");
+
+  if (normalized.toUpperCase() === "WX-0825") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openZhouMessage}><small className="text-[#78957e]">事故设备恢复记录 · 8月25日</small><h3 className="my-3 text-xl text-[#286ab3]">周惜与顾惟真｜通讯片段</h3><p className="text-xs text-[#8493a4]">本地缓存保留了事故前夜的一段对话，以及一次已经撤回的外部转发标记。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/messages/WX-0825</code></button>
+  </div>;
+
+  if (normalized.toUpperCase() === "GZ-825-17") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openFollowerRelay}><small className="text-[#78957e]">消息中继归档 · 已撤回</small><h3 className="my-3 text-xl text-[#286ab3]">GZ-825-17 转发回执</h3><p className="text-xs text-[#8493a4]">记录保留了转发账号、接收群和三条群内回应。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/relay/GZ-825-17</code></button>
+  </div>;
+
+  if (["近身见证", "归岸者", "守潮人-17", "守潮人17"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openFanaticArchive}><small className="text-[#78957e]">归岸者旧站 · 搜索引擎镜像</small><h3 className="my-3 text-xl text-[#286ab3]">先生见证存档</h3><p className="text-xs text-[#8493a4]">部分成员把顾惟真称作“大罗无相尊”，旧站还保留了一条事故当天删除的帖子。</p><code className="mt-2 block text-[10px] text-[#718c76]">guichao.example/archive/returners</code></button>
+  </div>;
+
+  if (["LC7M21", "LC-7M21", "LC·7M21", "7M21"].includes(normalized.toUpperCase())) return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openAccidentDossier}><small className="text-[#78957e]">雾汀交通事故补充影像目录</small><h3 className="my-3 text-xl text-[#286ab3]">沿海路口事故车辆核验｜LC·7M21</h3><p className="text-xs text-[#8493a4]">四段公共摄像头记录显示，该车从北麓路17号驶出后持续跟随周惜。</p><code className="mt-2 block text-[10px] text-[#718c76]">wuting-traffic.example/case/LC-7M21</code></button>
+  </div>;
+
+  if (["M-0826", "M0826"].includes(normalized.toUpperCase())) return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openIncidentIndex}><small className="text-[#78957e]">限制访问 · 事件关联工具</small><h3 className="my-3 text-xl text-[#286ab3]">M-0826 事件交叉核验</h3><p className="text-xs text-[#8493a4]">需要四份独立记录中的原始名称和编号。</p><code className="mt-2 block text-[10px] text-[#718c76]">anshi-office.example/archive/incident-cross-M0826</code></button>
+  </div>;
 
   if (normalized.toUpperCase() === "R-06-4") return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>

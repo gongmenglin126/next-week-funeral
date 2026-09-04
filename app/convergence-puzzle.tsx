@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { Check, FileSearch, LockKeyhole } from "lucide-react";
+import { ArrowUpRight, Check, FileSearch, LockKeyhole } from "lucide-react";
 
 import { CROSS_INDEX_FIELDS, isCrossIndexAnswerCorrect, type CrossIndexField } from "@/lib/convergence-puzzle";
 
@@ -16,7 +16,7 @@ const CONVERGENCE_ROWS = [
   ["第六期", "程叙白讣告 / R-06-4", "参与者死后仍由原账号继续叙述，失败因此不会出现在公开记录里。"],
 ] as const;
 
-export function ConvergencePuzzlePage({ unlocked, onUnlock }: { unlocked: boolean; onUnlock: () => void }) {
+export function ConvergencePuzzlePage({ unlocked, onUnlock, onOpenMessage }: { unlocked: boolean; onUnlock: () => void; onOpenMessage: () => void }) {
   const [values, setValues] = useState<CrossIndexValues>(EMPTY_VALUES);
   const [errors, setErrors] = useState<Partial<Record<CrossIndexField, string>>>({});
 
@@ -70,13 +70,13 @@ export function ConvergencePuzzlePage({ unlocked, onUnlock }: { unlocked: boolea
             </button>
             {Object.keys(errors).length > 0 ? <p className="mt-3 text-[13px] text-[#e0a29b]" role="alert">有些答案还对不上。四项都能在已经出现的网页中原样找到。</p> : null}
           </div>
-        </form> : <CrossIndexResult />}
+        </form> : <CrossIndexResult onOpenMessage={onOpenMessage} />}
       </main>
     </div>
   </article>;
 }
 
-function CrossIndexResult() {
+function CrossIndexResult({ onOpenMessage }: { onOpenMessage: () => void }) {
   return <section className="mt-10" aria-live="polite">
     <div className="flex items-center gap-3 border border-[#6f8c7a] bg-[#1c2b24] px-5 py-4 text-[14px] text-[#cfe1d5]"><Check aria-hidden="true" className="size-5" /><strong>交叉检索完成：找到1组连续记录</strong></div>
 
@@ -117,7 +117,8 @@ function CrossIndexResult() {
           <li><strong>8月23日 00:14</strong>　申请者打开确认页，填写关系人姓名并完成二次确认。</li>
         </ol>
       </section>
-      <footer className="mt-8 border-t border-[#c9c0ae] pt-5 text-[12px] leading-6 text-[#766d5e]">记录只证明周惜曾经确认把林知还带进第七期；“未撤销”是系统截至事故后的状态，不能单独证明她最后没有反悔。</footer>
+      <footer className="mt-8 border-t border-[#c9c0ae] pt-5 text-[12px] leading-6 text-[#766d5e]">记录证明周惜曾经确认把林知还带进第七期。“未撤销”只说明系统状态；她后来为什么突然转向，以及谁在事故前收到她手里的材料，仍需从事故设备恢复记录继续核验。</footer>
+      <button className="mt-6 inline-flex items-center gap-2 border border-[#736957] px-4 py-2 text-[13px] font-semibold" onClick={onOpenMessage}>查看恢复的通讯片段 WX-0825 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
     </article>
   </section>;
 }

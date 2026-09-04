@@ -36,6 +36,7 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
     if (url.hostname === "guichao.example") {
       if (["/", "/home"].includes(path)) return { tab: "activity", query: "community" };
       if (path === "/records/session-06") return { tab: "activity", query: "witness" };
+      if (path === "/archive/returners") return { tab: "fanatic-archive", query: "" };
       return missing;
     }
     if (url.hostname === "anshi-foundation.example" && path === "/about") return { tab: "activity", query: "foundation" };
@@ -64,6 +65,10 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
     if (url.hostname === "anshi-office.example" && path === "/rules/S-17") return { tab: "continuity-rule", query: "" };
     if (url.hostname === "anshi-office.example" && path === "/minutes/2019-04-17") return { tab: "founder-briefing", query: "" };
     if (url.hostname === "anshi-office.example" && path === "/archive/cross-index-A00") return { tab: "convergence-index", query: "" };
+    if (url.hostname === "wusou-cache.example" && path === "/messages/WX-0825") return { tab: "zhou-gu-message", query: "" };
+    if (url.hostname === "wusou-cache.example" && path === "/relay/GZ-825-17") return { tab: "follower-relay", query: "" };
+    if (url.hostname === "wuting-traffic.example" && path === "/case/LC-7M21") return { tab: "accident-dossier", query: "" };
+    if (url.hostname === "anshi-office.example" && path === "/archive/incident-cross-M0826") return { tab: "incident-index", query: "" };
     return missing;
   } catch {
     return missing;
