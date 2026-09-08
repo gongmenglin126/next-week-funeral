@@ -19,6 +19,7 @@ test("the record revision stays out of the seventh archive and appears only thro
   assert.match(selectionMemo, /关联抽查样本[\s\S]*查看第六期记录校对样本/);
   assert.doesNotMatch(placeArchive + selectionMemo, /输入|搜索编号/);
   assert.doesNotMatch(selectionMemo, /onOpenMinutes|查看同批说明会纪要/);
+  assert.doesNotMatch(selectionMemo, /大罗无相尊/);
 });
 
 test("the late record chain cannot skip from the selection memo to the briefing", async () => {
@@ -29,6 +30,7 @@ test("the late record chain cannot skip from the selection memo to the briefing"
   const internalPages = await readFile(path.join(root, "app/anshi-internal-pages.tsx"), "utf8");
   assert.match(internalPages, /R-06-4 公开记录修订单[\s\S]*查看引用规则：S-17/);
   assert.match(internalPages, /S-17[\s\S]*查看附件：项目说明会纪要/);
+  assert.doesNotMatch(internalPages, /大罗无相尊/);
 });
 
 test("public Beilu browsing reaches the old archive through a natural address link", async () => {

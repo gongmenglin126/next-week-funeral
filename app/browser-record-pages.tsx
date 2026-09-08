@@ -1,4 +1,4 @@
-import { ArrowUpRight, Download, Globe2, History } from "lucide-react";
+import { ArrowUpRight, Download, FileText, Globe2, History, MessageSquareText } from "lucide-react";
 import { LIGHTHOUSE_THREAD } from "./forum-page";
 
 export function HistoryPage({ navigate, unlocked }: { navigate: (action: string, query: string) => void; unlocked: boolean }) {
@@ -43,11 +43,24 @@ export function HistoryPage({ navigate, unlocked }: { navigate: (action: string,
   );
 }
 
-export function DownloadsPage() {
+export function DownloadsPage({ accountArchiveAvailable, messageCacheAvailable, onOpenApplication, onOpenMessage }: {
+  accountArchiveAvailable: boolean;
+  messageCacheAvailable: boolean;
+  onOpenApplication: () => void;
+  onOpenMessage: () => void;
+}) {
   return (
     <div className="browser-record-page">
-      <header><Download /><div><h2>下载内容</h2><p>最近下载的文件</p></div></header>
-      <p className="evidence-empty">暂无下载记录。</p>
+      <header><Download /><div><h2>下载内容</h2><p>本机文件与恢复项目</p></div></header>
+      {!accountArchiveAvailable ? <p className="evidence-empty">暂无下载记录。</p> : <section>
+        <h3>今天 · 设备恢复</h3>
+        <button onClick={onOpenApplication}>
+          <time>11:09</time><FileText /><span><strong>潮汐失眠_账户数据导出.html</strong><small>从本机网页数据中恢复 · 申请记录 1 项</small></span><ArrowUpRight aria-hidden="true" />
+        </button>
+        {messageCacheAvailable ? <button onClick={onOpenMessage}>
+          <time>11:11</time><MessageSquareText /><span><strong>事故前消息缓存.html</strong><small>从同一账户导出中恢复 · 最后同步于8月25日00:29</small></span><ArrowUpRight aria-hidden="true" />
+        </button> : null}
+      </section>}
     </div>
   );
 }

@@ -17,6 +17,8 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
   const value = input.trim();
   if (!value) return null;
   if (value === "browser://downloads") return { tab: "downloads", query: "" };
+  if (value === "browser://downloads/recovered/account-export") return { tab: "seventh-application", query: "" };
+  if (value === "browser://downloads/recovered/message-cache") return { tab: "zhou-gu-message", query: "" };
   if (value === "browser://history") return { tab: "history", query: "" };
   const looksLikeUrl = /^[a-z][a-z\d+.-]*:\/\//i.test(value) || /^[a-z\d-]+(?:\.[a-z\d-]+)+(?:[/:?#].*)?$/i.test(value);
   if (!looksLikeUrl) return { tab: "search", query: value };
@@ -64,11 +66,9 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
     if (url.hostname === "wusou-cache.example" && path === "/snapshot/QC-AID-19") return { tab: "aid-selection", query: "" };
     if (url.hostname === "anshi-office.example" && path === "/rules/S-17") return { tab: "continuity-rule", query: "" };
     if (url.hostname === "anshi-office.example" && path === "/minutes/2019-04-17") return { tab: "founder-briefing", query: "" };
-    if (url.hostname === "anshi-office.example" && path === "/archive/cross-index-A00") return { tab: "convergence-index", query: "" };
     if (url.hostname === "wusou-cache.example" && path === "/messages/WX-0825") return { tab: "zhou-gu-message", query: "" };
-    if (url.hostname === "wusou-cache.example" && path === "/relay/GZ-825-17") return { tab: "follower-relay", query: "" };
+    if (url.hostname === "wusou-cache.example" && ["/relay/GZ-825-17", "/relay/near-witness"].includes(path)) return { tab: "follower-relay", query: "" };
     if (url.hostname === "wuting-traffic.example" && path === "/case/LC-7M21") return { tab: "accident-dossier", query: "" };
-    if (url.hostname === "anshi-office.example" && path === "/archive/incident-cross-M0826") return { tab: "incident-index", query: "" };
     return missing;
   } catch {
     return missing;

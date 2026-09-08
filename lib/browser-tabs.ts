@@ -27,12 +27,11 @@ export const BROWSER_URLS: Record<string, string> = {
   "record-revision": "wusou-cache.example/snapshot/R-06-4",
   "continuity-rule": "anshi-office.example/rules/S-17",
   "founder-briefing": "anshi-office.example/minutes/2019-04-17",
-  "convergence-index": "anshi-office.example/archive/cross-index-A00",
-  "zhou-gu-message": "wusou-cache.example/messages/WX-0825",
-  "follower-relay": "wusou-cache.example/relay/GZ-825-17",
+  "seventh-application": "browser://downloads/recovered/account-export",
+  "zhou-gu-message": "browser://downloads/recovered/message-cache",
+  "follower-relay": "wusou-cache.example/relay/near-witness",
   "fanatic-archive": "guichao.example/archive/returners",
   "accident-dossier": "wuting-traffic.example/case/LC-7M21",
-  "incident-index": "anshi-office.example/archive/incident-cross-M0826",
 };
 
 export const BROWSER_LABELS: Record<string, string> = {
@@ -63,12 +62,11 @@ export const BROWSER_LABELS: Record<string, string> = {
   "record-revision": "记录校对",
   "continuity-rule": "内部规则",
   "founder-briefing": "说明会纪要",
-  "convergence-index": "交叉索引",
+  "seventh-application": "申请记录",
   "zhou-gu-message": "恢复通讯",
   "follower-relay": "转发回执",
   "fanatic-archive": "归岸者存档",
   "accident-dossier": "事故影像",
-  "incident-index": "事件核验",
   "not-found": "页面未找到",
 };
 
@@ -97,12 +95,11 @@ const OPTIONAL_TABS = [
   "record-revision",
   "continuity-rule",
   "founder-briefing",
-  "convergence-index",
+  "seventh-application",
   "zhou-gu-message",
   "follower-relay",
   "fanatic-archive",
   "accident-dossier",
-  "incident-index",
   "not-found",
 ];
 

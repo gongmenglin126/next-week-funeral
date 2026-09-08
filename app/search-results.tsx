@@ -118,6 +118,9 @@ export function SearchResults({
   openBiography,
   openLuMemorial,
   openHospital,
+  openFollowerRelay,
+  openFanaticArchive,
+  openAccidentDossier,
 }: {
   query: string;
   unlocked: boolean;
@@ -141,6 +144,9 @@ export function SearchResults({
   openBiography: () => void;
   openLuMemorial: () => void;
   openHospital: () => void;
+  openFollowerRelay: () => void;
+  openFanaticArchive: () => void;
+  openAccidentDossier: () => void;
 }) {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const normalized = query.normalize("NFKC").replace(/\s+/g, "");
@@ -224,6 +230,17 @@ export function SearchResults({
   if (["栖潮疗养院", "栖潮旧院", "北麓路17号西院"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openBeiluAddress}><small className="text-[#78957e]">临川地方建筑档案 · 旧址沿革</small><h3 className="my-3 text-xl text-[#286ab3]">北麓疗养院旧址｜北麓路17号</h3><p className="text-xs text-[#8493a4]">旧址曾增挂“栖潮疗养院”院名，附近居民至今仍称其为“栖潮旧院”。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-archive.example/places/beilu-17</code></button>
+  </div>;
+
+  if (normalized === "近身见证") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">2 条相关结果</p>
+    <button className="search-result" onClick={openFollowerRelay}><small className="text-[#78957e]">雾搜消息缓存 · 已撤回内容</small><h3 className="my-3 text-xl text-[#286ab3]">“近身见证”转发回执</h3><p className="text-xs text-[#8493a4]">接收端保留的一次外部转发，发送者与附言仍可读取。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/relay/near-witness</code></button>
+    <button className="search-result" onClick={openFanaticArchive}><small className="text-[#78957e]">归岸者旧站 · 搜索镜像</small><h3 className="my-3 text-xl text-[#286ab3]">先生见证存档｜成员公开发言</h3><p className="text-xs text-[#8493a4]">部分成员曾把公开帖子同步到站外；原站关闭后仍有三页缓存。</p><code className="mt-2 block text-[10px] text-[#718c76]">guichao.example/archive/returners</code></button>
+  </div>;
+
+  if (["LC·7M21", "LC7M21", "LC-7M21"].includes(normalized.toUpperCase())) return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openAccidentDossier}><small className="text-[#78957e]">雾汀交通事故补充影像目录</small><h3 className="my-3 text-xl text-[#286ab3]">沿海路口事故车辆核验</h3><p className="text-xs text-[#8493a4]">同号白色七座在事故前后的道路与院区影像中出现。</p><code className="mt-2 block text-[10px] text-[#718c76]">wuting-traffic.example/case/LC-7M21</code></button>
   </div>;
 
   if (isActivitySearch(query)) return <div className="mt-8"><button className="search-result" onClick={openActivity}><small className="text-[#78957e]">anshi.example/activities · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">安时活动服务 · 雾汀生命关怀</h3><p className="text-xs text-[#8493a4]">线下交流、活动介绍与预约咨询。</p></button></div>;

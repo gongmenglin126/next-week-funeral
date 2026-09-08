@@ -73,7 +73,7 @@ export function ContinuityRulePage({ onOpenMinutes }: { onOpenMinutes: () => voi
   </article>;
 }
 
-export function FounderBriefingPage({ onOpenAidSelection, onOpenCrossIndex }: { onOpenAidSelection: () => void; onOpenCrossIndex: () => void }) {
+export function FounderBriefingPage({ onOpenAidSelection }: { onOpenAidSelection: () => void }) {
   return <article className="min-h-full bg-white px-5 py-8 text-[#161616] md:px-10 md:py-12">
     <div className="mx-auto max-w-[850px] border-x border-black/15 px-6 md:px-12">
       <header className="flex items-start justify-between gap-6 border-b-2 border-black pb-5">
@@ -96,9 +96,13 @@ export function FounderBriefingPage({ onOpenAidSelection, onOpenCrossIndex }: { 
           <ul className="mt-3 list-disc space-y-2 pl-5"><li>“失败”“无效”“错误对象”等词不得进入内部结案材料。</li><li>对外回访由记录组统一维护，具体处理沿用 S-17。</li><li>所有仪式结果的最终说明权归顾惟真本人。</li></ul>
         </section>
 
-        <div className="mt-8 flex flex-wrap gap-3">
+        <section className="mt-8 border border-black/25 bg-[#f1f1ed] px-5 py-5 text-[14px] leading-8">
+          <h2 className="font-sans text-[13px] font-bold tracking-[.1em]">申请记录保存方式</h2>
+          <p className="mt-2">未公开期次的申请记录不进入服务器索引，只会随社区账户的数据导出保存在申请者设备中。浏览器恢复工具会比对本机访问过的活动期次与社区账户；找到匹配副本后，文件将出现在“下载内容”。</p>
+        </section>
+
+        <div className="mt-8">
           <button className="inline-flex items-center gap-3 border border-black bg-black px-5 py-3 text-[13px] font-semibold text-white hover:bg-black/80" onClick={onOpenAidSelection}>复核会前材料：QC-AID-19 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
-          <button className="inline-flex items-center gap-3 border border-black px-5 py-3 text-[13px] font-semibold hover:bg-black/5" onClick={onOpenCrossIndex}>打开关联档案检索 <ArrowUpRight aria-hidden="true" className="size-4" /></button>
         </div>
 
         <footer className="mt-12 flex items-center gap-3 border-t border-black/20 py-6 text-[12px] text-black/45"><FileText aria-hidden="true" className="size-4" />附件编号：M-2019-0417 / 页码 3—5</footer>

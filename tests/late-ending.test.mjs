@@ -22,32 +22,37 @@ test("the hidden album moves from affection to resentment without proving the mu
   assert.doesNotMatch(desktop, /顾惟真|近身见证|LC·7M21/);
 });
 
-test("the late trail progresses from mockery to relay, fanatic archive, vehicle and synthesis", async () => {
+test("the late trail branches from one group name into independent relay and follower evidence", async () => {
   const pages = await readFile(path.join(root, "app/final-trail-pages.tsx"), "utf8");
-  const convergence = await readFile(path.join(root, "app/convergence-puzzle.tsx"), "utf8");
-  for (const fact of ["你不是神，你只是把死人删掉，把活人留下", "近身见证", "守潮人-17", "LC·7M21", "重建最后六小时"]) assert.match(pages, new RegExp(fact.replaceAll("·", "\\·")));
-  assert.match(convergence, /查看事故设备中恢复的通讯/);
+  const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
+  for (const fact of ["你不是神，你只是把死人删掉，把活人留下", "近身见证", "守潮人-17", "LC·7M21"]) assert.match(pages, new RegExp(fact.replaceAll("·", "\\·")));
+  assert.match(search, /normalized === "近身见证"/);
+  assert.match(search, /openFollowerRelay[\s\S]*openFanaticArchive/);
+  assert.match(search, /LC·7M21[\s\S]*openAccidentDossier/);
+  assert.doesNotMatch(pages, /追踪撤回的转发|查看归岸者旧站存档|调取同号车辆影像/);
   assert.match(pages, /先生没有否认/);
   assert.match(pages, /他没让我们跪，也没有叫我们起来/);
   assert.match(pages, /一个真正懂得被崇拜的人，不需要承认自己是神，也不需要亲自动手/);
 });
 
-test("the final reconstruction uses event order instead of code entry and reaches one ending", async () => {
+test("the final dossier requires already-read sources and reaches one ending without a summary quiz", async () => {
   const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
   assert.match(page, /setFinished\(true\)/);
   assert.match(page, /finished[\s\S]*EndingScreen/);
+  assert.match(page, /discoveries\.message && discoveries\.relay && discoveries\.fanatic/);
   const ending = await readFile(path.join(root, "app/final-trail-pages.tsx"), "utf8");
-  assert.match(ending, /按发生时间从早到晚依次点选/);
-  assert.match(ending, /生成事故时间线/);
-  assert.doesNotMatch(ending, /INCIDENT_FIELDS|isIncidentAnswerCorrect|填写四份/);
+  assert.match(ending, /将补充材料交给警方/);
+  assert.doesNotMatch(ending, /INCIDENT_EVENTS|按发生时间从早到晚依次点选|生成事故时间线|INCIDENT_FIELDS|isIncidentAnswerCorrect|填写四份/);
   assert.match(ending, /她为什么曾经想让你死[\s\S]*是谁让她真的死去/);
 });
 
 test("all new late pages have browser addresses and direct-url recovery", async () => {
   const { resolveBrowserInput } = await import("../lib/browser-navigation.ts");
+  assert.deepEqual(resolveBrowserInput("browser://downloads/recovered/message-cache", true), { tab: "zhou-gu-message", query: "" });
   assert.deepEqual(resolveBrowserInput("wusou-cache.example/messages/WX-0825", true), { tab: "zhou-gu-message", query: "" });
   assert.deepEqual(resolveBrowserInput("wusou-cache.example/relay/GZ-825-17", true), { tab: "follower-relay", query: "" });
+  assert.deepEqual(resolveBrowserInput("wusou-cache.example/relay/near-witness", true), { tab: "follower-relay", query: "" });
   assert.deepEqual(resolveBrowserInput("guichao.example/archive/returners", true), { tab: "fanatic-archive", query: "" });
   assert.deepEqual(resolveBrowserInput("wuting-traffic.example/case/LC-7M21", true), { tab: "accident-dossier", query: "" });
-  assert.deepEqual(resolveBrowserInput("anshi-office.example/archive/incident-cross-M0826", true), { tab: "incident-index", query: "" });
+  assert.equal(resolveBrowserInput("anshi-office.example/archive/incident-cross-M0826", true)?.tab, "not-found");
 });
