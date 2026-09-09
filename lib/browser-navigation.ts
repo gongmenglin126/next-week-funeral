@@ -62,10 +62,7 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
     if (url.hostname === "mingchuan-books.example" && path === "/title/walk-to-today") return { tab: "biography", query: "" };
     if (url.hostname === "linchuan-business.example" && path === "/archive/2016/lu-wenchuan") return { tab: "lu-memorial", query: "" };
     if (url.hostname === "haijia-heji.example" && path === "/history/2016-gu-weizhen") return { tab: "hospital", query: "" };
-    if (url.hostname === "wusou-cache.example" && path === "/snapshot/R-06-4") return { tab: "record-revision", query: "" };
     if (url.hostname === "wusou-cache.example" && path === "/snapshot/QC-AID-19") return { tab: "aid-selection", query: "" };
-    if (url.hostname === "anshi-office.example" && path === "/rules/S-17") return { tab: "continuity-rule", query: "" };
-    if (url.hostname === "anshi-office.example" && path === "/minutes/2019-04-17") return { tab: "founder-briefing", query: "" };
     if (url.hostname === "wusou-cache.example" && path === "/messages/WX-0825") return { tab: "zhou-gu-message", query: "" };
     if (url.hostname === "wusou-cache.example" && ["/relay/GZ-825-17", "/relay/near-witness"].includes(path)) return { tab: "follower-relay", query: "" };
     if (url.hostname === "wuting-traffic.example" && path === "/case/LC-7M21") return { tab: "accident-dossier", query: "" };

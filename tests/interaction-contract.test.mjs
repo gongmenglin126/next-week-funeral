@@ -35,7 +35,7 @@ test("entering the desktop cannot reuse the intro button as a focused photo icon
 test("every exposed game button has an action or submits a handled form", async () => {
   const failures = [];
   let buttons = 0;
-  for (const name of ["app/page.tsx", "app/browser-record-pages.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx", "app/founder-trail-pages.tsx", "app/founder-deep-pages.tsx", "app/anshi-internal-pages.tsx", "app/seventh-application-page.tsx", "app/final-trail-pages.tsx"]) {
+  for (const name of ["app/page.tsx", "app/browser-record-pages.tsx", "app/chapter-one.tsx", "app/desktop-evidence.tsx", "app/search-box.tsx", "app/forum-page.tsx", "app/search-results.tsx", "app/activity-page.tsx", "app/cat-trail-pages.tsx", "app/founder-trail-pages.tsx", "app/founder-deep-pages.tsx", "app/seventh-application-page.tsx", "app/final-trail-pages.tsx"]) {
     const source = ts.createSourceFile(name, await readFile(path.join(root, name), "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -206,7 +206,7 @@ test("the inline lighthouse credential and dated forum reply expose the timeline
   }
 });
 
-test("the discussion opens from its forum row, returns to the list, and has an independent history entry", async () => {
+test("the discussion opens from its forum row and history only reflects pages actually visited", async () => {
   const { ForumPage, LIGHTHOUSE_THREAD } = await vite.ssrLoadModule("/app/forum-page.tsx");
   let selected = null;
   function elements(node) {
@@ -222,8 +222,16 @@ test("the discussion opens from its forum row, returns to the list, and has an i
   const detail = ForumPage({ ...props, thread: selected });
   elements(detail).find((element) => element.props.className === "forum-back").props.onClick();
   assert.equal(selected, null);
+  const { visitedHistory } = await vite.ssrLoadModule("/app/browser-record-pages.tsx");
+  assert.deepEqual(visitedHistory([{ tab: "search", query: "" }]), []);
+  assert.deepEqual(visitedHistory([
+    { tab: "search", query: "" },
+    { tab: "forum", query: LIGHTHOUSE_THREAD },
+    { tab: "forum", query: LIGHTHOUSE_THREAD },
+    { tab: "history", query: "" },
+  ]).map(({ tab, query }) => ({ tab, query })), [{ tab: "forum", query: LIGHTHOUSE_THREAD }]);
   const source = await readFile(path.join(root, "app/browser-record-pages.tsx"), "utf8");
-  assert.match(source, /\["21:23", LIGHTHOUSE_THREAD, "wuting-talk\.example\/thread\/60285", "forum", LIGHTHOUSE_THREAD\]/);
+  assert.doesNotMatch(source, /临川异地就医|8月20日|60318|60307/);
   const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
   assert.deepEqual(resolveBrowserInput("wuting-talk.example/thread/60285", false), { tab: "forum", query: LIGHTHOUSE_THREAD });
   assert.doesNotMatch(renderToStaticMarkup(list), /有人参加过安时/);
@@ -298,9 +306,9 @@ test("activity aliases resolve while invalid addresses cannot bypass the ride ga
   assert.deepEqual(resolveBrowserInput("mingchuan-books.example/title/remaining-time", true), { tab: "not-found", query: "mingchuan-books.example/title/remaining-time" });
   assert.deepEqual(resolveBrowserInput("linchuan-business.example/archive/2016/lu-wenchuan", true), { tab: "lu-memorial", query: "" });
   assert.deepEqual(resolveBrowserInput("haijia-heji.example/history/2016-gu-weizhen", true), { tab: "hospital", query: "" });
-  assert.deepEqual(resolveBrowserInput("wusou-cache.example/snapshot/R-06-4", true), { tab: "record-revision", query: "" });
-  assert.deepEqual(resolveBrowserInput("anshi-office.example/rules/S-17", true), { tab: "continuity-rule", query: "" });
-  assert.deepEqual(resolveBrowserInput("anshi-office.example/minutes/2019-04-17", true), { tab: "founder-briefing", query: "" });
+  assert.equal(resolveBrowserInput("wusou-cache.example/snapshot/R-06-4", true).tab, "not-found");
+  assert.equal(resolveBrowserInput("anshi-office.example/rules/S-17", true).tab, "not-found");
+  assert.equal(resolveBrowserInput("anshi-office.example/minutes/2019-04-17", true).tab, "not-found");
 });
 
 test("activity search has one result and wrong text or URLs show explicit recoverable feedback", async () => {
@@ -392,13 +400,19 @@ test("the optional fraud trail moves from the witness's cat to an address and th
   assert.match(witness, /雨停以后/);
   assert.match(witness, /资料最后更新于8月19日/);
   assert.doesNotMatch(witness, /他替我走了最后一程|阿岚|溺亡|身体指标|有人替我|第二次生命/);
-  const profile = renderToStaticMarkup(React.createElement(SurvivorProfile));
+  const profile = renderToStaticMarkup(React.createElement(SurvivorProfile, { obituarySeen: false, onRevisionFound() {} }));
   assert.match(profile, /原简介：肺腺癌晚期/);
   assert.match(profile.replace(/<[^>]+>/g, ""), /米粒是一只猫/);
   assert.ok((profile.match(/<strong>米粒<\/strong>/g) ?? []).length >= 3);
   assert.doesNotMatch(profile, /程叙白|站务说明|原账号联系人/);
   assert.match(profile, /8月19日 09:00/);
   assert.match(profile, /之后会慢慢恢复更新/);
+  assert.match(profile, /临潮重症援助/);
+  assert.doesNotMatch(profile, /R-06-4|此页存在两个版本/);
+  const revisitedProfile = renderToStaticMarkup(React.createElement(SurvivorProfile, { obituarySeen: true, onRevisionFound() {} }));
+  assert.match(revisitedProfile, /网页缓存：此页存在两个版本/);
+  assert.match(revisitedProfile, /R-06-4/);
+  assert.match(revisitedProfile, /RC-03/);
   assert.doesNotMatch(profile, /有人替我|第二次生命|离开的不是我/);
   const { LostCatPage, NeighborhoodNoticePage } = await vite.ssrLoadModule("/app/cat-trail-pages.tsx");
   const lostCat = renderToStaticMarkup(React.createElement(LostCatPage));
@@ -505,41 +519,23 @@ test("Gu's decades of Buddhist devotion end in a documented 2017 collection sale
   assert.deepEqual(resolveBrowserInput("jiawen-auction.example/catalog/2017-spring/lanxu-buddhist-art", true), { tab: "buddhist-sale", query: "" });
 });
 
-test("the hidden record number opens a layered internal trail instead of explaining the cult on the public page", async () => {
+test("internal identifiers are evidence labels, not searchable doors or a click-through trail", async () => {
   const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
-  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
-  const search = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "R-06-4" }));
-  assert.match(search, /R-06-4 公开记录校对单/);
-  assert.match(search, /已停止公开访问/);
-  assert.doesNotMatch(search, /死者账号|接管|顾惟真|仪式结果/);
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openBuddhistSale() {}, openRehabCenter() {}, openAidReview() {}, openBeiluAddress() {}, openAidSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {}, openFollowerRelay() {}, openFanaticArchive() {}, openAccidentDossier() {} };
+  for (const query of ["R-06-4", "S-17", "QC-AID-19"]) {
+    const search = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query }));
+    assert.match(search, /未找到与/);
+  }
 
-  const { RecordRevisionPage, ContinuityRulePage, FounderBriefingPage } = await vite.ssrLoadModule("/app/anshi-internal-pages.tsx");
-  const revision = renderToStaticMarkup(React.createElement(RecordRevisionPage, { onOpenRule() {} }));
-  assert.match(revision, /8月16日 02:11/);
-  assert.match(revision, /8月19日 09:00/);
-  assert.match(revision, /项目组账号 RC-03/);
-  assert.match(revision, /查看引用规则：S-17/);
-
-  const rule = renderToStaticMarkup(React.createElement(ContinuityRulePage, { onOpenMinutes() {} }));
-  assert.match(rule, /每组必须是两个人/);
-  assert.match(rule, /申请者自行确认的最深关系人/);
-  assert.match(rule, /捐赠记录与支付能力不得进入筛选表/);
-  assert.match(rule, /公开记录不能出现失败/);
-  assert.match(rule, /公开服务组[\s\S]*联络组[\s\S]*记录组[\s\S]*说明会成员/);
-  assert.match(rule, /保护还没有准备好理解结果的人/);
-  assert.match(rule, /查看附件：项目说明会纪要/);
-
-  const minutes = renderToStaticMarkup(React.createElement(FounderBriefingPage));
-  assert.match(minutes, /木质小像一尊，未登记名称/);
-  assert.doesNotMatch(minutes, /无面小像一尊/);
-  assert.match(minutes, /闻川付出了代价/);
-  assert.match(minutes, /最终说明权归顾惟真本人/);
-  assert.doesNotMatch(revision + rule + minutes, /守夜人|承受人|借丧礼|生期转移/);
+  const application = await readFile(path.join(root, "app/seventh-application-page.tsx"), "utf8");
+  assert.match(application, /申请条款摘录 \/ S-17/);
+  assert.match(application, /最深关系人/);
+  const ending = await readFile(path.join(root, "app/final-trail-pages.tsx"), "utf8");
+  assert.match(ending, /2019年项目说明会纪要/);
+  assert.match(ending, /所有结果最终由顾惟真本人解释/);
 
   const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
-  assert.match(page, /navigate\("record-revision"\)/);
-  assert.match(page, /navigate\("continuity-rule"\)/);
-  assert.match(page, /navigate\("founder-briefing"\)/);
+  assert.doesNotMatch(page, /record-revision|continuity-rule|founder-briefing/);
 });
 
 test("the crop hides session seven while the full corridor is last in the mountain inn gallery", async () => {
@@ -625,15 +621,25 @@ test.skip("legacy Qichao academy contract", async () => {
 
 test("the Beilu trail begins independently and converges at address 17", async () => {
   const historySource = await readFile(path.join(root, "app/browser-record-pages.tsx"), "utf8");
-  assert.match(historySource, /8月20日[\s\S]*01:18[\s\S]*临川异地就医 陪护短住/);
+  assert.doesNotMatch(historySource, /临川异地就医|北麓康复中心|栖潮旧院/);
+  const { TRAVEL_PHOTOS } = await vite.ssrLoadModule("/lib/photo-library.ts");
+  const referral = TRAVEL_PHOTOS.find((photo) => photo.id === "IMG_4763.jpg");
+  assert.ok(referral);
+  assert.match(referral.alt, /临川北麓康复中心/);
+  await access(path.join(root, "public/game/beilu-referral-card.webp"));
 
   const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
-  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openRehabCenter() {}, openBeiluAddress() {}, openAidSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
-  const firstSearch = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "临川异地就医 陪护短住" }));
+  const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openBuddhistSale() {}, openRehabCenter() {}, openAidReview() {}, openBeiluAddress() {}, openAidSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {}, openFollowerRelay() {}, openFanaticArchive() {}, openAccidentDossier() {} };
+  const firstSearch = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "临川北麓康复中心" }));
   assert.match(firstSearch, /1 条相关结果/);
   assert.match(firstSearch, /临川北麓康复中心/);
   assert.doesNotMatch(firstSearch, /北麓疗养院旧址|栖潮旧院/);
   assert.doesNotMatch(firstSearch, /安时|顾惟真|大罗无相尊|神迹|QC-AID-19/);
+
+  const projectSearch = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "临潮重症援助" }));
+  assert.match(projectSearch, /2 条相关结果/);
+  assert.match(projectSearch, /临潮重症援助计划回顾/);
+  assert.match(projectSearch, /援助项目公开回访抽查/);
 
   const { GuWeizhenPoemPage } = await vite.ssrLoadModule("/app/founder-deep-pages.tsx");
   const poem = renderToStaticMarkup(React.createElement(GuWeizhenPoemPage));
@@ -644,31 +650,29 @@ test("the Beilu trail begins independently and converges at address 17", async (
   assert.match(center, /临川市北麓路17号东院/);
   assert.match(center, /临潮重症援助计划回顾/);
   assert.doesNotMatch(center, /安时|顾惟真|大罗无相尊|神迹|QC-AID-19/);
+  assert.doesNotMatch(center, /为什么地址写|查看院区沿革/);
 
   const review = renderToStaticMarkup(React.createElement(LinchaoAidReviewPage));
   assert.match(review, /会诊、转运、重症床位、特殊用药与陪护住宿/);
   assert.match(review, /这里公开的几个人，后来都好转了/);
   assert.doesNotMatch(review, /安时|顾惟真|大罗无相尊|神迹|QC-AID-19/);
 
-  const archive = renderToStaticMarkup(React.createElement(BeiluPlaceArchivePage, { onOpenCentre() {} }));
+  const archive = renderToStaticMarkup(React.createElement(BeiluPlaceArchivePage));
   assert.match(archive, /北麓疗养院/);
   assert.match(archive, /栖潮疗养院/);
   assert.match(archive, /栖潮旧院/);
   assert.match(archive, /东院登记为临川北麓康复中心/);
   assert.match(archive, /西院不对外开放/);
+  assert.doesNotMatch(archive, /打开援助项目工作批注|查看东院现用机构/);
 
-  const memo = renderToStaticMarkup(React.createElement(BeiluSelectionMemoPage, { onOpenMinutes() {} }));
+  const memo = renderToStaticMarkup(React.createElement(BeiluSelectionMemoPage));
   assert.match(memo, /栖潮疗养院旧档案沿用的卷宗前缀/);
   assert.match(memo, /仍存在明确可逆因素/);
   assert.match(memo, /已经死亡的个案/);
   assert.match(memo, /最终援助名单与公开回访名单均由顾惟真本人确认/);
   assert.match(memo, /不得使用“神迹”/);
   assert.match(memo, /不要求更正/);
-
-  const { FounderBriefingPage } = await vite.ssrLoadModule("/app/anshi-internal-pages.tsx");
-  const minutes = renderToStaticMarkup(React.createElement(FounderBriefingPage, { onOpenAidSelection() {} }));
-  assert.match(minutes, /临川市北麓路17号西院/);
-  assert.match(minutes, /复核会前材料：QC-AID-19/);
+  assert.doesNotMatch(memo, /查看第六期记录校对样本|onOpenRevision/);
 
   const { resolveBrowserInput } = await vite.ssrLoadModule("/lib/browser-navigation.ts");
   assert.deepEqual(resolveBrowserInput("beilu-care.example/about", true), { tab: "rehab-center", query: "" });

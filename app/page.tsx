@@ -39,7 +39,6 @@ import { ActivityArchivePage, ActivityPage, CommunityPage, FoundationPage, Hidde
 import { LostCatPage, NeighborhoodNoticePage } from "./cat-trail-pages";
 import { BiographyPage, FounderProfilePage, HaijiaHospitalPage, LuWenchuanMemorialPage } from "./founder-trail-pages";
 import { GuWeizhenAuctionPage, GuWeizhenBuddhistSalePage, GuWeizhenCollectionPage, GuWeizhenInterviewPage, GuWeizhenPoemPage } from "./founder-deep-pages";
-import { ContinuityRulePage, FounderBriefingPage, RecordRevisionPage } from "./anshi-internal-pages";
 import { SeventhApplicationPage } from "./seventh-application-page";
 import { AccidentDossierPage, EndingScreen, FanaticArchivePage, FollowerRelayPage, ZhouGuMessagePage } from "./final-trail-pages";
 import { BeiluPlaceArchivePage, BeiluRehabilitationPage, BeiluSelectionMemoPage, LinchaoAidReviewPage } from "./qichao-pages";
@@ -63,7 +62,7 @@ export default function Home() {
   const [notificationCentre, setNotificationCentre] = useState(false);
   const [restoredPhoto, setRestoredPhoto] = useState(false);
   const [privateAlbumUnlocked, setPrivateAlbumUnlocked] = useState(false);
-  const [discoveries, setDiscoveries] = useState({ seventh: false, community: false, briefing: false, application: false, message: false, relay: false, fanatic: false });
+  const [discoveries, setDiscoveries] = useState({ seventh: false, community: false, obituary: false, revision: false, aidSelection: false, application: false, message: false, relay: false, fanatic: false });
   const [finished, setFinished] = useState(false);
   const route = routes[routeIndex];
   const activeTab = route.tab;
@@ -72,7 +71,7 @@ export default function Home() {
   const visibleTabs = visibleBrowserTabs(routes, travelDiscovered, unlocked);
   // The ride tab is only exposed after its notification has actually been opened.
   const displayedTabs = visibleTabs.filter((tab) => tab !== "ride" || routes.some((item) => item.tab === "ride"));
-  const accountArchiveAvailable = discoveries.seventh && discoveries.community && discoveries.briefing;
+  const accountArchiveAvailable = discoveries.seventh && discoveries.community && discoveries.obituary && discoveries.revision && discoveries.aidSelection;
   const canSubmitIncident = discoveries.message && discoveries.relay && discoveries.fanatic;
   const downloadsHaveUnreadRecovery = accountArchiveAvailable && !discoveries.message;
 
@@ -83,7 +82,8 @@ export default function Home() {
       ...current,
       seventh: current.seventh || (tab === "activity" && nextQuery === "archive/07"),
       community: current.community || (tab === "activity" && ["community", "witness"].includes(nextQuery)),
-      briefing: current.briefing || tab === "founder-briefing",
+      obituary: current.obituary || tab === "obituary",
+      aidSelection: current.aidSelection || tab === "aid-selection",
       application: current.application || tab === "seventh-application",
       message: current.message || tab === "zhou-gu-message",
       relay: current.relay || tab === "follower-relay",
@@ -198,15 +198,15 @@ export default function Home() {
           <div className="browser-viewport">
             <TabsContent forceMount value="trip" className="min-h-full data-[state=inactive]:hidden"><TravelPlatform state={chapter} onCancel={dispatch} /></TabsContent>
             <TabsContent forceMount value="forum" className="min-h-full bg-[#f4f1e9] data-[state=inactive]:hidden"><ForumPage unlocked={unlocked} thread={activeTab === "forum" ? query || null : null} setThread={(title) => navigate("forum", title ?? "")} /></TabsContent>
-            <TabsContent forceMount value="history" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><HistoryPage unlocked={unlocked} navigate={navigate} /></TabsContent>
+            <TabsContent forceMount value="history" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><HistoryPage routes={routes.slice(0, routeIndex + 1)} navigate={navigate} /></TabsContent>
             <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage accountArchiveAvailable={accountArchiveAvailable} messageCacheAvailable={discoveries.application} onOpenApplication={() => navigate("seventh-application")} onOpenMessage={() => navigate("zhou-gu-message")} /></TabsContent>
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={`search-box:${query}`} query={query} onSearch={submitBrowserInput} />
-              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openRecordRevision={() => navigate("record-revision")} openContinuityRule={() => navigate("continuity-rule")} openFounder={() => navigate("founder-profile")} openFounderInterview={() => navigate("founder-interview")} openFounderPoem={() => navigate("founder-poem")} openFounderCollection={() => navigate("founder-collection")} openBuddhistSale={() => navigate("buddhist-sale")} openRehabCenter={() => navigate("rehab-center")} openBeiluAddress={() => navigate("beilu-address")} openAidSelection={() => navigate("aid-selection")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} openFollowerRelay={() => navigate("follower-relay")} openFanaticArchive={() => navigate("fanatic-archive")} openAccidentDossier={() => navigate("accident-dossier")} />
+              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openFounder={() => navigate("founder-profile")} openFounderInterview={() => navigate("founder-interview")} openFounderPoem={() => navigate("founder-poem")} openFounderCollection={() => navigate("founder-collection")} openBuddhistSale={() => navigate("buddhist-sale")} openRehabCenter={() => navigate("rehab-center")} openAidReview={() => navigate("aid-review")} openBeiluAddress={() => navigate("beilu-address")} openAidSelection={() => navigate("aid-selection")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} openFollowerRelay={() => navigate("follower-relay")} openFanaticArchive={() => navigate("fanatic-archive")} openAccidentDossier={() => navigate("accident-dossier")} />
             </TabsContent>
             <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden">{query === "community" ? <CommunityPage onOpenWitness={() => navigate("activity", "witness")} onOpenFoundation={() => navigate("activity", "foundation")} /> : query === "witness" ? <WitnessPage onBack={() => navigate("activity", "community")} onOpenProfile={() => navigate("survivor")} /> : query === "foundation" ? <FoundationPage onBack={() => navigate("activity", "community")} /> : query === "archive/07" ? <HiddenSeventhPage onBack={() => navigate("activity")} /> : query.startsWith("archive/") ? <ActivityArchivePage issue={query.slice(-2)} onBack={() => navigate("activity")} /> : <ActivityPage onOpenRide={unlocked ? openRide : undefined} onOpenArchive={(issue) => navigate("activity", `archive/${issue}`)} />}</TabsContent>
-            <TabsContent value="survivor" className="min-h-full data-[state=inactive]:hidden"><SurvivorProfile /></TabsContent>
+            <TabsContent value="survivor" className="min-h-full data-[state=inactive]:hidden"><SurvivorProfile obituarySeen={discoveries.obituary} onRevisionFound={() => setDiscoveries((current) => current.revision ? current : { ...current, revision: true })} /></TabsContent>
             <TabsContent value="lost-cat" className="min-h-full data-[state=inactive]:hidden"><LostCatPage /></TabsContent>
             <TabsContent value="neighborhood-notice" className="min-h-full data-[state=inactive]:hidden"><NeighborhoodNoticePage onOpenObituary={() => navigate("obituary")} /></TabsContent>
             <TabsContent value="obituary" className="min-h-full data-[state=inactive]:hidden"><ObituaryPage /></TabsContent>
@@ -216,16 +216,13 @@ export default function Home() {
             <TabsContent value="founder-collection" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenCollectionPage onOpenAuction={() => navigate("founder-auction")} /></TabsContent>
             <TabsContent value="founder-auction" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenAuctionPage /></TabsContent>
             <TabsContent value="buddhist-sale" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenBuddhistSalePage /></TabsContent>
-            <TabsContent value="rehab-center" className="min-h-full data-[state=inactive]:hidden"><BeiluRehabilitationPage onOpenReview={() => navigate("aid-review")} onOpenArchive={() => navigate("beilu-address")} /></TabsContent>
+            <TabsContent value="rehab-center" className="min-h-full data-[state=inactive]:hidden"><BeiluRehabilitationPage onOpenReview={() => navigate("aid-review")} /></TabsContent>
             <TabsContent value="aid-review" className="min-h-full data-[state=inactive]:hidden"><LinchaoAidReviewPage /></TabsContent>
-            <TabsContent value="beilu-address" className="min-h-full data-[state=inactive]:hidden"><BeiluPlaceArchivePage onOpenCentre={() => navigate("rehab-center")} onOpenSelection={() => navigate("aid-selection")} /></TabsContent>
-            <TabsContent value="aid-selection" className="min-h-full data-[state=inactive]:hidden"><BeiluSelectionMemoPage onOpenRevision={() => navigate("record-revision")} /></TabsContent>
+            <TabsContent value="beilu-address" className="min-h-full data-[state=inactive]:hidden"><BeiluPlaceArchivePage /></TabsContent>
+            <TabsContent value="aid-selection" className="min-h-full data-[state=inactive]:hidden"><BeiluSelectionMemoPage /></TabsContent>
             <TabsContent value="biography" className="min-h-full data-[state=inactive]:hidden"><BiographyPage onOpenInterview={() => navigate("founder-interview")} /></TabsContent>
             <TabsContent value="lu-memorial" className="min-h-full data-[state=inactive]:hidden"><LuWenchuanMemorialPage /></TabsContent>
             <TabsContent value="hospital" className="min-h-full data-[state=inactive]:hidden"><HaijiaHospitalPage /></TabsContent>
-            <TabsContent value="record-revision" className="min-h-full data-[state=inactive]:hidden"><RecordRevisionPage onOpenRule={() => navigate("continuity-rule")} /></TabsContent>
-            <TabsContent value="continuity-rule" className="min-h-full data-[state=inactive]:hidden"><ContinuityRulePage onOpenMinutes={() => navigate("founder-briefing")} /></TabsContent>
-            <TabsContent value="founder-briefing" className="min-h-full data-[state=inactive]:hidden"><FounderBriefingPage onOpenAidSelection={() => navigate("aid-selection")} /></TabsContent>
             <TabsContent value="seventh-application" className="min-h-full data-[state=inactive]:hidden"><SeventhApplicationPage /></TabsContent>
             <TabsContent value="zhou-gu-message" className="min-h-full data-[state=inactive]:hidden"><ZhouGuMessagePage /></TabsContent>
             <TabsContent value="follower-relay" className="min-h-full data-[state=inactive]:hidden"><FollowerRelayPage /></TabsContent>

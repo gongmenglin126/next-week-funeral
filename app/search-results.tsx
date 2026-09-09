@@ -105,14 +105,13 @@ export function SearchResults({
   openLostCat,
   openCommunityNotice,
   openObituary,
-  openRecordRevision,
-  openContinuityRule,
   openFounder,
   openFounderInterview,
   openFounderPoem,
   openFounderCollection,
   openBuddhistSale,
   openRehabCenter,
+  openAidReview,
   openBeiluAddress,
   openAidSelection,
   openBiography,
@@ -131,14 +130,13 @@ export function SearchResults({
   openLostCat: () => void;
   openCommunityNotice: () => void;
   openObituary: () => void;
-  openRecordRevision: () => void;
-  openContinuityRule: () => void;
   openFounder: () => void;
   openFounderInterview: () => void;
   openFounderPoem: () => void;
   openFounderCollection: () => void;
   openBuddhistSale: () => void;
   openRehabCenter: () => void;
+  openAidReview: () => void;
   openBeiluAddress: () => void;
   openAidSelection: () => void;
   openBiography: () => void;
@@ -151,21 +149,6 @@ export function SearchResults({
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const normalized = query.normalize("NFKC").replace(/\s+/g, "");
   const auctionForumSearch = normalized === "无面小像" || normalized === "无面木像" || normalized === "嘉闻无面小像" || normalized.toUpperCase() === "LOT21";
-
-  if (normalized.toUpperCase() === "R-06-4") return <div className="mt-8 max-w-[860px]">
-    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openRecordRevision}><small className="text-[#78957e]">雾搜网页缓存 · 8月19日</small><h3 className="my-3 text-xl text-[#286ab3]">R-06-4 公开记录校对单</h3><p className="text-xs text-[#8493a4]">归潮见证的一份已停止公开访问的校对页面，缓存保留了部分字段。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/snapshot/R-06-4</code></button>
-  </div>;
-
-  if (["S-17", "S17"].includes(normalized.toUpperCase())) return <div className="mt-8 max-w-[860px]">
-    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openContinuityRule}><small className="text-[#78957e]">安时项目办公室 · 内部文件索引</small><h3 className="my-3 text-xl text-[#286ab3]">S-17 参与记录续写与关系筛选说明</h3><p className="text-xs text-[#8493a4]">被 R-06-4 修订单引用的一份内部工作说明。</p><code className="mt-2 block text-[10px] text-[#718c76]">anshi-office.example/rules/S-17</code></button>
-  </div>;
-
-  if (normalized.toUpperCase() === "QC-AID-19") return <div className="mt-8 max-w-[860px]">
-    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
-    <button className="search-result" onClick={openAidSelection}><small className="text-[#78957e]">雾搜网页缓存 · 工作材料索引</small><h3 className="my-3 text-xl text-[#286ab3]">QC-AID-19 项目筛选与公开回访</h3><p className="text-xs text-[#8493a4]">一份援助项目工作批注，原链接已限制访问。卷宗前缀沿用自旧院档案。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/snapshot/QC-AID-19</code></button>
-  </div>;
 
   if (auctionForumSearch) {
     if (selectedUrl === AUCTION_FORUM_URL) return <AuctionForumThread onBack={() => setSelectedUrl(null)} />;
@@ -216,13 +199,19 @@ export function SearchResults({
     <button className="search-result" onClick={openBuddhistSale}><small className="text-[#78957e]">海州嘉闻拍卖 · 2017春拍成交图录</small><h3 className="my-3 text-xl text-[#286ab3]">澜序旧藏·佛教艺术</h3><p className="text-xs text-[#8493a4]">顾惟真委托的佛教艺术专场，共31件拍品，全部成交。</p><code className="mt-2 block text-[10px] text-[#718c76]">jiawen-auction.example/catalog/2017-spring/lanxu-buddhist-art</code></button>
   </div>;
 
+  if (normalized === "临潮重症援助") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">2 条相关结果</p>
+    <button className="search-result" onClick={openAidReview}><small className="text-[#78957e]">临川北麓康复中心 · 公开项目档案</small><h3 className="my-3 text-xl text-[#286ab3]">临潮重症援助计划回顾</h3><p className="text-xs text-[#8493a4]">公开回访记录了床位、转运、用药和陪护协调，以及受助者后续情况。</p><code className="mt-2 block text-[10px] text-[#718c76]">beilu-care.example/archive/linchao-2019</code></button>
+    <button className="search-result" onClick={openAidSelection}><small className="text-[#78957e]">临川地方档案搜索缓存 · 2019</small><h3 className="my-3 text-xl text-[#286ab3]">援助项目公开回访抽查</h3><p className="text-xs text-[#8493a4]">一份未并入公开回顾的工作批注，搜索缓存保留了扫描页。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-cache.example/snapshot/QC-AID-19</code></button>
+  </div>;
+
   if (normalized === "北麓路17号") return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">2 条相关结果</p>
     <button className="search-result" onClick={openRehabCenter}><small className="text-[#78957e]">beilu-care.example · 现用机构</small><h3 className="my-3 text-xl text-[#286ab3]">临川北麓康复中心｜北麓路17号东院</h3><p className="text-xs text-[#8493a4]">院外短住、康复衔接与家属支持。</p></button>
-    <button className="search-result" onClick={openBeiluAddress}><small className="text-[#78957e]">临川地方建筑档案 · 地址沿革</small><h3 className="my-3 text-xl text-[#286ab3]">北麓路17号为什么分东西两院？</h3><p className="text-xs text-[#8493a4]">旧址由两片院落组成，西院的旧称和停办后的用途仍保留在地方档案里。</p></button>
+    <button className="search-result" onClick={openBeiluAddress}><small className="text-[#78957e]">临川地方建筑档案 · 地址沿革</small><h3 className="my-3 text-xl text-[#286ab3]">北麓疗养院旧址｜北麓路17号建筑资料</h3><p className="text-xs text-[#8493a4]">地方档案保留了这处院落历次更名与用途变更。</p></button>
   </div>;
 
-  if (["临川异地就医陪护短住", "临川北麓康复中心", "北麓康复中心", "北麓路17号东院"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
+  if (["临川北麓康复中心", "北麓康复中心", "北麓路17号东院"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openRehabCenter}><small className="text-[#78957e]">beilu-care.example · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">临川北麓康复中心｜异地就医与家属支持</h3><p className="text-xs text-[#8493a4]">提供院外短住、康复衔接、照护者喘息与医疗资源转介。</p><code className="mt-2 block text-[10px] text-[#718c76]">beilu-care.example/about</code></button>
   </div>;

@@ -39,6 +39,14 @@ export function SeventhApplicationPage() {
               <li><strong>8月23日 00:14</strong>　申请者填写关系人姓名并完成二次确认。</li>
             </ol>
           </section>
+          <section className="mt-7 border border-[#b8ad98] bg-[#f3eee2] px-5 py-5 text-[13px] leading-7">
+            <h3 className="font-sans text-[12px] font-semibold tracking-[.12em] text-[#766d5e]">申请条款摘录 / S-17</h3>
+            <ul className="mt-3 list-disc space-y-2 pl-5">
+              <li>每名申请者须自行确认一名“最深关系人”，作为本期同行关系记录。</li>
+              <li>完整目的是否告知关系人、何时告知，由申请者本人决定。</li>
+              <li>关系人的捐赠、支付或项目参与情况不作为确认条件。</li>
+            </ul>
+          </section>
           <footer className="mt-8 border-t border-[#c9c0ae] pt-5 text-[12px] leading-6 text-[#766d5e]">申请单只能证明周惜曾经把林知还填为关系人。恢复程序在同一份账户导出中发现了事故前五小时的消息缓存，并将它另存到了浏览器的下载内容。</footer>
         </section>
       </main>
