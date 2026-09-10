@@ -33,15 +33,15 @@ export function DaluoPraiseThread({ onBack }: { onBack: () => void }) {
       <h1 className="mt-3 max-w-[760px] font-serif text-[30px] font-normal leading-[1.45]">有人听说过“大罗无相尊”吗？</h1>
 
       <section className="mt-8 border-t border-[#d2d4d0] pt-7 text-[14px] leading-8 text-[#4d5550]">
-        <p>前阵子逛旧书摊，和摊主闲聊时偶然听到这个名字。他说临川沿海以前有人拜“大罗无相尊”，没有固定的庙，也没有一定要供什么样的像，遇到过不去的事时念一念就行。我当时只当成地方故事听了。</p>
-        <p className="mt-5">那阵子我家里很不顺，母亲的手术因为没有床位改了两次。我也不知道该怎么拜，就把名字写在纸上，旁边放了一杯清水，早晚各念了几遍。第二天下午医院突然通知有床位，手术后来也很顺利。</p>
-        <p className="mt-5">我知道这多半只是碰巧，床位是医院协调出来的，手术也是医生做的。但从那以后我还是连续换了七天清水。至少在最慌的时候，我确实觉得有什么东西听见了。</p>
-        <p className="mt-5">不是劝大家都去拜，只是想问问，还有没有人听过这个名字？网上能找到的东西很少，连他到底算佛、算神还是别的什么都说不清。</p>
+        <p>前阵子逛旧书摊，和摊主闲聊时偶然听到这个名字。他说临川沿海以前有人拜“大罗无相尊”，信徒只需在心里默念其尊号，就有好事发生。我当时有点不屑一顾，当个风俗故事听了。</p>
+        <p className="mt-5">后面有阵子我家里很不顺，母亲的手术因为没有床位改了两次日期。我突然想到了“大罗无相尊”，就在早晚各念了几遍。第二天下午医院突然通知有床位，母亲赶紧被安排住院。</p>
+        <p className="mt-5">我当时差点也信上这来历不明的无相尊，只是后来目前的手术并不顺利，过了三个月还是走了。</p>
+        <p className="mt-5">在母亲葬礼上我又想起了无相尊，他到底算什么东西？也许我是心不诚吧。可是当我回想起摊主老板狂热的眼神，后知后觉他明明也是信徒其一并且企图给我传教...无相尊，真有此魅力吗？</p>
       </section>
 
       <section className="mt-9 space-y-3 border-t border-[#d2d4d0] pt-6 text-[13px] leading-7">
-        <article className="bg-[#eceeea] px-5 py-4"><strong className="text-[#607268]">南桥旧客</strong><p className="mt-1">我好像听顾惟真在一次公开文化活动里提过这个名字，说是在临川旧纸里见过。</p></article>
-        <article className="bg-[#eceeea] px-5 py-4"><strong className="text-[#607268]">海边白房子</strong><p className="mt-1">床位是医院协调的，别因为碰巧赶上就耽误正常看病。</p></article>
+        <article className="bg-[#eceeea] px-5 py-4"><strong className="text-[#607268]">南桥旧客</strong><p className="mt-1">我好像听顾惟真在一次公开文化活动里提过这个名字，莫非他也是信徒？</p></article>
+        <article className="bg-[#eceeea] px-5 py-4"><strong className="text-[#607268]">先生为大</strong><p className="mt-1">你在诋毁大罗无相尊！！！</p></article>
       </section>
 
       <footer className="mt-8 border-t border-[#d2d4d0] pt-4 text-[10px] leading-5 text-[#909590]">本帖最后回复于 2021-05-09。因原站关闭，由网页归档项目保存。</footer>
