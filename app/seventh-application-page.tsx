@@ -47,7 +47,7 @@ export function SeventhApplicationPage() {
               <li>关系人的捐赠、支付或项目参与情况不作为确认条件。</li>
             </ul>
           </section>
-          <footer className="mt-8 border-t border-[#c9c0ae] pt-5 text-[12px] leading-6 text-[#766d5e]">申请单只能证明周惜曾经把林知还填为关系人。恢复程序在同一份账户导出中发现了事故前五小时的消息缓存，并将它另存到了浏览器的下载内容。</footer>
+          <footer className="mt-8 border-t border-[#c9c0ae] pt-5 text-[12px] leading-6 text-[#766d5e]">申请单只能证明周惜曾经把林知还填为关系人，不能证明项目向她承诺的事情真实存在。</footer>
         </section>
       </main>
     </div>

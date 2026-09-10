@@ -16,7 +16,6 @@ const FORUM_PATHS: Record<string, string> = {
 export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRoute | null {
   const value = input.trim();
   if (!value) return null;
-  if (value === "browser://downloads") return { tab: "downloads", query: "" };
   if (value === "browser://history") return { tab: "history", query: "" };
   const looksLikeUrl = /^[a-z][a-z\d+.-]*:\/\//i.test(value) || /^[a-z\d-]+(?:\.[a-z\d-]+)+(?:[/:?#].*)?$/i.test(value);
   if (!looksLikeUrl) return { tab: "search", query: value };

@@ -5,16 +5,15 @@ import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
 
-test("the late bridge is learned from the dead account instead of recovered downloads", async () => {
+test("the late bridge is learned from the dead account and downloads are absent", async () => {
   const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
   const activity = await readFile(path.join(root, "app/activity-page.tsx"), "utf8");
-  const downloads = await readFile(path.join(root, "app/browser-record-pages.tsx"), "utf8");
+  const records = await readFile(path.join(root, "app/browser-record-pages.tsx"), "utf8");
 
   assert.match(page, /if \(tab === "obituary"\) setObituarySeen\(true\)/);
   assert.match(page, /<SurvivorProfile obituarySeen=\{obituarySeen\}/);
   assert.match(activity, /obituarySeen[\s\S]*网页缓存：此页存在两个版本[\s\S]*R-06-4[\s\S]*《无相尊略传》/);
-  assert.match(downloads, /暂无下载记录/);
-  assert.doesNotMatch(page + downloads, /accountArchiveAvailable|messageCacheAvailable|download-ready-dot|潮汐失眠_账户数据导出|事故前消息缓存/);
+  assert.doesNotMatch(page + records, /下载内容|DownloadsPage|accountArchiveAvailable|messageCacheAvailable|download-ready-dot|潮汐失眠_账户数据导出|事故前消息缓存/);
 });
 
 test("the hagiography transforms Gu's life and leaves one natural source title", async () => {
@@ -35,9 +34,11 @@ test("the North page confirms place and control through a reused corridor, not a
 
   assert.match(search, /无相尊略传[\s\S]*openDaluoBiography/);
   assert.match(search, /北麓旧院口述史整理项目[\s\S]*openBeiluOralHistory/);
-  for (const clue of ["海岬和济医院东院", "安时生命关怀基金会", "基金会发起人", "进场与钥匙由基金会项目办公室统一登记", "inn-corridor-original.webp"]) {
+  for (const clue of ["海岬和济医院东院", "安时生命关怀基金会", "进场与钥匙由基金会项目办公室统一登记", "inn-corridor-original.webp"]) {
     assert.ok(qichao.includes(clue), clue);
   }
+  const beilu = qichao.slice(qichao.indexOf("export function BeiluOralHistoryPage"));
+  assert.doesNotMatch(beilu, /顾惟真/);
   assert.doesNotMatch(qichao, /<button|临潮重症援助|QC-AID-19|输入|下一页/);
   assert.deepEqual(navigation.resolveBrowserInput("linchuan-memory.example/texts/wuxiang-zun", true), { tab: "daluo-biography", query: "" });
   assert.deepEqual(navigation.resolveBrowserInput("linchuan-memory.example/projects/beilu-old-hospital", true), { tab: "beilu-oral-history", query: "" });

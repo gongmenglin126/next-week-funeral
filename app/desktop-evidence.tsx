@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { ArrowLeft, ArrowRight, Download, FileSearch, FolderClosed, Image as ImageIcon, LockKeyhole, Trash2, X, ZoomIn, ZoomOut } from "lucide-react";
+import { ArrowLeft, ArrowRight, FileSearch, FolderClosed, Image as ImageIcon, LockKeyhole, Trash2, X, ZoomIn, ZoomOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DELETED_PHOTO, visiblePhotos, type TravelPhoto } from "@/lib/photo-library";
@@ -38,10 +38,10 @@ export function PhotoViewer({ photo, onClose, onPrevious, onNext }: {
   </section>;
 }
 
-export function DesktopPanel({ kind, restoredPhoto, privateAlbumUnlocked, onRestorePhoto, onUnlockPrivateAlbum, onClose, onDownloads, onPanelChange, position, onPositionChange }: {
+export function DesktopPanel({ kind, restoredPhoto, privateAlbumUnlocked, onRestorePhoto, onUnlockPrivateAlbum, onClose, onPanelChange, position, onPositionChange }: {
   kind: DesktopPanelKind; restoredPhoto: boolean; onRestorePhoto: () => void;
   privateAlbumUnlocked: boolean; onUnlockPrivateAlbum: () => void;
-  onClose: () => void; onDownloads: (name?: string) => void; onPanelChange: (kind: DesktopPanelKind) => void;
+  onClose: () => void; onPanelChange: (kind: DesktopPanelKind) => void;
   position?: WindowPoint | null; onPositionChange?: (point: WindowPoint) => void;
 }) {
   const [selected, setSelected] = useState<string | null>(null);
@@ -64,15 +64,14 @@ export function DesktopPanel({ kind, restoredPhoto, privateAlbumUnlocked, onRest
       <aside aria-label="文件位置">
         <span>位置</span>
         <button className={`panel-nav ${kind === "files" ? "active" : ""}`} onClick={() => switchPanel("files")} aria-current={kind === "files" ? "page" : undefined}><FolderClosed />雾汀旅行</button>
-        <button className="panel-nav" onClick={() => onDownloads()}><Download />下载</button>
         <button className={`panel-nav ${kind === "photos" ? "active" : ""}`} onClick={() => switchPanel("photos")} aria-current={kind === "photos" ? "page" : undefined}><ImageIcon />照片</button>
         <button className={`panel-nav ${kind === "trash" ? "active" : ""}`} onClick={() => switchPanel("trash")} aria-current={kind === "trash" ? "page" : undefined}><Trash2 />回收站</button>
       </aside>
       <section className="desktop-panel-content">
         <div><h2>{kind === "photos" && photoSection === "private" ? "隐私相册" : title}</h2><p>{kind === "photos" ? photoSection === "private" ? "已锁定的个人相册" : `${photos.length} 张照片 · 1 个隐私相册` : kind === "trash" ? `${restoredPhoto ? 0 : 1} 个项目` : "旅行资料"}</p></div>
-        {kind === "files" ? <p className="evidence-empty">文件夹为空。</p> : kind === "trash" ? restoredPhoto ? <p className="evidence-empty" role="status">回收站为空。已恢复的裁剪副本保存在照片中。</p> : <>
+        {kind === "files" ? <p className="evidence-empty">文件夹为空。</p> : kind === "trash" ? restoredPhoto ? <p className="evidence-empty" role="status">回收站为空。</p> : <>
           {current ? <PhotoViewer key={current.id} photo={current} onClose={() => setSelected(null)} /> : <button className="deleted-photo-row" onClick={() => setSelected(DELETED_PHOTO.id)}><FileSearch /><span><strong>{DELETED_PHOTO.id}</strong><small>8月25日 04:38 删除 · 原位置：旅行照片</small></span><ArrowRight /></button>}
-          <div className="restore-photo"><Button variant="outline" onClick={() => { onRestorePhoto(); setSelected(null); }}>恢复到照片</Button><small>恢复的是这份裁剪副本。</small></div>
+          <div className="restore-photo"><Button variant="outline" onClick={() => { onRestorePhoto(); setSelected(null); }}>恢复到照片</Button></div>
         </> : photoSection === "private" ? <PrivateAlbumContent unlocked={privateAlbumUnlocked} onUnlock={onUnlockPrivateAlbum} onBack={() => setPhotoSection("library")} /> : current ? <PhotoViewer key={current.id} photo={current} onClose={() => setSelected(null)} onPrevious={() => movePhoto(-1)} onNext={() => movePhoto(1)} /> : <div className="photo-grid">
           <button className="private-album-tile" onClick={() => setPhotoSection("private")}><div className="private-album-cover"><LockKeyhole aria-hidden="true" /></div><strong>隐私相册</strong><small>{privateAlbumUnlocked ? "4 张照片" : "已锁定"}</small></button>
           {photos.map((photo) => <button key={photo.id} onClick={() => setSelected(photo.id)}><div className={`evidence-thumbnail ${photo.cropped ? "is-cropped" : ""}`}><img src={photo.src} alt={photo.alt} /></div><strong>{photo.id}</strong><small>{photo.time} · {photo.location}</small></button>)}

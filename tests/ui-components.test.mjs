@@ -34,18 +34,16 @@ test("the travel account renders exactly five visible bookings, not the secret s
   assert.equal((render(finished).match(/class="ota-state cancelled"/g) ?? []).length, 5);
 });
 
-test("notes keep the starting clue and downloads no longer expose the lighthouse ticket", async () => {
+test("notes keep the starting clue and the browser no longer exposes downloads", async () => {
   const { NotesPanel } = await vite.ssrLoadModule("/app/chapter-one.tsx");
-  const { DownloadsPage } = await vite.ssrLoadModule("/app/browser-record-pages.tsx");
   const { TICKET_SUFFIX } = await vite.ssrLoadModule("/lib/chapter-one.ts");
   const notes = renderToStaticMarkup(React.createElement(NotesPanel, { checked: [], onCheck() {}, onClose() {} }));
   assert.match(notes, /泊岸旅行/);
   assert.equal((notes.match(/role="checkbox"/g) ?? []).length, 5);
   assert.doesNotMatch(notes, /安时|葬礼|一滴泪/);
-  const downloads = renderToStaticMarkup(React.createElement(DownloadsPage));
-  assert.match(downloads, /暂无下载记录/);
-  assert.doesNotMatch(downloads, /灯塔接驳电子票/);
-  assert.doesNotMatch(downloads, /潮汐失眠_账户数据导出|事故前消息缓存|设备恢复/);
+  const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  const records = await readFile(path.join(root, "app/browser-record-pages.tsx"), "utf8");
+  assert.doesNotMatch(page + records, /下载内容|DownloadsPage|navigate\("downloads"\)/);
   const chapter = await readFile(path.join(root, "app/chapter-one.tsx"), "utf8");
   assert.match(chapter, /TICKET_SUFFIX/);
   assert.equal(TICKET_SUFFIX, "7642");

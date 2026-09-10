@@ -1,11 +1,11 @@
-import { ArrowUpRight, Download, Globe2, History } from "lucide-react";
+import { ArrowUpRight, Globe2, History } from "lucide-react";
 import type { BrowserRoute } from "@/lib/browser-navigation";
 import { browserAddress, browserTabLabel } from "@/lib/browser-tabs";
 
 export function visitedHistory(routes: BrowserRoute[]) {
   const seen = new Set<string>();
   return [...routes].reverse().flatMap((route) => {
-    if (["history", "downloads", "not-found"].includes(route.tab) || (route.tab === "search" && !route.query.trim())) return [];
+    if (["history", "not-found"].includes(route.tab) || (route.tab === "search" && !route.query.trim())) return [];
     const key = `${route.tab}:${route.query}`;
     if (seen.has(key)) return [];
     seen.add(key);
@@ -29,15 +29,6 @@ export function HistoryPage({ navigate, routes }: { navigate: (action: string, q
           <time>{index === 0 ? "刚刚" : `${index + 1}步前`}</time><Globe2 /><span><strong>{entry.title}</strong><small>{entry.url}</small></span><ArrowUpRight aria-hidden="true" />
         </button>)}
       </section>}
-    </div>
-  );
-}
-
-export function DownloadsPage() {
-  return (
-    <div className="browser-record-page">
-      <header><Download /><div><h2>下载内容</h2><p>本机下载记录</p></div></header>
-      <p className="evidence-empty">暂无下载记录。</p>
     </div>
   );
 }

@@ -70,7 +70,6 @@ export function BeiluOralHistoryPage() {
           <dl className="divide-y divide-[#d4dad6] text-[13px] leading-7">
             <div className="grid gap-2 px-6 py-5 md:grid-cols-[150px_1fr]"><dt className="font-semibold text-[#52655b]">场地提供</dt><dd>海岬和济医院院史办公室</dd></div>
             <div className="grid gap-2 px-6 py-5 md:grid-cols-[150px_1fr]"><dt className="font-semibold text-[#52655b]">修缮与运营支持</dt><dd><strong className="font-semibold text-[#3d4d45]">安时生命关怀基金会</strong></dd></div>
-            <div className="grid gap-2 px-6 py-5 md:grid-cols-[150px_1fr]"><dt className="font-semibold text-[#52655b]">基金会发起人</dt><dd>顾惟真</dd></div>
             <div className="grid gap-2 px-6 py-5 md:grid-cols-[150px_1fr]"><dt className="font-semibold text-[#52655b]">修缮后用途</dt><dd>口述访谈、生命教育及阶段性线下活动；进场与钥匙由基金会项目办公室统一登记。</dd></div>
           </dl>
         </div>

@@ -4,7 +4,6 @@ export const BROWSER_URLS: Record<string, string> = {
   trip: "boan.example/account/orders",
   forum: "wuting-talk.example/latest",
   history: "browser://history",
-  downloads: "browser://downloads",
   ride: "anshi.example/booking/WT-0831-2140",
   activity: ACTIVITY_URL,
   survivor: "wuting-talk.example/u/rain-after",
@@ -28,7 +27,6 @@ export const BROWSER_LABELS: Record<string, string> = {
   trip: "泊岸旅行",
   forum: "雾汀同城",
   history: "历史记录",
-  downloads: "下载内容",
   search: "雾搜",
   ride: "安时接送",
   activity: "安时活动服务",
@@ -53,7 +51,6 @@ export const BROWSER_LABELS: Record<string, string> = {
 const OPTIONAL_TABS = [
   "forum",
   "history",
-  "downloads",
   "activity",
   "survivor",
   "lost-cat",

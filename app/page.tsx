@@ -8,7 +8,6 @@ import {
   BatteryFull,
   Bell,
   Bookmark,
-  Download,
   FolderClosed,
   Globe2,
   History,
@@ -30,7 +29,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { allOrdersCancelled, chapterReducer, initialChapterState } from "@/lib/chapter-one";
 import { browserAddress, browserTabLabel, closeBrowserTabHistory, visibleBrowserTabs } from "@/lib/browser-tabs";
 import { NotesPanel, SecretRide, TravelPlatform } from "./chapter-one";
-import { DownloadsPage, HistoryPage } from "./browser-record-pages";
+import { HistoryPage } from "./browser-record-pages";
 import { DesktopPanel, type DesktopPanelKind } from "./desktop-evidence";
 import { SearchBox } from "./search-box";
 import { ForumPage } from "./forum-page";
@@ -155,7 +154,7 @@ export default function Home() {
             {displayedTabs.map((tab) => {
               const label = browserTabLabel(tab, routes);
               return <div className="browser-tab" data-pinned={tab === "search"} key={tab}>
-                <TabsTrigger value={tab}>{tab === "trip" ? <Plane /> : tab === "downloads" ? <Download /> : tab === "history" ? <History /> : <Globe2 />}<span>{label}</span></TabsTrigger>
+                <TabsTrigger value={tab}>{tab === "trip" ? <Plane /> : tab === "history" ? <History /> : <Globe2 />}<span>{label}</span></TabsTrigger>
                 {tab !== "search" && <button type="button" className="browser-tab-close" aria-label={`关闭${label}页签`} title={`关闭${label}`} onClick={() => closeBrowserTab(tab)}><X /></button>}
               </div>;
             })}
@@ -171,17 +170,15 @@ export default function Home() {
               {bookmarkOpen && <div className="browser-popover"><strong>书签</strong><button type="button" onClick={() => navigate("forum")}>雾汀同城</button>{travelDiscovered && <button type="button" onClick={() => navigate("trip")}>泊岸旅行 · 我的订单</button>}</div>}
             </div>
             <Button type="button" variant="ghost" size="icon-sm" aria-label="历史记录" onClick={() => navigate("history")}><History /></Button>
-            <Button type="button" variant="ghost" size="icon-sm" aria-label="下载内容" onClick={() => navigate("downloads")}><Download /></Button>
             <div className="browser-action-wrap">
               <Button type="button" variant="ghost" size="icon-sm" aria-label="浏览器菜单" onClick={() => { setBrowserMenuOpen(!browserMenuOpen); setBookmarkOpen(false); }}><Menu /></Button>
-              {browserMenuOpen && <div className="browser-popover menu-popover"><button type="button" onClick={() => navigate("history")}><History />历史记录</button><button type="button" onClick={() => navigate("downloads")}><Download />下载内容</button><button type="button" onClick={() => { setDesktopPanel("notes"); setBrowserMenuOpen(false); }}><NotebookPen />打开记事本</button></div>}
+              {browserMenuOpen && <div className="browser-popover menu-popover"><button type="button" onClick={() => navigate("history")}><History />历史记录</button><button type="button" onClick={() => { setDesktopPanel("notes"); setBrowserMenuOpen(false); }}><NotebookPen />打开记事本</button></div>}
             </div>
           </form>
           <div className="browser-viewport">
             <TabsContent forceMount value="trip" className="min-h-full data-[state=inactive]:hidden"><TravelPlatform state={chapter} onCancel={dispatch} /></TabsContent>
             <TabsContent forceMount value="forum" className="min-h-full bg-[#f4f1e9] data-[state=inactive]:hidden"><ForumPage unlocked={unlocked} thread={activeTab === "forum" ? query || null : null} setThread={(title) => navigate("forum", title ?? "")} /></TabsContent>
             <TabsContent forceMount value="history" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><HistoryPage routes={routes.slice(0, routeIndex + 1)} navigate={navigate} /></TabsContent>
-            <TabsContent forceMount value="downloads" className="min-h-full bg-[#fbfcfc] data-[state=inactive]:hidden"><DownloadsPage /></TabsContent>
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={`search-box:${query}`} query={query} onSearch={submitBrowserInput} />
@@ -209,7 +206,7 @@ export default function Home() {
         </Tabs>
       </section>
 
-      {desktopPanel === "notes" ? <NotesPanel position={notePosition} onPositionChange={setNotePosition} checked={checked} onCheck={(id) => setChecked((oldChecked) => oldChecked.includes(id) ? oldChecked.filter((value) => value !== id) : [...oldChecked, id])} onClose={() => setDesktopPanel(null)} /> : desktopPanel ? <DesktopPanel key={desktopPanel} position={evidencePosition} onPositionChange={setEvidencePosition} kind={desktopPanel} restoredPhoto={restoredPhoto} privateAlbumUnlocked={privateAlbumUnlocked} onRestorePhoto={() => setRestoredPhoto(true)} onUnlockPrivateAlbum={() => setPrivateAlbumUnlocked(true)} onClose={() => setDesktopPanel(null)} onDownloads={(name) => navigate("downloads", name)} onPanelChange={setDesktopPanel} /> : null}
+      {desktopPanel === "notes" ? <NotesPanel position={notePosition} onPositionChange={setNotePosition} checked={checked} onCheck={(id) => setChecked((oldChecked) => oldChecked.includes(id) ? oldChecked.filter((value) => value !== id) : [...oldChecked, id])} onClose={() => setDesktopPanel(null)} /> : desktopPanel ? <DesktopPanel key={desktopPanel} position={evidencePosition} onPositionChange={setEvidencePosition} kind={desktopPanel} restoredPhoto={restoredPhoto} privateAlbumUnlocked={privateAlbumUnlocked} onRestorePhoto={() => setRestoredPhoto(true)} onUnlockPrivateAlbum={() => setPrivateAlbumUnlocked(true)} onClose={() => setDesktopPanel(null)} onPanelChange={setDesktopPanel} /> : null}
 
       {(chapter.notification === "visible" || notificationCentre) && <aside className="chapter-notification" role="status" aria-live="polite" aria-label={unlocked ? "安时接送通知" : "通知中心"}>
         <header><Bell /><strong>{unlocked ? "安时接送 · 行程提醒" : "通知中心"}</strong><button aria-label="收起通知" onClick={closeNotification}><X /></button></header>

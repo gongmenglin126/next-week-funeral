@@ -55,5 +55,5 @@ test("the founder trail reveals biography, interview, and poem progressively", a
   const interview = await readFile(path.join(root, "app/founder-deep-pages.tsx"), "utf8");
   assert.match(biography, /selected.number === "06"[\s\S]*顾惟真的书房/);
   assert.match(interview, /onOpenPoem[\s\S]*查看顾惟真刊载旧作《山居杂记》/);
-  assert.match(interview, /大罗无相尊[\s\S]*您可以直接否认吗[\s\S]*这不是一个否认[\s\S]*我知道/);
+  assert.doesNotMatch(interview, /您可以直接否认吗|这不是一个否认|我不替别人规定应当相信什么/);
 });
