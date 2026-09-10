@@ -20,14 +20,15 @@ test("R-06-4 stays out of the seventh archive and appears on the independent use
   assert.match(profile, /SurvivorIndexPage[\s\S]*8月17日 02:41[\s\S]*8月19日 09:06[\s\S]*R-06-4[\s\S]*这不是《无相尊略传》里的话吗？/);
 });
 
-test("the photographed address opens the manual while internal labels are not search keywords", async () => {
+test("the secret address is assembled across three trails and cannot be opened early", async () => {
   const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
   const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
   const navigation = await readFile(path.join(root, "lib/browser-navigation.ts"), "utf8");
 
   assert.doesNotMatch(search, /normalized\.toUpperCase\(\) === "R-06-4"|"S-17", "S17"|normalized\.toUpperCase\(\) === "QC-AID-19"/);
   assert.doesNotMatch(navigation, /snapshot\/R-06-4|rules\/S-17|QC-AID-19/);
-  assert.match(navigation, /\/witness\/r06-4["']\) return \{ tab: "anshi-manual"/);
+  assert.match(navigation, /\/witness\/r06-4["'] && access\.manual/);
+  assert.match(page, /hasVisited\("fanatic-profile"\)[\s\S]*hasVisited\("activity", "archive\/07"\)[\s\S]*hasVisited\("survivor-index"\)/);
   assert.match(page, /AnshiManualPage[\s\S]*SeventhApplicationPage[\s\S]*ZhouGuMessagePage/);
   await assert.rejects(access(path.join(root, "app/anshi-internal-pages.tsx")));
 });

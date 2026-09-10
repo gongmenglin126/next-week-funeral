@@ -42,7 +42,7 @@ import { BeiluOralHistoryPage, DaluoBiographyPage } from "./qichao-pages";
 import { AnshiManualPage, FanaticProfilePage } from "./anshi-secret-pages";
 import { SeventhApplicationPage } from "./seventh-application-page";
 import { AccidentDossierPage, EndingScreen, FanaticArchivePage, ZhouGuMessagePage } from "./final-trail-pages";
-import { resolveBrowserInput, type BrowserRoute } from "@/lib/browser-navigation";
+import { resolveBrowserInput, type BrowserAccess, type BrowserRoute } from "@/lib/browser-navigation";
 import type { WindowPoint } from "@/lib/window-position";
 
 export default function Home() {
@@ -54,6 +54,7 @@ export default function Home() {
   const [notePosition, setNotePosition] = useState<WindowPoint | null>(null);
   const [evidencePosition, setEvidencePosition] = useState<WindowPoint | null>(null);
   const [routes, setRoutes] = useState<BrowserRoute[]>([{ tab: "search", query: "" }]);
+  const [visitedPages, setVisitedPages] = useState<string[]>(["search:"]);
   const [routeIndex, setRouteIndex] = useState(0);
   const [address, setAddress] = useState("");
   const [travelDiscovered, setTravelDiscovered] = useState(false);
@@ -70,10 +71,22 @@ export default function Home() {
   const visibleTabs = visibleBrowserTabs(routes, travelDiscovered, unlocked);
   // The ride tab is only exposed after its notification has actually been opened.
   const displayedTabs = visibleTabs.filter((tab) => tab !== "ride" || routes.some((item) => item.tab === "ride"));
+  const hasVisited = (tab: string, pageQuery?: string) => pageQuery === undefined
+    ? visitedPages.some((key) => key.startsWith(`${tab}:`))
+    : visitedPages.includes(`${tab}:${pageQuery}`);
+  const browserAccess: BrowserAccess = {
+    manual: hasVisited("fanatic-profile") && hasVisited("activity", "archive/07") && hasVisited("survivor-index"),
+    application: hasVisited("anshi-manual"),
+    message: hasVisited("seventh-application"),
+    fanaticArchive: hasVisited("zhou-gu-message"),
+    accident: hasVisited("fanatic-archive"),
+  };
 
   function navigate(tab: string, nextQuery = "") {
     if (tab === "ride" && !unlocked) return;
     if (tab === "trip") setTravelDiscovered(true);
+    const visitKey = `${tab}:${nextQuery}`;
+    setVisitedPages((oldPages) => oldPages.includes(visitKey) ? oldPages : [...oldPages, visitKey]);
     setRoutes((oldRoutes) => [...oldRoutes.slice(0, routeIndex + 1), { tab, query: nextQuery }]);
     setRouteIndex(routeIndex + 1);
     setAddress(browserAddress(tab, nextQuery));
@@ -101,7 +114,7 @@ export default function Home() {
     submitBrowserInput(address);
   }
   function submitBrowserInput(value: string) {
-    const target = resolveBrowserInput(value, unlocked);
+    const target = resolveBrowserInput(value, unlocked, browserAccess);
     if (target) navigate(target.tab, target.query);
   }
   function openRide() { dispatch({ type: "dismiss-notification" }); setNotificationCentre(false); navigate("ride"); }
@@ -186,7 +199,7 @@ export default function Home() {
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={`search-box:${query}`} query={query} onSearch={submitBrowserInput} />
-              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openSurvivorIndex={() => navigate("survivor-index")} openFounder={() => navigate("founder-profile")} openFounderInterview={() => navigate("founder-interview")} openFounderPoem={() => navigate("founder-poem")} openFounderCollection={() => navigate("founder-collection")} openBuddhistSale={() => navigate("buddhist-sale")} openDaluoBiography={() => navigate("daluo-biography")} openBeiluOralHistory={() => navigate("beilu-oral-history")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} openFanaticProfile={() => navigate("fanatic-profile")} openFanaticArchive={() => navigate("fanatic-archive")} openAccidentDossier={() => navigate("accident-dossier")} />
+              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} fanaticArchiveUnlocked={Boolean(browserAccess.fanaticArchive)} accidentUnlocked={Boolean(browserAccess.accident)} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openSurvivorIndex={() => navigate("survivor-index")} openFounder={() => navigate("founder-profile")} openFounderInterview={() => navigate("founder-interview")} openFounderPoem={() => navigate("founder-poem")} openFounderCollection={() => navigate("founder-collection")} openBuddhistSale={() => navigate("buddhist-sale")} openDaluoBiography={() => navigate("daluo-biography")} openBeiluOralHistory={() => navigate("beilu-oral-history")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} openFanaticProfile={() => navigate("fanatic-profile")} openFanaticArchive={() => navigate("fanatic-archive")} openAccidentDossier={() => navigate("accident-dossier")} />
             </TabsContent>
             <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden">{query === "community" ? <CommunityPage onOpenWitness={() => navigate("activity", "witness")} onOpenFoundation={() => navigate("activity", "foundation")} /> : query === "witness" ? <WitnessPage onBack={() => navigate("activity", "community")} onOpenProfile={() => navigate("survivor")} /> : query === "foundation" ? <FoundationPage onBack={() => navigate("activity", "community")} /> : query === "archive/07" ? <HiddenSeventhPage onBack={() => navigate("activity")} /> : query.startsWith("archive/") ? <ActivityArchivePage issue={query.slice(-2)} onBack={() => navigate("activity")} /> : <ActivityPage onOpenRide={unlocked ? openRide : undefined} onOpenArchive={(issue) => navigate("activity", `archive/${issue}`)} />}</TabsContent>
             <TabsContent value="survivor" className="min-h-full data-[state=inactive]:hidden"><SurvivorProfile /></TabsContent>

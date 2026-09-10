@@ -119,6 +119,8 @@ export function SearchResults({
   openFanaticProfile,
   openFanaticArchive,
   openAccidentDossier,
+  fanaticArchiveUnlocked,
+  accidentUnlocked,
 }: {
   query: string;
   unlocked: boolean;
@@ -143,6 +145,8 @@ export function SearchResults({
   openFanaticProfile: () => void;
   openFanaticArchive: () => void;
   openAccidentDossier: () => void;
+  fanaticArchiveUnlocked: boolean;
+  accidentUnlocked: boolean;
 }) {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const normalized = query.normalize("NFKC").replace(/\s+/g, "");
@@ -209,11 +213,11 @@ export function SearchResults({
 
   if (isActivitySearch(query)) return <div className="mt-8"><button className="search-result" onClick={openActivity}><small className="text-[#78957e]">anshi.example/activities · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">安时活动服务 · 雾汀生命关怀</h3><p className="text-xs text-[#8493a4]">线下交流、活动介绍与预约咨询。</p></button></div>;
   if (query.replace(/\s+/g, "") === "归潮见证") return <div className="mt-8"><button className="search-result" onClick={openCommunity}><small className="text-[#78957e]">guichao.example · 病友互助社区</small><h3 className="my-3 text-xl text-[#286ab3]">归潮见证｜病友与家属互助社区</h3><p className="text-xs text-[#8493a4]">匿名记录治疗、陪护和告别中的真实问题。</p></button></div>;
-  if (normalized === "近身见证") return <div className="mt-8 max-w-[860px]">
+  if (normalized === "近身见证" && fanaticArchiveUnlocked) return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openFanaticArchive}><small className="text-[#78957e]">归岸者旧站 · 删除页镜像</small><h3 className="my-3 text-xl text-[#286ab3]">近身见证｜小组公开页</h3><p className="text-xs text-[#8493a4]">原页面已删除。搜索引擎保留了8月25日清晨前的最后一次收录。</p><code className="mt-2 block text-[10px] text-[#718c76]">guian-archive.example/groups/close-witness</code></button>
   </div>;
-  if (normalized.toUpperCase().replace(/[·•.-]/g, "") === "LC7M21") return <div className="mt-8 max-w-[860px]">
+  if (normalized.toUpperCase().replace(/[·•.-]/g, "") === "LC7M21" && accidentUnlocked) return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openAccidentDossier}><small className="text-[#78957e]">雾汀交通事故影像协查 · 8月26日更新</small><h3 className="my-3 text-xl text-[#286ab3]">沿海路口关联车辆｜LC·7M21</h3><p className="text-xs text-[#8493a4]">警方正在征集一辆白色七座车在事故发生前后的行驶信息。</p><code className="mt-2 block text-[10px] text-[#718c76]">wuting-traffic.example/case/LC-7M21</code></button>
   </div>;

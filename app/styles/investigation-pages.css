@@ -52,6 +52,33 @@
 .browser-missing p { margin: 0; font-size: 13px; }
 .browser-missing code { max-width: 100%; overflow-wrap: anywhere; font-size: 12px; }
 .browser-missing button { padding: 9px 18px; border: 1px solid #bcced6; border-radius: 7px; cursor: pointer; }
+
+.ending-takeover { animation: ending-takeover-in .55s steps(2, end); }
+.ending-note-window { animation: ending-note-open .32s cubic-bezier(.18,.8,.25,1); }
+.ending-note-reveal { animation: ending-note-reveal .55s ease-out; }
+.ending-note-cursor { animation: ending-note-cursor .8s steps(1, end) infinite; }
+
+@keyframes ending-takeover-in {
+  0% { filter: brightness(1); }
+  35% { filter: brightness(.2); }
+  55% { filter: brightness(.9); }
+  75% { filter: brightness(.35); }
+  100% { filter: brightness(1); }
+}
+
+@keyframes ending-note-open {
+  from { opacity: 0; transform: scale(.96) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes ending-note-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ending-note-cursor {
+  50% { opacity: 0; }
+}
 .activity-page { min-height: 100%; background: #faf9f3; color: #3f5149; }
 .activity-page > header { display: flex; align-items: center; gap: 12px; padding: 22px 7%; border-bottom: 1px solid #e1e5dc; }
 .activity-mark { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid #b8c5b7; border-radius: 50%; color: #687e66; font-family: serif; }

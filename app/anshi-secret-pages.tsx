@@ -37,11 +37,11 @@ export function FanaticProfilePage() {
 
         <article className="border border-[#8a7768] bg-[#e8dfcf] p-6 text-[#39332d] md:p-8">
           <div className="flex flex-wrap items-start justify-between gap-4"><div><small className="text-[#806f61]">8月20日 16:42 · 志愿者资料</small><h2 className="mt-2 font-serif text-[25px] font-normal">新来的，先照这张填写</h2></div><ClipboardList aria-hidden="true" className="size-7 text-[#6f5c50]" /></div>
-          <p className="mt-4 text-[14px] leading-7 text-[#61584f]">别把见证写成病历，也别擅自替先生解释。修订口径都在附件页脚，传出去之前自己对一遍。</p>
+          <p className="mt-4 text-[14px] leading-7 text-[#61584f]">别把见证写成病历，也别擅自替先生解释。外发复核的主机和路径分开传，传出去之前自己对一遍。</p>
           <figure className="mt-6 rotate-[-.7deg] border border-[#b8aa94] bg-[#f8f3e8] p-5 shadow-[0_12px_30px_rgba(58,43,29,.18)] md:p-7">
             <figcaption className="border-b border-[#cfc2ae] pb-4 text-[12px] tracking-[.14em] text-[#766958]">第七期见证人填写说明 · 内部打印件</figcaption>
             <div className="mt-5 grid gap-3 text-[13px] leading-7 text-[#655b50] md:grid-cols-2"><p>01　只写本人亲历，不引用诊断结论</p><p>02　称谓沿用当事人口述，不主动改写</p><p>03　结果描述以修订页为准</p><p>04　提交前确认当前版本号</p></div>
-            <footer className="mt-7 border-t border-[#cfc2ae] pt-4"><p className="text-[11px] text-[#857866]">外发复核镜像</p><code className="mt-2 block break-all font-mono text-[14px] font-semibold text-[#453c34]">anshi.example/witness/r06-4</code></footer>
+            <footer className="mt-7 border-t border-[#cfc2ae] pt-4"><p className="text-[11px] text-[#857866]">外发复核镜像 · 主机</p><code className="mt-2 block break-all font-mono text-[14px] font-semibold text-[#453c34]">anshi.example</code><p className="mt-2 text-[11px] text-[#857866]">路径见当期未公开页；版本以网页索引中的当前修订号为准。</p></footer>
           </figure>
         </article>
       </section>
