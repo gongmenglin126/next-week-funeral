@@ -6,14 +6,18 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 
-test("R-06-4 stays out of the seventh archive and appears only in the obituary-gated account cache", async () => {
+test("R-06-4 stays out of the seventh archive and appears on the independent user-page index", async () => {
   const activity = await readFile(path.join(root, "app/activity-page.tsx"), "utf8");
+  const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
+  const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
   const hiddenPage = activity.slice(activity.indexOf("export function HiddenSeventhPage"), activity.indexOf("export function CommunityPage"));
   const profile = activity.slice(activity.indexOf("export function SurvivorProfile"), activity.indexOf("export function ObituaryPage"));
 
   assert.doesNotMatch(hiddenPage, /R-06-4|无相尊略传|来信编号/);
   assert.match(hiddenPage, /归[\s\S]*潮[\s\S]*见[\s\S]*证/);
-  assert.match(profile, /obituarySeen[\s\S]*网页缓存：此页存在两个版本[\s\S]*8月17日 03:26[\s\S]*RC-03[\s\S]*8月19日 09:00[\s\S]*R-06-4[\s\S]*《无相尊略传》/);
+  assert.doesNotMatch(page + profile, /obituarySeen|网页缓存：此页存在两个版本/);
+  assert.match(search, /query\.trim\(\) === "程叙白"[\s\S]*openObituary[\s\S]*openSurvivorIndex/);
+  assert.match(profile, /SurvivorIndexPage[\s\S]*8月17日 02:41[\s\S]*8月19日 09:06[\s\S]*R-06-4[\s\S]*这不是《无相尊略传》里的话吗？/);
 });
 
 test("internal identifiers remain labels rather than searchable doors", async () => {

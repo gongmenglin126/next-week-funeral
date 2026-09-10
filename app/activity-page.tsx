@@ -63,8 +63,56 @@ export function WitnessPage({ onBack, onOpenProfile }: { onBack: () => void; onO
   return <div className="community-page witness-page"><CommunityHeader /><main><button className="activity-back" onClick={onBack}><ArrowLeft />返回归潮见证</button><p className="activity-eyebrow">COMMUNITY / RECORD 06</p><h1>雨停以后</h1><p className="witness-lead">第六期参与者公开资料</p><article><p>“雨停以后”在社区持续记录治疗和日常生活。8月10日，他参加了安时在雾汀组织的第六期活动。</p><p>活动结束后，归潮见证收录了他的公开账号。资料最后更新于8月19日。</p></article><button className="witness-profile" onClick={onOpenProfile}><span>参与者账号</span><strong>雨停以后</strong><small>查看公开动态</small><ArrowUpRight /></button></main></div>;
 }
 
-export function SurvivorProfile({ obituarySeen }: { obituarySeen: boolean }) {
-  return <div className="survivor-page"><header><strong>雾汀同城</strong><span>用户资料</span></header><main><section className="survivor-profile"><div className="survivor-avatar">雨</div><div><h1>雨停以后</h1><p>第六期活动参与者｜安时活动志愿答疑</p><small>账号当前仅展示 · 互动功能受限</small></div></section><details className="profile-history-toggle"><summary>查看资料修改记录</summary><section className="profile-history" aria-label="资料修改记录"><div><time>8月18日 09:03</time><p>个人简介修改为“第六期活动参与者｜安时活动志愿答疑”</p></div><div><time>7月2日 01:14</time><p>原简介：肺腺癌晚期。只是记录，不卖东西。<strong>米粒</strong>是一只猫。</p></div></section></details><section className="profile-posts"><h2>公开动态</h2><article><time>8月19日 09:00</time><p>今天状态还可以，谢谢大家关心。之后会慢慢恢复更新。</p></article><article><time>8月16日 02:11</time><p>市二医院终于协调到了床位，明天住院。最近没力气，<strong>米粒</strong>一直挨着我，可能不会再更。</p></article><article><time>8月9日 01:47</time><p>今天吐得厉害，半夜还是想吃码头那家的甜豆花。<strong>米粒</strong>把药盒推到地上以后，就一直趴在床边。</p></article></section>{obituarySeen ? <details className="profile-history-toggle"><summary>网页缓存：此页存在两个版本</summary><section className="profile-history" aria-label="公开页面版本差异"><div><time>8月17日 03:26</time><p>治丧信息记录程叙白病逝。</p></div><div><time>8月18日 09:03</time><p>维护账号 <strong>RC-03</strong> 接管资料，改写个人简介。</p></div><div><time>8月19日 09:00</time><p>账号以原用户口吻发布“今天状态还可以”。</p></div><div><time>R-06-4</time><p>内部修订备注：不增补死亡信息；保留原账号语气与更新频率，继续公开回访。</p></div><div><time>增补段落</time><p>“诸神皆默，惟尊听见。生者所得，必有来处。”——摘自<strong>《无相尊略传》</strong></p></div></section></details> : null}</main></div>;
+export function SurvivorProfile() {
+  return <div className="survivor-page"><header><strong>雾汀同城</strong><span>用户资料</span></header><main><section className="survivor-profile"><div className="survivor-avatar">雨</div><div><h1>雨停以后</h1><p>第六期活动参与者｜安时活动志愿答疑</p><small>账号当前仅展示 · 互动功能受限</small></div></section><details className="profile-history-toggle"><summary>查看资料修改记录</summary><section className="profile-history" aria-label="资料修改记录"><div><time>8月18日 09:03</time><p>个人简介修改为“第六期活动参与者｜安时活动志愿答疑”</p></div><div><time>7月2日 01:14</time><p>原简介：肺腺癌晚期。只是记录，不卖东西。<strong>米粒</strong>是一只猫。</p></div></section></details><section className="profile-posts"><h2>公开动态</h2><article><time>8月19日 09:00</time><p>今天状态还可以，谢谢大家关心。诸神皆默，唯我是我。之后会慢慢恢复更新。</p></article><article><time>8月16日 02:11</time><p>市二医院终于协调到了床位，明天住院。最近没力气，<strong>米粒</strong>一直挨着我，可能不会再更。</p></article><article><time>8月9日 01:47</time><p>今天吐得厉害，半夜还是想吃码头那家的甜豆花。<strong>米粒</strong>把药盒推到地上以后，就一直趴在床边。</p></article></section></main></div>;
+}
+
+export function SurvivorIndexPage() {
+  return <article className="min-h-full bg-[#e7e9e7] px-5 py-8 text-[#26302b] md:px-10 md:py-12">
+    <div className="mx-auto max-w-[940px] border border-[#aeb7b1] bg-[#f8f9f7] shadow-[0_18px_48px_rgba(39,49,44,.13)]">
+      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-[#bec6c1] bg-[#33413a] px-6 py-5 text-[#eef2ef] md:px-9">
+        <div><strong className="text-[15px] tracking-[.15em]">雾搜 · 网页索引</strong><p className="mt-1 text-[12px] text-white/55">公开网页版本记录</p></div>
+        <span className="border border-white/25 px-3 py-1 text-[12px] text-white/65">只读</span>
+      </header>
+
+      <main className="px-6 py-8 md:px-10 md:py-11">
+        <p className="text-[12px] tracking-[.15em] text-[#75827b]">WUTING-TALK / USER / RAIN-AFTER</p>
+        <h1 className="mt-3 font-serif text-[34px] font-normal leading-tight md:text-[44px]">“雨停以后”用户页索引记录</h1>
+        <p className="mt-5 max-w-[720px] text-[14px] leading-8 text-[#657169]">雾搜曾两次收录该公开页面。原网页只展示现行内容，以下为两次索引时保留的文字。</p>
+
+        <section className="mt-9 grid gap-5 md:grid-cols-2" aria-label="网页索引版本对比">
+          <article className="border border-[#c9cfcb] bg-white p-6">
+            <header className="border-b border-[#d9ddda] pb-4"><small className="text-[12px] text-[#7b8780]">第一次索引</small><h2 className="mt-2 text-[18px] font-semibold">8月17日 02:41</h2></header>
+            <dl className="mt-5 space-y-4 text-[13px] leading-7">
+              <div><dt className="text-[#89928d]">个人简介</dt><dd className="mt-1">肺腺癌晚期。只是记录，不卖东西。<strong>米粒</strong>是一只猫。</dd></div>
+              <div><dt className="text-[#89928d]">最后动态</dt><dd className="mt-1">8月16日 02:11　最近没力气，米粒一直挨着我，可能不会再更。</dd></div>
+            </dl>
+          </article>
+
+          <article className="border border-[#9daaa2] bg-[#f0f4f1] p-6">
+            <header className="border-b border-[#cbd3ce] pb-4"><small className="text-[12px] text-[#6f8076]">第二次索引</small><h2 className="mt-2 text-[18px] font-semibold">8月19日 09:06</h2></header>
+            <dl className="mt-5 space-y-4 text-[13px] leading-7">
+              <div><dt className="text-[#7c8a82]">个人简介</dt><dd className="mt-1">第六期活动参与者｜安时活动志愿答疑</dd></div>
+              <div><dt className="text-[#7c8a82]">新增动态</dt><dd className="mt-1">今天状态还可以，谢谢大家关心。<strong>诸神皆默，唯我是我。</strong>之后会慢慢恢复更新。</dd></div>
+            </dl>
+          </article>
+        </section>
+
+        <section className="mt-7 border border-[#b7c0ba] bg-[#edf0ee] px-6 py-5">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#c9d0cc] pb-4"><strong className="text-[14px]">页面差异</strong><span className="font-mono text-[12px] text-[#5f7167]">修订号 R-06-4</span></div>
+          <p className="mt-4 text-[13px] leading-7 text-[#5c6962]">8月18日09:03后，个人简介和最后动态均发生变化。</p>
+        </section>
+
+        <section className="mt-7 border-l-4 border-[#765d59] bg-[#f1e9e7] px-6 py-5">
+          <div className="flex flex-wrap items-center justify-between gap-3"><strong className="text-[13px] text-[#614946]">旧索引中仍保留的回复</strong><span className="text-[12px] text-[#927a76]">原页已删除</span></div>
+          <p className="mt-4 text-[15px] leading-8 text-[#4e4140]">“这不是《无相尊略传》里的话吗？”</p>
+          <small className="mt-2 block text-[12px] text-[#927a76]">8月19日 09:12</small>
+        </section>
+      </main>
+
+      <footer className="border-t border-[#c7ceca] px-6 py-5 text-[12px] leading-6 text-[#7a857f] md:px-10">索引地址：wuting-talk.example/u/rain-after · 页面内容不再更新</footer>
+    </div>
+  </article>;
 }
 
 export function ObituaryPage() {

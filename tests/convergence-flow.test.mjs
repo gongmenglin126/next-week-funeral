@@ -5,14 +5,15 @@ import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
 
-test("the late bridge is learned from the dead account and downloads are absent", async () => {
+test("the late bridge is learned from two real-name search results and downloads are absent", async () => {
   const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
   const activity = await readFile(path.join(root, "app/activity-page.tsx"), "utf8");
+  const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
   const records = await readFile(path.join(root, "app/browser-record-pages.tsx"), "utf8");
 
-  assert.match(page, /if \(tab === "obituary"\) setObituarySeen\(true\)/);
-  assert.match(page, /<SurvivorProfile obituarySeen=\{obituarySeen\}/);
-  assert.match(activity, /obituarySeen[\s\S]*网页缓存：此页存在两个版本[\s\S]*R-06-4[\s\S]*《无相尊略传》/);
+  assert.doesNotMatch(page + activity, /obituarySeen|网页缓存：此页存在两个版本/);
+  assert.match(search, /query\.trim\(\) === "程叙白"[\s\S]*程叙白先生讣告[\s\S]*雨停以后[\s\S]*米粒是一只猫/);
+  assert.match(activity, /SurvivorIndexPage[\s\S]*诸神皆默，唯我是我[\s\S]*R-06-4[\s\S]*《无相尊略传》/);
   assert.doesNotMatch(page + records, /下载内容|DownloadsPage|accountArchiveAvailable|messageCacheAvailable|download-ready-dot|潮汐失眠_账户数据导出|事故前消息缓存/);
 });
 
@@ -20,7 +21,7 @@ test("the hagiography transforms Gu's life and leaves one natural source title",
   const qichao = await readFile(path.join(root, "app/qichao-pages.tsx"), "utf8");
   const biography = qichao.slice(qichao.indexOf("export function DaluoBiographyPage"), qichao.indexOf("export function BeiluOralHistoryPage"));
 
-  for (const clue of ["晨暮持名", "观音、地藏", "同行者殁，而尊独归", "尽去旧供", "从诸神座前起身"]) {
+  for (const clue of ["晨暮持名", "观音、地藏", "诸神皆默，唯我是我", "同行者殁，而尊独归", "尽去旧供", "从诸神座前起身"]) {
     assert.ok(biography.includes(clue), clue);
   }
   assert.match(biography, /来源：[\s\S]*北麓旧院口述史整理项目/);
@@ -42,6 +43,7 @@ test("the North page confirms place and control through a reused corridor, not a
   assert.doesNotMatch(qichao, /<button|临潮重症援助|QC-AID-19|输入|下一页/);
   assert.deepEqual(navigation.resolveBrowserInput("linchuan-memory.example/texts/wuxiang-zun", true), { tab: "daluo-biography", query: "" });
   assert.deepEqual(navigation.resolveBrowserInput("linchuan-memory.example/projects/beilu-old-hospital", true), { tab: "beilu-oral-history", query: "" });
+  assert.deepEqual(navigation.resolveBrowserInput("wusou-index.example/pages/wuting-talk/rain-after", true), { tab: "survivor-index", query: "" });
   assert.equal(navigation.resolveBrowserInput("wusou-cache.example/snapshot/QC-AID-19", true)?.tab, "not-found");
   assert.equal(navigation.resolveBrowserInput("browser://downloads/recovered/account-export", true)?.tab, "not-found");
 });

@@ -35,7 +35,7 @@ export function DaluoPraiseThread({ onBack }: { onBack: () => void }) {
       <section className="mt-8 border-t border-[#d2d4d0] pt-7 text-[14px] leading-8 text-[#4d5550]">
         <p>前阵子逛旧书摊，和摊主闲聊时偶然听到这个名字。他说临川沿海以前有人拜“大罗无相尊”，信徒只需在心里默念其尊号，就有好事发生。我当时有点不屑一顾，当个风俗故事听了。</p>
         <p className="mt-5">后面有阵子我家里很不顺，母亲的手术因为没有床位改了两次日期。我突然想到了“大罗无相尊”，就在早晚各念了几遍。第二天下午医院突然通知有床位，母亲赶紧被安排住院。</p>
-        <p className="mt-5">我当时差点也信上这来历不明的无相尊，只是后来目前的手术并不顺利，过了三个月还是走了。</p>
+        <p className="mt-5">我当时差点也信上这来历不明的无相尊，只是后来母亲的手术并不顺利，过了三个月还是走了。</p>
         <p className="mt-5">在母亲葬礼上我又想起了无相尊，他到底算什么东西？也许我是心不诚吧。可是当我回想起摊主老板狂热的眼神，后知后觉他明明也是信徒其一并且企图给我传教...无相尊，真有此魅力吗？</p>
       </section>
 
@@ -105,6 +105,7 @@ export function SearchResults({
   openLostCat,
   openCommunityNotice,
   openObituary,
+  openSurvivorIndex,
   openFounder,
   openFounderInterview,
   openFounderPoem,
@@ -125,6 +126,7 @@ export function SearchResults({
   openLostCat: () => void;
   openCommunityNotice: () => void;
   openObituary: () => void;
+  openSurvivorIndex: () => void;
   openFounder: () => void;
   openFounderInterview: () => void;
   openFounderPoem: () => void;
@@ -203,7 +205,11 @@ export function SearchResults({
   if (query.replace(/\s+/g, "") === "归潮见证") return <div className="mt-8"><button className="search-result" onClick={openCommunity}><small className="text-[#78957e]">guichao.example · 病友互助社区</small><h3 className="my-3 text-xl text-[#286ab3]">归潮见证｜病友与家属互助社区</h3><p className="text-xs text-[#8493a4]">匿名记录治疗、陪护和告别中的真实问题。</p></button></div>;
   if (normalized === "米粒") return <div className="mt-8"><button className="search-result" onClick={openLostCat}><small className="text-[#78957e]">linchuan-pets.example · 临川寻宠互助</small><h3 className="my-3 text-xl text-[#286ab3]">寻猫启事｜米粒</h3><p className="text-xs text-[#8493a4]">灰白短毛猫，戴红色项圈。家属于8月18日发布。</p></button></div>;
   if (normalized.includes("青桐里3栋")) return <div className="mt-8"><button className="search-result" onClick={openCommunityNotice}><small className="text-[#78957e]">qingtongli.example · 青桐里社区服务站</small><h3 className="my-3 text-xl text-[#286ab3]">青桐里3栋居民治丧通知</h3><p className="text-xs text-[#8493a4]">社区便民信息 · 8月18日发布。</p></button></div>;
-  if (query.trim() === "程叙白") return <div className="mt-8"><button className="search-result" onClick={openObituary}><small className="text-[#78957e]">linchuan-memorial.example · 公共信息归档</small><h3 className="my-3 text-xl text-[#286ab3]">程叙白先生讣告</h3><p className="text-xs text-[#8493a4]">临川市治丧信息公示 · 8月18日登记。</p></button></div>;
+  if (query.trim() === "程叙白") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">2 条相关结果</p>
+    <button className="search-result" onClick={openObituary}><small className="text-[#78957e]">linchuan-memorial.example · 公共信息归档</small><h3 className="my-3 text-xl text-[#286ab3]">程叙白先生讣告</h3><p className="text-xs text-[#8493a4]">临川市治丧信息公示 · 8月18日登记。</p></button>
+    <button className="search-result" onClick={openSurvivorIndex}><small className="text-[#78957e]">雾搜网页索引 · 收录于8月17日</small><h3 className="my-3 text-xl text-[#286ab3]">雨停以后｜雾汀同城用户页</h3><p className="text-xs text-[#8493a4]">肺腺癌晚期。只是记录，不卖东西。米粒是一只猫。</p><code className="mt-2 block text-[10px] text-[#718c76]">wusou-index.example/pages/wuting-talk/rain-after</code></button>
+  </div>;
   if (normalized.replace(/[《》]/g, "") === "走到今天") return <div className="mt-8"><button className="search-result" onClick={openBiography}><small className="text-[#78957e]">mingchuan-books.example · 明川书局</small><h3 className="my-3 text-xl text-[#286ab3]">《走到今天》｜顾惟真口述自传</h3><p className="text-xs text-[#8493a4]">以七次访谈整理顾惟真的成长、创业和重病康复经历。</p></button></div>;
   if (normalized === "陆闻川") return <div className="mt-8"><button className="search-result" onClick={openLuMemorial}><small className="text-[#78957e]">linchuan-business.example · 历史报道归档</small><h3 className="my-3 text-xl text-[#286ab3]">澜序实业联合创办人陆闻川因交通事故去世</h3><p className="text-xs text-[#8493a4]">临川商讯 · 2016年11月4日A06版。</p></button></div>;
   if (normalized === "海岬和济医院") return <div className="mt-8"><button className="search-result" onClick={openHospital}><small className="text-[#78957e]">haijia-heji.example · 医院院史</small><h3 className="my-3 text-xl text-[#286ab3]">十年回望：那场持续十七小时的生命接力</h3><p className="text-xs text-[#8493a4]">一场后来被媒体称为“海岬奇迹”的重症救治。</p></button></div>;
