@@ -37,7 +37,7 @@ import { SearchResults, BrowserNotFound } from "./search-results";
 import { ActivityArchivePage, ActivityPage, CommunityPage, FoundationPage, HiddenSeventhPage, ObituaryPage, SurvivorIndexPage, SurvivorProfile, WitnessPage } from "./activity-page";
 import { LostCatPage, NeighborhoodNoticePage } from "./cat-trail-pages";
 import { BiographyPage, FounderProfilePage, HaijiaHospitalPage, LuWenchuanMemorialPage } from "./founder-trail-pages";
-import { GuWeizhenAuctionPage, GuWeizhenBuddhistSalePage, GuWeizhenCollectionPage, GuWeizhenInterviewPage, GuWeizhenPoemPage } from "./founder-deep-pages";
+import { GuWeizhenAuctionPage, GuWeizhenBuddhistSalePage, GuWeizhenCollectionPage, GuWeizhenInterviewPage, GuWeizhenPoemPage, GuWeizhenUnpublishedPage } from "./founder-deep-pages";
 import { BeiluOralHistoryPage, DaluoBiographyPage } from "./qichao-pages";
 import { AnshiManualPage, FanaticProfilePage } from "./anshi-secret-pages";
 import { SeventhApplicationPage } from "./seventh-application-page";
@@ -75,7 +75,7 @@ export default function Home() {
     ? visitedPages.some((key) => key.startsWith(`${tab}:`))
     : visitedPages.includes(`${tab}:${pageQuery}`);
   const browserAccess: BrowserAccess = {
-    manual: hasVisited("fanatic-profile") && hasVisited("activity", "archive/07") && hasVisited("survivor-index"),
+    manual: hasVisited("fanatic-profile") && hasVisited("activity", "archive/07") && hasVisited("gu-unpublished"),
     application: hasVisited("anshi-manual"),
     message: hasVisited("seventh-application"),
     fanaticArchive: hasVisited("zhou-gu-message"),
@@ -199,7 +199,7 @@ export default function Home() {
             <TabsContent value="search" className="browser-search-content data-[state=inactive]:hidden">
               <header><h1 className="search-page-title">雾搜</h1></header>
               <SearchBox key={`search-box:${query}`} query={query} onSearch={submitBrowserInput} />
-              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} fanaticArchiveUnlocked={Boolean(browserAccess.fanaticArchive)} accidentUnlocked={Boolean(browserAccess.accident)} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openSurvivorIndex={() => navigate("survivor-index")} openFounder={() => navigate("founder-profile")} openFounderInterview={() => navigate("founder-interview")} openFounderPoem={() => navigate("founder-poem")} openFounderCollection={() => navigate("founder-collection")} openBuddhistSale={() => navigate("buddhist-sale")} openDaluoBiography={() => navigate("daluo-biography")} openBeiluOralHistory={() => navigate("beilu-oral-history")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} openFanaticProfile={() => navigate("fanatic-profile")} openFanaticArchive={() => navigate("fanatic-archive")} openAccidentDossier={() => navigate("accident-dossier")} />
+              <SearchResults key={`search-results:${query}`} query={query} unlocked={unlocked} fanaticArchiveUnlocked={Boolean(browserAccess.fanaticArchive)} accidentUnlocked={Boolean(browserAccess.accident)} openTravel={() => navigate("trip")} openForum={() => navigate("forum")} openActivity={() => navigate("activity")} openCommunity={() => navigate("activity", "community")} openLostCat={() => navigate("lost-cat")} openCommunityNotice={() => navigate("neighborhood-notice")} openObituary={() => navigate("obituary")} openSurvivorIndex={() => navigate("survivor-index")} openFounder={() => navigate("founder-profile")} openFounderInterview={() => navigate("founder-interview")} openFounderPoem={() => navigate("founder-poem")} openFounderCollection={() => navigate("founder-collection")} openBuddhistSale={() => navigate("buddhist-sale")} openDaluoBiography={() => navigate("daluo-biography")} openBeiluOralHistory={() => navigate("beilu-oral-history")} openGuUnpublished={() => navigate("gu-unpublished")} openBiography={() => navigate("biography")} openLuMemorial={() => navigate("lu-memorial")} openHospital={() => navigate("hospital")} openFanaticProfile={() => navigate("fanatic-profile")} openFanaticArchive={() => navigate("fanatic-archive")} openAccidentDossier={() => navigate("accident-dossier")} />
             </TabsContent>
             <TabsContent value="activity" className="min-h-full data-[state=inactive]:hidden">{query === "community" ? <CommunityPage onOpenWitness={() => navigate("activity", "witness")} onOpenFoundation={() => navigate("activity", "foundation")} /> : query === "witness" ? <WitnessPage onBack={() => navigate("activity", "community")} onOpenProfile={() => navigate("survivor")} /> : query === "foundation" ? <FoundationPage onBack={() => navigate("activity", "community")} /> : query === "archive/07" ? <HiddenSeventhPage onBack={() => navigate("activity")} /> : query.startsWith("archive/") ? <ActivityArchivePage issue={query.slice(-2)} onBack={() => navigate("activity")} /> : <ActivityPage onOpenRide={unlocked ? openRide : undefined} onOpenArchive={(issue) => navigate("activity", `archive/${issue}`)} />}</TabsContent>
             <TabsContent value="survivor" className="min-h-full data-[state=inactive]:hidden"><SurvivorProfile /></TabsContent>
@@ -210,6 +210,7 @@ export default function Home() {
             <TabsContent value="founder-profile" className="min-h-full data-[state=inactive]:hidden"><FounderProfilePage /></TabsContent>
             <TabsContent value="founder-interview" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenInterviewPage onOpenPoem={() => navigate("founder-poem")} /></TabsContent>
             <TabsContent value="founder-poem" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenPoemPage /></TabsContent>
+            <TabsContent value="gu-unpublished" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenUnpublishedPage /></TabsContent>
             <TabsContent value="founder-collection" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenCollectionPage onOpenAuction={() => navigate("founder-auction")} /></TabsContent>
             <TabsContent value="founder-auction" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenAuctionPage /></TabsContent>
             <TabsContent value="buddhist-sale" className="min-h-full data-[state=inactive]:hidden"><GuWeizhenBuddhistSalePage /></TabsContent>

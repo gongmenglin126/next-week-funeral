@@ -41,7 +41,7 @@ export function ActivityArchivePage({ issue, onBack }: { issue: string; onBack: 
 }
 
 export function HiddenSeventhPage({ onBack }: { onBack: () => void }) {
-  return <div className="activity-page hidden-archive"><ActivityHeader /><main className="archive-detail"><button className="activity-back" onClick={onBack}><ArrowLeft />返回活动首页</button><p className="activity-eyebrow">ARCHIVE / 07</p><h1>第七期 · 海边同行</h1><p className="archive-date">8月31日 · 雾汀</p><p className="archive-unlisted">此页面未列入公开归档。</p><div className="archive-copy"><h2>往期参与者来信</h2><blockquote><p><strong>归</strong>来的日期没有告诉家里。</p><p><strong>潮</strong>落时，他说自己不怕了。</p><p><strong>见</strong>不到明天也没关系。</p><p><strong>证</strong>词会替我们留下来。</p></blockquote><p className="archive-note">原始署名已隐去</p></div><aside className="mt-6 border border-[#d7d9cf] bg-[#efefe8] px-5 py-4 text-[11px] leading-6 text-[#777d73]"><p>编辑备注：当期见证不在本站公开，外发复核路径沿用 <code className="font-mono text-[#4f5d54]">/witness/[当前修订号]</code>。</p></aside></main></div>;
+  return <div className="activity-page hidden-archive"><ActivityHeader /><main className="archive-detail"><button className="activity-back" onClick={onBack}><ArrowLeft />返回活动首页</button><p className="activity-eyebrow">ARCHIVE / 07</p><h1>第七期 · 海边同行</h1><p className="archive-date">8月31日 · 雾汀</p><p className="archive-unlisted">此页面未列入公开归档。</p><div className="archive-copy"><h2>往期参与者来信</h2><blockquote><p><strong>归</strong>来的日期没有告诉家里。</p><p><strong>潮</strong>落时，他说自己不怕了。</p><p><strong>见</strong>不到明天也没关系。</p><p><strong>证</strong>词会替我们留下来。</p></blockquote><p className="archive-note">原始署名已隐去</p></div><aside className="mt-6 border border-[#d7d9cf] bg-[#efefe8] px-5 py-4 text-[11px] leading-6 text-[#777d73]"><p>编辑备注：当期见证不在本站公开，外发复核路径沿用 <code className="font-mono text-[#4f5d54]">/witness/[先生终审版本]</code>。</p></aside></main></div>;
 }
 
 export function CommunityPage({ onOpenWitness, onOpenFoundation }: { onOpenWitness: () => void; onOpenFoundation: () => void }) {
@@ -99,13 +99,13 @@ export function SurvivorIndexPage() {
         </section>
 
         <section className="mt-7 border border-[#b7c0ba] bg-[#edf0ee] px-6 py-5">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#c9d0cc] pb-4"><strong className="text-[14px]">页面差异</strong><span className="font-mono text-[12px] text-[#5f7167]">修订号 R-06-4</span></div>
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#c9d0cc] pb-4"><strong className="text-[14px]">页面差异</strong><span className="text-[12px] text-[#5f7167]">2处内容变化</span></div>
           <p className="mt-4 text-[13px] leading-7 text-[#5c6962]">8月18日09:03后，个人简介和最后动态均发生变化。</p>
         </section>
 
         <section className="mt-7 border-l-4 border-[#765d59] bg-[#f1e9e7] px-6 py-5">
           <div className="flex flex-wrap items-center justify-between gap-3"><strong className="text-[13px] text-[#614946]">旧索引中仍保留的回复</strong><span className="text-[12px] text-[#927a76]">原页已删除</span></div>
-          <p className="mt-4 text-[15px] leading-8 text-[#4e4140]">“这不是《无相尊略传》里的话吗？”</p>
+          <p className="mt-4 text-[15px] leading-8 text-[#4e4140]">“这句话不是他自己写的。我在别处见过。”</p>
           <small className="mt-2 block text-[12px] text-[#927a76]">8月19日 09:12</small>
         </section>
       </main>

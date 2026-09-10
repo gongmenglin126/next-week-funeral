@@ -25,10 +25,49 @@ export function GuWeizhenPoemPage() {
         <div className="mt-16 border-t border-[#dedad2] pt-5 text-[10px] leading-6 text-[#8d887f]">
           <p>原载《临川文艺》2020年第3期，第46页。</p>
           <p>作者自注：写于临川，2019年秋。</p>
+          <p>编者注：诗中“旧册”后以《无相尊略传》为题收入临川地方文献数字化项目。</p>
           <p>纸刊数字化项目录入，保留原文标点。</p>
         </div>
       </div>
     </main>
+  </article>;
+}
+
+export function GuWeizhenUnpublishedPage() {
+  return <article className="min-h-full bg-[#171a1a] px-5 py-9 text-[#e7e9e6] md:px-10 md:py-14">
+    <div className="mx-auto max-w-[920px] overflow-hidden border border-white/15 bg-[#202424] shadow-[0_24px_60px_rgba(0,0,0,.28)]">
+      <header className="flex flex-wrap items-start justify-between gap-5 border-b border-white/10 px-7 py-6 md:px-10">
+        <div><strong className="text-[13px] tracking-[.2em] text-white/80">海州人物 · 采访素材库</strong><p className="mt-2 text-[11px] tracking-[.12em] text-white/35">未刊录音转写 / 仅供编辑核对</p></div>
+        <span className="border border-[#8b5e58] bg-[#352321] px-3 py-1 text-[11px] text-[#d2a39b]">未采用</span>
+      </header>
+
+      <main className="px-7 py-10 md:px-12 md:py-14">
+        <p className="text-[11px] tracking-[.16em] text-white/35">素材 07 · 8月24日 22:16</p>
+        <h1 className="mt-4 font-serif text-[38px] font-normal leading-tight md:text-[50px]">听见我的人</h1>
+        <p className="mt-5 max-w-[700px] text-[13px] leading-7 text-white/45">采访结束后，录音设备未立即关闭。以下转写包含未进入正式稿的问答及现场余音。</p>
+
+        <section className="mt-10 space-y-7 border-y border-white/10 py-9 text-[15px] leading-8 text-white/72">
+          <p><strong className="mr-2 text-white/42">孟嘉：</strong>你已经不信神，为什么不阻止他们那样称呼你？</p>
+          <p><strong className="mr-2 text-white/42">顾惟真：</strong>我没有让他们跪。</p>
+          <p><strong className="mr-2 text-white/42">孟嘉：</strong>但你也没有让他们起来。</p>
+          <p><strong className="mr-2 text-white/42">顾惟真：</strong>病房里我喊了一夜，没有谁回答。后来有人说，只要听见我的名字就不怕死。你让我告诉她，这也是假的？</p>
+          <p><strong className="mr-2 text-white/42">孟嘉：</strong>可她相信的是你。</p>
+          <p><strong className="mr-2 text-white/42">顾惟真：</strong>至少我回答了。</p>
+        </section>
+
+        <section className="mt-9 border border-[#66514d] bg-[#2a2221] p-6 md:p-8">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#594441] pb-4"><strong className="text-[12px] tracking-[.15em] text-[#c79a91]">正式访谈结束后 00:01:43</strong><span className="text-[11px] text-white/30">背景交谈</span></div>
+          <div className="mt-6 space-y-5 text-[14px] leading-8 text-white/65">
+            <p><strong className="mr-2 text-white/38">工作人员：</strong>第六期那份见证已经改到第四版，死亡信息也处理了，等您终审。</p>
+            <p><strong className="mr-2 text-white/38">顾惟真：</strong>版本号？</p>
+            <p><strong className="mr-2 text-white/38">工作人员：</strong><code className="font-mono text-[15px] text-[#e1b2a9]">R-06-4</code>。</p>
+            <p><strong className="mr-2 text-white/38">顾惟真：</strong>把“抢救失败”再删一遍。人已经死了，不要再让他的死把活着的人拖回去。</p>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-white/10 px-7 py-5 text-[11px] leading-6 text-white/30 md:px-10">素材题签与转写由《海州人物》编辑部留存；录音未随正式采访公开。</footer>
+    </div>
   </article>;
 }
 

@@ -25,6 +25,7 @@ export function DaluoBiographyPage() {
         <aside className="mx-auto mt-9 max-w-[610px] border-l-4 border-[#756b58] bg-[#eee5d3] px-5 py-4 text-[12px] leading-7 text-[#655d50]">
           <strong className="text-[#484238]">整理说明</strong>
           <p className="mt-2">底稿无封面，文中原有异体字及缺字，本页仅作通行字录入。人物称谓与事件年代均未作考证。</p>
+          <p className="mt-2">整理者在来源卡上另记：顾惟真谈及这份旧册的未刊录音，题签为《听见我的人》。</p>
         </aside>
       </main>
 

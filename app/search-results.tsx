@@ -113,6 +113,7 @@ export function SearchResults({
   openBuddhistSale,
   openDaluoBiography,
   openBeiluOralHistory,
+  openGuUnpublished,
   openBiography,
   openLuMemorial,
   openHospital,
@@ -139,6 +140,7 @@ export function SearchResults({
   openBuddhistSale: () => void;
   openDaluoBiography: () => void;
   openBeiluOralHistory: () => void;
+  openGuUnpublished: () => void;
   openBiography: () => void;
   openLuMemorial: () => void;
   openHospital: () => void;
@@ -199,6 +201,11 @@ export function SearchResults({
   if (normalized.replace(/[《》]/g, "") === "无相尊略传") return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openDaluoBiography}><small className="text-[#78957e]">临川地方文献数字化 · 民间抄本</small><h3 className="my-3 text-xl text-[#286ab3]">《无相尊略传》｜2019年整理本</h3><p className="text-xs text-[#8493a4]">一份撰者与年代均不详的民间传记，数字化页面保留了底本来源。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-memory.example/texts/wuxiang-zun</code></button>
+  </div>;
+
+  if (normalized.replace(/[《》]/g, "") === "听见我的人") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openGuUnpublished}><small className="text-[#78957e]">海州人物 · 采访素材库</small><h3 className="my-3 text-xl text-[#286ab3]">《听见我的人》｜顾惟真未刊谈话</h3><p className="text-xs text-[#8493a4]">正式采访未采用的问答与录音结束后的现场转写。</p><code className="mt-2 block text-[10px] text-[#718c76]">haizhou-audio.example/archive/hear-me</code></button>
   </div>;
 
   if (["北麓旧院口述史整理项目", "北麓旧院口述史"].includes(normalized)) return <div className="mt-8 max-w-[860px]">

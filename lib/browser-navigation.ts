@@ -61,6 +61,7 @@ export function resolveBrowserInput(input: string, unlocked: boolean, access: Br
     if (url.hostname === "linchuan-people.example" && path === "/figures/gu-weizhen") return { tab: "founder-profile", query: "" };
     if (url.hostname === "haizhou-people.example" && path === "/interview/gu-weizhen-2023") return { tab: "founder-interview", query: "" };
     if (url.hostname === "linchuan-literature.example" && path === "/archive/2020/gu-weizhen") return { tab: "founder-poem", query: "" };
+    if (url.hostname === "haizhou-audio.example" && path === "/archive/hear-me") return { tab: "gu-unpublished", query: "" };
     if (url.hostname === "linchuan-archive.example" && path === "/exhibitions/tide-paper") return { tab: "founder-collection", query: "" };
     if (url.hostname === "jiawen-auction.example" && path === "/results/2018-autumn/linchuan") return { tab: "founder-auction", query: "" };
     if (url.hostname === "jiawen-auction.example" && path === "/catalog/2017-spring/lanxu-buddhist-art") return { tab: "buddhist-sale", query: "" };

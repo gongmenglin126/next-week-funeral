@@ -370,7 +370,7 @@ test("the unlisted seventh archive must be reached by changing 06 to 07", async 
   assert.doesNotMatch(home, /session07_notice_old|第七期参与须知/);
 });
 
-test("the optional fraud trail moves from the witness's cat to an address and then the real obituary", async () => {
+test("the optional fraud trail proves the witness died without exposing the secret address", async () => {
   const { SearchResults } = await vite.ssrLoadModule("/app/search-results.tsx");
   const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openFounder() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
   const renderSearch = (query) => renderToStaticMarkup(React.createElement(SearchResults, { ...props, query }));
@@ -416,8 +416,8 @@ test("the optional fraud trail moves from the witness's cat to an address and th
   const indexedProfile = renderToStaticMarkup(React.createElement(SurvivorIndexPage));
   assert.match(indexedProfile, /8月17日 02:41/);
   assert.match(indexedProfile, /8月19日 09:06/);
-  assert.match(indexedProfile, /R-06-4/);
-  assert.match(indexedProfile, /《无相尊略传》/);
+  assert.match(indexedProfile, /这句话不是他自己写的/);
+  assert.doesNotMatch(indexedProfile, /R-06-4|《无相尊略传》|修订号/);
   assert.doesNotMatch(profile, /有人替我|第二次生命|离开的不是我/);
   const { LostCatPage, NeighborhoodNoticePage } = await vite.ssrLoadModule("/app/cat-trail-pages.tsx");
   const lostCat = renderToStaticMarkup(React.createElement(LostCatPage));
