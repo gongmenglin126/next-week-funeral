@@ -20,7 +20,7 @@ const ORDERS = [
 export const MOUNTAIN_INN_GALLERY = [
   { src: "./game/mountain-inn-exterior.webp", alt: "雨天的山线民宿外观", label: "民宿外观" },
   { src: "./game/mountain-inn-twin-room.webp", alt: "山线民宿双床客房", label: "庭院双床房" },
-  { src: "./game/inn-corridor-original.webp", alt: "山线民宿走廊，左侧立着第七期活动指示牌", label: "二层公共走廊" },
+  { src: "./game/inn-corridor-original.webp", alt: "山线民宿页面展示的合作活动空间，左侧立着第七期活动指示牌", label: "合作活动空间" },
 ] as const;
 
 export function NotesPanel({ checked, onCheck, onClose, position, onPositionChange }: { checked: string[]; onCheck: (id: BookingId) => void; onClose: () => void; position?: WindowPoint | null; onPositionChange?: (point: WindowPoint) => void }) {

@@ -5,6 +5,9 @@ import "./chapter-one.css";
 export const metadata: Metadata = {
   title: "下周的葬礼",
   description: "一款以浏览器调查为核心的悬疑解谜游戏原型。",
+  other: {
+    "codex-preview": "development",
+  },
   openGraph: {
     title: "下周的葬礼",
     description: "一场未完成的旅行。通过她留下的电脑，寻找行程背后的秘密。",

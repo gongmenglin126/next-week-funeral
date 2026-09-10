@@ -42,12 +42,10 @@ test("notes keep the starting clue and downloads no longer expose the lighthouse
   assert.match(notes, /泊岸旅行/);
   assert.equal((notes.match(/role="checkbox"/g) ?? []).length, 5);
   assert.doesNotMatch(notes, /安时|葬礼|一滴泪/);
-  const downloads = renderToStaticMarkup(React.createElement(DownloadsPage, { accountArchiveAvailable: false, messageCacheAvailable: false, onOpenApplication() {}, onOpenMessage() {} }));
+  const downloads = renderToStaticMarkup(React.createElement(DownloadsPage));
   assert.match(downloads, /暂无下载记录/);
   assert.doesNotMatch(downloads, /灯塔接驳电子票/);
-  const recovered = renderToStaticMarkup(React.createElement(DownloadsPage, { accountArchiveAvailable: true, messageCacheAvailable: true, onOpenApplication() {}, onOpenMessage() {} }));
-  assert.match(recovered, /潮汐失眠_账户数据导出\.html/);
-  assert.match(recovered, /事故前消息缓存\.html/);
+  assert.doesNotMatch(downloads, /潮汐失眠_账户数据导出|事故前消息缓存|设备恢复/);
   const chapter = await readFile(path.join(root, "app/chapter-one.tsx"), "utf8");
   assert.match(chapter, /TICKET_SUFFIX/);
   assert.equal(TICKET_SUFFIX, "7642");

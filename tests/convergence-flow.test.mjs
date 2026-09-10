@@ -1,36 +1,46 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { access, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
 
-test("distributed discoveries recover the account export without a quiz", async () => {
+test("the late bridge is learned from the dead account instead of recovered downloads", async () => {
   const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
-  assert.match(page, /discoveries\.seventh && discoveries\.community && discoveries\.obituary && discoveries\.revision && discoveries\.aidSelection/);
-  assert.match(page, /accountArchiveAvailable=\{accountArchiveAvailable\}/);
-  assert.match(page, /download-ready-dot/);
-  assert.doesNotMatch(page, /crossIndexUnlocked|incidentIndexUnlocked|ConvergencePuzzlePage|FinalIncidentPuzzlePage/);
-  assert.doesNotMatch(page, /record-revision|continuity-rule|founder-briefing/);
-  await assert.rejects(access(path.join(root, "app/anshi-internal-pages.tsx")));
-});
-
-test("the restored files appear progressively in downloads", async () => {
+  const activity = await readFile(path.join(root, "app/activity-page.tsx"), "utf8");
   const downloads = await readFile(path.join(root, "app/browser-record-pages.tsx"), "utf8");
-  for (const clue of ["accountArchiveAvailable", "messageCacheAvailable", "潮汐失眠_账户数据导出.html", "事故前消息缓存.html"]) assert.ok(downloads.includes(clue), clue);
-  assert.match(downloads, /messageCacheAvailable \? <button/);
 
-  const application = await readFile(path.join(root, "app/seventh-application-page.tsx"), "utf8");
-  for (const fact of ["第七期申请确认单", "周惜 / 潮汐失眠", "林知还 / 同行朋友", "8月23日 00:14", "申请条款摘录 / S-17", "另存到了浏览器的下载内容"]) assert.ok(application.includes(fact), fact);
-  assert.doesNotMatch(application, /<input|选择.{0,4}证据|归档所选|onOpenMessage/);
+  assert.match(page, /if \(tab === "obituary"\) setObituarySeen\(true\)/);
+  assert.match(page, /<SurvivorProfile obituarySeen=\{obituarySeen\}/);
+  assert.match(activity, /obituarySeen[\s\S]*网页缓存：此页存在两个版本[\s\S]*R-06-4[\s\S]*《无相尊略传》/);
+  assert.match(downloads, /暂无下载记录/);
+  assert.doesNotMatch(page + downloads, /accountArchiveAvailable|messageCacheAvailable|download-ready-dot|潮汐失眠_账户数据导出|事故前消息缓存/);
 });
 
-test("obsolete summary-test routes are removed", async () => {
-  const { resolveBrowserInput } = await import("../lib/browser-navigation.ts");
-  const tabs = await readFile(path.join(root, "lib/browser-tabs.ts"), "utf8");
-  assert.match(tabs, /"seventh-application": "browser:\/\/downloads\/recovered\/account-export"/);
-  assert.deepEqual(resolveBrowserInput("browser://downloads/recovered/account-export", true), { tab: "seventh-application", query: "" });
-  assert.equal(resolveBrowserInput("anshi-office.example/archive/cross-index-A00", true)?.tab, "not-found");
-  assert.equal(resolveBrowserInput("anshi-office.example/archive/incident-cross-M0826", true)?.tab, "not-found");
-  assert.doesNotMatch(tabs, /convergence-index|incident-index|交叉索引|事件核验/);
+test("the hagiography transforms Gu's life and leaves one natural source title", async () => {
+  const qichao = await readFile(path.join(root, "app/qichao-pages.tsx"), "utf8");
+  const biography = qichao.slice(qichao.indexOf("export function DaluoBiographyPage"), qichao.indexOf("export function BeiluOralHistoryPage"));
+
+  for (const clue of ["晨暮持名", "观音、地藏", "同行者殁，而尊独归", "尽去旧供", "从诸神座前起身"]) {
+    assert.ok(biography.includes(clue), clue);
+  }
+  assert.match(biography, /来源：[\s\S]*北麓旧院口述史整理项目/);
+  assert.doesNotMatch(biography, /<button|输入|下一页/);
+});
+
+test("the North page confirms place and control through a reused corridor, not a click chain", async () => {
+  const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
+  const qichao = await readFile(path.join(root, "app/qichao-pages.tsx"), "utf8");
+  const navigation = await import("../lib/browser-navigation.ts");
+
+  assert.match(search, /无相尊略传[\s\S]*openDaluoBiography/);
+  assert.match(search, /北麓旧院口述史整理项目[\s\S]*openBeiluOralHistory/);
+  for (const clue of ["海岬和济医院东院", "安时生命关怀基金会", "基金会发起人", "进场与钥匙由基金会项目办公室统一登记", "inn-corridor-original.webp"]) {
+    assert.ok(qichao.includes(clue), clue);
+  }
+  assert.doesNotMatch(qichao, /<button|临潮重症援助|QC-AID-19|输入|下一页/);
+  assert.deepEqual(navigation.resolveBrowserInput("linchuan-memory.example/texts/wuxiang-zun", true), { tab: "daluo-biography", query: "" });
+  assert.deepEqual(navigation.resolveBrowserInput("linchuan-memory.example/projects/beilu-old-hospital", true), { tab: "beilu-oral-history", query: "" });
+  assert.equal(navigation.resolveBrowserInput("wusou-cache.example/snapshot/QC-AID-19", true)?.tab, "not-found");
+  assert.equal(navigation.resolveBrowserInput("browser://downloads/recovered/account-export", true)?.tab, "not-found");
 });
