@@ -22,6 +22,12 @@ export const BROWSER_URLS: Record<string, string> = {
   biography: "mingchuan-books.example/title/walk-to-today",
   "lu-memorial": "linchuan-business.example/archive/2016/lu-wenchuan",
   hospital: "haijia-heji.example/history/2016-gu-weizhen",
+  "fanatic-profile": "linchuan-patient.example/archive/users/mister-is-all",
+  "anshi-manual": "anshi.example/witness/r06-4",
+  "seventh-application": "anshi.example/witness/r06-4/applications/07-01",
+  "zhou-gu-message": "anshi.example/witness/r06-4/disputes/07-01",
+  "fanatic-archive": "guian-archive.example/groups/close-witness",
+  "accident-dossier": "wuting-traffic.example/case/LC-7M21",
 };
 
 export const BROWSER_LABELS: Record<string, string> = {
@@ -47,6 +53,12 @@ export const BROWSER_LABELS: Record<string, string> = {
   biography: "顾惟真自传",
   "lu-memorial": "旧报归档",
   hospital: "海岬和济",
+  "fanatic-profile": "先生为大",
+  "anshi-manual": "见证维护手册",
+  "seventh-application": "第七期申请",
+  "zhou-gu-message": "申请者异议",
+  "fanatic-archive": "近身见证",
+  "accident-dossier": "事故车辆",
   "not-found": "页面未找到",
 };
 
@@ -70,6 +82,12 @@ const OPTIONAL_TABS = [
   "biography",
   "lu-memorial",
   "hospital",
+  "fanatic-profile",
+  "anshi-manual",
+  "seventh-application",
+  "zhou-gu-message",
+  "fanatic-archive",
+  "accident-dossier",
   "not-found",
 ];
 

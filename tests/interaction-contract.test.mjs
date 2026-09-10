@@ -389,8 +389,8 @@ test("the optional fraud trail moves from the witness's cat to an address and th
   assert.doesNotMatch(community, /有人把一段经历留在这里/);
   assert.doesNotMatch(community, /我的帖子|community-avatar|<h2>复查结果/);
   assert.match(community, /胃低分化腺癌/);
-  assert.match(community, /腹膜及肝脏多发转移，较前进展/);
-  assert.match(community, /我这种情况还能活多久/);
+  assert.match(community, /腹膜及肝脏多发转移，治疗后继续进展/);
+  assert.match(community, /预计生存期不足六个月/);
   assert.doesNotMatch(community, /不知道还能一起走多远/);
   assert.ok(community.indexOf("潮汐失眠") < community.indexOf("海盐苏打"));
   assert.match(community, /由安时生命关怀基金会提供支持/);
@@ -412,11 +412,12 @@ test("the optional fraud trail moves from the witness's cat to an address and th
   assert.match(profile, /市二医院终于协调到了床位/);
   assert.doesNotMatch(profile, /临潮重症援助/);
   assert.doesNotMatch(profile, /R-06-4|此页存在两个版本/);
-  const revisitedProfile = renderToStaticMarkup(React.createElement(SurvivorProfile, { obituarySeen: true }));
-  assert.match(revisitedProfile, /网页缓存：此页存在两个版本/);
-  assert.match(revisitedProfile, /R-06-4/);
-  assert.match(revisitedProfile, /RC-03/);
-  assert.match(revisitedProfile, /《无相尊略传》/);
+  const { SurvivorIndexPage } = await vite.ssrLoadModule("/app/activity-page.tsx");
+  const indexedProfile = renderToStaticMarkup(React.createElement(SurvivorIndexPage));
+  assert.match(indexedProfile, /8月17日 02:41/);
+  assert.match(indexedProfile, /8月19日 09:06/);
+  assert.match(indexedProfile, /R-06-4/);
+  assert.match(indexedProfile, /《无相尊略传》/);
   assert.doesNotMatch(profile, /有人替我|第二次生命|离开的不是我/);
   const { LostCatPage, NeighborhoodNoticePage } = await vite.ssrLoadModule("/app/cat-trail-pages.tsx");
   const lostCat = renderToStaticMarkup(React.createElement(LostCatPage));
@@ -513,8 +514,7 @@ test("Gu's decades of Buddhist devotion end in a documented 2017 collection sale
   assert.match(interview, /2014年第一次采访时[ -￿]*三层供架/);
   assert.match(interview, /2017年嘉闻春拍“澜序旧藏·佛教艺术”专场之后/);
   assert.match(interview, /我已经不信这些了/);
-  assert.match(interview, /您可以直接否认吗/);
-  assert.match(interview, /这不是一个否认[\s\S]*我知道/);
+  assert.doesNotMatch(interview, /您可以直接否认吗|这不是一个否认|大罗无相尊/);
 
   const facelessAuction = renderToStaticMarkup(React.createElement(GuWeizhenAuctionPage));
   assert.match(facelessAuction, /2018 秋拍/);
@@ -536,9 +536,9 @@ test("internal identifiers are evidence labels, not searchable doors or a click-
   const application = await readFile(path.join(root, "app/seventh-application-page.tsx"), "utf8");
   assert.match(application, /申请条款摘录 \/ S-17/);
   assert.match(application, /最深关系人/);
-  const ending = await readFile(path.join(root, "app/final-trail-pages.tsx"), "utf8");
-  assert.match(ending, /2019年项目说明会纪要/);
-  assert.match(ending, /所有结果最终由顾惟真本人解释/);
+  const manual = await readFile(path.join(root, "app/anshi-secret-pages.tsx"), "utf8");
+  assert.match(manual, /当前修订：R-06-4/);
+  assert.match(manual, /涉及顾先生的标题、引语及结尾，发布前送本人审定/);
 
   const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
   assert.doesNotMatch(page, /record-revision|continuity-rule|founder-briefing/);
@@ -709,14 +709,14 @@ test("the current Beilu bridge is reached from the hagiography source and stops 
   const beilu = renderToStaticMarkup(React.createElement(BeiluOralHistoryPage));
   assert.match(beilu, /海岬和济医院东院/);
   assert.match(beilu, /安时生命关怀基金会/);
-  assert.match(beilu, /基金会发起人[\s\S]*顾惟真/);
+  assert.doesNotMatch(beilu, /顾惟真/);
   assert.match(beilu, /进场与钥匙由基金会项目办公室统一登记/);
   assert.match(beilu, /inn-corridor-original\.webp/);
   assert.match(beilu, /translateX\(-24%\)/);
   assert.doesNotMatch(beilu, /<button|第七期/);
 });
 
-test("searching Daluo Wuxiang exposes an ordinary folk belief post without identifying Gu", async () => {
+test("searching Daluo Wuxiang begins with folklore and exposes one suspicious believer account", async () => {
   const { SearchResults, DaluoPraiseThread } = await vite.ssrLoadModule("/app/search-results.tsx");
   const props = { unlocked: true, openTravel() {}, openForum() {}, openActivity() {}, openCommunity() {}, openLostCat() {}, openCommunityNotice() {}, openObituary() {}, openRecordRevision() {}, openFounder() {}, openFounderInterview() {}, openFounderPoem() {}, openFounderCollection() {}, openRehabCenter() {}, openBeiluAddress() {}, openAidSelection() {}, openBiography() {}, openLuMemorial() {}, openHospital() {} };
   const search = renderToStaticMarkup(React.createElement(SearchResults, { ...props, query: "大罗无相尊" }));
@@ -724,15 +724,15 @@ test("searching Daluo Wuxiang exposes an ordinary folk belief post without ident
   assert.match(search, /有人听说过“大罗无相尊”吗/);
   assert.match(search, /旧书摊偶然听到这个名字/);
   assert.match(search, /大罗无相尊仪轨残卷/);
-  assert.doesNotMatch(search, /无相尊略传|先生|名单|栖潮书院|顾惟真本人|筛选更可能/);
+  assert.doesNotMatch(search, /无相尊略传|名单|栖潮书院|顾惟真本人|筛选更可能/);
 
-  const thread = renderToStaticMarkup(React.createElement(DaluoPraiseThread, { onBack() {} }));
+  const thread = renderToStaticMarkup(React.createElement(DaluoPraiseThread, { onBack() {}, onOpenFanaticProfile() {} }));
   assert.match(thread, /逛旧书摊[ -￿]*偶然听到这个名字/);
-  assert.match(thread, /名字写在纸上[ -￿]*放了一杯清水/);
-  assert.match(thread, /医院突然通知有床位[ -￿]*手术后来也很顺利/);
-  assert.match(thread, /这多半只是碰巧/);
+  assert.match(thread, /医院突然通知有床位[ -￿]*手术并不顺利/);
+  assert.match(thread, /过了三个月还是走了/);
   assert.match(thread, /顾惟真在一次公开文化活动里提过这个名字/);
   assert.equal((thread.match(/顾惟真/g) ?? []).length, 1);
-  assert.doesNotMatch(thread, /先生|名单|栖潮书院/);
+  assert.match(thread, /先生为大[ -￿]*你在诋毁大罗无相尊/);
+  assert.doesNotMatch(thread, /名单|栖潮书院/);
   assert.doesNotMatch(thread, /守夜人|承受人|借丧礼|生期转移/);
 });

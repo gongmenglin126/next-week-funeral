@@ -22,7 +22,7 @@ const resultSets = [
 const AUCTION_FORUM_URL = "haizhou-oldthings.example/thread/18421";
 const DALUO_PRAISE_URL = "linchuan-patient.example/archive/2916";
 
-export function DaluoPraiseThread({ onBack }: { onBack: () => void }) {
+export function DaluoPraiseThread({ onBack, onOpenFanaticProfile }: { onBack: () => void; onOpenFanaticProfile: () => void }) {
   return <article className="mx-auto mt-7 max-w-[900px] overflow-hidden border border-[#c6c9c5] bg-[#f6f5f1] text-[#313633] shadow-[0_10px_32px_rgba(30,38,42,.08)]">
     <header className="border-b border-[#45544c] bg-[#52645a] px-6 py-4 text-[#f1f4f1] md:px-9">
       <div className="flex items-center justify-between gap-5"><strong className="text-[14px] tracking-[.12em]">临川生活闲谈 · 旧帖归档</strong><span className="text-[10px] text-white/55">只读</span></div>
@@ -41,7 +41,7 @@ export function DaluoPraiseThread({ onBack }: { onBack: () => void }) {
 
       <section className="mt-9 space-y-3 border-t border-[#d2d4d0] pt-6 text-[13px] leading-7">
         <article className="bg-[#eceeea] px-5 py-4"><strong className="text-[#607268]">南桥旧客</strong><p className="mt-1">我好像听顾惟真在一次公开文化活动里提过这个名字，莫非他也是信徒？</p></article>
-        <article className="bg-[#eceeea] px-5 py-4"><strong className="text-[#607268]">先生为大</strong><p className="mt-1">你在诋毁大罗无相尊！！！</p></article>
+        <article className="bg-[#eceeea] px-5 py-4"><button className="text-left" onClick={onOpenFanaticProfile}><strong className="text-[#607268] underline decoration-[#879a8f] underline-offset-4">先生为大</strong><p className="mt-1">你在诋毁大罗无相尊！！！</p><small className="mt-2 block text-[11px] text-[#7a877f]">查看归档账号</small></button></article>
       </section>
 
       <footer className="mt-8 border-t border-[#d2d4d0] pt-4 text-[10px] leading-5 text-[#909590]">本帖最后回复于 2021-05-09。因原站关闭，由网页归档项目保存。</footer>
@@ -116,6 +116,9 @@ export function SearchResults({
   openBiography,
   openLuMemorial,
   openHospital,
+  openFanaticProfile,
+  openFanaticArchive,
+  openAccidentDossier,
 }: {
   query: string;
   unlocked: boolean;
@@ -137,6 +140,9 @@ export function SearchResults({
   openBiography: () => void;
   openLuMemorial: () => void;
   openHospital: () => void;
+  openFanaticProfile: () => void;
+  openFanaticArchive: () => void;
+  openAccidentDossier: () => void;
 }) {
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const normalized = query.normalize("NFKC").replace(/\s+/g, "");
@@ -173,7 +179,7 @@ export function SearchResults({
   </div>;
 
   if (normalized === "大罗无相尊") {
-    if (selectedUrl === DALUO_PRAISE_URL) return <DaluoPraiseThread onBack={() => setSelectedUrl(null)} />;
+    if (selectedUrl === DALUO_PRAISE_URL) return <DaluoPraiseThread onBack={() => setSelectedUrl(null)} onOpenFanaticProfile={openFanaticProfile} />;
     return <div className="mt-8 max-w-[860px]">
       <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">2 条相关结果</p>
       <button className="search-result" onClick={() => setSelectedUrl(DALUO_PRAISE_URL)}><small className="text-[#78957e]">临川生活闲谈 · 旧帖归档 · 2021</small><h3 className="my-3 text-xl text-[#286ab3]">有人听说过“大罗无相尊”吗？</h3><p className="text-xs text-[#8493a4]">发帖人说自己在旧书摊偶然听到这个名字，照着念了几天后，家里碰巧有了好消息。</p><code className="mt-2 block text-[10px] text-[#718c76]">{DALUO_PRAISE_URL}</code></button>
@@ -203,6 +209,14 @@ export function SearchResults({
 
   if (isActivitySearch(query)) return <div className="mt-8"><button className="search-result" onClick={openActivity}><small className="text-[#78957e]">anshi.example/activities · 官方网站</small><h3 className="my-3 text-xl text-[#286ab3]">安时活动服务 · 雾汀生命关怀</h3><p className="text-xs text-[#8493a4]">线下交流、活动介绍与预约咨询。</p></button></div>;
   if (query.replace(/\s+/g, "") === "归潮见证") return <div className="mt-8"><button className="search-result" onClick={openCommunity}><small className="text-[#78957e]">guichao.example · 病友互助社区</small><h3 className="my-3 text-xl text-[#286ab3]">归潮见证｜病友与家属互助社区</h3><p className="text-xs text-[#8493a4]">匿名记录治疗、陪护和告别中的真实问题。</p></button></div>;
+  if (normalized === "近身见证") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openFanaticArchive}><small className="text-[#78957e]">归岸者旧站 · 删除页镜像</small><h3 className="my-3 text-xl text-[#286ab3]">近身见证｜小组公开页</h3><p className="text-xs text-[#8493a4]">原页面已删除。搜索引擎保留了8月25日清晨前的最后一次收录。</p><code className="mt-2 block text-[10px] text-[#718c76]">guian-archive.example/groups/close-witness</code></button>
+  </div>;
+  if (normalized.toUpperCase().replace(/[·•.-]/g, "") === "LC7M21") return <div className="mt-8 max-w-[860px]">
+    <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
+    <button className="search-result" onClick={openAccidentDossier}><small className="text-[#78957e]">雾汀交通事故影像协查 · 8月26日更新</small><h3 className="my-3 text-xl text-[#286ab3]">沿海路口关联车辆｜LC·7M21</h3><p className="text-xs text-[#8493a4]">警方正在征集一辆白色七座车在事故发生前后的行驶信息。</p><code className="mt-2 block text-[10px] text-[#718c76]">wuting-traffic.example/case/LC-7M21</code></button>
+  </div>;
   if (normalized === "米粒") return <div className="mt-8"><button className="search-result" onClick={openLostCat}><small className="text-[#78957e]">linchuan-pets.example · 临川寻宠互助</small><h3 className="my-3 text-xl text-[#286ab3]">寻猫启事｜米粒</h3><p className="text-xs text-[#8493a4]">灰白短毛猫，戴红色项圈。家属于8月18日发布。</p></button></div>;
   if (normalized.includes("青桐里3栋")) return <div className="mt-8"><button className="search-result" onClick={openCommunityNotice}><small className="text-[#78957e]">qingtongli.example · 青桐里社区服务站</small><h3 className="my-3 text-xl text-[#286ab3]">青桐里3栋居民治丧通知</h3><p className="text-xs text-[#8493a4]">社区便民信息 · 8月18日发布。</p></button></div>;
   if (query.trim() === "程叙白") return <div className="mt-8 max-w-[860px]">

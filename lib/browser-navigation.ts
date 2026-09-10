@@ -30,6 +30,9 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
       const archive = path.match(/^\/activities\/archive\/(0[1-7])$/);
       if (archive) return { tab: "activity", query: `archive/${archive[1]}` };
       if (path === "/booking/WT-0831-2140" && unlocked) return { tab: "ride", query: "" };
+      if (path === "/witness/r06-4") return { tab: "anshi-manual", query: "" };
+      if (path === "/witness/r06-4/applications/07-01") return { tab: "seventh-application", query: "" };
+      if (path === "/witness/r06-4/disputes/07-01") return { tab: "zhou-gu-message", query: "" };
       return missing;
     }
     if (url.hostname === "guichao.example") {
@@ -58,6 +61,9 @@ export function resolveBrowserInput(input: string, unlocked: boolean): BrowserRo
     if (url.hostname === "mingchuan-books.example" && path === "/title/walk-to-today") return { tab: "biography", query: "" };
     if (url.hostname === "linchuan-business.example" && path === "/archive/2016/lu-wenchuan") return { tab: "lu-memorial", query: "" };
     if (url.hostname === "haijia-heji.example" && path === "/history/2016-gu-weizhen") return { tab: "hospital", query: "" };
+    if (url.hostname === "linchuan-patient.example" && path === "/archive/users/mister-is-all") return { tab: "fanatic-profile", query: "" };
+    if (url.hostname === "guian-archive.example" && path === "/groups/close-witness") return { tab: "fanatic-archive", query: "" };
+    if (url.hostname === "wuting-traffic.example" && path.toUpperCase() === "/CASE/LC-7M21") return { tab: "accident-dossier", query: "" };
     return missing;
   } catch {
     return missing;

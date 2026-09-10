@@ -22,18 +22,26 @@ test("the hidden album moves from affection to resentment without proving the mu
   assert.doesNotMatch(desktop, /顾惟真|近身见证|LC·7M21/);
 });
 
-test("the unfinished murder and ending branch is not exposed in this playable slice", async () => {
+test("the murder trail now reaches one ending without a quiz or evidence picker", async () => {
   const page = await readFile(path.join(root, "app/page.tsx"), "utf8");
   const search = await readFile(path.join(root, "app/search-results.tsx"), "utf8");
-  assert.doesNotMatch(page, /final-trail-pages|EndingScreen|AccidentDossierPage|ZhouGuMessagePage|setFinished/);
-  assert.doesNotMatch(search, /近身见证|LC·7M21|openFollowerRelay|openFanaticArchive|openAccidentDossier/);
+  const ending = await readFile(path.join(root, "app/final-trail-pages.tsx"), "utf8");
+  const manual = await readFile(path.join(root, "app/anshi-secret-pages.tsx"), "utf8");
+  assert.match(page, /final-trail-pages/);
+  for (const component of ["EndingScreen", "AccidentDossierPage", "ZhouGuMessagePage", "setFinished"]) assert.ok(page.includes(component), component);
+  assert.match(search, /近身见证[\s\S]*openFanaticArchive[\s\S]*LC7M21[\s\S]*openAccidentDossier/);
+  for (const clue of ["不用替她改。让她说完", "anshi.example/witness/r06-4", "不发布否认说明", "必要时继续发布日常内容", "周惜 / 潮汐失眠", "林知还", "生前告别"]) assert.ok(manual.includes(clue), clue);
+  for (const clue of ["你在造神！！！", "你是不是很享受这一切", "所谓换寿，笑话", "近身见证", "LC·7M21", "下周没有葬礼"]) assert.ok(ending.includes(clue), clue);
+  assert.doesNotMatch(page + ending, /六选四|四道问答|选择四份|按时间排列|canSubmit/);
 });
 
 test("the hagiography and North archive have direct addresses while obsolete shortcuts do not", async () => {
   const { resolveBrowserInput } = await import("../lib/browser-navigation.ts");
   assert.deepEqual(resolveBrowserInput("linchuan-memory.example/texts/wuxiang-zun", true), { tab: "daluo-biography", query: "" });
   assert.deepEqual(resolveBrowserInput("linchuan-memory.example/projects/beilu-old-hospital", true), { tab: "beilu-oral-history", query: "" });
-  for (const oldAddress of ["browser://downloads/recovered/message-cache", "wusou-cache.example/snapshot/QC-AID-19", "beilu-care.example/archive/linchao-2019", "wuting-traffic.example/case/LC-7M21"]) {
+  assert.deepEqual(resolveBrowserInput("anshi.example/witness/r06-4", true), { tab: "anshi-manual", query: "" });
+  assert.deepEqual(resolveBrowserInput("wuting-traffic.example/case/LC-7M21", true), { tab: "accident-dossier", query: "" });
+  for (const oldAddress of ["browser://downloads/recovered/message-cache", "wusou-cache.example/snapshot/QC-AID-19", "beilu-care.example/archive/linchao-2019"]) {
     assert.equal(resolveBrowserInput(oldAddress, true)?.tab, "not-found");
   }
 });
