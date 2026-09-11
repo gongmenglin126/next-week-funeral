@@ -513,7 +513,7 @@ test("Gu's decades of Buddhist devotion end in a documented 2017 collection sale
   const interview = renderToStaticMarkup(React.createElement(GuWeizhenInterviewPage));
   assert.match(interview, /2014年第一次采访时[ -￿]*三层供架/);
   assert.match(interview, /2017年嘉闻春拍“澜序旧藏·佛教艺术”专场之后/);
-  assert.match(interview, /我已经不信这些了/);
+  assert.match(interview, /我都快忘了它们还在/);
   assert.doesNotMatch(interview, /您可以直接否认吗|这不是一个否认|大罗无相尊/);
 
   const facelessAuction = renderToStaticMarkup(React.createElement(GuWeizhenAuctionPage));
@@ -568,7 +568,7 @@ test("the faceless figurine trail remains reachable after the browser split", as
   assert.match(interview, /2014年第一次采访时/);
   assert.match(interview, /早晚礼佛/);
   assert.match(interview, /2016年以后就没有再用过/);
-  assert.match(interview, /我已经不信这些了/);
+  assert.match(interview, /我都快忘了它们还在/);
   const collection = renderToStaticMarkup(React.createElement(GuWeizhenCollectionPage, { onOpenAuction() {} }));
   assert.match(collection, /大罗无相尊仪轨残卷/);
   assert.match(collection, /查看同场拍卖记录/);

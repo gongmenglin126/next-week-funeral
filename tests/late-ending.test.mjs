@@ -32,7 +32,7 @@ test("the murder trail now reaches one ending without a quiz or evidence picker"
   assert.match(page, /final-trail-pages/);
   for (const component of ["EndingScreen", "AccidentDossierPage", "ZhouGuMessagePage", "setFinished"]) assert.ok(page.includes(component), component);
   assert.match(search, /近身见证[\s\S]*openFanaticArchive[\s\S]*LC7M21[\s\S]*openAccidentDossier/);
-  for (const clue of ["不用替她改。让她说完", "anshi.example", "不发布否认说明", "必要时继续发布日常内容", "周惜 / 潮汐失眠", "林知还", "生前告别"]) assert.ok(manual.includes(clue), clue);
+  for (const clue of ["让她说完", "anshi.example", "不发布否认说明", "必要时继续发布日常内容", "周惜 / 潮汐失眠", "林知还", "生前告别"]) assert.ok(manual.includes(clue), clue);
   assert.doesNotMatch(manual.slice(0, manual.indexOf("export function AnshiManualPage")), /anshi\.example\/witness\/r06-4/);
   for (const clue of ["你在造神！！！", "你是不是很享受这一切", "所谓换寿，笑话", "近身见证", "LC·7M21", "周惜的手机", "故意杀人罪", "侵犯公民个人信息罪", "他确实帮过我们", "给濒死者添上了第二种绝望", "对不起...", "下周，葬礼照常举行", "最后躺在那里的人变了"]) assert.ok(ending.includes(clue), clue);
   assert.ok(ending.indexOf("周惜的手机") < ending.indexOf("案件判决"));

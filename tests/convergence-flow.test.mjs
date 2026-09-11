@@ -31,7 +31,7 @@ test("the hagiography transforms Gu's life and leaves one natural source title",
   assert.match(biography, /来源：[\s\S]*北麓旧院口述史整理项目/);
   assert.match(biography, /《听见我的人》[\s\S]*讲述者栏空白/);
   assert.doesNotMatch(biography, /顾惟真/);
-  assert.match(unpublished, /至少我回答了[\s\S]*R-06-4/);
+  assert.match(unpublished, /我带来的是奇迹[\s\S]*死亡信息也处理了[\s\S]*R-06-4/);
   assert.doesNotMatch(biography, /<button|输入|下一页/);
 });
 
