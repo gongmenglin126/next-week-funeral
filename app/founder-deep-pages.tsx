@@ -25,7 +25,6 @@ export function GuWeizhenPoemPage() {
         <div className="mt-16 border-t border-[#dedad2] pt-5 text-[10px] leading-6 text-[#8d887f]">
           <p>原载《临川文艺》2020年第3期，第46页。</p>
           <p>作者自注：写于临川，2019年秋。</p>
-          <p>编者注：诗中“旧册”后以《无相尊略传》为题收入临川地方文献数字化项目。</p>
           <p>纸刊数字化项目录入，保留原文标点。</p>
         </div>
       </div>

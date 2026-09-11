@@ -29,7 +29,8 @@ test("the hagiography transforms Gu's life and leaves one natural source title",
     assert.ok(biography.includes(clue), clue);
   }
   assert.match(biography, /来源：[\s\S]*北麓旧院口述史整理项目/);
-  assert.match(biography, /顾惟真[\s\S]*《听见我的人》/);
+  assert.match(biography, /《听见我的人》[\s\S]*讲述者栏空白/);
+  assert.doesNotMatch(biography, /顾惟真/);
   assert.match(unpublished, /至少我回答了[\s\S]*R-06-4/);
   assert.doesNotMatch(biography, /<button|输入|下一页/);
 });
@@ -41,7 +42,8 @@ test("the North page confirms place and control through a reused corridor, not a
 
   assert.match(search, /无相尊略传[\s\S]*openDaluoBiography/);
   assert.match(search, /北麓旧院口述史整理项目[\s\S]*openBeiluOralHistory/);
-  for (const clue of ["海岬和济医院东院", "安时生命关怀基金会", "进场与钥匙由基金会项目办公室统一登记", "inn-corridor-original.webp"]) {
+  assert.match(search, /\["北麓旧院", "北麓旧院口述史整理项目", "北麓旧院口述史"\]/);
+  for (const clue of ["海岬和济医院东院", "安时生命关怀基金会", "进场与钥匙由基金会项目办公室统一登记", "inn-corridor-original.webp", "《无相尊略传》", "撰者不详"]) {
     assert.ok(qichao.includes(clue), clue);
   }
   const beilu = qichao.slice(qichao.indexOf("export function BeiluOralHistoryPage"));

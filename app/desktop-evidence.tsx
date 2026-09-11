@@ -123,5 +123,10 @@ function PrivateAlbumContent({ unlocked, onUnlock, onBack }: { unlocked: boolean
     <Button className="private-album-back" variant="ghost" size="sm" onClick={onBack}><ArrowLeft />所有照片</Button>
     {PRIVATE_PHOTOS.map((photo) => <button key={photo.id} onClick={() => setSelected(photo)}><MarkedPhoto photo={photo} /><strong>{photo.id}</strong><small>{photo.time}</small></button>)}
     <p>最早两张拍摄于旅行前。8月21日深夜，相册里突然出现了两张被反复涂改的新照片。</p>
+    <aside className="col-span-full border-l-2 border-[#9c7b77] bg-[#f3eeeb] px-5 py-4 text-[13px] leading-7 text-[#685b57]">
+      <strong className="text-[11px] tracking-[.12em] text-[#92736e]">相簿备忘 · 8月22日 00:11</strong>
+      <p className="mt-2">我到现在也不知道那算不算爱。我只是太想成为她最重要的人——想让她怕我死，想让她永远记得我。也许从一开始，那就不是爱情。</p>
+      <p className="mt-2">她越认真劝我治疗，越把“以后”说得像真的，我就越嫉妒她还有以后。</p>
+    </aside>
   </section>;
 }

@@ -25,7 +25,7 @@ export function DaluoBiographyPage() {
         <aside className="mx-auto mt-9 max-w-[610px] border-l-4 border-[#756b58] bg-[#eee5d3] px-5 py-4 text-[12px] leading-7 text-[#655d50]">
           <strong className="text-[#484238]">整理说明</strong>
           <p className="mt-2">底稿无封面，文中原有异体字及缺字，本页仅作通行字录入。人物称谓与事件年代均未作考证。</p>
-          <p className="mt-2">整理者在来源卡上另记：顾惟真谈及这份旧册的未刊录音，题签为《听见我的人》。</p>
+          <p className="mt-2">来源卡另列一段未公开口述录音，题签《听见我的人》，讲述者栏空白。</p>
         </aside>
       </main>
 
@@ -63,6 +63,17 @@ export function BeiluOralHistoryPage() {
           </div>
           <figcaption className="mt-3 flex items-start gap-2 text-[10px] leading-5 text-[#77827c]"><Camera aria-hidden="true" className="mt-0.5 size-3.5 shrink-0" />旧东院二层连廊，2019年修缮记录。原图左侧为施工围挡，公开版本已裁去。</figcaption>
         </figure>
+      </section>
+
+      <section className="mt-10">
+        <div className="flex flex-wrap items-end justify-between gap-3"><h2 className="font-serif text-[28px] font-normal">已公开整理目录</h2><span className="text-[10px] tracking-[.12em] text-[#829088]">第三批 · 2019年11月</span></div>
+        <div className="mt-6 overflow-hidden border border-[#bbc4be] bg-[#f8faf8]">
+          <dl className="divide-y divide-[#d4dad6] text-[13px] leading-7">
+            <div className="grid gap-2 px-6 py-5 md:grid-cols-[150px_1fr]"><dt className="font-semibold text-[#52655b]">值班记录</dt><dd>东院重症医学中心值班簿，2015—2017年，缺页。</dd></div>
+            <div className="grid gap-2 px-6 py-5 md:grid-cols-[150px_1fr]"><dt className="font-semibold text-[#52655b]">院史照片</dt><dd>旧住院楼、二层连廊及家属等候区，共四十七张。</dd></div>
+            <div className="grid gap-2 px-6 py-5 md:grid-cols-[150px_1fr]"><dt className="font-semibold text-[#52655b]">未刊手稿</dt><dd><strong className="font-semibold text-[#3d4d45]">《无相尊略传》</strong>一册；撰者不详，原件年代未定。</dd></div>
+          </dl>
+        </div>
       </section>
 
       <section className="mt-10">

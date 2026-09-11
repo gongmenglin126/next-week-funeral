@@ -46,10 +46,11 @@ test("the late Gu trail uses natural document titles, never codes as search term
 
   assert.match(search, /if \(normalized\.replace\(\/\[《》\]\/g, ""\) === "无相尊略传"\)[\s\S]*openDaluoBiography/);
   assert.match(search, /if \(normalized\.replace\(\/\[《》\]\/g, ""\) === "听见我的人"\)[\s\S]*openGuUnpublished/);
-  assert.match(search, /\["北麓旧院口述史整理项目", "北麓旧院口述史"\][\s\S]*openBeiluOralHistory/);
+  assert.match(search, /\["北麓旧院", "北麓旧院口述史整理项目", "北麓旧院口述史"\][\s\S]*openBeiluOralHistory/);
   assert.doesNotMatch(search, /临潮重症援助|北麓路17号"\)|栖潮疗养院|栖潮旧院/);
-  assert.match(founder, /山居杂记[\s\S]*《无相尊略传》/);
-  assert.match(qichao, /无相尊略传[\s\S]*《听见我的人》/);
+  assert.doesNotMatch(founder.slice(founder.indexOf("export function GuWeizhenPoemPage"), founder.indexOf("export function GuWeizhenUnpublishedPage")), /《无相尊略传》/);
+  assert.match(qichao, /已公开整理目录[\s\S]*《无相尊略传》/);
+  assert.match(qichao, /《听见我的人》[\s\S]*讲述者栏空白/);
   assert.doesNotMatch(qichao, /onOpen|<button|查看项目|下一页/);
 });
 

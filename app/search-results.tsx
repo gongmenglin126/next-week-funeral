@@ -208,7 +208,7 @@ export function SearchResults({
     <button className="search-result" onClick={openGuUnpublished}><small className="text-[#78957e]">海州人物 · 采访素材库</small><h3 className="my-3 text-xl text-[#286ab3]">《听见我的人》｜顾惟真未刊谈话</h3><p className="text-xs text-[#8493a4]">正式采访未采用的问答与录音结束后的现场转写。</p><code className="mt-2 block text-[10px] text-[#718c76]">haizhou-audio.example/archive/hear-me</code></button>
   </div>;
 
-  if (["北麓旧院口述史整理项目", "北麓旧院口述史"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
+  if (["北麓旧院", "北麓旧院口述史整理项目", "北麓旧院口述史"].includes(normalized)) return <div className="mt-8 max-w-[860px]">
     <p className="mb-1 text-[11px] font-bold tracking-[0.12em] text-[#77868d] uppercase">1 条相关结果</p>
     <button className="search-result" onClick={openBeiluOralHistory}><small className="text-[#78957e]">临川城市记忆计划 · 专题项目</small><h3 className="my-3 text-xl text-[#286ab3]">北麓旧院口述史整理项目</h3><p className="text-xs text-[#8493a4]">访问旧院医护与附近居民，整理院史照片、值班簿及未刊手稿。</p><code className="mt-2 block text-[10px] text-[#718c76]">linchuan-memory.example/projects/beilu-old-hospital</code></button>
   </div>;

@@ -71,7 +71,7 @@ export function HaijiaHospitalPage() {
       <h1>十年回望：那场持续十七小时的生命接力</h1>
       <p className="hospital-history-deck">2016年11月，海岬和济医院重症团队成功救治一名暴发性心肌炎合并心源性休克患者。这场救治后来被媒体称为“海岬奇迹”。</p>
       <section className="hospital-patient-card"><div><span>患者</span><strong>顾惟真，45岁</strong></div><div><span>入院诊断</span><strong>暴发性心肌炎、心源性休克</strong></div><div><span>入院时间</span><strong>2016年11月2日 19:36</strong></div><div><span>救治结果</span><strong>恢复自主循环，37天后出院</strong></div></section>
-      <article><p>患者入院后病情迅速恶化，先后两次出现心搏骤停。重症医学、心血管内科及体外生命支持团队连续工作十七小时，为其建立体外循环支持并完成后续治疗。</p><p>患者在极低生存概率下恢复自主循环，器官功能逐步改善，于12月9日出院。应患者本人请求，医院在2018年公开其姓名，用于重症救治科普。</p><blockquote>“医学不能承诺奇迹，但医护人员不会在奇迹发生前停下来。”</blockquote></article>
+      <article><p>患者入院后病情迅速恶化，先后两次出现心搏骤停。重症医学、心血管内科及体外生命支持团队连续工作十七小时，为其建立体外循环支持并完成后续治疗。</p><p>患者在极低生存概率下恢复自主循环，器官功能逐步改善，于12月9日出院。应患者本人请求，医院在2018年公开其姓名，用于重症救治科普。</p><p>这场救治发生在海岬和济医院东院。医院主体迁出后，原住院楼被附近居民称为“北麓旧院”，院史照片与值班记录后来交由地方口述史项目整理。</p><blockquote>“医学不能承诺奇迹，但医护人员不会在奇迹发生前停下来。”</blockquote></article>
       <footer>海岬和济医院院史资料室 · 资料编号 HJ-ICU-2016-11</footer>
     </main>
   </div>;

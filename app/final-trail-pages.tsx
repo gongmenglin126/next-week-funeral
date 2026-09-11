@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowLeft, Check, FileWarning, FolderOpen, MessageSquareText, Newspaper, NotebookPen, Scale, Smartphone } from "lucide-react";
+import { FileWarning, FolderOpen, MessageSquareText, Newspaper, NotebookPen, Scale, Smartphone } from "lucide-react";
 
 export function ZhouGuMessagePage() {
   return <article className="min-h-full bg-[#101419] px-5 py-10 text-[#e7eaed] md:px-10 md:py-14">
@@ -66,60 +66,59 @@ export function AccidentDossierPage({ onFinish }: { onFinish: () => void }) {
   </article>;
 }
 
-type EndingDocumentId = "phone" | "verdict" | "news";
-type EndingPhase = "archive" | "opening" | "typing" | "erasing" | "note" | "final";
+type EndingPhase = "dossier" | "opening" | "typing" | "erasing" | "note" | "final";
 
-const ENDING_DOCUMENTS: { id: EndingDocumentId; date: string; title: string; description: string }[] = [
-  { id: "phone", date: "9月12日", title: "周惜的手机", description: "警方完成数据提取后，归还了她的手机和一份可读取副本。" },
-  { id: "verdict", date: "次年7月", title: "案件判决", description: "实施者被判故意杀人；顾惟真的责任停在另一项罪名上。" },
-  { id: "news", date: "判决后一周", title: "顾惟真争议", description: "安时关闭以后，关于他究竟救过人还是毁过人的争论没有停止。" },
-];
+function AftermathDossier({ onClose }: { onClose: () => void }) {
+  return <main className="min-h-dvh bg-[#101513] px-5 py-10 text-[#e4e8e5] md:px-10 md:py-16">
+    <div className="mx-auto max-w-[1050px]">
+      <header className="flex flex-wrap items-end justify-between gap-6 border-b border-white/15 pb-8"><div><p className="text-[11px] tracking-[.2em] text-[#809089]">案后归档 · 周惜死亡案</p><h1 className="mt-3 font-serif text-[40px] font-normal md:text-[58px]">后来发生的事</h1><p className="mt-4 max-w-[710px] text-[14px] leading-8 text-white/48">你提交的网页让警方重新调取北麓路17号与沿海路的完整影像。8月30日，交通事故转为刑事案件。此后送到你手里的消息，按时间收在同一份案卷里。</p></div><FolderOpen className="size-9 text-[#82968d]" /></header>
 
-function PhoneDocument({ onBack }: { onBack: () => void }) {
-  return <article className="mx-auto min-h-dvh max-w-[1050px] bg-[#ece9e2] px-5 py-8 text-[#2c302e] md:px-10 md:py-12">
-    <button className="inline-flex items-center gap-2 text-[12px] text-[#66716b]" onClick={onBack}><ArrowLeft className="size-4" />收起材料</button>
-    <header className="mt-8 border-b border-[#bfc3bd] pb-7"><p className="text-[11px] tracking-[.16em] text-[#7d8881]">扣押物品返还记录 · 9月12日</p><h1 className="mt-3 font-serif text-[38px] font-normal md:text-[52px]">周惜的手机</h1><p className="mt-4 max-w-[730px] text-[14px] leading-8 text-[#657069]">警方完成数据提取后，把手机交还给你。屏幕已经碎了，电量还剩百分之十一。随手机一同交付的只读副本里，有三个被标记的项目。</p></header>
-    <section className="mt-8 grid gap-7 lg:grid-cols-[290px_1fr]">
-      <div className="mx-auto w-full max-w-[290px] rounded-[34px] border-[7px] border-[#242625] bg-[#111412] p-3 shadow-[0_20px_50px_rgba(25,28,26,.24)]"><div className="rounded-[22px] bg-[#e8e6df] px-5 py-7 text-[#313633]"><p className="text-center text-[10px] text-[#7c837e]">8月25日　05:17</p><div className="mt-7 space-y-4"><div className="border-b border-[#c9cdc7] pb-3"><small className="text-[#878e89]">最近打开</small><strong className="mt-1 block text-[13px]">第七期申请名单</strong></div><div className="border-b border-[#c9cdc7] pb-3"><small className="text-[#878e89]">已下载</small><strong className="mt-1 block text-[13px]">第六期修改对照</strong></div><div><small className="text-[#878e89]">未发送邮件</small><strong className="mt-1 block text-[13px]">收件人：临川晚讯调查部</strong></div></div><p className="mt-16 text-center text-[10px] text-[#929892]">只读副本 · 部分系统数据已损坏</p></div></div>
-      <div className="space-y-4">
-        <section className="border border-[#c7cbc5] bg-white/65 p-5"><small className="text-[11px] text-[#89918c]">01 · 截图</small><h2 className="mt-2 text-[18px] font-semibold">07-01 / 关系人登记</h2><p className="mt-3 text-[14px] leading-7 text-[#5d6761]">申请者一栏是周惜，关系人一栏是林知还。截图时间为8月24日23:51；她在图片上圈出了“代偿结果”四个字。</p></section>
-        <section className="border border-[#c7cbc5] bg-white/65 p-5"><small className="text-[11px] text-[#89918c]">02 · 下载文件</small><h2 className="mt-2 text-[18px] font-semibold">第六期见证修改对照</h2><p className="mt-3 text-[14px] leading-7 text-[#5d6761]">文件同时保存了程叙白的死亡登记和8月19日仍以他口吻发布的动态。周惜在页边写：<strong>“他们只留下碰巧活着的人。”</strong></p></section>
-        <section className="border border-[#9a7770] bg-[#f3e9e6] p-5"><small className="text-[11px] text-[#9b7770]">03 · 未发送邮件</small><h2 className="mt-2 text-[18px] font-semibold">主题：安时在伪造患者见证</h2><p className="mt-3 text-[14px] leading-7 text-[#65504c]">附件包括申请名单、修改记录与顾惟真的消息截图。正文只写到：“我也报名过。我知道这会让我的话很难听，但名单里的人需要先被告知……”</p><p className="mt-3 text-[12px] text-[#9a7c76]">最后编辑：8月25日 05:17 · 未发送</p></section>
+      <div className="mt-10 border-l border-white/15 pl-5 md:pl-9">
+        <section className="relative bg-[#ece9e2] px-5 py-8 text-[#2c302e] shadow-[0_18px_55px_rgba(0,0,0,.18)] md:px-9 md:py-11">
+          <span className="absolute -left-[29px] top-11 size-4 rounded-full border-4 border-[#101513] bg-[#a6b7ae] md:-left-[45px]" />
+          <header className="flex flex-wrap items-start justify-between gap-5 border-b border-[#bfc3bd] pb-7"><div><p className="text-[11px] tracking-[.16em] text-[#7d8881]">9月12日 · 扣押物品返还</p><h2 className="mt-3 font-serif text-[34px] font-normal md:text-[46px]">周惜的手机</h2><p className="mt-4 max-w-[730px] text-[14px] leading-8 text-[#657069]">警方完成数据提取后，把手机交还给你。屏幕已经碎了，电量还剩百分之十一。只读副本里，有三个被标记的项目。</p></div><Smartphone className="size-8 text-[#6e7c75]" /></header>
+          <div className="mt-8 grid gap-7 lg:grid-cols-[290px_1fr]">
+            <div className="mx-auto w-full max-w-[290px] rounded-[34px] border-[7px] border-[#242625] bg-[#111412] p-3 shadow-[0_20px_50px_rgba(25,28,26,.24)]"><div className="rounded-[22px] bg-[#e8e6df] px-5 py-7 text-[#313633]"><p className="text-center text-[10px] text-[#7c837e]">8月25日　05:17</p><div className="mt-7 space-y-4"><div className="border-b border-[#c9cdc7] pb-3"><small className="text-[#878e89]">最近打开</small><strong className="mt-1 block text-[13px]">第七期申请名单</strong></div><div className="border-b border-[#c9cdc7] pb-3"><small className="text-[#878e89]">已下载</small><strong className="mt-1 block text-[13px]">第六期修改对照</strong></div><div><small className="text-[#878e89]">未发送邮件</small><strong className="mt-1 block text-[13px]">收件人：临川晚讯调查部</strong></div></div><p className="mt-16 text-center text-[10px] text-[#929892]">只读副本 · 部分系统数据已损坏</p></div></div>
+            <div className="space-y-4">
+              <article className="border border-[#c7cbc5] bg-white/65 p-5"><small className="text-[11px] text-[#89918c]">01 · 截图</small><h3 className="mt-2 text-[18px] font-semibold">07-01 / 关系人登记</h3><p className="mt-3 text-[14px] leading-7 text-[#5d6761]">申请者一栏是周惜，关系人一栏是林知还。截图时间为8月24日23:51；她在图片上圈出了“代偿结果”四个字。</p></article>
+              <article className="border border-[#c7cbc5] bg-white/65 p-5"><small className="text-[11px] text-[#89918c]">02 · 下载文件</small><h3 className="mt-2 text-[18px] font-semibold">第六期见证修改对照</h3><p className="mt-3 text-[14px] leading-7 text-[#5d6761]">文件同时保存了程叙白的死亡登记和8月19日仍以他口吻发布的动态。周惜在页边写：<strong>“他们只留下碰巧活着的人。”</strong></p></article>
+              <article className="border border-[#9a7770] bg-[#f3e9e6] p-5"><small className="text-[11px] text-[#9b7770]">03 · 未发送邮件</small><h3 className="mt-2 text-[18px] font-semibold">主题：安时在伪造患者见证</h3><p className="mt-3 text-[14px] leading-7 text-[#65504c]">附件包括申请名单、修改记录与顾惟真的消息截图。正文只写到：“我也报名过。我知道这会让我的话很难听，但名单里的人需要先被告知……”</p><p className="mt-3 text-[12px] text-[#9a7c76]">最后编辑：8月25日 05:17 · 未发送</p></article>
+            </div>
+          </div>
+        </section>
+
+        <section className="relative mt-8 bg-[#eef1f0] px-5 py-8 text-[#24302d] shadow-[0_18px_55px_rgba(0,0,0,.18)] md:px-9 md:py-11">
+          <span className="absolute -left-[29px] top-11 size-4 rounded-full border-4 border-[#101513] bg-[#a6b7ae] md:-left-[45px]" />
+          <header className="flex flex-wrap items-start justify-between gap-6 border-b-2 border-[#364944] pb-7"><div><p className="text-[11px] tracking-[.16em] text-[#75847f]">次年7月18日 · 临川市中级人民法院</p><h2 className="mt-3 font-serif text-[34px] font-normal md:text-[46px]">案件判决</h2><p className="mt-3 text-[14px] text-[#66746f]">周惜死亡案一审宣判</p></div><Scale className="size-9 text-[#566b64]" /></header>
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            <article className="border border-[#aebbb6] bg-white p-6"><p className="text-[11px] tracking-[.12em] text-[#7b8a84]">被告人 · 梁孟海</p><h3 className="mt-3 text-[24px] font-semibold">故意杀人罪</h3><p className="mt-4 text-[14px] leading-8 text-[#53615c]">梁孟海即账号“守潮人-17”。法院认定其驾车尾随并故意撞击周惜，判处无期徒刑，剥夺政治权利终身。</p></article>
+            <article className="border border-[#9d817a] bg-[#f5ece9] p-6"><p className="text-[11px] tracking-[.12em] text-[#91736c]">被告人 · 顾惟真</p><h3 className="mt-3 text-[24px] font-semibold">侵犯公民个人信息罪</h3><p className="mt-4 text-[14px] leading-8 text-[#66534e]">顾惟真利用基金会留存的报名资料，将周惜的病情、住处与清晨路线发给“近身见证”多人，判处有期徒刑三年六个月，并处罚金。</p></article>
+          </div>
+          <aside className="mt-6 border-l-4 border-[#775e58] bg-white px-6 py-6 text-[14px] leading-8 text-[#56635f]"><h3 className="text-[18px] font-semibold text-[#34433f]">他为什么没有以故意杀人罪被判刑？</h3><p className="mt-3">顾没有说“杀了她”。他转发周惜的辱骂、身份资料和路线后，只写了“别让更多人被她骗”。梁孟海回复“明白”，两人此前也没有留下关于杀人的明确约定。</p><p className="mt-3">判决认为，这些证据足以证明顾把一个濒死者暴露给狂热信徒，却不足以排除他只想让信徒恐吓、阻止周惜公开资料的可能。因此检察机关没有把他作为故意杀人的共犯起诉。</p><p className="mt-3 font-semibold text-[#704f48]">判决划出了刑事责任的边界，没有替他洗清那条消息之后发生的事。</p></aside>
+          <p className="mt-7 border-t border-[#c3ccc8] pt-5 text-[13px] leading-7 text-[#73807b]">安时生命关怀基金会停止运作。仍在接受资助的患者由三家公益机构接续，北麓路17号的资料间被永久封存。</p>
+        </section>
+
+        <section className="relative mt-8 bg-[#f2efe7] px-5 py-8 text-[#292b29] shadow-[0_18px_55px_rgba(0,0,0,.18)] md:px-9 md:py-11">
+          <span className="absolute -left-[29px] top-11 size-4 rounded-full border-4 border-[#101513] bg-[#a6b7ae] md:-left-[45px]" />
+          <header className="flex items-start justify-between gap-5 border-y-4 border-double border-[#373b38] py-6"><div><p className="text-[11px] tracking-[.2em] text-[#777d78]">判决后一周 · 临川晚讯特别报道</p><h2 className="mt-4 font-serif text-[34px] font-normal leading-tight md:text-[46px]">顾惟真争议</h2><p className="mt-3 text-[13px] text-[#777d78]">善款是真的，假见证是真的，死者也是真的。</p></div><Newspaper className="size-8 shrink-0 text-[#6b716d]" /></header>
+          <div className="mt-8 grid gap-5 lg:grid-cols-3">
+            <article className="border-t-4 border-[#6e8778] bg-white/65 p-6"><small className="text-[#78877f]">受助者来信</small><h3 className="mt-3 font-serif text-[24px] font-normal">“他确实帮过我们。”</h3><p className="mt-4 text-[14px] leading-8 text-[#5c635f]">公开账目复核显示，安时多年间支付过真实的床位、药费、交通和临终照护支出。一些家属说，如果没有顾惟真的钱，他们连最后一次治疗都撑不到。</p></article>
+            <article className="border-t-4 border-[#9a665e] bg-white/65 p-6"><small className="text-[#926e67]">病友组织声明</small><h3 className="mt-3 font-serif text-[24px] font-normal">“帮助不该索取信仰。”</h3><p className="mt-4 text-[14px] leading-8 text-[#625956]">安时把偶然好转包装成被神选中，又让病情恶化者相信自己不够虔诚，或必须由最亲近的人“代偿”。钱缓解了一部分痛苦，造神则给濒死者添上了第二种绝望。</p></article>
+            <article className="border-t-4 border-[#6a667e] bg-white/65 p-6"><small className="text-[#77738a]">评论版</small><h3 className="mt-3 font-serif text-[24px] font-normal">“他需要别人相信他是神。”</h3><p className="mt-4 text-[14px] leading-8 text-[#5d5a66]">顾惟真病危时求遍神佛而没有得到回应，此后卖掉全部佛教藏品。他也许早已不信神，却把自己的生还写进伪造的古老传说，让别人的崇拜成为唯一回答。</p></article>
+          </div>
+          <blockquote className="mt-7 border-y border-[#bbb9b1] py-7 font-serif text-[20px] leading-10 text-[#414540] md:px-10">庭审最后，顾惟真仍说：“我从未要求任何人把我当作神。”<br /><span className="text-[15px] text-[#747a75]">他没有解释，为什么所有要求否认这一说法的稿件都被他退回。</span></blockquote>
+          <p className="mt-7 text-[13px] leading-7 text-[#747a75]">赞扬、憎恨和辩解持续占据新闻评论区。没有一篇报道能把他简单写成救人者，也没有一份判决能替那些病人回答：他们接受的帮助，究竟要付出什么。</p>
+        </section>
       </div>
-    </section>
-  </article>;
-}
 
-function VerdictDocument({ onBack }: { onBack: () => void }) {
-  return <article className="mx-auto min-h-dvh max-w-[1050px] bg-[#eef1f0] px-5 py-8 text-[#24302d] md:px-10 md:py-12">
-    <button className="inline-flex items-center gap-2 text-[12px] text-[#65736e]" onClick={onBack}><ArrowLeft className="size-4" />收起材料</button>
-    <header className="mt-8 flex flex-wrap items-start justify-between gap-6 border-b-2 border-[#364944] pb-7"><div><p className="text-[11px] tracking-[.16em] text-[#75847f]">临川市中级人民法院 · 一审宣判</p><h1 className="mt-3 font-serif text-[38px] font-normal md:text-[52px]">周惜死亡案</h1><p className="mt-3 text-[14px] text-[#66746f]">次年7月18日</p></div><Scale className="size-9 text-[#566b64]" /></header>
-    <section className="mt-8 grid gap-5 md:grid-cols-2">
-      <article className="border border-[#aebbb6] bg-white p-6"><p className="text-[11px] tracking-[.12em] text-[#7b8a84]">被告人 · 梁孟海</p><h2 className="mt-3 text-[24px] font-semibold">故意杀人罪</h2><p className="mt-4 text-[14px] leading-8 text-[#53615c]">梁孟海即账号“守潮人-17”。法院认定其驾车尾随并故意撞击周惜，判处无期徒刑，剥夺政治权利终身。</p></article>
-      <article className="border border-[#9d817a] bg-[#f5ece9] p-6"><p className="text-[11px] tracking-[.12em] text-[#91736c]">被告人 · 顾惟真</p><h2 className="mt-3 text-[24px] font-semibold">侵犯公民个人信息罪</h2><p className="mt-4 text-[14px] leading-8 text-[#66534e]">顾惟真利用基金会留存的报名资料，将周惜的病情、住处与清晨路线发给“近身见证”多人，判处有期徒刑三年六个月，并处罚金。</p></article>
-    </section>
-    <section className="mt-6 border-l-4 border-[#775e58] bg-white px-6 py-6 text-[14px] leading-8 text-[#56635f]"><h2 className="text-[18px] font-semibold text-[#34433f]">他为什么没有以故意杀人罪被判刑？</h2><p className="mt-3">顾没有说“杀了她”。他转发周惜的辱骂、身份资料和路线后，只写了“别让更多人被她骗”。梁孟海回复“明白”，两人此前也没有留下关于杀人的明确约定。</p><p className="mt-3">判决认为，这些证据足以证明顾把一个濒死者暴露给狂热信徒，却不足以排除他只想让信徒恐吓、阻止周惜公开资料的可能。因此检察机关没有把他作为故意杀人的共犯起诉。</p><p className="mt-3 font-semibold text-[#704f48]">判决划出了刑事责任的边界，没有替他洗清那条消息之后发生的事。</p></section>
-    <footer className="mt-7 border-t border-[#c3ccc8] pt-5 text-[13px] leading-7 text-[#73807b]">安时生命关怀基金会停止运作。仍在接受资助的患者由三家公益机构接续，北麓路17号的资料间被永久封存。</footer>
-  </article>;
-}
-
-function NewsDocument({ onBack }: { onBack: () => void }) {
-  return <article className="mx-auto min-h-dvh max-w-[1050px] bg-[#f2efe7] px-5 py-8 text-[#292b29] md:px-10 md:py-12">
-    <button className="inline-flex items-center gap-2 text-[12px] text-[#6b716d]" onClick={onBack}><ArrowLeft className="size-4" />收起材料</button>
-    <header className="mt-8 border-y-4 border-double border-[#373b38] py-6 text-center"><p className="text-[11px] tracking-[.2em] text-[#777d78]">临川晚讯 · 判决后特别报道</p><h1 className="mx-auto mt-4 max-w-[850px] font-serif text-[38px] font-normal leading-tight md:text-[54px]">顾惟真到底救过谁？</h1><p className="mt-4 text-[13px] text-[#777d78]">善款是真的，假见证是真的，死者也是真的。</p></header>
-    <section className="mt-8 grid gap-5 lg:grid-cols-3">
-      <article className="border-t-4 border-[#6e8778] bg-white/65 p-6"><small className="text-[#78877f]">受助者来信</small><h2 className="mt-3 font-serif text-[24px] font-normal">“他确实帮过我们。”</h2><p className="mt-4 text-[14px] leading-8 text-[#5c635f]">公开账目复核显示，安时多年间支付过真实的床位、药费、交通和临终照护支出。一些家属说，如果没有顾惟真的钱，他们连最后一次治疗都撑不到。</p></article>
-      <article className="border-t-4 border-[#9a665e] bg-white/65 p-6"><small className="text-[#926e67]">病友组织声明</small><h2 className="mt-3 font-serif text-[24px] font-normal">“帮助不该索取信仰。”</h2><p className="mt-4 text-[14px] leading-8 text-[#625956]">安时把偶然好转包装成被神选中，又让病情恶化者相信自己不够虔诚，或必须由最亲近的人“代偿”。钱缓解了一部分痛苦，造神则给濒死者添上了第二种绝望。</p></article>
-      <article className="border-t-4 border-[#6a667e] bg-white/65 p-6"><small className="text-[#77738a]">评论版</small><h2 className="mt-3 font-serif text-[24px] font-normal">“他需要别人相信他是神。”</h2><p className="mt-4 text-[14px] leading-8 text-[#5d5a66]">顾惟真病危时求遍神佛而没有得到回应，此后卖掉全部佛教藏品。他也许早已不信神，却把自己的生还写进伪造的古老传说，让别人的崇拜成为唯一回答。</p></article>
-    </section>
-    <blockquote className="mt-7 border-y border-[#bbb9b1] py-7 font-serif text-[20px] leading-10 text-[#414540] md:px-10">庭审最后，顾惟真仍说：“我从未要求任何人把我当作神。”<br /><span className="text-[15px] text-[#747a75]">他没有解释，为什么所有要求否认这一说法的稿件都被他退回。</span></blockquote>
-    <footer className="mt-7 text-[13px] leading-7 text-[#747a75]">赞扬、憎恨和辩解持续占据新闻评论区。没有一篇报道能把他简单写成救人者，也没有一份判决能替那些病人回答：他们接受的帮助，究竟要付出什么。</footer>
-  </article>;
+      <footer className="mt-10 border-t border-white/12 pt-8"><p className="max-w-[650px] text-[13px] leading-7 text-white/38">案卷到这里结束。再往后，没有新的调查材料。</p><button className="mt-5 border border-white/25 px-5 py-3 text-[13px] text-white/72 transition hover:bg-white/5" onClick={onClose}>合上案卷</button></footer>
+    </div>
+  </main>;
 }
 
 function EndingTakeover({ phase, typedLength, onFinish }: { phase: EndingPhase; typedLength: number; onFinish: () => void }) {
   const apology = "对不起...";
-  if (phase === "final") return <main className="ending-screen min-h-dvh bg-[#080b0c] px-6 py-12 text-[#e8eceb]"><div className="mx-auto flex min-h-[calc(100dvh-6rem)] max-w-[820px] flex-col justify-center"><p className="text-[12px] tracking-[.22em] text-[#7f918a]">唯一结局</p><h1 className="mt-4 font-serif text-[52px] font-normal leading-tight md:text-[78px]">下周没有葬礼</h1><div className="mt-9 border-y border-white/15 py-8"><p className="max-w-[720px] font-serif text-[22px] leading-10 text-white/82">你揭穿了顾惟真的神迹，也终于知道周惜曾经怎样背叛你。她是受害者，但这不会自动让她变得无辜。</p><p className="mt-5 text-[15px] leading-8 text-white/48">她没能等到第七期。你也不必参加那场为活人准备的葬礼。</p></div><button className="mt-12 w-fit border border-white/30 px-5 py-3 text-[14px] text-white/70 hover:bg-white/5" onClick={() => window.location.reload()}>重新开始</button></div></main>;
+  if (phase === "final") return <main className="ending-screen min-h-dvh bg-[#080b0c] px-6 py-12 text-[#e8eceb]"><div className="mx-auto flex min-h-[calc(100dvh-6rem)] max-w-[820px] flex-col justify-center"><p className="text-[12px] tracking-[.22em] text-[#7f918a]">唯一结局</p><h1 className="mt-4 font-serif text-[52px] font-normal leading-tight md:text-[78px]">下周，葬礼照常举行</h1><div className="mt-9 border-y border-white/15 py-8"><p className="max-w-[720px] font-serif text-[22px] leading-10 text-white/82">你揭穿了顾惟真的神迹，也终于知道周惜曾经怎样背叛你。她是受害者，但这不会自动让她变得无辜。</p><p className="mt-5 text-[15px] leading-8 text-white/48">周惜替你预订的，是一场为活人准备的告别。她死后，那份预订被取消；同一周，家属为她办了真正的葬礼。</p><p className="mt-5 font-serif text-[20px] leading-9 text-white/72">下周无论如何都有一场葬礼。只是最后躺在那里的人变了。</p></div><button className="mt-12 w-fit border border-white/30 px-5 py-3 text-[14px] text-white/70 hover:bg-white/5" onClick={() => window.location.reload()}>重新开始</button></div></main>;
 
   return <main className="ending-takeover min-h-dvh overflow-hidden bg-[#17201c] text-[#25302b]" aria-live="polite">
     <header className="flex h-8 items-center justify-between bg-[#e8e9e4]/90 px-4 text-[11px] text-[#4f5b55]"><strong>记事本</strong><span>7月26日　00:08</span></header>
@@ -134,37 +133,17 @@ function EndingTakeover({ phase, typedLength, onFinish }: { phase: EndingPhase; 
 }
 
 export function EndingScreen() {
-  const [active, setActive] = useState<EndingDocumentId | null>(null);
-  const [viewed, setViewed] = useState<EndingDocumentId[]>([]);
-  const [phase, setPhase] = useState<EndingPhase>("archive");
+  const [phase, setPhase] = useState<EndingPhase>("dossier");
   const [typedLength, setTypedLength] = useState(0);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
-    if (phase === "archive" && active === null && viewed.length === ENDING_DOCUMENTS.length) timer = setTimeout(() => setPhase("opening"), 700);
-    if (phase === "opening") timer = setTimeout(() => setPhase("typing"), 1100);
-    if (phase === "typing") timer = setTimeout(() => typedLength < 6 ? setTypedLength((length) => length + 1) : setPhase("erasing"), typedLength < 6 ? 150 : 850);
-    if (phase === "erasing") timer = setTimeout(() => typedLength > 0 ? setTypedLength((length) => length - 1) : setPhase("note"), typedLength > 0 ? 85 : 650);
+    if (phase === "opening") timer = setTimeout(() => setPhase("typing"), 1300);
+    if (phase === "typing") timer = setTimeout(() => typedLength < 6 ? setTypedLength((length) => length + 1) : setPhase("erasing"), typedLength < 6 ? 420 : 1400);
+    if (phase === "erasing") timer = setTimeout(() => typedLength > 0 ? setTypedLength((length) => length - 1) : setPhase("note"), typedLength > 0 ? 170 : 800);
     return () => { if (timer) clearTimeout(timer); };
-  }, [active, phase, typedLength, viewed.length]);
+  }, [phase, typedLength]);
 
-  if (phase !== "archive") return <EndingTakeover phase={phase} typedLength={typedLength} onFinish={() => setPhase("final")} />;
-  if (active === "phone") return <PhoneDocument onBack={() => setActive(null)} />;
-  if (active === "verdict") return <VerdictDocument onBack={() => setActive(null)} />;
-  if (active === "news") return <NewsDocument onBack={() => setActive(null)} />;
-
-  function openDocument(id: EndingDocumentId) {
-    setViewed((oldViewed) => oldViewed.includes(id) ? oldViewed : [...oldViewed, id]);
-    setActive(id);
-  }
-
-  return <main className="min-h-dvh bg-[#101513] px-5 py-10 text-[#e4e8e5] md:px-10 md:py-14">
-    <div className="mx-auto max-w-[1000px]">
-      <header className="flex flex-wrap items-end justify-between gap-6 border-b border-white/15 pb-8"><div><p className="text-[11px] tracking-[.2em] text-[#809089]">案后归档 · 周惜死亡案</p><h1 className="mt-3 font-serif text-[40px] font-normal md:text-[58px]">后来发生的事</h1><p className="mt-4 max-w-[710px] text-[14px] leading-8 text-white/48">你提交的网页让警方重新调取北麓路17号与沿海路的完整影像。8月30日，交通事故转为刑事案件。余下的答案，在三份后来送到你手里的材料里。</p></div><FolderOpen className="size-9 text-[#82968d]" /></header>
-      <section className="mt-8 grid gap-4 md:grid-cols-3">
-        {ENDING_DOCUMENTS.map((document) => <button key={document.id} className="group min-h-[250px] border border-white/15 bg-white/[.035] p-6 text-left transition hover:border-white/30 hover:bg-white/[.06]" onClick={() => openDocument(document.id)}><div className="flex items-start justify-between">{document.id === "phone" ? <Smartphone className="size-6 text-[#9cafaa]" /> : document.id === "verdict" ? <Scale className="size-6 text-[#b49d91]" /> : <Newspaper className="size-6 text-[#a4a0b5]" />}{viewed.includes(document.id) ? <span className="flex items-center gap-1 text-[10px] text-[#81938b]"><Check className="size-3" />已查看</span> : null}</div><small className="mt-10 block text-[11px] text-white/35">{document.date}</small><h2 className="mt-2 font-serif text-[25px] font-normal text-white/85">{document.title}</h2><p className="mt-4 text-[13px] leading-7 text-white/45">{document.description}</p></button>)}
-      </section>
-      <footer className="mt-8 flex items-center justify-between border-t border-white/10 pt-5 text-[11px] text-white/32"><span>材料 {viewed.length} / {ENDING_DOCUMENTS.length}</span><span>{viewed.length === ENDING_DOCUMENTS.length ? "没有更多文件。" : "打开文件查看后续。"}</span></footer>
-    </div>
-  </main>;
+  if (phase === "dossier") return <AftermathDossier onClose={() => setPhase("opening")} />;
+  return <EndingTakeover phase={phase} typedLength={typedLength} onFinish={() => setPhase("final")} />;
 }
