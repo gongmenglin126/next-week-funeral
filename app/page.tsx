@@ -130,7 +130,7 @@ export default function Home() {
       <section className="intro-copy" aria-labelledby="game-title">
         <p className="intro-kicker">一场没有走完的旅行</p><h1 id="game-title">下周的葬礼</h1>
         <div className="intro-story">
-          <p>你们来雾汀的第三天，旅行突然结束了。</p>
+          <p>你们来雾汀的第三天，旅行结束了。</p>
           <p>昨天清晨，她说头疼，下楼买药。后来，警方打来电话：她在沿海公路的路口遭遇车祸，经抢救无效死亡。</p>
           <p>她的手机暂时留作事故调查，电脑还摊在民宿的桌上。剩下的房间、车票和预约都是她订的。</p>
           <p>你得先替这趟旅行收个尾。</p>
