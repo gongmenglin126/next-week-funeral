@@ -23,8 +23,8 @@ export function FanaticProfilePage() {
           <small className="text-[#b49a8e]">2023-11-26 19:14 · 答谢会手机录像转写</small>
           <h2 className="mt-3 font-serif text-[24px] font-normal">他说“让她说完”</h2>
           <div className="mt-5 border-l-2 border-[#80695f] pl-5 text-[15px] leading-8 text-white/70">
-            <p>台下一名女子跪下，连续三次称顾惟真为“大罗无相尊”。主持人上前想把称呼改成“顾先生”，顾抬手打断：</p>
-            <blockquote className="my-4 font-serif text-[20px] text-white/88">“不用替她改。让她说完。”</blockquote>
+            <p>台下一名女子跪下，连续三次称顾惟真为“大罗无相尊”。主持人上前想拦住她，顾抬手打断：</p>
+            <blockquote className="my-4 font-serif text-[20px] text-white/88">“让她说完。”</blockquote>
             <p>女子讲完后将一幅写有尊号的白绢交给他。顾收下白绢，只说：“记住是谁让你撑到了今天。”现场随后又有多人跪下，他没有再作解释。</p>
           </div>
         </article>
