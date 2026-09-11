@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>厄运退散</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#30344a;background:linear-gradient(145deg,#fff5dc,#def5ff);overflow:hidden}body{display:flex;justify-content:center;align-items:center}.app{width:min(980px,100vw);height:min(720px,100vh);padding:14px;display:flex;flex-direction:column;gap:10px}.head{display:flex;justify-content:space-between;align-items:center;padding:0 4px}.ttl{font-weight:900;font-size:25px}.sub{font-size:12px;opacity:.62;margin-top:2px}.tag{font-size:12px;background:#ffffffc7;padding:8px 12px;border-radius:999px;box-shadow:0 8px 25px #4b58731a}.stage{position:relative;flex:1;min-height:0;border-radius:24px;overflow:hidden;background:#ffffffb5;box-shadow:0 18px 50px #40516c22}.sky{position:absolute;inset:0;background:linear-gradient(#dff6ff 0 72%,#bce7ad 72% 100%)}.cloud{position:absolute;width:90px;height:28px;border-radius:40px;background:#fff9;filter:blur(.2px)}.c1{top:18%;left:9%;animation:float 10s linear infinite}.c2{top:30%;left:55%;animation:float 15s linear infinite}.c3{top:10%;left:78%;animation:float 12s linear infinite reverse}@keyframes float{50%{transform:translateX(35px)}}canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}.hud{position:absolute;left:14px;right:14px;top:12px;display:flex;justify-content:space-between;pointer-events:none}.hud>div{background:#ffffffd8;padding:8px 11px;border-radius:13px;font-size:12px;box-shadow:0 6px 18px #40516c17}.bossbar{position:absolute;left:50%;top:14px;transform:translateX(-50%);width:min(480px,62%);text-align:center;font-size:12px;font-weight:900}.bar{margin-top:5px;height:12px;background:#fff;border-radius:999px;overflow:hidden;box-shadow:0 4px 15px #40516c1c}.fill{height:100%;width:100%;background:linear-gradient(90deg,#ff9c72,#ff688b);transition:width .1s}.toast{position:absolute;left:50%;top:72px;transform:translateX(-50%);background:#30344ae9;color:#fff;padding:8px 13px;border-radius:999px;font-size:13px;opacity:0;transition:.2s;white-space:nowrap}.toast.on{opacity:1;transform:translate(-50%,5px)}.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:#ffffff45;backdrop-filter:blur(5px)}.card{width:min(560px,94%);background:#fffffff0;border-radius:24px;padding:28px 24px;text-align:center;box-shadow:0 18px 55px #35455e2b}.card h1,.card h2{margin:0}.card h1{font-size:clamp(38px,8vw,58px)}.card h2{font-size:clamp(30px,7vw,46px)}.card p{line-height:1.8;margin:14px 0 0;font-size:15px}.small{font-size:12px!important;opacity:.62}.btn{border:0;border-radius:16px;background:#30344a;color:#fff;padding:13px 25px;font-weight:900;font-size:16px;margin-top:18px;box-shadow:0 8px 20px #30344a28}.hidden{display:none!important}.controls{display:flex;gap:10px}.control{height:55px;border:0;border-radius:17px;font-weight:900;font-size:17px;box-shadow:0 9px 22px #40516c1c;touch-action:none}.atk{flex:2;background:#ff8fa5;color:#fff}.dodge{flex:1;background:#fff;color:#30344a}@media(min-width:800px){.controls{width:520px;align-self:center}.tag:after{content:"｜空格攻击，Shift闪避"}}@media(max-width:799px){.tag{display:none}.ttl{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head"><div><div class="ttl">厄运退散</div><div class="sub">先把今天的坏运气打一顿。</div></div><div class="tag">电脑也能玩</div></div>
+  <div class="stage" id="stage">
+    <div class="sky"><div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div></div>
+    <canvas id="cv"></canvas>
+    <div class="hud hidden" id="hud"><div>❤️ <span id="hp">5</span>　✨ <span id="buff">冷静 0</span></div><div id="wave">第 1 波</div></div>
+    <div class="bossbar hidden" id="bossbar"><div id="bossname">法考</div><div class="bar"><div class="fill" id="bossfill"></div></div></div>
+    <div class="toast" id="toast"></div>
+    <div class="overlay" id="start"><div class="card"><h1>厄运退散</h1><p>前面有几只烦人的坏运气。<br>打掉它们，捡点 <b>冷静、手感、记忆力</b>。<br><br>最后那只大的——就叫 <b>法考</b>。</p><button class="btn" onclick="startGame()">开打</button><p class="small">手机直接用下方两个按钮｜按住攻击可以连发</p></div></div>
+    <div class="overlay hidden" id="win"><div class="card"><h2>法考，击败。</h2><p>恭喜玩家获得：<br><b>冷静一点点，勇气一点点。</b></p><p>现实里的那只，也去打吧。🌟</p><button class="btn" onclick="startGame()">再揍一次</button></div></div>
+    <div class="overlay hidden" id="lose"><div class="card"><h2>刚才不算。</h2><p>这里允许无限重来。<br>一场考试，也没有资格替你给整个人生打分。</p><button class="btn" onclick="startGame()">继续揍</button></div></div>
+  </div>
+  <div class="controls"><button class="control atk" id="atk">攻击 ✦</button><button class="control dodge" id="dodge">闪避</button></div>
+</div>
+<script>
+const $=id=>document.getElementById(id),cv=$('cv'),ctx=cv.getContext('2d'),stage=$('stage');
+let W=800,H=500,running=false,last=0,t=0,bullets=[],enemies=[],drops=[],parts=[],boss=null,wave=1,spawned=0,killed=0,spawnT=0,atkCd=0,inv=0,dodgeT=0,buff=0;
+const P={x:90,y:360,w:42,h:52,hp:5};
+const names=['我是不是记不住了','别人都复习得更好','这一题怎么又错','完了来不及了'];
+const armor=['不过怎么办','别人怎么看我','是不是证明我不行'];
+function resize(){const r=stage.getBoundingClientRect(),d=devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);W=r.width;H=r.height;P.y=H-104}addEventListener('resize',resize);resize();
+function show(id,v=true){$(id).classList.toggle('hidden',!v)}
+function toast(s){$('toast').textContent=s;$('toast').classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('on'),850)}
+function hud(){ $('hp').textContent=P.hp; $('wave').textContent=boss?'BOSS':'第 '+wave+' 波'; const a=['冷静','手感','记忆力','管他呢']; $('buff').textContent=a[Math.min(3,Math.floor(buff/30))]+' '+buff }
+function burst(x,y,n,c){for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-.5)*240,vy:(Math.random()-.7)*220,l:.4+Math.random()*.45,c,r:2+Math.random()*4})}
+function reset(){bullets=[];enemies=[];drops=[];parts=[];boss=null;wave=1;spawned=0;killed=0;spawnT=.5;atkCd=0;inv=0;dodgeT=0;buff=0;P.hp=5;hud();show('bossbar',false)}
+function startGame(){reset();show('start',false);show('win',false);show('lose',false);show('hud',true);running=true;last=performance.now();requestAnimationFrame(loop)}
+function shoot(){if(!running||atkCd>0)return;atkCd=.17;bullets.push({x:P.x+37,y:P.y+20,v:650});burst(P.x+40,P.y+20,3,'#ffe27a')}
+function dodge(){if(!running||dodgeT>0)return;dodgeT=1.5;inv=.75;toast('闪掉了 ✦');burst(P.x+20,P.y+25,12,'#9fe8ff')}
+function mob(){let i=spawned%names.length;enemies.push({x:W+30,y:H-98,w:48,h:48,v:105+wave*18+Math.random()*25,hp:1+wave,max:1+wave,n:names[i],hue:20+i*70});spawned++}
+function drop(x,y){const ds=[['冷静 +10',10],['手感 +20',20],['记忆力 +30',30],['管他呢 +100',100]],d=ds[Math.random()<.08?3:Math.floor(Math.random()*3)];drops.push({x,y,vy:-100,l:4,n:d[0],v:d[1]})}
+function bossIn(){boss={x:W-175,y:H-182,w:130,h:130,hp:18,max:18,p:0,shot:1};show('bossbar',true);$('bossname').textContent='法考 · 护甲「'+armor[0]+'」';$('bossfill').style.width='100%';hud();toast('最终 BOSS：法考')}
+function nextBoss(){boss.p++;if(boss.p<3){boss.hp=boss.max=18;$('bossname').textContent='法考 · 护甲「'+armor[boss.p]+'」';toast('护甲碎了一层！')}else if(boss.p===3){boss.hp=boss.max=26;$('bossname').textContent='法考 · 真身';toast('原来真身也就这样。')}else{burst(boss.x+65,boss.y+65,80,'#ffd166');running=false;show('hud',false);show('bossbar',false);setTimeout(()=>show('win',true),300);boss=null;return}$('bossfill').style.width='100%'}
+function hurt(){if(inv>0||!running)return;P.hp--;inv=.85;burst(P.x+20,P.y+20,18,'#ff8ca2');hud();if(P.hp<=0){running=false;show('hud',false);show('bossbar',false);setTimeout(()=>show('lose',true),250)}}
+function hit(a,b){return a.x<b.x+b.w&&a.x+(a.w||1)>b.x&&a.y<b.y+b.h&&a.y+(a.h||1)>b.y}
+function update(dt){t+=dt;atkCd=Math.max(0,atkCd-dt);inv=Math.max(0,inv-dt);dodgeT=Math.max(0,dodgeT-dt);spawnT-=dt;
+ if(!boss&&wave<=3){let target=3+wave;if(spawned<target&&spawnT<=0){mob();spawnT=.9+Math.random()*.4}if(killed>=target){wave++;spawned=0;killed=0;spawnT=.7;if(wave<=3){toast('下一波！');hud()}else setTimeout(()=>running&&bossIn(),600)}}
+ if(boss){boss.y=H-182+Math.sin(t*2.1)*7;boss.shot-=dt;if(boss.shot<=0){boss.shot=1.25+Math.random()*.45;enemies.push({x:boss.x+10,y:boss.y+62,w:24,h:24,v:250,hp:1,max:1,n:'?',proj:true})}}
+ bullets.forEach(b=>b.x+=b.v*dt);bullets=bullets.filter(b=>b.x<W+30&&!b.dead);
+ enemies.forEach(e=>{e.x-=e.v*dt;if(hit(e,P)){e.dead=true;hurt()}if(!e.proj&&e.x<-60){e.dead=true;hurt()}});
+ bullets.forEach(b=>{for(const e of enemies){if(e.dead||b.dead)continue;if(b.x>e.x&&b.x<e.x+e.w&&b.y>e.y&&b.y<e.y+e.h){e.hp--;b.dead=true;burst(b.x,b.y,7,'#ffe27a');if(e.hp<=0){e.dead=true;if(!e.proj){killed++;drop(e.x,e.y)}burst(e.x+24,e.y+24,16,'#ffd166')}break}}if(boss&&!b.dead&&b.x>boss.x&&b.x<boss.x+boss.w&&b.y>boss.y&&b.y<boss.y+boss.h){boss.hp--;b.dead=true;burst(b.x,b.y,6,'#fff1a8');$('bossfill').style.width=Math.max(0,boss.hp/boss.max*100)+'%';if(boss.hp<=0)nextBoss()}});
+ bullets=bullets.filter(b=>!b.dead);enemies=enemies.filter(e=>!e.dead);
+ drops.forEach(d=>{d.vy+=240*dt;d.y+=d.vy*dt;d.l-=dt;d.y=Math.min(H-68,d.y);if(Math.abs((P.x+20)-d.x)<55&&Math.abs((P.y+20)-d.y)<55){d.dead=true;buff+=d.v;toast(d.n);hud();burst(d.x,d.y,12,'#8ee6c0')}});drops=drops.filter(d=>!d.dead&&d.l>0);
+ parts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=260*dt;p.l-=dt});parts=parts.filter(p=>p.l>0)}
+function rr(x,y,w,h,r,c){ctx.fillStyle=c;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
+function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#91d38f';ctx.fillRect(0,H-60,W,60);
+ ctx.save();ctx.translate(P.x,P.y+(inv>0?Math.sin(t*28)*2:0));rr(0,8,42,42,14,'#5d7df9');ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(14,23,4,0,7);ctx.arc(29,23,4,0,7);ctx.fill();ctx.fillStyle='#30344a';ctx.beginPath();ctx.arc(15,24,1.5,0,7);ctx.arc(30,24,1.5,0,7);ctx.fill();rr(7,0,28,13,4,'#ffd166');ctx.fillStyle='#30344a';ctx.font='700 9px sans-serif';ctx.fillText('法条',12,10);ctx.restore();
+ bullets.forEach(b=>{ctx.fillStyle='#ffd54f';ctx.beginPath();ctx.arc(b.x,b.y,6,0,7);ctx.fill()});
+ enemies.forEach(e=>{if(e.proj){ctx.fillStyle='#c77aea';ctx.beginPath();ctx.arc(e.x+12,e.y+12,12,0,7);ctx.fill();ctx.fillStyle='#fff';ctx.font='900 14px sans-serif';ctx.fillText('?',e.x+8,e.y+17)}else{rr(e.x,e.y,e.w,e.h,15,'hsl('+e.hue+' 78% 72%)');ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(e.x+15,e.y+19,4,0,7);ctx.arc(e.x+33,e.y+19,4,0,7);ctx.fill();ctx.font='700 11px sans-serif';let tw=ctx.measureText(e.n).width+14;rr(e.x+(48-tw)/2,e.y-23,tw,18,9,'#30344ad9');ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText(e.n,e.x+24,e.y-10);ctx.textAlign='left'}});
+ if(boss){rr(boss.x,boss.y,130,130,28,'#ff8fa3');ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(boss.x+40,boss.y+48,10,0,7);ctx.arc(boss.x+90,boss.y+48,10,0,7);ctx.fill();ctx.fillStyle='#30344a';ctx.font='900 15px sans-serif';rr(boss.x+25,boss.y-28,80,24,12,'#30344ae8');ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText('法考',boss.x+65,boss.y-11);ctx.textAlign='left'}
+ drops.forEach(d=>{ctx.fillStyle='#86dfbb';ctx.beginPath();ctx.arc(d.x,d.y,15,0,7);ctx.fill();ctx.fillStyle='#fff';ctx.font='900 16px sans-serif';ctx.fillText('✦',d.x-7,d.y+6)});parts.forEach(p=>{ctx.globalAlpha=Math.max(0,p.l/.8);ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();ctx.globalAlpha=1})}
+function loop(now){if(!running)return;let dt=Math.min(.033,(now-last)/1000||.016);last=now;update(dt);draw();requestAnimationFrame(loop)}
+let fireInt=null;function fireOn(e){e&&e.preventDefault();shoot();clearInterval(fireInt);fireInt=setInterval(shoot,190)}function fireOff(e){e&&e.preventDefault();clearInterval(fireInt);fireInt=null}
+['pointerdown','touchstart','mousedown'].forEach(x=>$('atk').addEventListener(x,fireOn,{passive:false}));['pointerup','pointercancel','pointerleave','touchend','touchcancel','mouseup'].forEach(x=>$('atk').addEventListener(x,fireOff,{passive:false}));
+['pointerdown','touchstart','mousedown'].forEach(x=>$('dodge').addEventListener(x,e=>{e.preventDefault();dodge()},{passive:false}));
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();shoot()}if(e.key==='Shift')dodge()});draw();
+</script>
+</body></html>
