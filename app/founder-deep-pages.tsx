@@ -46,21 +46,21 @@ export function GuWeizhenUnpublishedPage() {
         <p className="mt-5 max-w-[700px] text-[13px] leading-7 text-white/45">采访结束后，录音设备未立即关闭。以下转写包含未进入正式稿的问答及现场余音。</p>
 
         <section className="mt-10 space-y-7 border-y border-white/10 py-9 text-[15px] leading-8 text-white/72">
-          <p><strong className="mr-2 text-white/42">孟嘉：</strong>你已经不信神，为什么不阻止他们那样称呼你？</p>
-          <p><strong className="mr-2 text-white/42">顾惟真：</strong>我没有让他们跪。</p>
-          <p><strong className="mr-2 text-white/42">孟嘉：</strong>但你也没有让他们起来。</p>
-          <p><strong className="mr-2 text-white/42">顾惟真：</strong>病房里我喊了一夜，没有谁回答。后来有人说，只要听见我的名字就不怕死。你让我告诉她，这也是假的？</p>
-          <p><strong className="mr-2 text-white/42">孟嘉：</strong>可她相信的是你。</p>
-          <p><strong className="mr-2 text-white/42">顾惟真：</strong>至少我回答了。</p>
+          <p><strong className="mr-2 text-white/42">孟嘉：</strong>你已经不信神佛了，为什么不阻止他们那样称呼你？</p>
+          <p><strong className="mr-2 text-white/42">顾惟真：</strong>我没有让他们这么做。</p>
+          <p><strong className="mr-2 text-white/42">孟嘉：</strong>看着那些虔诚的信徒跪在你脚下，眼里闪着疯狂的光，他们几乎全部身子贴在地上，匍匐着向你前进...你心里是怎么想的？你真的没有默许他们这样做吗？</p>
+          <p><strong className="mr-2 text-white/42">顾惟真：</strong>他们会跪拜一个普通人，或是一个罪大恶极之人吗？</p>
+          <p><strong className="mr-2 text-white/42">孟嘉：</strong>......你能每次都能给他们带来奇迹吗？</p>
+          <p><strong className="mr-2 text-white/42">顾惟真：</strong>你也承认了，不是吗？我带来的是奇迹，而奇迹如果每次都发生，还叫做奇迹吗？</p>
         </section>
 
         <section className="mt-9 border border-[#66514d] bg-[#2a2221] p-6 md:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#594441] pb-4"><strong className="text-[12px] tracking-[.15em] text-[#c79a91]">正式访谈结束后 00:01:43</strong><span className="text-[11px] text-white/30">背景交谈</span></div>
           <div className="mt-6 space-y-5 text-[14px] leading-8 text-white/65">
-            <p><strong className="mr-2 text-white/38">工作人员：</strong>第六期那份见证已经改到第四版，死亡信息也处理了，等您终审。</p>
+            <p><strong className="mr-2 text-white/38">工作人员：</strong>第六期那份见证已经修改完毕，死亡信息也处理了，等您终审。</p>
             <p><strong className="mr-2 text-white/38">顾惟真：</strong>版本号？</p>
             <p><strong className="mr-2 text-white/38">工作人员：</strong><code className="font-mono text-[15px] text-[#e1b2a9]">R-06-4</code>。</p>
-            <p><strong className="mr-2 text-white/38">顾惟真：</strong>把“抢救失败”再删一遍。人已经死了，不要再让他的死把活着的人拖回去。</p>
+            <p><strong className="mr-2 text-white/38">顾惟真：</strong>我没问题了。</p>
           </div>
         </section>
 
@@ -101,7 +101,7 @@ export function GuWeizhenInterviewPage({ onOpenPoem }: { onOpenPoem: () => void 
         </div>
         <p className="mb-3 text-[10px] tracking-[.18em] text-[#b8b0a4]">VISIT</p>
         <h1 className="m-0 font-serif text-[40px] font-normal leading-[1.2] tracking-[-.02em] md:text-[52px]">顾惟真的书房</h1>
-        <p className="mt-5 max-w-[650px] text-[13px] leading-7 text-white/65">旧书、地方志、工程资料，还有一些连主人自己也说不清来历的小东西。</p>
+        <p className="mt-5 max-w-[650px] text-[13px] leading-7 text-white/65">旧书、地方志、工程资料，还有一些连主人自己也说不清来历的摆件。</p>
         <p className="mt-7 text-[10px] text-white/45">文 / 孟嘉　摄影 / 陈昀　2023年11月16日</p>
       </div>
     </header>
@@ -121,11 +121,11 @@ export function GuWeizhenInterviewPage({ onOpenPoem }: { onOpenPoem: () => void 
 
         <p>靠窗矮柜的最下层还收着一只旧香炉和一串念珠。孟嘉记得2014年第一次采访时，这间屋子另一侧还是三层供架；顾惟真早晚礼佛，出差也不会中断。2017年嘉闻春拍“澜序旧藏·佛教艺术”专场之后，供架和大部分藏品都不见了，只剩这两件东西留在箱底。</p>
 
-        <p>顾惟真把盒盖重新合上：“2016年以后就没有再用过。不是换了一尊去信，我已经不信这些了。留下它们，也不是舍不得，只是扔掉不能改变什么。”</p>
+        <p>顾惟真把盒盖重新合上：“2016年以后就没有再用过。你不提醒我，我都回忆不起它们的存在了。”</p>
 
         <p>桌上倒很简单：几份当天的文件，一只茶杯，一支用了很多年的钢笔。我们问他平时会不会专门坐在这里读书，他想了想，说其实更多时候只是回来坐一会儿，“翻两页，接个电话，天就黑了”。</p>
 
-        <p>临走前，他把我们刚看过的一册地方旧志重新塞回书架。位置显然不对，他停了一下，还是没再找，笑着说：“下次又会有人替它换地方。”</p>
+        <p>临走前，他把我们刚看过的一册地方旧志重新塞回书架。位置显然不对，我刚想出口提醒，他对我摆了摆手，笑着说：“每次采访我都会打乱下排布，也不失为一种乐趣。”</p>
       </div>
 
       <div className="mx-auto mt-10 max-w-[700px] border-t border-[#cfc9be] pt-6">
