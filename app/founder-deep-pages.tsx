@@ -63,6 +63,27 @@ export function GuWeizhenUnpublishedPage() {
             <p><strong className="mr-2 text-white/38">顾惟真：</strong>把“抢救失败”再删一遍。人已经死了，不要再让他的死把活着的人拖回去。</p>
           </div>
         </section>
+
+        <figure className="mt-9 overflow-hidden border border-white/12 bg-[#111515] shadow-[0_18px_45px_rgba(0,0,0,.22)]">
+          <figcaption className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-5 py-4 text-[12px] text-white/42 md:px-7"><span>同目录附件 · screen_2206.png</span><span>采访当日工作台截屏</span></figcaption>
+          <div className="bg-[#34393a] p-3 md:p-5">
+            <div className="mx-auto max-w-[760px] overflow-hidden rounded-md border border-black/35 bg-[#e6e9e7] shadow-[0_14px_38px_rgba(0,0,0,.32)]">
+              <div className="flex items-center gap-2 border-b border-[#aeb4b1] bg-[#cbd0cd] px-3 py-2">
+                <span className="size-2.5 rounded-full bg-[#9b7772]" /><span className="size-2.5 rounded-full bg-[#a99569]" /><span className="size-2.5 rounded-full bg-[#718c7b]" />
+                <div className="ml-2 min-w-0 flex-1 overflow-hidden rounded-sm border border-[#a7aeaa] bg-[#f7f8f6] px-3 py-1.5 font-mono text-[12px] tracking-[.01em] text-[#52605a]">
+                  <span>https://</span><span className="mx-0.5 inline-block select-none bg-[#858d89] px-1 text-transparent blur-[2px]">xxxxx</span><span>.example/</span><span className="mx-0.5 inline-block select-none bg-[#858d89] px-1 text-transparent blur-[2px]">xxxxxxx</span><span>/r</span><span className="inline-block select-none bg-[#858d89] px-0.5 text-transparent blur-[2px]">xx</span><span>-</span><span className="inline-block select-none bg-[#858d89] px-0.5 text-transparent blur-[2px]">x</span>
+                </div>
+              </div>
+              <div className="relative min-h-[190px] bg-[#eef1ef] px-6 py-7 text-[#394640] md:px-10">
+                <div className="absolute right-6 top-5 h-14 w-28 bg-[#aeb5b1] opacity-75 [image-rendering:pixelated]" aria-hidden="true" />
+                <p className="text-[11px] tracking-[.16em] text-[#7b8882]">外发复核镜像</p>
+                <h2 className="mt-4 max-w-[390px] font-serif text-[27px] font-normal text-[#2f3a35]">见证材料维护</h2>
+                <div className="mt-6 h-2 w-3/5 bg-[#c6ceca]" /><div className="mt-3 h-2 w-2/5 bg-[#d0d6d3]" /><div className="mt-3 h-2 w-1/2 bg-[#d0d6d3]" />
+              </div>
+            </div>
+          </div>
+          <p className="border-t border-white/10 px-5 py-4 text-[12px] leading-6 text-white/35 md:px-7">图片右侧的账户信息与地址栏中的识别内容已由编辑部遮挡。</p>
+        </figure>
       </main>
 
       <footer className="border-t border-white/10 px-7 py-5 text-[11px] leading-6 text-white/30 md:px-10">素材题签与转写由《海州人物》编辑部留存；录音未随正式采访公开。</footer>

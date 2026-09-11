@@ -24,6 +24,8 @@ test("R-06-4 appears only in Gu Weizhen's late unpublished recording", async () 
   assert.match(profile, /SurvivorIndexPage[\s\S]*8月17日 02:41[\s\S]*8月19日 09:06[\s\S]*这句话不是他自己写的/);
   assert.doesNotMatch(profile, /R-06-4|修订号|无相尊略传/);
   assert.match(unpublished, /顾惟真[\s\S]*至少我回答了[\s\S]*第六期那份见证已经改到第四版[\s\S]*R-06-4/);
+  assert.match(unpublished, /工作台截屏[\s\S]*https:\/\/[\s\S]*\.example\/[\s\S]*\/r[\s\S]*见证材料维护/);
+  assert.doesNotMatch(unpublished, /anshi\.example\/witness\/r06-4/);
 });
 
 test("the secret address is assembled across three trails and cannot be opened early", async () => {
