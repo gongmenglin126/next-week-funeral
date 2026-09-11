@@ -47,10 +47,10 @@ export function FanaticArchivePage() {
       <section className="mt-9 space-y-5">
         <article className="border border-white/10 bg-white/[.035] p-6"><small className="text-[#9f7b75]">先生为大 · 8月23日 21:09</small><h2 className="mt-3 text-[20px] font-medium">先生救过的人，不会装作没看见</h2><p className="mt-3 text-[15px] leading-8 text-white/62">外面的人只看得见病历，我们知道是谁把自己从等死的日子里拉了回来。有人要毁掉先生，就是要把我们活下来的意义一起毁掉。</p></article>
         <article className="border border-white/10 bg-white/[.035] p-6"><small className="text-[#9f7b75]">归舟-3 · 8月25日 00:38</small><h2 className="mt-3 text-[20px] font-medium">她手里有名单</h2><p className="mt-3 text-[15px] leading-8 text-white/62">刚收到先生转来的图。这个人说所有见证都是假的，还要把参与者名字发出去。名单里有很多正在治疗的人，不能让她这么做。</p></article>
-        <article className="border border-[#7f4943] bg-[#271b1a] p-6"><div className="flex flex-wrap items-center justify-between gap-3"><small className="text-[#c08a82]">守潮人-17 · 8月25日 04:51</small><span className="border border-[#94574f] px-2 py-1 text-[11px] text-[#c88d84]">删除缓存</span></div><h2 className="mt-3 text-[20px] font-medium">天亮前</h2><p className="mt-3 text-[15px] leading-8 text-white/70">白色七座还能开，临牌已经换回 <strong className="font-mono text-[#e2b3aa]">LC·7M21</strong>。从西院出去，天亮前能到沿海路。</p><div className="mt-5 border-t border-white/10 pt-4 text-[14px] text-white/48"><strong>06:07 更新：</strong>已经安静了。先生不必再看。</div></article>
+        <article className="border border-[#7f4943] bg-[#271b1a] p-6"><div className="flex flex-wrap items-center justify-between gap-3"><small className="text-[#c08a82]">守潮人-17 · 8月25日 04:51</small><span className="border border-[#94574f] px-2 py-1 text-[11px] text-[#c88d84]">删除缓存</span></div><h2 className="mt-3 text-[20px] font-medium">天亮前</h2><p className="mt-3 text-[15px] leading-8 text-white/70">白色七座还能开，临牌已经换回 <strong className="font-mono text-[#e2b3aa]">LC·7M21</strong>。从西院出去，天亮前能到沿海路。</p><div className="mt-5 border-t border-white/10 pt-4 text-[14px] text-white/48"><strong>06:07 更新：</strong>已经安静了。</div></article>
       </section>
 
-      <footer className="mt-8 border-t border-white/10 pt-6 text-[13px] leading-7 text-white/38">页面还保留一个完整号牌。帖子没有说明车辆后来去了哪里。</footer>
+      <footer className="mt-8 border-t border-white/10 pt-6 text-[13px] leading-7 text-white/38">页面还保留一个完整号牌。</footer>
     </div>
   </article>;
 }
