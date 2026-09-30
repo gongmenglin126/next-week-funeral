@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f4ef">
+<title>USJ 10.1 作战表</title>
+<style>
+:root{--bg:#f7f4ef;--card:#fff;--ink:#191919;--muted:#777;--line:#e7e1d8;--blue:#2f74ff;--blue-soft:#eaf1ff;--orange:#ff8a3d;--green:#24a26b;--green-soft:#e7f7ef;--purple:#7b5cff;--shadow:0 8px 24px rgba(42,34,24,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.45}
+.wrap{width:min(760px,100%);margin:0 auto;padding:18px 14px 110px}.hero{background:linear-gradient(135deg,#fff 0%,#fff8eb 100%);border:1px solid var(--line);border-radius:28px;padding:22px 20px 18px;box-shadow:var(--shadow)}
+.eyebrow{font-size:13px;color:var(--muted);letter-spacing:.08em}h1{font-size:30px;line-height:1.1;margin:8px 0 10px}.sub{font-size:15px;color:#5f5b55}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.pill{border-radius:999px;padding:7px 11px;font-size:13px;font-weight:700;background:#f1eee8}.pill.blue{background:var(--blue-soft);color:var(--blue)}.pill.green{background:var(--green-soft);color:var(--green)}.pill.orange{background:#fff0e7;color:#d96519}
+.next{margin-top:14px;border-radius:20px;padding:14px 16px;background:#191919;color:#fff}.next small{opacity:.65}.next strong{display:block;font-size:20px;margin-top:3px}.next .remain{margin-top:5px;color:#d7d7d7;font-size:13px}
+.section-title{font-size:19px;margin:26px 4px 12px;display:flex;align-items:center;justify-content:space-between}.section-title span{font-size:12px;color:var(--muted);font-weight:400}
+.item{display:grid;grid-template-columns:72px 1fr;gap:12px;margin-bottom:12px}.time{font-variant-numeric:tabular-nums;font-weight:800;font-size:15px;padding-top:16px;text-align:right;color:#4d4943}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:15px 44px 14px 15px;box-shadow:0 4px 14px rgba(42,34,24,.05);transition:.2s ease}
+.card.active{border:2px solid var(--orange);transform:translateY(-1px);box-shadow:0 10px 28px rgba(255,138,61,.18)}.card.done{opacity:.48}.title{font-weight:800;font-size:17px}.desc{font-size:13px;color:#68645e;margin-top:5px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.tag{font-size:11px;font-weight:700;border-radius:999px;padding:4px 8px;background:#f2f0ec;color:#666}.tag.express{background:var(--blue-soft);color:var(--blue)}.tag.must{background:#fff0e7;color:#d96519}.tag.flex{background:#efeaff;color:var(--purple)}
+.check{position:absolute;right:13px;top:14px;width:26px;height:26px;border-radius:50%;border:2px solid #d6d0c7;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;font-size:16px;background:white}.card.done .check{background:var(--green);border-color:var(--green);color:white}
+.rules{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:var(--shadow)}.rule{padding:11px 0;border-bottom:1px dashed var(--line);font-size:14px}.rule:last-child{border-bottom:none}.rule b{display:block;margin-bottom:3px}
+.quick{position:fixed;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(730px,calc(100% - 24px));background:rgba(25,25,25,.94);backdrop-filter:blur(14px);border-radius:20px;padding:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;z-index:20;box-shadow:0 12px 30px rgba(0,0,0,.2)}
+.quick button,.quick a{border:0;border-radius:14px;padding:11px 8px;background:#333;color:white;font-size:13px;text-decoration:none;text-align:center;font-weight:700}.quick button.primary{background:var(--blue)}
+.note{margin-top:10px;font-size:12px;color:#8a857f}@media(max-width:420px){.wrap{padding-left:10px;padding-right:10px}.item{grid-template-columns:62px 1fr;gap:9px}.time{font-size:14px}h1{font-size:27px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">UNIVERSAL STUDIOS JAPAN · 2026.10.01</div>
+<h1>USJ 明日作战表 🎢</h1>
+<div class="sub">8项快通版 · 不玩飞天翼龙、侏罗纪、贞子、生化危机。好莱坞美梦保留。</div>
+<div class="pillrow"><div class="pill blue">⚡ 蓝色 = 快通</div><div class="pill green">🍄 任天堂 12:00</div><div class="pill orange">📍 7:25 到门口</div></div>
+<div class="next"><small>下一项</small><strong id="nextTitle">加载中…</strong><div class="remain" id="nextRemain">按日本时间自动更新</div></div>
+</section>
+
+<div class="section-title">明天照这个走 <span>点 ✓ 标记完成</span></div>
+<div id="timeline">
+
+<div class="item" data-start="07:25" data-end="08:00"><div class="time">07:25</div><div class="card"><div class="check">✓</div><div class="title">到 USJ 门口</div><div class="desc">不用6点起。7:20–7:30 到，排安检即可。</div><div class="tags"><span class="tag must">早点到更舒服</span></div></div></div>
+
+<div class="item" data-start="08:00" data-end="08:10"><div class="time">入园后</div><div class="card"><div class="check">✓</div><div class="title">先看 USJ App</div><div class="desc">看实时等待时间和当天演出场次。你不玩贞子、生化危机，所以不用抢它们的整理券。</div><div class="tags"><span class="tag must">第一件事</span></div></div></div>
+
+<div class="item" data-start="08:10" data-end="09:00"><div class="time">08:10</div><div class="card"><div class="check">✓</div><div class="title">⚡⑦ 🎢 好莱坞美梦</div><div class="desc">第⑦项三选一直接选好莱坞美梦，不选飞天翼龙 / 小黄人乘车游。</div><div class="tags"><span class="tag express">EXPRESS · 快通⑦</span><span class="tag must">三选一</span></div></div></div>
+
+<div class="item" data-start="09:00" data-end="10:00"><div class="time">09:00</div><div class="card"><div class="check">✓</div><div class="title">拍照 / 商店 / 轻松项目</div><div class="desc">看到等待时间短的就顺手玩，不为了“刷项目数”硬排。</div><div class="tags"><span class="tag flex">轻松机动</span></div></div></div>
+
+<div class="item" data-start="10:00" data-end="11:00"><div class="time">10:00</div><div class="card"><div class="check">✓</div><div class="title">SING / 柯南4-D / WaterWorld</div><div class="desc">看 USJ App 当天场次，哪个顺路就看哪个，别跨园区追场。</div><div class="tags"><span class="tag flex">按当天场次</span></div></div></div>
+
+<div class="item" data-start="11:00" data-end="11:35"><div class="time">11:00</div><div class="card"><div class="check">✓</div><div class="title">提前吃饭 + 厕所</div><div class="desc">12点开始连续三个固定项目，先把人类基本需求处理掉。</div><div class="tags"><span class="tag must">别拖</span></div></div></div>
+
+<div class="item" data-start="11:45" data-end="12:00"><div class="time">11:45</div><div class="card"><div class="check">✓</div><div class="title">到超级任天堂世界入口</div><div class="desc">提前到，不要卡12点再横穿园区。</div><div class="tags"><span class="tag express">快通区</span></div></div></div>
+
+<div class="item" data-start="12:00" data-end="12:30"><div class="time">12:00</div><div class="card"><div class="check">✓</div><div class="title">⚡① 🏎 马力欧卡丁车</div><div class="desc">固定时间 12:00–12:30。</div><div class="tags"><span class="tag express">EXPRESS</span><span class="tag must">固定</span></div></div></div>
+
+<div class="item" data-start="12:30" data-end="13:00"><div class="time">12:30</div><div class="card"><div class="check">✓</div><div class="title">⚡② 🦖 耀西冒险</div><div class="desc">固定时间 12:30–13:00。</div><div class="tags"><span class="tag express">EXPRESS</span><span class="tag must">固定</span></div></div></div>
+
+<div class="item" data-start="13:00" data-end="13:30"><div class="time">13:00</div><div class="card"><div class="check">✓</div><div class="title">⚡③ 🦍 咚奇刚疯狂矿车</div><div class="desc">固定时间 13:00–13:30。</div><div class="tags"><span class="tag express">EXPRESS</span><span class="tag must">固定</span></div></div></div>
+
+<div class="item" data-start="13:30" data-end="14:15"><div class="time">13:30</div><div class="card"><div class="check">✓</div><div class="title">任天堂自由活动</div><div class="desc">拍照、逛店、敲砖块。快通项目都刷完后就别一直耗在里面。</div><div class="tags"><span class="tag flex">自由</span></div></div></div>
+
+<div class="item" data-start="14:15" data-end="15:00"><div class="time">14:15</div><div class="card"><div class="check">✓</div><div class="title">⚡⑧ 🦈 大白鲨 JAWS</div><div class="desc">第⑧项二选一选大白鲨，侏罗纪直接排除。</div><div class="tags"><span class="tag express">EXPRESS · 快通⑧</span><span class="tag must">二选一</span></div></div></div>
+
+<div class="item" data-start="15:00" data-end="16:15"><div class="time">15:00</div><div class="card"><div class="check">✓</div><div class="title">WaterWorld / SING / 柯南4-D / 休息</div><div class="desc">纯机动。累了就坐下来吃东西，别为了填满时间表硬赶。</div><div class="tags"><span class="tag flex">舒适机动</span></div></div></div>
+
+<div class="item" data-start="16:20" data-end="17:10"><div class="time">16:20</div><div class="card"><div class="check">✓</div><div class="title">⚡④ 🏰 哈利波特禁忌之旅</div><div class="desc">进哈利波特区域后一次性玩掉，顺便逛城堡和霍格莫德。</div><div class="tags"><span class="tag express">EXPRESS</span></div></div></div>
+
+<div class="item" data-start="17:30" data-end="18:00"><div class="time">17:30</div><div class="card"><div class="check">✓</div><div class="title">⚡⑥ 🦅 鹰马飞行</div><div class="desc">固定时间 17:30–18:00。</div><div class="tags"><span class="tag express">EXPRESS</span><span class="tag must">固定</span></div></div></div>
+
+<div class="item" data-start="18:00" data-end="18:25"><div class="time">18:00</div><div class="card"><div class="check">✓</div><div class="title">往小黄人方向走</div><div class="desc">夜场开始后园区会有万圣节气氛；不喜欢街头僵尸就绕开人群密集区域。</div><div class="tags"><span class="tag flex">慢慢走</span></div></div></div>
+
+<div class="item" data-start="18:30" data-end="19:00"><div class="time">18:30</div><div class="card"><div class="check">✓</div><div class="title">⚡⑤ 🍌 小黄人调皮闹剧任务</div><div class="desc">固定时间 18:30–19:00。</div><div class="tags"><span class="tag express">EXPRESS</span><span class="tag must">固定</span></div></div></div>
+
+<div class="item" data-start="19:10" data-end="19:55"><div class="time">19:10</div><div class="card"><div class="check">✓</div><div class="title">🍌 小黄人调皮闹剧乘车游（可选）</div><div class="desc">第⑦项已经给好莱坞美梦，所以这个若想玩就是普通排队；队长就跳过。</div><div class="tags"><span class="tag flex">非快通 · 看排队</span></div></div></div>
+
+<div class="item" data-start="20:00" data-end="21:30"><div class="time">20:00</div><div class="card"><div class="check">✓</div><div class="title">夜景 + 轻松补漏</div><div class="desc">拍夜景、逛商店、补白天没玩的轻松项目。</div><div class="tags"><span class="tag flex">自由发挥</span></div></div></div>
+
+<div class="item" data-start="21:30" data-end="22:00"><div class="time">21:30</div><div class="card"><div class="check">✓</div><div class="title">补漏 + 买东西 + 撤</div><div class="desc">最后别再排超长队，给购物和出园留一点余量。</div><div class="tags"><span class="tag">收尾</span></div></div></div>
+</div>
+
+<div class="section-title">你的 8 个快通 <span>明天认 ⚡</span></div>
+<div class="rules">
+<div class="rule"><b>⚡① 马力欧卡丁车</b>12:00–12:30</div>
+<div class="rule"><b>⚡② 耀西冒险</b>12:30–13:00</div>
+<div class="rule"><b>⚡③ 咚奇刚疯狂矿车</b>13:00–13:30</div>
+<div class="rule"><b>⚡④ 哈利波特禁忌之旅</b>按电子凭证允许时段使用</div>
+<div class="rule"><b>⚡⑤ 小黄人调皮闹剧任务</b>18:30–19:00</div>
+<div class="rule"><b>⚡⑥ 鹰马飞行</b>17:30–18:00</div>
+<div class="rule"><b>⚡⑦ 好莱坞美梦</b>三选一</div>
+<div class="rule"><b>⚡⑧ 大白鲨 JAWS</b>二选一</div>
+</div>
+
+<div class="section-title">临场规则 <span>比死守表更重要</span></div>
+<div class="rules">
+<div class="rule"><b>① 固定快通优先</b>11:45、17:20、18:20 前后别跑太远。</div>
+<div class="rule"><b>② 排队爆长就跳</b>普通项目超过约50–60分钟，不必硬排。</div>
+<div class="rule"><b>③ 明确排除</b>飞天翼龙、侏罗纪、贞子、生化危机都不玩。</div>
+<div class="rule"><b>④ 电子凭证优先</b>如果现场票面/工作人员提示与这里不同，以快通电子凭证为准。</div>
+</div>
+<div class="note">时间表按日本时间自动标记“当前项”；勾选状态保存在本机浏览器，刷新不会消失。</div>
+</div>
+
+<div class="quick">
+<button class="primary" onclick="scrollToNow()">📍 当前项</button>
+<button onclick="resetDone()">↺ 清空勾选</button>
+<a href="https://www.google.com/maps/search/?api=1&query=Universal+Studios+Japan" target="_blank" rel="noopener">🗺 地图</a>
+</div>
+
+<script>
+const TARGET_DATE='2026-10-01';
+const mins=t=>{const [h,m]=t.split(':').map(Number);return h*60+m};
+function japanNow(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());const g=t=>p.find(x=>x.type===t)?.value;return{date:g('year')+'-'+g('month')+'-'+g('day'),minutes:Number(g('hour'))*60+Number(g('minute')),hhmm:g('hour')+':'+g('minute')}}
+const items=[...document.querySelectorAll('.item')],saved=JSON.parse(localStorage.getItem('usjDone')||'{}');
+items.forEach((item,i)=>{const card=item.querySelector('.card');if(saved[i])card.classList.add('done');item.querySelector('.check').onclick=()=>{card.classList.toggle('done');saved[i]=card.classList.contains('done');localStorage.setItem('usjDone',JSON.stringify(saved));update()}});
+function update(){const now=japanNow();document.querySelectorAll('.card.active').forEach(x=>x.classList.remove('active'));let current=null,next=null;for(const item of items){const s=mins(item.dataset.start),e=mins(item.dataset.end);if(now.date===TARGET_DATE&&now.minutes>=s&&now.minutes<e){current=item;break}if(now.date<TARGET_DATE||(now.date===TARGET_DATE&&now.minutes<s)){next=item;break}}
+if(current){current.querySelector('.card').classList.add('active');document.getElementById('nextTitle').textContent='现在：'+current.querySelector('.title').textContent.trim();document.getElementById('nextRemain').textContent='日本时间 '+now.hhmm+' · 这段约剩 '+(mins(current.dataset.end)-now.minutes)+' 分钟'}
+else if(next){document.getElementById('nextTitle').textContent='下一项：'+next.querySelector('.title').textContent.trim();document.getElementById('nextRemain').textContent=now.date===TARGET_DATE?'日本时间 '+now.hhmm+' · 约 '+(mins(next.dataset.start)-now.minutes)+' 分钟后':'明天按日本时间自动更新'}
+else{document.getElementById('nextTitle').textContent='今天收工啦 🎉';document.getElementById('nextRemain').textContent='该买的买，该撤的撤'}}
+function scrollToNow(){const a=document.querySelector('.card.active');if(a){a.scrollIntoView({behavior:'smooth',block:'center'});return}const n=japanNow(),x=items.find(i=>n.date<TARGET_DATE||(n.date===TARGET_DATE&&n.minutes<mins(i.dataset.start)));if(x)x.scrollIntoView({behavior:'smooth',block:'center'})}
+function resetDone(){if(!confirm('清空所有“已完成”标记？'))return;localStorage.removeItem('usjDone');document.querySelectorAll('.card.done').forEach(x=>x.classList.remove('done'))}
+update();setInterval(update,30000);
+</script>
+</body>
+</html>
