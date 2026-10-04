@@ -53,6 +53,17 @@ h1{font-size:20px;margin:0 0 8px}p{font-size:13px;color:#cbd5e1;line-height:1.6}
 .t1005-tag{font-size:11px;padding:5px 8px;border-radius:999px;background:#f0ece5;color:#5c574f}
 .t1005-airport{background:#fff7df;border:1px solid #ecd99e}
 .t1005-note{margin-top:18px;padding:14px 15px;border-radius:17px;background:#ebe7df;color:#666057;font-size:12px;line-height:1.7}
+.t1005-shop{margin-top:12px;border-top:1px dashed #e4ded5;padding-top:10px}
+.t1005-shop summary{cursor:pointer;list-style:none;font-size:12px;font-weight:800;color:#5f5951;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.t1005-shop summary::-webkit-details-marker{display:none}
+.t1005-shop summary:after{content:"＋";font-size:16px;color:#8a837a}
+.t1005-shop[open] summary:after{content:"－"}
+.t1005-shoplist{display:grid;gap:7px;margin-top:10px}
+.t1005-shopitem{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:8px 9px;border-radius:12px;background:#f8f5ef}
+.t1005-shoprank{font-size:10px;font-weight:800;padding:3px 6px;border-radius:999px;background:#ece6dc;color:#5e574e;white-space:nowrap}
+.t1005-shoptext{font-size:12px;line-height:1.45;color:#625d55}
+.t1005-shoptext b{color:#252525}
+.t1005-skip{opacity:.72}
 @media(max-width:540px){.t1005-row{display:block}.t1005-time{margin-bottom:7px}.t1005-hero h1{font-size:25px}}
 </style>
 
@@ -85,7 +96,17 @@ h1{font-size:20px;margin:0 0 8px}p{font-size:13px;color:#cbd5e1;line-height:1.6}
     <div class="t1005-row"><div class="t1005-time">10:00–12:30</div><div class="t1005-main">
      <h3>池袋 · 第一轮主力购物</h3>
      <p>Animate、Sunshine City、Pokémon Center 一带慢慢逛。池袋是今天明确保留的大站，不赶。</p>
-     <div class="t1005-tags"><span class="t1005-tag">Animate</span><span class="t1005-tag">Sunshine City</span><span class="t1005-tag">Pokémon</span></div>
+     <div class="t1005-tags"><span class="t1005-tag">Animate</span><span class="t1005-tag">K-BOOKS</span><span class="t1005-tag">Pokémon</span></div>
+     <details class="t1005-shop">
+      <summary>🛍 展开看池袋值得逛什么</summary>
+      <div class="t1005-shoplist">
+       <div class="t1005-shopitem"><span class="t1005-shoprank">必逛</span><div class="t1005-shoptext"><b>Animate 池袋本店</b>｜谷子、漫画、轻小说、限定活动都很全。</div></div>
+       <div class="t1005-shopitem"><span class="t1005-shoprank">必逛</span><div class="t1005-shoptext"><b>K-BOOKS</b>｜中古谷子强项，吧唧、亚克力、色纸、挂件、小卡这类更适合你。</div></div>
+       <div class="t1005-shopitem"><span class="t1005-shoprank">顺路</span><div class="t1005-shoptext"><b>Pokémon Center Mega Tokyo</b>｜官方周边，在 Sunshine City 里。</div></div>
+       <div class="t1005-shopitem"><span class="t1005-shoprank">有空</span><div class="t1005-shoptext"><b>ジュンク堂书店</b>｜大型书店，漫画、杂志、文具都能逛。</div></div>
+       <div class="t1005-shopitem t1005-skip"><span class="t1005-shoprank">可跳</span><div class="t1005-shoptext">池袋 Donki 留给涩谷 MEGA Donki，不重复刷。</div></div>
+      </div>
+     </details>
     </div></div>
    </section>
 
@@ -93,7 +114,16 @@ h1{font-size:20px;margin:0 0 8px}p{font-size:13px;color:#cbd5e1;line-height:1.6}
     <div class="t1005-row"><div class="t1005-time">12:50–15:15</div><div class="t1005-main">
      <h3>新宿 · Shopping + 午饭</h3>
      <p>LUMINE EST / 新宿东口附近随意逛，顺便解决午饭。看到喜欢的店就停，不额外堆景点。</p>
-     <div class="t1005-tags"><span class="t1005-tag">LUMINE EST</span><span class="t1005-tag">新宿东口</span><span class="t1005-tag">午饭</span><span class="t1005-tag">🎬《你的名字。》新宿南口顺路</span><span class="t1005-tag">🎮 P5R 新宿氛围</span></div>
+     <div class="t1005-tags"><span class="t1005-tag">LUMINE EST</span><span class="t1005-tag">纪伊国屋</span><span class="t1005-tag">🎬《你的名字。》</span><span class="t1005-tag">🎮 P5R</span></div>
+     <details class="t1005-shop">
+      <summary>🛍 展开看新宿值得逛什么</summary>
+      <div class="t1005-shoplist">
+       <div class="t1005-shopitem"><span class="t1005-shoprank">推荐</span><div class="t1005-shoptext"><b>纪伊国屋书店 新宿本店</b>｜大书店，漫画、杂志、艺术设计、洋书都有。</div></div>
+       <div class="t1005-shopitem"><span class="t1005-shoprank">推荐</span><div class="t1005-shoptext"><b>LUMINE EST</b>｜服装、杂货、美妆、餐饮，最适合大家一起逛。</div></div>
+       <div class="t1005-shopitem"><span class="t1005-shoprank">有空</span><div class="t1005-shoptext"><b>BOOKOFF</b>｜二手书、游戏、CD，路过可以翻。</div></div>
+       <div class="t1005-shopitem t1005-skip"><span class="t1005-shoprank">可跳</span><div class="t1005-shoptext">Animate 新宿和 Donki 都不是优先：池袋 / 涩谷有更好的版本。</div></div>
+      </div>
+     </details>
     </div></div>
    </section>
 
@@ -117,7 +147,16 @@ h1{font-size:20px;margin:0 0 8px}p{font-size:13px;color:#cbd5e1;line-height:1.6}
     <div class="t1005-row"><div class="t1005-time">约 16:30–20:30</div><div class="t1005-main">
      <h3>涩谷 · 最后一轮主力购物</h3>
      <p>PARCO、Nintendo TOKYO、Pokémon Center 和周边商场。八公前、站前广场、Center Gai 本身就是 P5R 的高浓度圣地，正常逛街就能顺手巡完。</p>
-     <div class="t1005-tags"><span class="t1005-tag">PARCO</span><span class="t1005-tag">Nintendo TOKYO</span><span class="t1005-tag">🎮 P5R Station Square</span><span class="t1005-tag">🎮 P5R Central Street</span><span class="t1005-tag">夜景</span></div>
+     <div class="t1005-tags"><span class="t1005-tag">PARCO 6F</span><span class="t1005-tag">TSUTAYA</span><span class="t1005-tag">MEGA Donki</span><span class="t1005-tag">🎮 P5R</span></div>
+     <details class="t1005-shop">
+      <summary>🛍 展开看涩谷值得逛什么</summary>
+      <div class="t1005-shoplist">
+       <div class="t1005-shopitem"><span class="t1005-shoprank">必逛</span><div class="t1005-shoptext"><b>Shibuya PARCO 6F</b>｜Nintendo TOKYO、Pokémon、JUMP SHOP、CAPCOM，全是官方 IP 周边。</div></div>
+       <div class="t1005-shopitem"><span class="t1005-shoprank">必逛</span><div class="t1005-shoptext"><b>MEGA Don Quijote 涩谷本店</b>｜最后补货站：零食、药妆、日用品、角色周边一次补齐。</div></div>
+       <div class="t1005-shopitem"><span class="t1005-shoprank">推荐</span><div class="t1005-shoptext"><b>SHIBUYA TSUTAYA</b>｜IP、漫画、杂志、娱乐周边，比纯手办店更适合逛。</div></div>
+       <div class="t1005-shopitem t1005-skip"><span class="t1005-shoprank">可跳</span><div class="t1005-shoptext">Animate 涩谷、Mandarake：内容和池袋重复 / 手办比例偏高，不优先。</div></div>
+      </div>
+     </details>
     </div></div>
    </section>
 
@@ -129,7 +168,7 @@ h1{font-size:20px;margin:0 0 8px}p{font-size:13px;color:#cbd5e1;line-height:1.6}
    </section>
   </div>
 
-  <div class="t1005-note">路线：池袋 → 新宿 →（可选：须贺神社）→ 东京塔快速经过 → 涩谷 → 两国取行李 → 羽田。Shopping 优先；圣地巡礼只标顺路彩蛋，不为打卡大幅绕路。</div>
+  <div class="t1005-note">路线：池袋 → 新宿 →（可选：须贺神社）→ 东京塔快速经过 → 涩谷 → 两国取行李 → 羽田。Shopping 优先；圣地巡礼只标顺路彩蛋。店铺清单默认折叠，并已过滤抓娃娃店和纯手办店。</div>
  </div>
 </div>
 
