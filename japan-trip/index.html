@@ -27,7 +27,142 @@ h1{font-size:20px;margin:0 0 8px}p{font-size:13px;color:#cbd5e1;line-height:1.6}
   const b64=parts.join('').trim();
   const bin=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
   const stream=new Blob([bin]).stream().pipeThrough(new DecompressionStream('gzip'));
-  const html=await new Response(stream).text();
+  let html=await new Response(stream).text();
+
+  const patch = `
+<style>
+#tokyo1005Overlay{position:fixed;inset:0;z-index:2147483647;background:#f4f1eb;color:#1f1f1f;display:none;overflow:auto;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+#tokyo1005Overlay.show{display:block}
+#tokyo1005Overlay *{box-sizing:border-box}
+.t1005-wrap{max-width:760px;margin:0 auto;padding:18px 15px 56px}
+.t1005-back{position:sticky;top:10px;z-index:3;border:0;background:rgba(255,255,255,.94);box-shadow:0 4px 16px rgba(0,0,0,.09);padding:10px 14px;border-radius:999px;font-weight:700;color:#222}
+.t1005-hero{margin-top:14px;background:linear-gradient(135deg,#1f1f1f,#504b45);color:#fff;padding:24px 20px;border-radius:26px;box-shadow:0 12px 28px rgba(0,0,0,.13)}
+.t1005-eyebrow{font-size:12px;letter-spacing:.14em;opacity:.62;margin-bottom:9px}
+.t1005-hero h1{font-size:28px;line-height:1.2;margin:0 0 9px;color:#fff}
+.t1005-hero p{margin:0;color:rgba(255,255,255,.75);font-size:14px;line-height:1.7}
+.t1005-route{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}
+.t1005-pill{background:rgba(255,255,255,.12);padding:7px 10px;border-radius:999px;font-size:12px}
+.t1005-label{margin:23px 3px 10px;color:#837d74;font-size:12px;letter-spacing:.08em}
+.t1005-list{display:grid;gap:11px}
+.t1005-card{background:#fff;border-radius:20px;padding:17px;box-shadow:0 7px 22px rgba(55,48,40,.065);border:1px solid rgba(110,100,88,.08)}
+.t1005-row{display:flex;gap:13px;align-items:flex-start}
+.t1005-time{min-width:84px;font-size:14px;font-weight:800}
+.t1005-main h3{font-size:18px;margin:0 0 6px}
+.t1005-main p{font-size:13px;line-height:1.65;margin:0;color:#777168}
+.t1005-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.t1005-tag{font-size:11px;padding:5px 8px;border-radius:999px;background:#f0ece5;color:#5c574f}
+.t1005-airport{background:#fff7df;border:1px solid #ecd99e}
+.t1005-note{margin-top:18px;padding:14px 15px;border-radius:17px;background:#ebe7df;color:#666057;font-size:12px;line-height:1.7}
+@media(max-width:540px){.t1005-row{display:block}.t1005-time{margin-bottom:7px}.t1005-hero h1{font-size:25px}}
+</style>
+
+<div id="tokyo1005Overlay" aria-hidden="true">
+ <div class="t1005-wrap">
+  <button class="t1005-back" id="t1005Back">← 返回总行程</button>
+  <section class="t1005-hero">
+   <div class="t1005-eyebrow">TOKYO · 10/5 · LAST DAY</div>
+   <h1>东京最后一天</h1>
+   <p>今天主打 shopping，中间穿插一段东京城市散步。路线一路往南走，尽量不折返。</p>
+   <div class="t1005-route">
+    <span class="t1005-pill">🛍 池袋</span>
+    <span class="t1005-pill">🏙 新宿</span>
+    <span class="t1005-pill">🗼 东京塔周边</span>
+    <span class="t1005-pill">🌃 涩谷</span>
+   </div>
+  </section>
+
+  <div class="t1005-label">DAY PLAN</div>
+  <div class="t1005-list">
+   <section class="t1005-card">
+    <div class="t1005-row"><div class="t1005-time">09:00–09:30</div><div class="t1005-main">
+     <h3>退房 · 行李寄酒店</h3>
+     <p>三个大箱子先放两国酒店，轻装开始最后一天。</p>
+     <div class="t1005-tags"><span class="t1005-tag">轻装出发</span><span class="t1005-tag">不拖箱子</span></div>
+    </div></div>
+   </section>
+
+   <section class="t1005-card">
+    <div class="t1005-row"><div class="t1005-time">10:00–12:30</div><div class="t1005-main">
+     <h3>池袋 · 第一轮主力购物</h3>
+     <p>Animate、Sunshine City、Pokémon Center 一带慢慢逛。池袋是今天明确保留的大站，不赶。</p>
+     <div class="t1005-tags"><span class="t1005-tag">Animate</span><span class="t1005-tag">Sunshine City</span><span class="t1005-tag">Pokémon</span></div>
+    </div></div>
+   </section>
+
+   <section class="t1005-card">
+    <div class="t1005-row"><div class="t1005-time">12:50–15:15</div><div class="t1005-main">
+     <h3>新宿 · Shopping + 午饭</h3>
+     <p>LUMINE EST / 新宿东口附近随意逛，顺便解决午饭。看到喜欢的店就停，不额外堆景点。</p>
+     <div class="t1005-tags"><span class="t1005-tag">LUMINE EST</span><span class="t1005-tag">新宿东口</span><span class="t1005-tag">午饭</span></div>
+    </div></div>
+   </section>
+
+   <section class="t1005-card">
+    <div class="t1005-row"><div class="t1005-time">15:45–17:15</div><div class="t1005-main">
+     <h3>芝公园 → 东京塔 → 麻布台</h3>
+     <p>从芝公园一路散步到东京塔，塔下 Foot Town 随便逛逛，再往麻布台 Hills 走。这里当作一段城市景色和建筑散步，不专门赶项目。</p>
+     <div class="t1005-tags"><span class="t1005-tag">芝公园</span><span class="t1005-tag">东京塔</span><span class="t1005-tag">Foot Town</span><span class="t1005-tag">麻布台 Hills</span></div>
+    </div></div>
+   </section>
+
+   <section class="t1005-card">
+    <div class="t1005-row"><div class="t1005-time">17:30–20:30</div><div class="t1005-main">
+     <h3>涩谷 · 最后一轮主力购物</h3>
+     <p>PARCO、Nintendo TOKYO、Pokémon Center 和十字路口附近商场。晚上灯亮以后顺便看涩谷夜景。</p>
+     <div class="t1005-tags"><span class="t1005-tag">PARCO</span><span class="t1005-tag">Nintendo TOKYO</span><span class="t1005-tag">夜景</span></div>
+    </div></div>
+   </section>
+
+   <section class="t1005-card t1005-airport">
+    <div class="t1005-row"><div class="t1005-time">20:30+</div><div class="t1005-main">
+     <h3>回两国拿行李 → 羽田机场</h3>
+     <p>涩谷撤退后回酒店取三个箱子，随后直接去羽田，为凌晨航班留足余量。</p>
+    </div></div>
+   </section>
+  </div>
+
+  <div class="t1005-note">路线：池袋 → 新宿 → 芝公园 / 东京塔 / 麻布台 → 涩谷 → 两国取行李 → 羽田。Shopping 优先，东京塔周边按散步节奏走。</div>
+ </div>
+</div>
+
+<script>
+(function(){
+ const overlay=document.getElementById('tokyo1005Overlay');
+ const back=document.getElementById('t1005Back');
+ function show1005(){
+   overlay.classList.add('show');
+   overlay.setAttribute('aria-hidden','false');
+   document.documentElement.style.overflow='hidden';
+   if(history && history.replaceState) history.replaceState(null,'','#tokyo-1005');
+ }
+ function hide1005(){
+   overlay.classList.remove('show');
+   overlay.setAttribute('aria-hidden','true');
+   document.documentElement.style.overflow='';
+   if(location.hash==='#tokyo-1005' && history && history.replaceState) history.replaceState(null,'',location.pathname+location.search);
+ }
+ back.addEventListener('click',hide1005);
+
+ document.addEventListener('click',function(e){
+   if(overlay.classList.contains('show')) return;
+   let el=e.target;
+   for(let i=0;i<6 && el && el!==document.body;i++,el=el.parentElement){
+     const t=(el.innerText||el.textContent||'').replace(/\s+/g,' ').trim();
+     if(t.length>0 && t.length<=70 && /(10\s*[\/\.月-]\s*5|10月5日|10\/5)/.test(t)){
+       e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+       show1005();
+       return;
+     }
+   }
+ },true);
+
+ if(location.hash==='#tokyo-1005') setTimeout(show1005,0);
+ window.__showTokyo1005=show1005;
+})();
+</script>
+`;
+
+  html = html.replace(/<\/body>/i, patch + '</body>');
   document.open(); document.write(html); document.close();
  }catch(e){
   console.error(e);
