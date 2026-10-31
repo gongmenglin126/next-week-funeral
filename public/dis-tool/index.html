@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DIS 体力修改器｜被扔进一个求生游戏</title>
+<title>DIS 生存修改器｜体力 · 攻击 · 伤势</title>
 <style>
 :root{color-scheme:light;--ink:#202b38;--sub:#687486;--line:#dce4ec;--bg:#f4f7fa;--card:#fff;--a:#2571b9;--a2:#e8f2fd;--good:#196f4e;--warn:#8c560e}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);line-height:1.65}main{max-width:740px;margin:38px auto;padding:0 18px 50px}
@@ -12,8 +12,8 @@ input[type=file]{width:100%;padding:14px;border:2px dashed #a8c6e7;border-radius
 </style>
 </head>
 <body><main>
-<h1>🎮 DIS 体力修改器</h1>
-<p class="lead">适用：《被扔进一个求生游戏》。仅修改你自己的导出存档，<strong>不会连接网站，也不会上传存档</strong>。</p>
+<h1>🎮 DIS 生存修改器</h1>
+<p class="lead">适用：《被扔进一个求生游戏》。体力、攻击力和伤势一站式调整。仅在本地修改你自己的导出存档，<strong>不会连接游戏，也不会上传存档</strong>。</p>
 <section class="card">
 <h2><span class="step">第 1 步</span>导入你最新的游戏存档</h2>
 <input type="file" id="file" accept=".txt,.json,.save,text/plain,application/json">
@@ -25,15 +25,21 @@ input[type=file]{width:100%;padding:14px;border:2px dashed #a8c6e7;border-radius
 <section class="card">
 <h2><span class="step">第 2 步</span>选择体力</h2>
 <div class="mode"><label for="amount">将当前体力和上限修改为</label><select id="amount"><option value="999">999 / 999</option><option value="9999" selected>9999 / 9999（推荐）</option><option value="99999">99999 / 99999</option></select></div>
-<p class="hint">同时修改「当前进度」和「当天早晨」的体力数据，保留物品、建筑、地图、天数等其他字段。</p>
+<p class="hint">同时修改「当前进度」和「当天早晨」的体力数据；物品、建筑、地图、天数等其他字段保持不变。</p>
 <div class="row" style="margin-top:15px"><button class="btn" id="make" disabled>生成修改后的存档</button><button class="btn secondary" id="copy" disabled>复制存档文本</button></div>
 <div class="status" id="doneStatus" aria-live="polite"></div>
 </section>
 <section class="card">
-<h2><span class="step">第 3 步</span>回游戏导入</h2>
+<h2><span class="step">第 3 步</span>战斗强化与伤势处理</h2>
+<div class="mode"><label for="attack">将基础攻击力调整为</label><select id="attack"><option value="50">50</option><option value="100">100</option><option value="999">999（强力）</option><option value="9999" selected>9999（极高）</option></select></div>
+<label style="display:flex;align-items:center;gap:9px;margin:14px 0 6px"><input type="checkbox" id="clearInjury" checked style="width:18px;height:18px"> 清除当前伤势（injury = 0）</label>
+<p class="hint">攻击力会同时写入「当前进度」和「当天早晨」的 player.baseAttack。勾选清除伤势后，会把两份记录中的伤势归零，并重置伤势恢复计时。</p>
+</section>
+<section class="card">
+<h2><span class="step">第 4 步</span>回游戏导入</h2>
 <ol><li>先<strong>保留原存档备份</strong>，不要覆盖。</li><li>生成修改后的 TXT 文件，或者复制修改后的存档编码。</li><li>打开<a href="https://games.hydrozoanovel.com/DIS/" target="_blank" rel="noopener noreferrer">原游戏官网</a>，在「存档管理」中使用导入功能，选择 TXT 或粘贴内容（以游戏提供的方式为准）。</li><li>看游戏界面的体力是否变为对应数值，再进行采集测试。</li></ol>
 </section>
-<div class="notice"><b>注意：</b>这属于对存档数值的修改，不是破解游戏规则。作者可能对存档做版本、体力上限或每日重置校验，因此<strong>无法保证一定导入成功，也不能保证跨天仍保持9999体力</strong>。一旦异常，请导回未修改的原始存档。建议不要把旧的第108天存档覆盖你当前更新的进度。</div>
+<div class="notice"><b>战斗说明：</b>当前存档结构中能确认的战斗字段是 <code>baseAttack</code>（基础攻击力）和 <code>injury</code>（伤势）。提高攻击力有机会更快结束战斗，但<strong>不等于无敌或免伤</strong>；如果敌人仍有反击机会，之后仍可能产生新伤势。本工具只能清除导入时已有的伤势，不能阻止未来受伤。<br><br><b>存档安全：</b>游戏可能按装备、战斗结算或每日规则重新计算部分数值，因此请先保留原始存档备份。导入后建议先在低风险地点测试，再继续远距离探索。若出现异常，可导回原始存档。</div>
 <footer>此工具离线工作，不读取游戏账号信息。不隶属于游戏作者。</footer>
 </main>
 <script>
@@ -46,9 +52,9 @@ function encodeB64(str){const bytes=new TextEncoder().encode(str);let bin='';for
 function parseData(input){let s=input.trim().replace(/^\uFEFF/,'');if(!s)throw new Error('文件是空的');if(!s.startsWith('{'))s=decodeB64(s);let data;try{data=JSON.parse(s)}catch(e){throw new Error('解码后不是有效 JSON：'+e.message)}
  if(!data||data.format!=='dis-save-transfer-v1'||!data.progress||!data.progress.player||typeof data.progress.player.stamina!=='number'||typeof data.progress.player.maxStamina!=='number')throw new Error('这不是目前支持的 DIS 存档格式（dis-save-transfer-v1）');
  if(data.morning&&(!data.morning.player||typeof data.morning.player.stamina!=='number'))throw new Error('当天早晨的体力数据格式异常');return data;}
-function load(text){original=parseData(text);outputText='';$('make').disabled=false;$('copy').disabled=true;const p=original.progress;const m=original.morning;const el=$('info');el.hidden=false;el.textContent=''; const strong=document.createElement('strong');strong.textContent=`第 ${p.day??'?'} 天 · ${p.position??'?'} · 体力 ${p.player.stamina}/${p.player.maxStamina}`;el.append(strong); if(m){const d=document.createElement('div');d.style.fontSize='13px';d.style.color='#60758a';d.textContent=`当天早晨：${m.player.stamina}/${m.player.maxStamina}`;el.append(d);} status($('loadStatus'),'已成功读取存档，尚未修改任何内容。','ok');status($('doneStatus'),'');}
+function load(text){original=parseData(text);outputText='';$('make').disabled=false;$('copy').disabled=true;const p=original.progress;const m=original.morning;const el=$('info');el.hidden=false;el.textContent=''; const strong=document.createElement('strong');strong.textContent=`第 ${p.day??'?'} 天 · ${p.position??'?'} · 体力 ${p.player.stamina}/${p.player.maxStamina}`;el.append(strong); const d=document.createElement('div');d.style.fontSize='13px';d.style.color='#60758a';d.textContent=`基础攻击力：${p.player.baseAttack??'存档未记录'} · 当前伤势：${p.player.injury??'存档未记录'}`;el.append(d); if(m){const d2=document.createElement('div');d2.style.fontSize='13px';d2.style.color='#60758a';d2.textContent=`当天早晨：体力 ${m.player.stamina}/${m.player.maxStamina} · 攻击 ${m.player.baseAttack??'未记录'} · 伤势 ${m.player.injury??'未记录'}`;el.append(d2);} status($('loadStatus'),'已成功读取存档，尚未修改任何内容。','ok');status($('doneStatus'),'');}
 $('file').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{load(await f.text())}catch(err){original=null;$('make').disabled=true;$('info').hidden=true;status($('loadStatus'),err.message,'error')}});
 $('parsePaste').addEventListener('click',()=>{try{load($('pasted').value)}catch(err){original=null;$('make').disabled=true;$('info').hidden=true;status($('loadStatus'),err.message,'error')}});
-$('make').addEventListener('click',()=>{try{if(!original)throw new Error('请先载入存档');const amount=Number($('amount').value);if(![999,9999,99999].includes(amount))throw new Error('体力数值不合法');const copy=structuredClone(original);for(const phase of ['progress','morning']){if(!copy[phase]||!copy[phase].player)continue;copy[phase].player.stamina=amount;copy[phase].player.maxStamina=amount;}outputText=encodeB64(JSON.stringify(copy));const blob=new Blob([outputText+'\n'],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`DIS_day${copy.progress.day||'X'}_stamina${amount}.txt`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);$('copy').disabled=false;status($('doneStatus'),`已生成：第 ${copy.progress.day} 天，体力 ${amount}/${amount}。请导入原游戏查看。`,'ok');}catch(err){status($('doneStatus'),err.message,'error')}});
+$('make').addEventListener('click',()=>{try{if(!original)throw new Error('请先载入存档');const amount=Number($('amount').value);const attack=Number($('attack').value);const clearInjury=$('clearInjury').checked;if(![999,9999,99999].includes(amount))throw new Error('体力数值不合法');if(![50,100,999,9999].includes(attack))throw new Error('攻击力数值不合法');const copy=structuredClone(original);for(const phase of ['progress','morning']){if(!copy[phase]||!copy[phase].player)continue;const player=copy[phase].player;player.stamina=amount;player.maxStamina=amount;player.baseAttack=attack;if(clearInjury){player.injury=0;if(typeof copy[phase].injuryRestDays==='number')copy[phase].injuryRestDays=0;if(typeof copy[phase].dailyWoundTreatmentUsed==='boolean')copy[phase].dailyWoundTreatmentUsed=false;}}outputText=encodeB64(JSON.stringify(copy));const blob=new Blob([outputText+'\\n'],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`DIS_day${copy.progress.day||'X'}_stamina${amount}_attack${attack}.txt`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);$('copy').disabled=false;const injuryText=clearInjury?'伤势已清零':'保留原伤势';status($('doneStatus'),`已生成：体力 ${amount}/${amount} · 基础攻击力 ${attack} · ${injuryText}。请导入原游戏测试。`,'ok');}catch(err){status($('doneStatus'),err.message,'error')}});
 $('copy').addEventListener('click',async()=>{if(!outputText)return;try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(outputText)}else{const t=document.createElement('textarea');t.value=outputText;t.style.position='fixed';t.style.top='-10000px';document.body.appendChild(t);t.select();if(!document.execCommand('copy'))throw Error('复制被浏览器拒绝');t.remove()}status($('doneStatus'),'存档文本已复制。请到游戏的「存档管理」粘贴导入。','ok')}catch(e){status($('doneStatus'),'无法自动复制，请使用下载的 TXT 文件导入。','error')}});
 </script></body></html>
