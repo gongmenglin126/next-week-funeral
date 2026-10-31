@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DIS 体力修改器｜被扔进一个求生游戏</title>
+<style>
+:root{color-scheme:light;--ink:#202b38;--sub:#687486;--line:#dce4ec;--bg:#f4f7fa;--card:#fff;--a:#2571b9;--a2:#e8f2fd;--good:#196f4e;--warn:#8c560e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);line-height:1.65}main{max-width:740px;margin:38px auto;padding:0 18px 50px}
+h1{font-size:27px;line-height:1.3;margin:0 0 8px}.lead{color:var(--sub);margin:0 0 24px}.card{border:1px solid var(--line);background:var(--card);border-radius:15px;padding:24px;margin-bottom:16px;box-shadow:0 6px 22px rgba(40,70,100,.035)}h2{font-size:17px;margin:0 0 16px}.step{display:inline-block;color:var(--a);font-size:12px;font-weight:800;letter-spacing:.05em;margin-right:8px}
+input[type=file]{width:100%;padding:14px;border:2px dashed #a8c6e7;border-radius:12px;background:#f8fbff;cursor:pointer}textarea{width:100%;min-height:100px;font-family:ui-monospace,Consolas,monospace;padding:12px;border:1px solid var(--line);border-radius:9px;resize:vertical}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.btn{font-family:inherit;font-size:15px;font-weight:700;border:0;border-radius:10px;background:var(--a);color:white;cursor:pointer;padding:11px 19px;min-height:45px}.btn.secondary{background:var(--a2);color:#1b558b}.btn:disabled{cursor:not-allowed;opacity:.45}.hint{color:var(--sub);font-size:13px;margin:9px 0 0}.tag{display:inline-block;background:#edf4fa;color:#265781;border-radius:6px;padding:4px 10px;font-size:14px}.summary{padding:12px;background:#f7faff;border:1px solid #e0eafd;border-radius:9px;margin-top:12px}.summary strong{color:var(--a)}.status{font-size:14px;margin-top:10px;min-height:22px}.status.ok{color:var(--good)}.status.error{color:#bd3636}.notice{background:#fff8e9;border:1px solid #eddfbb;border-radius:11px;padding:14px 17px;color:#624716;font-size:14px}ol{margin:10px 0 0;padding-left:22px}li{margin:5px 0}.mode{display:flex;align-items:center;gap:10px;margin:10px 0}.mode select{font:inherit;border:1px solid #b9cbdc;padding:8px 12px;border-radius:8px;background:white}footer{color:var(--sub);font-size:13px;margin:15px 0}code{background:#f0f3f6;border-radius:4px;padding:2px 5px}a{color:var(--a)}
+@media(max-width:560px){main{margin:22px auto}.card{padding:18px}.btn{width:100%}h1{font-size:23px}}
+</style>
+</head>
+<body><main>
+<h1>🎮 DIS 体力修改器</h1>
+<p class="lead">适用：《被扔进一个求生游戏》。仅修改你自己的导出存档，<strong>不会连接网站，也不会上传存档</strong>。</p>
+<section class="card">
+<h2><span class="step">第 1 步</span>导入你最新的游戏存档</h2>
+<input type="file" id="file" accept=".txt,.json,.save,text/plain,application/json">
+<p class="hint">在原游戏的「存档管理」里导出存档，将保存的 TXT 文件选进来。也可以将导出的整段编码粘贴到下方。</p>
+<details style="margin-top:12px"><summary style="cursor:pointer">直接粘贴存档文本</summary><textarea id="pasted" placeholder="粘贴从游戏导出的 Base64 编码（通常以 eyJ 开头）"></textarea><button class="btn secondary" id="parsePaste" style="margin-top:9px">读取粘贴的存档</button></details>
+<div id="loadStatus" class="status" aria-live="polite"></div>
+<div class="summary" id="info" hidden></div>
+</section>
+<section class="card">
+<h2><span class="step">第 2 步</span>选择体力</h2>
+<div class="mode"><label for="amount">将当前体力和上限修改为</label><select id="amount"><option value="999">999 / 999</option><option value="9999" selected>9999 / 9999（推荐）</option><option value="99999">99999 / 99999</option></select></div>
+<p class="hint">同时修改「当前进度」和「当天早晨」的体力数据，保留物品、建筑、地图、天数等其他字段。</p>
+<div class="row" style="margin-top:15px"><button class="btn" id="make" disabled>生成修改后的存档</button><button class="btn secondary" id="copy" disabled>复制存档文本</button></div>
+<div class="status" id="doneStatus" aria-live="polite"></div>
+</section>
+<section class="card">
+<h2><span class="step">第 3 步</span>回游戏导入</h2>
+<ol><li>先<strong>保留原存档备份</strong>，不要覆盖。</li><li>生成修改后的 TXT 文件，或者复制修改后的存档编码。</li><li>打开<a href="https://games.hydrozoanovel.com/DIS/" target="_blank" rel="noopener noreferrer">原游戏官网</a>，在「存档管理」中使用导入功能，选择 TXT 或粘贴内容（以游戏提供的方式为准）。</li><li>看游戏界面的体力是否变为对应数值，再进行采集测试。</li></ol>
+</section>
+<div class="notice"><b>注意：</b>这属于对存档数值的修改，不是破解游戏规则。作者可能对存档做版本、体力上限或每日重置校验，因此<strong>无法保证一定导入成功，也不能保证跨天仍保持9999体力</strong>。一旦异常，请导回未修改的原始存档。建议不要把旧的第108天存档覆盖你当前更新的进度。</div>
+<footer>此工具离线工作，不读取游戏账号信息。不隶属于游戏作者。</footer>
+</main>
+<script>
+'use strict';
+let original=null,outputText='';
+const $=id=>document.getElementById(id);
+function status(el,msg,kind=''){el.textContent=msg;el.className='status '+kind;}
+function decodeB64(input){const clean=input.replace(/\s+/g,'');if(!clean||!/^[A-Za-z0-9+/]*={0,2}$/.test(clean))throw new Error('不是有效的 Base64 编码');let str;try{str=atob(clean)}catch(e){throw new Error('Base64 解码失败');}const bytes=Uint8Array.from(str,c=>c.charCodeAt(0));return new TextDecoder('utf-8',{fatal:true}).decode(bytes)}
+function encodeB64(str){const bytes=new TextEncoder().encode(str);let bin='';for(let i=0;i<bytes.length;i+=8192){bin+=String.fromCharCode(...bytes.subarray(i,i+8192));}return btoa(bin)}
+function parseData(input){let s=input.trim().replace(/^\uFEFF/,'');if(!s)throw new Error('文件是空的');if(!s.startsWith('{'))s=decodeB64(s);let data;try{data=JSON.parse(s)}catch(e){throw new Error('解码后不是有效 JSON：'+e.message)}
+ if(!data||data.format!=='dis-save-transfer-v1'||!data.progress||!data.progress.player||typeof data.progress.player.stamina!=='number'||typeof data.progress.player.maxStamina!=='number')throw new Error('这不是目前支持的 DIS 存档格式（dis-save-transfer-v1）');
+ if(data.morning&&(!data.morning.player||typeof data.morning.player.stamina!=='number'))throw new Error('当天早晨的体力数据格式异常');return data;}
+function load(text){original=parseData(text);outputText='';$('make').disabled=false;$('copy').disabled=true;const p=original.progress;const m=original.morning;const el=$('info');el.hidden=false;el.textContent=''; const strong=document.createElement('strong');strong.textContent=`第 ${p.day??'?'} 天 · ${p.position??'?'} · 体力 ${p.player.stamina}/${p.player.maxStamina}`;el.append(strong); if(m){const d=document.createElement('div');d.style.fontSize='13px';d.style.color='#60758a';d.textContent=`当天早晨：${m.player.stamina}/${m.player.maxStamina}`;el.append(d);} status($('loadStatus'),'已成功读取存档，尚未修改任何内容。','ok');status($('doneStatus'),'');}
+$('file').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{load(await f.text())}catch(err){original=null;$('make').disabled=true;$('info').hidden=true;status($('loadStatus'),err.message,'error')}});
+$('parsePaste').addEventListener('click',()=>{try{load($('pasted').value)}catch(err){original=null;$('make').disabled=true;$('info').hidden=true;status($('loadStatus'),err.message,'error')}});
+$('make').addEventListener('click',()=>{try{if(!original)throw new Error('请先载入存档');const amount=Number($('amount').value);if(![999,9999,99999].includes(amount))throw new Error('体力数值不合法');const copy=structuredClone(original);for(const phase of ['progress','morning']){if(!copy[phase]||!copy[phase].player)continue;copy[phase].player.stamina=amount;copy[phase].player.maxStamina=amount;}outputText=encodeB64(JSON.stringify(copy));const blob=new Blob([outputText+'\n'],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`DIS_day${copy.progress.day||'X'}_stamina${amount}.txt`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);$('copy').disabled=false;status($('doneStatus'),`已生成：第 ${copy.progress.day} 天，体力 ${amount}/${amount}。请导入原游戏查看。`,'ok');}catch(err){status($('doneStatus'),err.message,'error')}});
+$('copy').addEventListener('click',async()=>{if(!outputText)return;try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(outputText)}else{const t=document.createElement('textarea');t.value=outputText;t.style.position='fixed';t.style.top='-10000px';document.body.appendChild(t);t.select();if(!document.execCommand('copy'))throw Error('复制被浏览器拒绝');t.remove()}status($('doneStatus'),'存档文本已复制。请到游戏的「存档管理」粘贴导入。','ok')}catch(e){status($('doneStatus'),'无法自动复制，请使用下载的 TXT 文件导入。','error')}});
+</script></body></html>
