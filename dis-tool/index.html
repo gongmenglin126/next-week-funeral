@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>DIS 存档修改器｜体力与攻击力</title>
+<style>
+:root{--bg:#f3f6fa;--white:#fff;--ink:#17253b;--muted:#68768a;--line:#e0e7f0;--blue:#365dd6;--bluebg:#eef2ff;--green:#15765d;--red:#b63c4b;--shadow:0 12px 35px rgba(29,53,83,.045)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+a{color:var(--blue)}
+main{width:min(760px,100%);margin:auto;padding:32px 17px 65px}
+header{padding:9px 4px 23px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--blue)}
+h1{margin:9px 0 7px;font-size:clamp(26px,4vw,35px);line-height:1.25;letter-spacing:-.035em}
+.sub{color:var(--muted);margin:0;max-width:620px}
+.flow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:19px}
+.flow span{background:var(--white);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;color:#596b82}
+.flow b{font-weight:400;color:#9aa8ba}
+.card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:23px 25px;margin:0 0 14px;box-shadow:var(--shadow)}
+.heading{display:flex;gap:13px;align-items:center;margin-bottom:17px}
+.num{display:grid;place-items:center;background:var(--bluebg);color:var(--blue);font-size:14px;font-weight:900;border-radius:11px;width:37px;height:37px;flex:none}
+h2{font-size:19px;letter-spacing:-.018em;line-height:1.35;margin:0}
+.note{margin:4px 0 0;color:var(--muted);font-size:13px}
+input,textarea,select,button{font:inherit}
+.filezone{border:2px dashed #a9bce1;background:#f8faff;border-radius:12px;padding:19px;text-align:center}
+.filezone strong{display:block;font-size:15px}
+.filezone small{display:block;color:var(--muted);font-size:12px;margin:2px 0 12px}
+input[type=file]{display:block;margin:auto;max-width:100%;font-size:13px}
+details{margin-top:14px}
+summary{cursor:pointer;color:var(--blue);font-size:13px;font-weight:700}
+textarea{display:block;width:100%;min-height:110px;resize:vertical;margin:9px 0;border:1px solid var(--line);padding:12px;border-radius:10px;font:12px/1.55 Consolas,monospace}
+select{display:block;width:100%;background:#fff;color:var(--ink);border:1px solid #c9d4e4;border-radius:11px;padding:11px 13px;min-height:47px}
+label.field{display:block;font-weight:750;margin:0 0 7px}
+.selectwrap{max-width:490px}
+.hint{font-size:12px;color:var(--muted);margin:10px 0 0}
+.checkline{display:flex;align-items:flex-start;gap:10px;padding:13px 14px;border:1px solid var(--line);background:#fbfcff;border-radius:11px;margin-top:15px;cursor:pointer}
+.checkline input{margin-top:5px;width:17px;height:17px;accent-color:var(--blue);flex:none}
+.checkline strong{display:block;font-size:14px}
+.checkline small{display:block;color:var(--muted);font-size:12px}
+.summary{border-radius:11px;background:#f3f7ff;border:1px solid #dce6fb;margin-top:13px;padding:13px 15px}
+.summary strong{display:block;font-size:15px}
+.summary small{display:block;color:var(--muted);font-size:12px}
+.status{margin-top:11px;min-height:15px;font-size:13px;color:var(--muted)}
+.status.ok{color:var(--green)}
+.status.error{color:var(--red)}
+.mini{background:#f7f9fc;border:1px solid var(--line);padding:15px;border-radius:12px}
+.mini p{margin:0 0 8px;font-size:13px;color:var(--muted)}
+.preview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px;min-width:0}
+.metric span{display:block;font-size:12px;color:var(--muted)}
+.metric b{display:block;margin:4px 0 1px;font-size:18px;color:var(--ink);overflow-wrap:anywhere}
+.metric small{color:var(--muted);font-size:11px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.btn{border:0;border-radius:11px;padding:11px 17px;min-height:46px;cursor:pointer;font-size:14px;font-weight:800;transition:filter .15s,transform .15s}
+.btn:hover:not(:disabled){filter:brightness(.94)}
+.btn:active:not(:disabled){transform:translateY(1px)}
+.btn.primary{background:var(--blue);color:white;flex:1.6}
+.btn.secondary{background:var(--bluebg);color:#284eaa;flex:1}
+.btn:disabled{opacity:.43;cursor:not-allowed}
+.steps{padding-left:20px;margin:15px 0 0;font-size:13px;color:#4c5a6d}
+.steps li{margin:4px 0}
+.safety{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px 18px;color:#526077;font-size:12px}
+.safety p{margin:5px 0}
+footer{font-size:12px;color:var(--muted);margin-top:16px;text-align:center}
+@media(max-width:540px){main{padding:23px 12px 42px}.card{padding:18px 16px;border-radius:15px}.preview{grid-template-columns:1fr}.row{flex-direction:column}.btn{width:100%}.flow{gap:5px}.flow span{padding:4px 8px;font-size:11px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="eyebrow">DIS · 存档小工具</div>
+<h1>体力与攻击力修改器</h1>
+<p class="sub">《被扔进一个求生游戏》专用。先上传存档，依次设置体力、攻击力，最后一次性导出。无需安装，所有处理都在你的浏览器中完成。</p>
+<nav class="flow" aria-label="操作流程"><span>① 导入</span><b>→</b><span>② 体力</span><b>→</b><span>③ 攻击</span><b>→</b><span>④ 导出</span></nav>
+</header>
+
+<section class="card" aria-labelledby="step1">
+<div class="heading"><div class="num">01</div><div><h2 id="step1">导入游戏存档</h2><p class="note">先从游戏的「存档管理」导出 TXT</p></div></div>
+<div class="filezone">
+<strong>选择你的 DIS 存档文件</strong>
+<small>支持游戏导出的 .txt / Base64 编码存档</small>
+<input type="file" id="file" accept=".txt,.json,.save,text/plain,application/json" aria-label="选择游戏存档文件">
+</div>
+<details><summary>没有下载文件？点击这里直接粘贴存档编码</summary>
+<textarea id="pasted" placeholder="粘贴游戏导出的长串字符（通常以 eyJ 开头）" aria-label="粘贴存档编码"></textarea>
+<button type="button" class="btn secondary" id="parsePaste">读取粘贴的存档</button></details>
+<div class="status" id="loadStatus" role="status" aria-live="polite">尚未读取存档</div>
+<div class="summary" id="info" hidden></div>
+</section>
+
+<section class="card" aria-labelledby="step2">
+<div class="heading"><div class="num">02</div><div><h2 id="step2">设置体力</h2><p class="note">当前体力和体力上限一起修改</p></div></div>
+<div class="selectwrap">
+<label class="field" for="amount">想要多少体力？</label>
+<select id="amount">
+<option value="999">999 / 999</option>
+<option value="9999" selected>9999 / 9999（推荐）</option>
+<option value="99999">99999 / 99999</option>
+<option value="keep">保持原来的体力</option>
+</select>
+</div>
+<p class="hint">可先选体力，再继续往下设置攻击力。这里不会自动下载。</p>
+</section>
+
+<section class="card" aria-labelledby="step3">
+<div class="heading"><div class="num">03</div><div><h2 id="step3">设置攻击力与伤势</h2><p class="note">探索打怪更轻松，但不等于免疫受伤</p></div></div>
+<div class="selectwrap">
+<label class="field" for="attack">想要多少基础攻击力？</label>
+<select id="attack">
+<option value="50">50（轻度强化）</option>
+<option value="100">100（明显强化）</option>
+<option value="999">999（很强）</option>
+<option value="9999" selected>9999（极高）</option>
+<option value="keep">保持原来的攻击力</option>
+</select>
+</div>
+<label class="checkline" for="clearInjury">
+<input type="checkbox" id="clearInjury" checked>
+<span><strong>同时清除当前伤势</strong><small>将已有伤势归零，未来受到攻击仍可能再次受伤</small></span>
+</label>
+</section>
+
+<section class="card" aria-labelledby="step4">
+<div class="heading"><div class="num">04</div><div><h2 id="step4">确认并导出存档</h2><p class="note">上面的选项都设置好以后，再点下载</p></div></div>
+<div class="mini" id="preview">
+<p id="previewHint">请先完成第 1 步，导入存档后这里会显示修改前后的对比。</p>
+<div class="preview" id="metrics" hidden>
+<div class="metric"><span>⚡ 体力</span><b id="previewStamina">—</b><small id="oldStamina"></small></div>
+<div class="metric"><span>⚔️ 基础攻击</span><b id="previewAttack">—</b><small id="oldAttack"></small></div>
+<div class="metric"><span>❤️ 伤势</span><b id="previewInjury">—</b><small id="oldInjury"></small></div>
+</div>
+</div>
+<div class="row">
+<button type="button" class="btn primary" id="make" disabled>⬇ 下载修改后的存档 TXT</button>
+<button type="button" class="btn secondary" id="copy" disabled>复制存档编码</button>
+</div>
+<div class="status" id="doneStatus" role="status" aria-live="polite"></div>
+<ol class="steps">
+<li>原始存档请另外留一份备份，不要覆盖。</li>
+<li>下载修改后的 TXT，或者复制存档编码。</li>
+<li>回到 <a href="https://games.hydrozoanovel.com/DIS/" target="_blank" rel="noopener noreferrer">DIS 游戏页面</a> →「存档管理」→ 导入。</li>
+</ol>
+</section>
+<div class="safety">
+<p><strong>重要提示：</strong>修改的是导出的存档，不会直接改变网页里的游戏状态；进入下一天，体力可能被游戏重新计算。</p>
+<p>提高基础攻击力不代表无敌，也不能保证游戏一定按照该数值计算最终伤害。清伤势只处理当前伤势，不会阻止新伤害。</p>
+<p>本站独立于游戏作者。修改在本机浏览器里进行，不上传存档到服务器。</p>
+</div>
+<footer>DIS 存档修改器 · 分享给朋友也能直接使用</footer>
+</main>
+<script>
+'use strict';
+let original=null;
+const $=id=>document.getElementById(id);
+function msg(id,text,kind){const el=$(id);el.textContent=text;el.className='status'+(kind?' '+kind:'');}
+function decodeB64(str){
+ const s=str.replace(/\s+/g,'');
+ if(!s||!/^[A-Za-z0-9+/]*={0,2}$/.test(s))throw new Error('无法识别存档编码。请重新从游戏导出原始 TXT，不要用旧版修改失败的文件。');
+ let bin;
+ try{bin=atob(s)}catch(_){throw new Error('Base64 解码失败，请确认粘贴了完整存档。')}
+ return new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(bin,c=>c.charCodeAt(0)));
+}
+function encodeB64(text){
+ const bytes=new TextEncoder().encode(text);
+ const chunks=[];
+ for(let i=0;i<bytes.length;i+=8192)chunks.push(String.fromCharCode(...bytes.subarray(i,i+8192)));
+ return btoa(chunks.join(''));
+}
+function parseData(input){
+ let s=input.trim().replace(/^\uFEFF/,'');
+ if(!s)throw new Error('文件内容为空。');
+ if(!s.startsWith('{'))s=decodeB64(s);
+ let data;
+ try{data=JSON.parse(s)}catch(e){throw new Error('解码后不是有效的游戏存档：'+e.message)}
+ if(!data||data.format!=='dis-save-transfer-v1'||!data.progress||!data.progress.player||typeof data.progress.player.stamina!=='number'||typeof data.progress.player.maxStamina!=='number')throw new Error('存档格式不受支持。请从 DIS 游戏「存档管理」重新导出。');
+ if(data.morning&&(!data.morning.player||typeof data.morning.player.stamina!=='number'))throw new Error('存档中的当天早晨记录异常。');
+ return data;
+}
+function fmt(value){return typeof value==='number'?String(value):'未记录'}
+function optionValue(id){const raw=$(id).value;return raw==='keep'?null:Number(raw)}
+function settings(){
+ const stamina=optionValue('amount'),attack=optionValue('attack');
+ if(stamina!==null&&![999,9999,99999].includes(stamina))throw new Error('体力设置无效');
+ if(attack!==null&&![50,100,999,9999].includes(attack))throw new Error('攻击力设置无效');
+ return {stamina,attack,clearInjury:$('clearInjury').checked};
+}
+function modify(data,cfg){
+ const copy=JSON.parse(JSON.stringify(data));
+ for(const phase of ['progress','morning']){
+  if(!copy[phase]||!copy[phase].player)continue;
+  const p=copy[phase].player;
+  if(cfg.stamina!==null){p.stamina=cfg.stamina;p.maxStamina=cfg.stamina}
+  if(cfg.attack!==null)p.baseAttack=cfg.attack;
+  if(cfg.clearInjury){
+   p.injury=0;
+   if(typeof copy[phase].injuryRestDays==='number')copy[phase].injuryRestDays=0;
+   if(typeof copy[phase].dailyWoundTreatmentUsed==='boolean')copy[phase].dailyWoundTreatmentUsed=false;
+  }
+ }
+ return copy;
+}
+function updatePreview(){
+ if(!original)return;
+ const p=original.progress.player,cfg=settings();
+ const stamina=cfg.stamina===null?fmt(p.stamina)+' / '+fmt(p.maxStamina):cfg.stamina+' / '+cfg.stamina;
+ $('previewStamina').textContent=stamina;
+ $('oldStamina').textContent='原来：'+fmt(p.stamina)+' / '+fmt(p.maxStamina);
+ $('previewAttack').textContent=fmt(cfg.attack===null?p.baseAttack:cfg.attack);
+ $('oldAttack').textContent='原来：'+fmt(p.baseAttack);
+ $('previewInjury').textContent=cfg.clearInjury?'0':fmt(p.injury);
+ $('oldInjury').textContent='原来：'+fmt(p.injury);
+ $('metrics').hidden=false;$('previewHint').hidden=true;
+ msg('doneStatus','属性已准备好。确认后点击“下载修改后的存档”。');
+}
+function load(text){
+ original=parseData(text);
+ const p=original.progress;
+ $('info').hidden=false;
+ $('info').textContent='';
+ const title=document.createElement('strong');
+ title.textContent='已识别：第 '+fmt(p.day)+' 天 · '+(p.position||'未知位置');
+ $('info').append(title);
+ const detail=document.createElement('small');
+ detail.textContent='原始体力 '+fmt(p.player.stamina)+'/'+fmt(p.player.maxStamina)+' · 攻击 '+fmt(p.player.baseAttack)+' · 伤势 '+fmt(p.player.injury);
+ $('info').append(detail);
+ $('make').disabled=false;$('copy').disabled=false;
+ msg('loadStatus','存档读取成功。接下来依次设置体力和攻击力。','ok');
+ updatePreview();
+}
+function fail(e){
+ original=null;$('info').hidden=true;$('make').disabled=true;$('copy').disabled=true;
+ $('metrics').hidden=true;$('previewHint').hidden=false;
+ msg('loadStatus',e.message||String(e),'error');msg('doneStatus','');
+}
+$('file').addEventListener('change',async function(ev){
+ const file=ev.target.files&&ev.target.files[0];if(!file)return;
+ try{load(await file.text())}catch(e){fail(e)}
+});
+$('parsePaste').addEventListener('click',function(){
+ try{load($('pasted').value)}catch(e){fail(e)}
+});
+for(const id of ['amount','attack','clearInjury'])$(id).addEventListener('change',function(){if(original)updatePreview()});
+function output(){
+ if(!original)throw new Error('请先导入游戏存档');
+ const changed=modify(original,settings());
+ const base64=encodeB64(JSON.stringify(changed));
+ return {changed,base64};
+}
+$('make').addEventListener('click',function(){
+ try{
+  const result=output(),cfg=settings();
+  const blob=new Blob([result.base64+'\n'],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;
+  a.download='DIS_day'+(result.changed.progress.day||'X')+'_edited.txt';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+  msg('doneStatus','已生成下载文件：体力和攻击力按上方设置修改。请回游戏导入验证。','ok');
+ }catch(e){msg('doneStatus',e.message||String(e),'error')}
+});
+$('copy').addEventListener('click',async function(){
+ try{
+  const result=output(),s=result.base64;
+  if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(s)}
+  else{
+   const t=document.createElement('textarea');t.value=s;t.style.position='fixed';t.style.left='-9999px';
+   document.body.append(t);t.select();
+   const ok=document.execCommand('copy');t.remove();
+   if(!ok)throw new Error('浏览器拒绝复制，请使用下载 TXT');
+  }
+  msg('doneStatus','存档编码已复制。回到游戏的「存档管理」粘贴导入。','ok');
+ }catch(e){msg('doneStatus',e.message||String(e),'error')}
+});
+</script>
+</body></html>
